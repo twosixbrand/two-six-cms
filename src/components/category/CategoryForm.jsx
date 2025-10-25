@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 
-const ClothingForm = ({ onSave, currentItem, onCancel }) => {
-  const getInitialState = () => ({ id: '', name: '', size: '', color: '', stock: 0 });
+const CategoryForm = ({ onSave, currentItem, onCancel }) => {
+  const getInitialState = () => ({ code_cat: '', name: '', description: '' });
   const [formData, setFormData] = useState(getInitialState());
+
   useEffect(() => {
     if (currentItem) {
       setFormData(currentItem);
     } else {
-      setFormData({ id: '', name: '', size: '', color: '', stock: 0 });
+      setFormData(getInitialState());
     }
   }, [currentItem]);
 
@@ -23,15 +24,15 @@ const ClothingForm = ({ onSave, currentItem, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3>{currentItem ? 'Edit' : 'Add'} Clothing</h3>
+      <h3>{currentItem ? 'Edit' : 'Add'} Category</h3>
       <input
-        name="id"
-        value={formData.id}
+        name="code_cat"
+        value={formData.code_cat}
         onChange={handleChange}
-        placeholder="ID (2 characters)"
+        placeholder="Code (2 characters)"
         required
         maxLength="2"
-        disabled={!!currentItem} // Deshabilita el campo al editar
+        disabled={!!currentItem}
       />
       <input
         name="name"
@@ -40,13 +41,11 @@ const ClothingForm = ({ onSave, currentItem, onCancel }) => {
         placeholder="Name"
         required
       />
-      {/* Agrega aquí los demás campos: size, color, stock, etc. */}
-      <input
-        name="stock"
-        type="number"
-        value={formData.stock}
+      <textarea
+        name="description"
+        value={formData.description || ''}
         onChange={handleChange}
-        placeholder="Stock"
+        placeholder="Description"
       />
       <button type="submit">Save</button>
       {currentItem && <button type="button" onClick={onCancel}>Cancel</button>}
@@ -54,4 +53,4 @@ const ClothingForm = ({ onSave, currentItem, onCancel }) => {
   );
 };
 
-export default ClothingForm;
+export default CategoryForm;

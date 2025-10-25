@@ -17,6 +17,7 @@ const Menu = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <NavLink to="/" className="navbar-logo" onClick={closeMenu}>
+          <img src="/src/assets/logo.png" alt="Two Six logo" className="logo-image" />
           TwoSix CMS
         </NavLink>
         <div className="menu-icon" onClick={toggleMenu}>
@@ -24,8 +25,18 @@ const Menu = () => {
         </div>
         <ul className={isOpen ? 'nav-menu active' : 'nav-menu'}>
           <li className="nav-item">
+            <NavLink to="/" className="nav-links" onClick={closeMenu}>
+              Home
+            </NavLink>
+          </li>
+          <li className="nav-item">
             <NavLink to="/clothing" className="nav-links" onClick={closeMenu}>
               Clothing
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/category" className="nav-links" onClick={closeMenu}>
+              Category
             </NavLink>
           </li>
           {/* Aquí se pueden agregar más opciones en el futuro */}

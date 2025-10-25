@@ -59,12 +59,22 @@ const ClothingPage = () => {
     }
   };
 
+  const handleCancel = () => {
+    setCurrentItem(null);
+  };
+
   return (
-    <div>
+    <div className="page-container">
       <h1>Clothing Management</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <ClothingForm onSave={handleSave} currentItem={currentItem} />
-      <ClothingList clothingItems={clothing} onEdit={handleEdit} onDelete={handleDelete} />
+      {error && <p className="error-message">{error}</p>}
+      <div className="grid-container">
+        <div className="form-card">
+          <ClothingForm onSave={handleSave} currentItem={currentItem} onCancel={handleCancel} />
+        </div>
+        <div className="list-card">
+          <ClothingList clothingItems={clothing} onEdit={handleEdit} onDelete={handleDelete} />
+        </div>
+      </div>
     </div>
   );
 };

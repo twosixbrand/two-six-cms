@@ -1,0 +1,42 @@
+.home-container {
+  text-align: center;
+  padding: 2rem;
+}
+
+.home-subtitle {
+  font-size: 1.2rem;
+  color: var(--on-surface-color);
+  margin-bottom: 3rem;
+}
+
+.home-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.home-card {
+  background-color: var(--surface-color);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  color: var(--on-surface-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--border-color);
+}
+
+.home-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  border-color: var(--primary-color);
+}
+
+.home-card h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+}
+
+.home-card p {
+  color: var(--on-surface-color);
+}

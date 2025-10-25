@@ -4,17 +4,17 @@ const ClothingList = ({ clothingItems, onEdit, onDelete }) => {
   return (
     <div>
       <h2>Clothing Inventory</h2>
-      <ul>
+      {clothingItems.length > 0 ? (<ul>
         {clothingItems.map(item => (
           <li key={item.id}>
-            {item.name} - Stock: {item.stock}
+            <span>{item.name} - Stock: {item.stock}</span>
             <div>
               <button onClick={() => onEdit(item)}>Edit</button>
               <button onClick={() => onDelete(item.id)}>Delete</button>
             </div>
           </li>
         ))}
-      </ul>
+      </ul>) : (<p>No clothing items found.</p>)}
     </div>
   );
 };
