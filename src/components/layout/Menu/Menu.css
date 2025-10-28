@@ -14,12 +14,18 @@
 
 .navbar-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* Centra el logo */
   align-items: center;
   height: 80px;
   width: 100%;
   max-width: 1500px;
   padding: 0 24px;
+}
+
+.logo-text {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
 }
 
 .navbar-logo {
@@ -33,20 +39,27 @@
 }
 
 .logo-image {
-  height: 40px;
-  width: 40px;
+  height: 40%;
+  max-height: 100px;
+  width: 40%;
+  max-width: 250px;
   margin-right: 10px;
 }
 
 .nav-menu {
-  display: flex;
-  align-items: center;
+  position: fixed;
+  top: 0;
+  left: -280px; /* Fixed width for the menu */
+  width: 280px; /* Fixed width for the menu */
+  height: 100vh; /* Full viewport height */
+  background: var(--surface-color); /* Match theme */
+  padding-top: 80px; /* Space for the fixed navbar */
+  flex-direction: column;
   list-style: none;
-  text-align: center;
-}
-
-.nav-item {
-  height: 80px;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  z-index: 998; /* Below navbar, above main content */
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow when closed */
 }
 
 .nav-links {
@@ -68,35 +81,30 @@
 }
 
 .menu-icon {
-  display: none;
+  display: block;
+  position: absolute;
+  left: 24px;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: var(--on-background-color);
+  z-index: 999; /* Ensure icon is clickable */
 }
 
-/* Estilos para dispositivos móviles (responsive) */
-@media screen and (max-width: 960px) {
-  .nav-menu {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 90vh;
-    position: absolute;
-    top: 80px;
-    left: -100%;
-    opacity: 0;
-    transition: all 0.5s ease;
-  }
+.nav-menu.active {
+  background: var(--surface-color); /* Use theme surface color for consistency */
+  left: 0;
+  opacity: 1;
+  transition: all 0.3s ease-in-out;
+  z-index: 998;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3); /* Shadow when open */
+}
 
-  .nav-menu.active {
-    background: #242222;
-    left: 0;
-    opacity: 1;
-    transition: all 0.5s ease;
-    z-index: 1;
-  }
+.nav-item {
+  width: 100%;
+  text-align: left;
+}
 
-  .menu-icon {
-    display: block;
-    color: var(--on-background-color);
-    font-size: 1.8rem;
-    cursor: pointer;
-  }
+.nav-links {
+  padding: 1rem 1.5rem; /* More padding for sidebar items */
+  justify-content: flex-start; /* Align text to left */
 }

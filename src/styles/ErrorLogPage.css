@@ -1,0 +1,48 @@
+.logs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.log-item {
+  background-color: var(--surface-color);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--error-color);
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.log-app-page {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.log-timestamp {
+  font-size: 0.85rem;
+  color: var(--secondary-color);
+}
+
+.log-message {
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.log-stack {
+  background-color: var(--background-color);
+  padding: 1rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: var(--on-background-color); /* Black text for light background */
+}

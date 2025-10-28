@@ -12,9 +12,17 @@ const HomePage = () => {
           <h2>Clothing Management</h2>
           <p>Manage your clothing inventory, sizes, colors, and stock.</p>
         </Link>
-        <Link to="/category" className="home-card">
+        <Link to="/type-clothing" className="home-card">
+          <h2>Type Clothing Management</h2>
+          <p>Organize your type of clothing by creating and managing this types.</p>
+        </Link>
+         <Link to="/category" className="home-card">
           <h2>Category Management</h2>
           <p>Organize your products by creating and managing categories.</p>
+        </Link>
+        <Link to="/logs" className="home-card">
+          <h2>Error Logs</h2>
+          <p>View and filter application error logs for debugging.</p>
         </Link>
       </div>
     </div>
