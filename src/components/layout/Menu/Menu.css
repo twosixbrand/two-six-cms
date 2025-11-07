@@ -3,7 +3,7 @@
   background: var(--surface-color);
   height: 80px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   font-size: 1.2rem;
   position: sticky;
@@ -13,37 +13,45 @@
 }
 
 .navbar-container {
-  display: flex;
-  justify-content: center; /* Centra el logo */
+ display: flex;
+  justify-content: center; /* Centra el contenido por defecto */
   align-items: center;
   height: 80px;
   width: 100%;
-  max-width: 1500px;
   padding: 0 24px;
+  position: relative; /* Necesario para el posicionamiento absoluto del título */
+}
+
+
+.navbar-logo { /* Contenedor del logo a la derecha */
+  color: var(--primary-color);
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  position: absolute; /* Position the logo explicitly */
+  right: 20px; /* Align to the right edge of the container */
+  height: 100%; /* Ocupa la altura para alinear la imagen verticalmente */
 }
 
 .logo-text {
-  display: flex;
-  align-items: center;
+  position: absolute; /* Posiciona el texto absolutamente */
+  left: 50%; /* Centra horizontalmente */
+  top: 50%; /* Centra verticalmente */
+  transform: translate(-50%, -50%); /* Ajusta para el ancho y alto propios del elemento */
+  z-index: 10; /* Asegura que esté por encima de otros contenidos si es necesario */
   font-weight: bold;
-}
-
-.navbar-logo {
-  color: var(--primary-color);
-  justify-self: start;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 2rem;
-  display: flex;
-  align-items: center;
+  padding: 0 60px; /* Añade padding para evitar que el texto se solape con el logo/menú */
+  color: var(--primary-color); /* Color dorado */
 }
 
 .logo-image {
-  height: 40%;
-  max-height: 100px;
-  width: 40%;
-  max-width: 250px;
-  margin-right: 10px;
+  height: 100%; /* Ajusta el tamaño del logo */
+  width: auto;
+  object-fit: contain;
+}
+
+.menu-icon {
 }
 
 .nav-menu {
@@ -107,4 +115,33 @@
 .nav-links {
   padding: 1rem 1.5rem; /* More padding for sidebar items */
   justify-content: flex-start; /* Align text to left */
+}
+
+/* Estilos para el menú y submenú */
+.menu {
+  background-color: transparent; /* El fondo lo da nav-menu */
+  padding: 0;
+  border-radius: 5px;
+}
+
+.menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu li {
+  margin-bottom: 5px;
+}
+
+.menu a {
+  text-decoration: none;
+  color: var(--on-surface-color); /* Usa el color del tema */
+  display: block;
+  padding: 0.8rem 1.5rem; /* Alinea el padding con nav-links */
+  border-radius: 3px;
+}
+
+.submenu {
+  padding-left: 1.5rem; /* Indentación para el submenú */
 }

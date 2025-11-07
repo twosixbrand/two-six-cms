@@ -1,6 +1,36 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+
 import './Menu.css';
+import SubMenu from './SubMenu';
+
+const menuData = [
+  {
+    title: 'Admin Prendas',
+    path: '#',
+    subNav: [
+      { title: 'Clothing', path: '/clothing' },
+      { title: 'Type Clothing', path: '/type-clothing' },
+      { title: 'Category', path: '/category' },
+    ],
+  },
+  {
+    title: 'Admin Usuarios',
+    path: '#',
+    subNav: [
+      { title: 'Role', path: '/role' },
+      { title: 'User', path: '/user' },
+    ],
+  },
+  {
+    title: 'Admin Maestros',
+    path: '#',
+    subNav: [
+      { title: 'Master Design', path: '/master-design' },
+      { title: 'Logs', path: '/logs' },
+    ],
+  },
+];
 
 const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,51 +46,20 @@ const Menu = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <NavLink to="/" className="navbar-logo" onClick={closeMenu}>
-          <img src="/src/assets/logo.png" alt="Two Six logo" className="logo-image" />
-          TwoSix CMS
-        </NavLink>
         <div className="menu-icon" onClick={toggleMenu}>
           {isOpen ? '✕' : '☰'}
         </div>
         <ul className={isOpen ? 'nav-menu active' : 'nav-menu'}>
-          <li className="nav-item">
-            <NavLink to="/" className="nav-links" onClick={closeMenu}>
-              Home
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to="/clothing" className="nav-links" onClick={closeMenu}>
-              Clothing
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to="/category" className="nav-links" onClick={closeMenu}>
-              Category
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to="/type-clothing" className="nav-links" onClick={closeMenu}>
-              Type Clothing
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to="/role" className="nav-links" onClick={closeMenu}>
-              Role
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to="/user" className="nav-links" onClick={closeMenu}>
-              User
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to="/logs" className="nav-links" onClick={closeMenu}>
-              Logs
-            </NavLink>
-          </li>
-          {/* Aquí se pueden agregar más opciones en el futuro */}
+          {menuData.map((item, index) => (
+            <SubMenu item={item} key={index} closeMenu={closeMenu} />
+          ))}
         </ul>
+        <NavLink to="/" className="logo-text" onClick={closeMenu}>
+          <span className="logo-text"><h1>Two Six CMS</h1></span>
+        </NavLink>
+          <NavLink to="/" className="navbar-logo" onClick={closeMenu}>
+            <img src="/src/assets/logo.png" alt="Logo" className="logo-image" />
+          </NavLink>
       </div>
     </nav>
   );

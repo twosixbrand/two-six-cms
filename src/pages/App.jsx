@@ -6,6 +6,7 @@ import CategoryPage from './CategoryPage.jsx';
 import '../styles/App.css';
 import HomePage from './HomePage.jsx';
 import ErrorBoundary from '../components/layout/ErrorBoundary.jsx';
+import MasterDesignPage from './MasterDesignPage.jsx';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/clothing" element={<ClothingPage />} />
               <Route path="/category" element={<CategoryPage />} />
+              <Route path="/master-design" element={<MasterDesignPage />} />
             </Routes>
           </main>
         </div>

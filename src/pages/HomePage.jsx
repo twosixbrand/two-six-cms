@@ -5,7 +5,7 @@ import '../styles/HomePage.css';
 const HomePage = () => {
   return (
     <div className="home-container">
-      <h1>Welcome to TwoSix CMS</h1>
+      
       <p className="home-subtitle">Manage your content with ease.</p>
       <div className="home-cards">
         <Link to="/clothing" className="home-card">
@@ -31,6 +31,10 @@ const HomePage = () => {
         <Link to="/logs" className="home-card">
           <h2>Error Logs</h2>
           <p>View and filter application error logs for debugging.</p>
+        </Link>
+        <Link to="/master-design" className="home-card">
+          <h2>Master Design Management</h2>
+          <p>Create and manage master designs.</p>
         </Link>
       </div>
     </div>
