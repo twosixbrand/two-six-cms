@@ -8,12 +8,12 @@ const SubMenu = ({ item, closeMenu }) => {
 
   return (
     <li className="nav-item"> {/* Contenedor principal del elemento del menú */}
-      <div className="nav-links" onClick={item.subNav && showSubnav}>
+      <NavLink to={item.path} className="nav-links" onClick={item.subNav && showSubnav}>
         <span>{item.title}</span>
         <span className="subnav-arrow">
           {item.subNav && (subnav ? '▲' : '▼')}
         </span>
-      </div>
+      </NavLink>
       {/* El submenú se renderiza siempre, pero se muestra/oculta con CSS */}
       {item.subNav && (
         <ul className={`dropdown-menu ${subnav ? 'active' : ''}`}>

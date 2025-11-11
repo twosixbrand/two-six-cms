@@ -30,10 +30,16 @@ export const getClothingById = async (id) => {
 };
 
 export const createClothing = async (clothingData) => {
+  const dataToSend = {
+    name: clothingData.name,
+    gender: clothingData.gender,
+    id_type_clothing: clothingData.id_type_clothing,
+    id_category: parseInt(clothingData.id_category, 10),
+  };
   const response = await fetch(`${API_BASE_URL}/clothing`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(clothingData),
+    body: JSON.stringify(dataToSend),
   });
   return handleResponse(response);
 };
@@ -42,11 +48,19 @@ export const updateClothing = async (id, clothingData) => {
   const response = await fetch(`${API_BASE_URL}/clothing/${id}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(clothingData),
+    body: JSON.stringify({
+      name: clothingData.name,
+      gender: clothingData.gender,
+      id_type_clothing: clothingData.id_type_clothing,
+      id_category: parseInt(clothingData.id_category, 10),
+    }),
   });
   return handleResponse(response);
 };
 
 export const deleteClothing = async (id) => {
-  await fetch(`${API_BASE_URL}/clothing/${id}`, { method: 'DELETE' });
+  const response = await fetch(`${API_BASE_URL}/clothing/${id}`, { method: 'DELETE' });
+  if (!response.ok) {
+    return handleResponse(response);
+  }
 };

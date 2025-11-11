@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
+
 import './Menu.css';
 import SubMenu from './SubMenu';
 
@@ -20,6 +21,7 @@ const menuData = [
     subNav: [
       { title: 'Role', path: '/role' },
       { title: 'User', path: '/user' },
+      { title: 'User Roles', path: '/user-role' },
     ],
   },
   {
@@ -27,6 +29,10 @@ const menuData = [
     path: '#',
     subNav: [
       { title: 'Design', path: '/master-design' },
+      { title: 'Season', path: '/season' },
+      { title: 'Provider', path: '/provider' },
+      { title: 'Year Production', path: '/year-production' },
+      { title: 'Collection', path: '/collection' },
     ],
   },
   {

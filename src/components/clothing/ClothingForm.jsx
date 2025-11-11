@@ -1,55 +1,89 @@
 import React, { useState, useEffect } from 'react';
 
-const ClothingForm = ({ onSave, currentItem, onCancel }) => {
-  const getInitialState = () => ({ id: '', name: '', size: '', color: '', stock: 0 });
-  const [formData, setFormData] = useState(getInitialState());
+const GENDERS = ['MASCULINO', 'FEMENINO', 'UNISEX'];
+
+const ClothingForm = ({ onSave, currentItem, onCancel, typeClothings, categories }) => {
+  const [item, setItem] = useState({
+    name: '',
+    gender: '',
+    id_type_clothing: '',
+    id_category: '',
+  });
+
   useEffect(() => {
     if (currentItem) {
-      setFormData(currentItem);
+      setItem({
+        name: currentItem.name || '',
+        gender: currentItem.gender || '',
+        id_type_clothing: currentItem.id_type_clothing || '',
+        id_category: currentItem.id_category || '',
+      });
     } else {
-      setFormData({ id: '', name: '', size: '', color: '', stock: 0 });
+      setItem({ name: '', gender: '', id_type_clothing: '', id_category: '' });
     }
   }, [currentItem]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setItem({ ...item, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(formData);
+    onSave(item);
+    setItem({ name: '', gender: '', id_type_clothing: '', id_category: '' }); // Reset form
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3>{currentItem ? 'Edit' : 'Add'} Clothing</h3>
-      <input
-        name="id"
-        value={formData.id}
-        onChange={handleChange}
-        placeholder="ID (2 characters)"
-        required
-        maxLength="2"
-        disabled={!!currentItem} // Deshabilita el campo al editar
-      />
+      <h3>{currentItem ? 'Edit Clothing' : 'Add Clothing'}</h3>
+      {currentItem && (
+        <div className="form-group">
+          <label>ID</label>
+          <input name="id" type="text" value={currentItem.id} readOnly disabled />
+        </div>
+      )}
       <input
         name="name"
-        value={formData.name}
-        onChange={handleChange}
+        type="text"
         placeholder="Name"
+        value={item.name}
+        onChange={handleChange}
         required
       />
-      {/* Agrega aquí los demás campos: size, color, stock, etc. */}
-      <input
-        name="stock"
-        type="number"
-        value={formData.stock}
-        onChange={handleChange}
-        placeholder="Stock"
-      />
-      <button type="submit">Save</button>
-      {currentItem && <button type="button" onClick={onCancel}>Cancel</button>}
+      <select name="gender" value={item.gender} onChange={handleChange} required>
+        <option value="">Select Gender</option>
+        {GENDERS.map((gender) => (
+          <option key={gender} value={gender}>
+            {gender}
+          </option>
+        ))}
+      </select>
+      <select name="id_type_clothing" value={item.id_type_clothing} onChange={handleChange} required>
+        <option value="">Select Type</option>
+        {typeClothings.map((type) => (
+          <option key={type.id} value={type.id}>
+            {type.name}
+          </option>
+        ))}
+      </select>
+      <select name="id_category" value={item.id_category} onChange={handleChange} required>
+        <option value="">Select Category</option>
+        {categories.map((category) => (
+          <option key={category.id} value={category.id}>
+            {category.name}
+          </option>
+        ))}
+      </select>
+
+      <div style={{ display: 'flex', gap: '10px', marginTop: '1rem' }}>
+        <button type="submit">{currentItem ? 'Update' : 'Create'}</button>
+        {currentItem && (
+          <button type="button" onClick={onCancel}>
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 };

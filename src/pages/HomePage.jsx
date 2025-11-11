@@ -26,11 +26,31 @@ const HomePage = () => {
         </Link>
         <Link to="/user" className="home-card">
           <h2>User Management</h2>
+          <p>Create, edit, and delete users.</p>
+        </Link>
+        <Link to="/user-role" className="home-card">
+          <h2>User Roles Management</h2>
           <p>Create, edit, and assign roles to users.</p>
         </Link>
         <Link to="/master-design" className="home-card">
           <h2>Master Design Management</h2>
           <p>Create and manage master designs.</p>
+        </Link>
+        <Link to="/season" className="home-card">
+          <h2>Season Management</h2>
+          <p>Manage the different seasons for your collections.</p>
+        </Link>
+        <Link to="/provider" className="home-card">
+          <h2>Provider Management</h2>
+          <p>Create and manage providers.</p>
+        </Link>
+        <Link to="/collection" className="home-card">
+          <h2>Collection Management</h2>
+          <p>Organize your designs into collections by season and year.</p>
+        </Link>
+        <Link to="/year-production" className="home-card">
+          <h2>Year Production Management</h2>
+          <p>Manage your production years.</p>
         </Link>
         <Link to="/logs" className="home-card">
           <h2>Error Logs</h2>

@@ -1,16 +1,14 @@
 import React from 'react';
 
-const ClothingList = ({ items, onEdit, onDelete }) => {
+const ProviderList = ({ items, onEdit, onDelete }) => {
   return (
     <ul>
       {items.map((item) => (
         <li key={item.id}>
           <span>
-            <strong>{item.name}</strong> ({item.gender})
+            <strong>{item.company_name}</strong> ({item.id})
             <br />
-            <small>
-              Type: {item.typeClothing?.name || 'N/A'} | Category: {item.category?.name || 'N/A'}
-            </small>
+            <small>{item.email} | {item.phone}</small>
           </span>
           <div>
             <button onClick={() => onEdit(item)} className="button-edit">
@@ -26,4 +24,4 @@ const ClothingList = ({ items, onEdit, onDelete }) => {
   );
 };
 
-export default ClothingList;
+export default ProviderList;
