@@ -4,13 +4,11 @@ import '../../styles/MasterDesign.css';
 const MasterDesignForm = ({
   onSubmit,
   initialData = {},
-  providers = [],
   clothings = [],
   collections = [],
   years = [],
 }) => {
   const [formData, setFormData] = useState({
-    reference: '',
     manufactured_cost: '',
     quantity: '',
     description: '',
@@ -43,22 +41,12 @@ const MasterDesignForm = ({
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
-      <div className="form-group">
-        <label htmlFor="reference">Referencia</label>
-        <input type="text" id="reference" name="reference" value={formData.reference} onChange={handleChange} required />
-      </div>
-      <div className="form-group">
-        <label htmlFor="manufactured_cost">Costo de Fabricación</label>
-        <input type="number" step="0.01" id="manufactured_cost" name="manufactured_cost" value={formData.manufactured_cost} onChange={handleChange} required />
-      </div>
-      <div className="form-group">
-        <label htmlFor="quantity">Cantidad</label>
-        <input type="number" id="quantity" name="quantity" value={formData.quantity} onChange={handleChange} required />
-      </div>
-      <div className="form-group">
-        <label htmlFor="description">Descripción</label>
-        <textarea id="description" name="description" value={formData.description} onChange={handleChange} />
-      </div>
+      {initialData.id && (
+        <div className="form-group">
+          <label htmlFor="reference">Referencia</label>
+          <input type="text" id="reference" name="reference" value={formData.reference} readOnly />
+        </div>
+      )}
       <div className="form-group">
         <label htmlFor="id_clothing">Prenda</label>
         <select id="id_clothing" name="id_clothing" value={formData.id_clothing} onChange={handleChange} required>
@@ -76,6 +64,18 @@ const MasterDesignForm = ({
             <option key={collection.id} value={collection.id}>{collection.name}</option>
           ))}
         </select>
+      </div>
+      <div className="form-group">
+        <label htmlFor="manufactured_cost">Costo de Fabricación</label>
+        <input type="number" step="0.01" id="manufactured_cost" name="manufactured_cost" value={formData.manufactured_cost} onChange={handleChange} required />
+      </div>
+      <div className="form-group">
+        <label htmlFor="quantity">Cantidad</label>
+        <input type="number" id="quantity" name="quantity" value={formData.quantity} onChange={handleChange} required />
+      </div>
+      <div className="form-group">
+        <label htmlFor="description">Descripción</label>
+        <textarea id="description" name="description" value={formData.description} onChange={handleChange} />
       </div>
       <button type="submit" className="button-primary">
         {initialData.id ? 'Actualizar Diseño' : 'Crear Diseño'}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import ProductList from '../components/product/ProductList.jsx';
 import ProductForm from '../components/product/ProductForm.jsx';
 import * as productApi from '../services/productApi.js';
@@ -11,6 +11,7 @@ const ProductPage = () => {
   const [currentItem, setCurrentItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const fetchData = useCallback(async () => {
     try {
@@ -33,6 +34,32 @@ const ProductPage = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  const filteredProducts = useMemo(() => {
+    if (!searchTerm) {
+      return products;
+    }
+    return products.filter(product => {
+      const searchTermLower = searchTerm.toLowerCase();
+      const fieldsToSearch = [
+        product.name,
+        product.description,
+        product.sku,
+        product.price.toString(),
+        product.consecutive_number,
+        product.discount_percentage,
+        product.discount_price,
+        product.clothing_name,
+        product.color_name,
+        product.size_name,
+        product.collection_name,
+        product.year_production,
+      ];
+      return fieldsToSearch.some(field =>
+        field?.toLowerCase().includes(searchTermLower)
+      );
+    });
+  }, [products, searchTerm]);
 
   const handleSave = async (itemData) => {
     try {
@@ -85,12 +112,15 @@ const ProductPage = () => {
           />
         </div>
         <div className="list-card">
-          <h2>Products</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h2>Products</h2>
+            <input type="text" placeholder="Filter products..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} style={{ width: '250px' }} />
+          </div>
           {loading ? (
             <p>Loading...</p>
           ) : (
             <ProductList
-              items={products}
+              items={filteredProducts}
               onEdit={handleEdit}
               onDelete={handleDelete}
             />

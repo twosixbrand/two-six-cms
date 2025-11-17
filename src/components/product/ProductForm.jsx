@@ -11,6 +11,8 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings }) => {
     image_url: '',
     active: true,
     is_outlet: false,
+    discount_percentage: '',
+    discount_price: '',
   });
 
   const [formData, setFormData] = useState(getInitialState());
@@ -27,6 +29,8 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings }) => {
         image_url: currentItem.image_url || '',
         active: currentItem.active ?? true,
         is_outlet: currentItem.is_outlet || false,
+        discount_percentage: currentItem.discount_percentage || '',
+        discount_price: currentItem.discount_price || '',
       });
     } else {
       setFormData(getInitialState());
@@ -50,6 +54,8 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings }) => {
       price: parseFloat(formData.price),
       active: !!formData.active,
       is_outlet: !!formData.is_outlet,
+      discount_percentage: formData.discount_percentage,
+      discount_price: formData.discount_price,
     };
     onSave(dataToSave);
     setFormData(getInitialState());
@@ -92,6 +98,14 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings }) => {
       <div className="form-group">
         <label>Image URL</label>
         <input type="text" name="image_url" value={formData.image_url} onChange={handleChange} />
+      </div>
+      <div className="form-group">
+        <label>Discount Percentage</label>
+        <input type="text" name="discount_percentage" value={formData.discount_percentage} onChange={handleChange} />
+      </div>
+      <div className="form-group">
+        <label>Discount Price</label>
+        <input type="text" name="discount_price" value={formData.discount_price} onChange={handleChange} />
       </div>
       <div className="form-group">
         <label><input type="checkbox" name="active" checked={formData.active} onChange={handleChange} /> Active</label>

@@ -6,7 +6,7 @@ const HomePage = () => {
   return (
     <div className="home-container">
       
-      <p className="home-subtitle">Manage your content with ease.</p>
+      <p className="home-subtitle">Páginas Principales</p>
       <div className="home-cards">
         <Link to="/clothing" className="home-card">
           <h2>Clothing Management</h2>

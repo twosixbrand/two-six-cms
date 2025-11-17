@@ -3,7 +3,6 @@ import '../styles/MasterDesign.css';
 import MasterDesignList from '../components/master-design/MasterDesignList';
 import MasterDesignForm from '../components/master-design/MasterDesignForm';
 import * as masterDesignApi from '../services/masterDesignApi';
-import * as providerApi from '../services/providerApi';
 import * as clothingApi from '../services/clothingApi';
 import * as collectionApi from '../services/collectionApi';
 import { logError } from '../services/errorApi';
@@ -12,23 +11,20 @@ const MasterDesignPage = () => {
   const [designs, setDesigns] = useState([]);
   const [currentItem, setCurrentItem] = useState(null);
   const [error, setError] = useState('');
-
+  
   // Estados para los datos de los selects del formulario
-  const [providers, setProviders] = useState([]);
   const [clothings, setClothings] = useState([]);
   const [collections, setCollections] = useState([]);
   const [selectedProvidersDetail, setSelectedProvidersDetail] = useState(null); // Nuevo estado para detalles de proveedores
 
   const fetchData = async () => {
     try {
-      const [designsData, providersData, clothingsData, collectionsData] = await Promise.all([
+      const [designsData, clothingsData, collectionsData] = await Promise.all([
         masterDesignApi.getMasterDesigns(),
-        providerApi.getProviders(),
         clothingApi.getClothing(),
         collectionApi.getCollections(),
       ]);
       setDesigns(designsData);
-      setProviders(providersData);
       setClothings(clothingsData);
       setCollections(collectionsData);
     } catch (err) {

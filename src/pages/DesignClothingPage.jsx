@@ -45,10 +45,16 @@ const DesignClothingPage = () => {
   const handleSave = async (itemData) => {
     try {
       setError('');
-      if (currentItem) {
-        await designClothingApi.updateDesignClothing(currentItem.id, itemData);
+      if (Array.isArray(itemData)) {
+        // Creación múltiple
+        await Promise.all(itemData.map(item => designClothingApi.createDesignClothing(item)));
       } else {
-        await designClothingApi.createDesignClothing(itemData);
+        // Creación o actualización única
+        if (currentItem) {
+          await designClothingApi.updateDesignClothing(currentItem.id, itemData);
+        } else {
+          await designClothingApi.createDesignClothing(itemData);
+        }
       }
       fetchData();
       setCurrentItem(null);

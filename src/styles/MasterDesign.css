@@ -74,38 +74,34 @@
   background-color: #0056b3;
 }
 
-/* Estilos para la tabla (anteriormente en Table.css) */
-.table-container {
-  overflow-x: auto; /* Permite scroll horizontal en tablas grandes */
-  background-color: #ffffff;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+/* Estilos para la lista de diseños */
+.design-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex-grow: 1;
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
+.design-info span {
+  font-size: 0.9rem;
 }
 
-.table th, .table td {
-  border: 1px solid #e0e0e0;
-  padding: 0.8rem;
-  text-align: left;
-}
-
-.table th {
-  background-color: #f8f9fa;
+.design-reference {
   font-weight: 600;
-  color: #333;
+  color: var(--on-surface-color);
 }
 
-.table tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
+.design-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
-.table tbody tr:hover {
-  background-color: #e9ecef;
+.actions-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 /* Responsive adjustments */

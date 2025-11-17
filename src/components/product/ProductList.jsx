@@ -11,7 +11,7 @@ const ProductList = ({ items, onEdit, onDelete }) => {
             <strong>{item.name}</strong> ({item.active ? 'Active' : 'Inactive'})
             <br />
             <small>
-              SKU: {item.sku} | Ref: {item.designClothing?.design?.clothing?.name} | Price: ${item.price} | Color: {item.designClothing?.color?.name} | Size: {item.designClothing?.size?.name}
+              Active: {item.active ? 'Sí' : 'No'} | Prenda: {item.clothing_name} | Price: ${item.price} | Color: {item.color_name} | Size: {item.size_name} | Consecutive: {item.consecutive_number} | isOutlet: {item.is_outlet ? 'Sí' : 'No'} | Image: {item.image_url} | SKU: {item.sku} | Desc %: {item.discount_percentage} | Desc $: {item.discount_price}
             </small>
           </span>
           <div>

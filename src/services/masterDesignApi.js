@@ -1,22 +1,16 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { handleResponse } from './apiUtils.js';
 
-const handleResponse = async (response) => {
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({ message: `Request failed with status ${response.status}` }));
-    throw new Error(errorData.message || `Something went wrong`);
-  }
-  // Para respuestas sin cuerpo (ej. DELETE 204)
-  return response.status === 204 ? null : response.json();
-};
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_NAME = 'master-design';
 
 export const getMasterDesigns = async () => {
   const response = await fetch(`${API_BASE_URL}/master-design`);
-  return handleResponse(response);
+  return handleResponse(response, API_NAME);
 };
 
 export const getMasterDesignById = async (id) => {
   const response = await fetch(`${API_BASE_URL}/master-design/${id}`);
-  return handleResponse(response);
+  return handleResponse(response, API_NAME);
 };
 
 export const createMasterDesign = async (designData) => {
@@ -33,7 +27,7 @@ export const createMasterDesign = async (designData) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(dataToSend),
   });
-  return handleResponse(response);
+  return handleResponse(response, API_NAME);
 };
 
 export const updateMasterDesign = async (id, designData) => {
@@ -50,9 +44,10 @@ export const updateMasterDesign = async (id, designData) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(dataToSend),
   });
-  return handleResponse(response);
+  return handleResponse(response, API_NAME);
 };
 
 export const deleteMasterDesign = async (id) => {
-  await fetch(`${API_BASE_URL}/master-design/${id}`, { method: 'DELETE' });
+  const response = await fetch(`${API_BASE_URL}/master-design/${id}`, { method: 'DELETE' });
+  return handleResponse(response, API_NAME);
 };

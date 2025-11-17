@@ -1,20 +1,17 @@
 import React from 'react';
 import './Footer.css';
 
-import InstagramIcon from '../../../assets/icons/instagram.svg';
-import FacebookIcon from '../../../assets/icons/facebook.svg';
-import YoutubeIcon from '../../../assets/icons/youtube.svg';
-import TiktokIcon from '../../../assets/icons/tiktok.svg';
-import PinterestIcon from '../../../assets/icons/pinterest.svg';
-import XIcon from '../../../assets/icons/x.svg';
+import { TikTokIcon, PinterestIcon } from '../../common/Icons';
 
 const socialLinks = [
-  { name: 'Instagram', url: 'https://instagram.com/twosix.brand/', icon: InstagramIcon },
-  { name: 'Facebook', url: 'https://www.facebook.com/share/17Xesk5dkT/?mibextid=wwXIfr', icon: FacebookIcon },
-  { name: 'YouTube', url: 'https://www.youtube.com/@twosix-brand', icon: YoutubeIcon },
-  { name: 'TikTok', url: 'https://www.tiktok.com/@twosix_brand', icon: TiktokIcon },
-  { name: 'Pinterest', url: 'https://www.tiktok.com/@twosix_brand', icon: PinterestIcon },
-  { name: 'X', url: 'https://x.com/twosix_brand', icon: XIcon },
+  // Para mantener la consistencia, idealmente todos los íconos deberían ser componentes React.
+  // Por ahora, solo modificamos TikTok y Pinterest como se solicitó.
+  { name: 'Instagram', url: 'https://instagram.com/twosix.brand/', IconComponent: () => <img src="/src/assets/icons/instagram.svg" alt="Instagram" className="social-icon" /> },
+  { name: 'Facebook', url: 'https://www.facebook.com/share/17Xesk5dkT/?mibextid=wwXIfr', IconComponent: () => <img src="/src/assets/icons/facebook.svg" alt="Facebook" className="social-icon" /> },
+  { name: 'YouTube', url: 'https://www.youtube.com/@twosix-brand', IconComponent: () => <img src="/src/assets/icons/youtube.svg" alt="YouTube" className="social-icon" /> },
+  { name: 'TikTok', url: 'https://www.tiktok.com/@twosix_brand', IconComponent: () => <TikTokIcon className="social-icon" /> },
+  { name: 'Pinterest', url: 'https://pinterest.com/twosix_brand', IconComponent: () => <PinterestIcon className="social-icon" /> },
+  { name: 'X', url: 'https://x.com/twosix_brand', IconComponent: () => <img src="/src/assets/icons/x.svg" alt="X" className="social-icon" /> },
 ];
 
 const Footer = () => {
@@ -31,7 +28,7 @@ const Footer = () => {
               aria-label={social.name}
               className="social-icon-link"
             >
-              <img src={social.icon} alt={social.name} className="social-icon" />
+              <social.IconComponent />
             </a>
           ))}
         </div>
