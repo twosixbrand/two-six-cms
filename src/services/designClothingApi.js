@@ -1,11 +1,11 @@
 import { handleResponse } from './apiUtils.js';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const ENDPOINT = `${API_BASE_URL}/design-clothing`;
+const API_ENDPOINT = `${API_BASE_URL}/api/design-clothing`;
 const API_NAME = 'design-clothing';
 
 export const getDesignClothings = async () => {
-  const response = await fetch(ENDPOINT);
+  const response = await fetch(API_ENDPOINT);
   return handleResponse(response, API_NAME);
 };
 
@@ -21,7 +21,7 @@ export const createDesignClothing = async (item) => {
     quantity_on_consignment: parseInt(item.quantity_on_consignment, 10),
     quantity_under_warranty: parseInt(item.quantity_under_warranty, 10),
   };
-  const response = await fetch(ENDPOINT, {
+  const response = await fetch(API_ENDPOINT, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(dataToSend),
@@ -41,7 +41,7 @@ export const updateDesignClothing = async (id, item) => {
     quantity_on_consignment: parseInt(item.quantity_on_consignment, 10),
     quantity_under_warranty: parseInt(item.quantity_under_warranty, 10),
   };
-  const response = await fetch(`${ENDPOINT}/${id}`, {
+  const response = await fetch(`${API_ENDPOINT}/${id}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(dataToSend),
@@ -50,7 +50,7 @@ export const updateDesignClothing = async (id, item) => {
 };
 
 export const deleteDesignClothing = async (id) => {
-  const response = await fetch(`${ENDPOINT}/${id}`, { method: 'DELETE' });
+  const response = await fetch(`${API_ENDPOINT}/${id}`, { method: 'DELETE' });
   // La respuesta de un DELETE exitoso a menudo no tiene cuerpo.
   return handleResponse(response, API_NAME);
 };
