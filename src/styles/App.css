@@ -1,22 +1,99 @@
-.app-content {
-  flex: 1; /* Allows the main content to grow and push the footer down */
+/* 1. Importar una fuente limpia y moderna */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* 2. Definir la nueva paleta de colores (Tema Claro) */
+:root {
+  /* Paleta de colores */
+  --background-color: #f4f7fa; /* Fondo principal muy claro */
+  --surface-color: #ffffff; /* Color para tarjetas, etc. */
+  --primary-color: #d4af37; /* Dorado como color principal */
+  --primary-hover-color: #b8860b; /* Dorado más oscuro para hover */
+  
+  /* Colores de texto */
+  --text-primary: #1f2937;   /* Texto principal (casi negro) */
+  --text-secondary: #6b7280; /* Texto secundario (gris) */
+  --text-on-primary: #ffffff;   /* Texto sobre botones primarios */
+
+  /* Otros colores */
+  --menu-bg: #000000; /* Negro puro para menú y footer */
+  --menu-text: #9ca3af; /* Gris claro para texto normal del menú */
+  --menu-text-active: var(--primary-color); /* Dorado para texto activo/hover del menú */
+
+  --border-color: #e5e7eb;
+  --error-color: #ef4444;
+  --success-color: #22c55e;
+
+  /* Métricas de diseño */
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
 }
 
-/* Override default container styles to utilize full screen width */
-.container {
-  max-width: 100%; /* Ensure it takes full available width */
-  padding: 0 1rem;   /* Keep a small padding on sides for readability, adjust to 0 if needed */
+/* 3. Reset y estilos base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-#root {
+body, #root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* 4. Estilos para el layout principal */
+.app-content {
+  padding-left: 280px; /* Espacio para el menú lateral */
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  transition: padding-left 0.3s ease-in-out;
+  width: 100%;
+}
+
+/* Ajuste del contenido cuando el menú está cerrado */
+.app-content.menu-closed {
+  padding-left: 0;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+@media screen and (max-width: 960px) {
+  .app-content {
+    padding-left: 0;
+  }
+  .app-content.menu-closed {
+    /* En móvil no hay menú colapsado, siempre se oculta */
+    padding-left: 0;
+  }
+}
+
+/* 5. Estilos para componentes comunes (Tarjetas, Formularios, etc.) */
 .page-container {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+}
+
+.page-container h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
 }
 
 .grid-container {
@@ -25,9 +102,9 @@
   gap: 2rem;
 }
 
-@media (min-width: 960px) {
+@media (min-width: 1024px) {
   .grid-container {
-    grid-template-columns: 400px 1fr;
+    grid-template-columns: 450px 1fr; /* Formulario más ancho */
   }
 }
 
@@ -39,176 +116,135 @@
   border: 1px solid var(--border-color);
 }
 
-/* Form Styles */
+.list-card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Estilos de Formularios */
 form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-form h3 {
+form h2, form h3 {
   text-align: center;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 1rem;
   margin-bottom: 1rem;
+  font-size: 1.25rem;
 }
 
 input[type="text"],
 input[type="number"],
-textarea {
+input[type="email"],
+input[type="password"],
+textarea,
+select {
   width: 100%;
   padding: 0.75rem;
-  background-color: #fff;
+  background-color: var(--surface-color);
   border: 1px solid var(--border-color);
-  border-radius: 4px;
-  color: var(--on-surface-color);
+  border-radius: var(--border-radius);
+  color: var(--text-primary);
   font-family: inherit;
   font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-input:disabled {
-  background-color: #e0e0e0; /* Light grey for disabled input */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+input:disabled, select:disabled {
+  background-color: #f3f4f6;
   cursor: not-allowed;
 }
 
-textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
+/* Estilos de Botones */
 button {
   padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   cursor: pointer;
   font-weight: 600;
-  transition: all 0.2s ease-in-out;
+  font-size: 1rem;
+  transition: background-color 0.2s, transform 0.1s;
 }
 
 button[type="submit"] {
   background-color: var(--primary-color);
-  color: #000;
+  color: var(--text-on-primary);
 }
 
 button[type="submit"]:hover {
-  background-color: var(--primary-variant-color);
-  color: #fff;
+  background-color: var(--primary-hover-color);
 }
 
 button[type="button"] {
-  background-color: var(--secondary-color); /* Use secondary color for neutral buttons */
-  color: white; /* White text for better contrast */
+  background-color: #e5e7eb;
+  color: var(--text-primary);
 }
 
 button[type="button"]:hover {
-  background-color: #777; /* Slightly darker grey on hover */
+  background-color: #d1d5db;
 }
 
-/* Action Buttons (round, icon-only) */
-.action-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px; /* Tamaño del botón */
-  height: 36px; /* Tamaño del botón */
-  border-radius: 50%; /* Hace el botón redondo */
-  border: none;
-  cursor: pointer;
-  margin-right: 0.5rem;
-  transition: background-color 0.2s ease-in-out;
-  padding: 0; /* Elimina el padding para que el icono se ajuste bien */
-  color: #fff; /* Color de icono por defecto */
+button:active {
+  transform: scale(0.98);
 }
 
-.action-button svg {
-  width: 18px; /* Tamaño del icono */
-  height: 18px;
-  stroke: currentColor; /* Asegura que el icono herede el color del texto del botón */
-}
-
-.action-button.button-edit {
-  background-color: #ffc107; /* Amarillo */
-}
-
-.action-button.button-edit:hover {
-  background-color: #e0a800; /* Amarillo más oscuro */
-}
-
-.action-button.button-delete {
-  background-color: #dc3545; /* Rojo */
-}
-
-.action-button.button-delete:hover {
-  background-color: #c82333; /* Rojo más oscuro */
-}
-
-button.button-info {
-  background-color: #17a2b8;
-  border: 1px solid #138496;
-  color: #fff; /* Asegura que el icono sea blanco */
-}
-
-/* List Styles */
+/* Estilos de Listas */
 .list-card ul {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .list-card li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem; /* Adjusted padding for better spacing */
-  background-color: var(--surface-color); /* Use theme surface color */
-  border-radius: 4px;
-  border-left: 4px solid var(--secondary-color);
+  padding: 0.75rem 1rem;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  transition: box-shadow 0.2s, border-color 0.2s;
 }
 
-.list-card li div {
+.list-card li:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 1px var(--primary-color);
+}
+
+.list-card li > div:first-child {
+  flex-grow: 1;
+}
+
+.list-card li > div:last-child {
   display: flex;
   gap: 0.5rem;
 }
 
-.list-card li button:not(.action-button) {
-  padding: 0.4rem 0.8rem;
-  font-size: 0.8rem;
-}
-
+/* Mensajes de Error */
 .error-message {
   background-color: var(--error-color);
-  color: #000;
+  color: var(--text-on-primary);
   padding: 1rem;
   border-radius: var(--border-radius);
   text-align: center;
   font-weight: 500;
 }
 
-/* Estilos para el modal de detalles de proveedores */
-.providers-detail-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: var(--surface-color);
-  padding: 2rem;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-  z-index: 1000;
-  max-width: 90%;
-  max-height: 90%;
-  overflow-y: auto;
-  border: 1px solid var(--border-color);
-}
-
-.providers-detail-modal h2 {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  color: var(--on-surface-color);
-}
-
-.providers-detail-modal ul {
-  list-style: disc;
-  padding-left: 1.5rem;
+/* Estilos para el Footer */
+.footer {
+  background-color: var(--menu-bg);
+  color: #ffffff; /* Cambiado a blanco */
+  padding: 1.5rem 2rem;
+  text-align: center;
+  border-top: 1px solid #374151;
 }

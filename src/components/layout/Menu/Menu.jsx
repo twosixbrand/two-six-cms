@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-
+import { AuthContext } from '../../../context/AuthContext';
 
 import './Menu.css';
 import SubMenu from './SubMenu';
@@ -47,34 +47,29 @@ const menuData = [
   },
 ];
 
-const Menu = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+const Menu = ({ isMenuOpen, toggleMenu }) => {
+  const { isAuthenticated, logout } = useContext(AuthContext);
 
   const closeMenu = () => {
-    setIsOpen(false);
+    // Esta función ahora solo se usa para cerrar el menú en móvil al hacer clic en un enlace
+    if (window.innerWidth < 960) {
+      toggleMenu();
+    }
   }
 
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        <div className="menu-icon" onClick={toggleMenu}>
-          {isOpen ? '✕' : '☰'}
-        </div>        
-        <NavLink to="/" className="logo-text-link" onClick={closeMenu}>
-          <h1 className="logo-text">Two Six CMS</h1>
-        </NavLink>
-        <NavLink to="/" className="navbar-logo" onClick={closeMenu}>
-          <img src="/src/assets/logo.png" alt="Logo" className="logo-image" />
-        </NavLink>
-        <ul className={isOpen ? 'nav-menu active' : 'nav-menu'}>
-          {menuData.map((item, index) => (
-            <SubMenu item={item} key={index} closeMenu={closeMenu} />
-          ))}
-        </ul>
+    <nav className={`navbar ${isMenuOpen ? '' : 'closed'}`}>
+      <div className="navbar-container">        
+        {isAuthenticated && (
+          <ul className="nav-menu">
+            {menuData.map((item, index) => (
+              <SubMenu item={item} key={index} closeMenu={closeMenu} isMenuOpen={isMenuOpen} />
+            ))}
+          </ul>
+        )}
+        <div className="menu-footer">
+          <button onClick={logout} className="nav-links-button">Cerrar Sesión</button>
+        </div>
       </div>
     </nav>
   );
