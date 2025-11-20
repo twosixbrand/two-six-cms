@@ -11,8 +11,8 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings }) => {
     image_url: '',
     active: true,
     is_outlet: false,
-    discount_percentage: '',
-    discount_price: '',
+    discount_percentage: 0,
+    discount_price: 0,
   });
 
   const [formData, setFormData] = useState(getInitialState());
@@ -29,8 +29,8 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings }) => {
         image_url: currentItem.image_url || '',
         active: currentItem.active ?? true,
         is_outlet: currentItem.is_outlet || false,
-        discount_percentage: currentItem.discount_percentage || '',
-        discount_price: currentItem.discount_price || '',
+        discount_percentage: currentItem.discount_percentage || 0,
+        discount_price: currentItem.discount_price || 0,
       });
     } else {
       setFormData(getInitialState());
