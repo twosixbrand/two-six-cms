@@ -1,8 +1,9 @@
 .footer {
-  background: linear-gradient(to right, #d4af37, #f7e2a3, #d4af37);
-  color: #3a2a08; /* Tono oscuro para buen contraste sobre el dorado */
-  padding: 2rem 0;
-  border-top: 1px solid #b8860b; /* Borde dorado oscuro, igual que en el navbar */
+  background-color: var(--menu-bg);
+  color: #ffffff;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  border-top: 1px solid #374151;
   margin-top: auto; /* Pushes footer to the bottom */
 }
 

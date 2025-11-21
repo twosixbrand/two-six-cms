@@ -59,6 +59,7 @@ h1, h2, h3, h4, h5, h6 {
   padding-bottom: 2rem;
   transition: padding-left 0.3s ease-in-out;
   width: 100%;
+  flex-grow: 1;
 }
 
 /* Ajuste del contenido cuando el menú está cerrado */
@@ -247,4 +248,23 @@ button:active {
   padding: 1.5rem 2rem;
   text-align: center;
   border-top: 1px solid #374151;
+}
+
+/* Added from index.css */
+main {
+  padding: 2rem;
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #adb5bd;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-color);
 }
