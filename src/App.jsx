@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Contexto de Autenticación
 import { AuthProvider, AuthContext } from './context/AuthContext';
-
+// Estilos
+import './styles/App.css';
 // Componentes de Layout y Rutas
 import Header from './components/layout/Header/Header.jsx';
 import Menu from './components/layout/Menu/Menu.jsx';
@@ -31,8 +32,7 @@ import DesignProviderPage from './pages/DesignProviderPage.jsx';
 import DesignClothingPage from './pages/DesignClothingPage.jsx';
 import ProductPage from './pages/ProductPage.jsx';
 
-// Estilos
-import './styles/App.css';
+
 
 /**
  * Componente que renderiza el layout principal (Menú, Contenido, Footer)
