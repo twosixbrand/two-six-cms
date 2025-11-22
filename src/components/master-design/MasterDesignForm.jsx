@@ -26,6 +26,9 @@ const MasterDesignForm = ({
         id_clothing: initialData.id_clothing || '',
         id_collection: initialData.id_collection || '',
       });
+    } else {
+      // Limpiar el formulario para el modo creación
+      setFormData({ manufactured_cost: '', quantity: '', description: '', id_clothing: '', id_collection: '' });
     }
   }, [initialData]);
 
@@ -44,7 +47,7 @@ const MasterDesignForm = ({
       {initialData.id && (
         <div className="form-group">
           <label htmlFor="reference">Referencia</label>
-          <input type="text" id="reference" name="reference" value={formData.reference} readOnly />
+          <input type="text" id="reference" name="reference" value={formData.reference || ''} readOnly />
         </div>
       )}
       <div className="form-group">

@@ -16,8 +16,7 @@ export const getMasterDesignById = async (id) => {
 
 export const createMasterDesign = async (designData) => {
   const dataToSend = {
-    reference: designData.reference,
-    description: designData.description,
+    description: designData.description, // 'reference' se elimina del payload de creación
     manufactured_cost: parseFloat(designData.manufactured_cost),
     quantity: parseInt(designData.quantity, 10),
     id_clothing: parseInt(designData.id_clothing, 10),
@@ -33,7 +32,6 @@ export const createMasterDesign = async (designData) => {
 
 export const updateMasterDesign = async (id, designData) => {
   const dataToSend = {
-    reference: designData.reference,
     description: designData.description,
     manufactured_cost: parseFloat(designData.manufactured_cost),
     quantity: parseInt(designData.quantity, 10),
