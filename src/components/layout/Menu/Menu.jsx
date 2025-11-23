@@ -36,6 +36,7 @@ const menuData = [
       { title: 'Season', path: '/season' },
       { title: 'Collection', path: '/collection' },
       { title: 'Production type', path: '/production-type' },
+      { title: 'Color', path: '/color' },
     ],
   },
   {

@@ -32,6 +32,10 @@ const HomePage = () => {
           <h2>Error Logs</h2>
           <p>View and filter application error logs for debugging.</p>
         </Link>
+        <Link to="/color" className="home-card">
+          <h2>Color Management</h2>
+          <p>Manage the available colors for products.</p>
+        </Link>
       </div>
     </div>
   );

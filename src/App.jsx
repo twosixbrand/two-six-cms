@@ -13,24 +13,25 @@ import ErrorBoundary from './components/layout/ErrorBoundary.jsx';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute.jsx';
 
 // Páginas
-import HomePage from './pages/HomePage.jsx';
-import LoginPage from './pages/Login.jsx';
-import ClothingPage from './pages/ClothingPage.jsx';
-import CategoryPage from './pages/CategoryPage.jsx';
-import RolePage from './pages/RolePage.jsx';
-import UserPage from './pages/UserPage.jsx';
-import UserRolePage from './pages/UserRolePage.jsx';
-import TypeClothingPage from './pages/TypeClothingPage.jsx';
-import MasterDesignPage from './pages/MasterDesignPage.jsx';
-import SeasonPage from './pages/SeasonPage.jsx';
-import YearProductionPage from './pages/YearProductionPage.jsx';
-import CollectionPage from './pages/CollectionPage.jsx';
-import ProviderPage from './pages/ProviderPage.jsx';
-import ProductionTypePage from './pages/ProductionTypePage.jsx';
-import ErrorLogPage from './pages/ErrorLogPage.jsx';
-import DesignProviderPage from './pages/DesignProviderPage.jsx';
-import DesignClothingPage from './pages/DesignClothingPage.jsx';
-import ProductPage from './pages/ProductPage.jsx';
+import HomePage from '/Users/jmanrique/Documents/apps/two-six-cms/src/pages/HomePage.jsx';
+import LoginPage from '/Users/jmanrique/Documents/apps/two-six-cms/src/pages/Login.jsx';
+import ClothingPage from '/Users/jmanrique/Documents/apps/two-six-cms/src/pages/ClothingPage.jsx';
+import CategoryPage from "/Users/jmanrique/Documents/apps/two-six-cms/src/pages/CategoryPage.jsx";
+import RolePage from '/Users/jmanrique/Documents/apps/two-six-cms/src/pages/RolePage.jsx';
+import UserPage from '/Users/jmanrique/Documents/apps/two-six-cms/src/pages/UserPage.jsx';
+import UserRolePage from '/Users/jmanrique/Documents/apps/two-six-cms/src/pages/UserRolePage.jsx';
+import TypeClothingPage from '/Users/jmanrique/Documents/apps/two-six-cms/src/pages/TypeClothingPage.jsx';
+import MasterDesignPage from '/Users/jmanrique/Documents/apps/two-six-cms/src/pages/MasterDesignPage.jsx';
+import SeasonPage from '/Users/jmanrique/Documents/apps/two-six-cms/src/pages/SeasonPage.jsx';
+import YearProductionPage from '/Users/jmanrique/Documents/apps/two-six-cms/src/pages/YearProductionPage.jsx';
+import CollectionPage from "/Users/jmanrique/Documents/apps/two-six-cms/src/pages/CollectionPage.jsx";
+import ProviderPage from '/Users/jmanrique/Documents/apps/two-six-cms/src/pages/ProviderPage.jsx';
+import ProductionTypePage from '/Users/jmanrique/Documents/apps/two-six-cms/src/pages/ProductionTypePage.jsx';
+import ErrorLogPage from '/Users/jmanrique/Documents/apps/two-six-cms/src/pages/ErrorLogPage.jsx';
+import DesignProviderPage from '/Users/jmanrique/Documents/apps/two-six-cms/src/pages/DesignProviderPage.jsx';
+import DesignClothingPage from "/Users/jmanrique/Documents/apps/two-six-cms/src/pages/DesignClothingPage.jsx";
+import ProductPage from "/Users/jmanrique/Documents/apps/two-six-cms/src/pages/ProductPage.jsx";
+import ColorPage from './pages/ColorPage.jsx';
 
 
 
@@ -71,6 +72,7 @@ const MainLayout = () => {
                         <Route path="/design-provider" element={<DesignProviderPage />} />
                         <Route path="/design-clothing" element={<DesignClothingPage />} />
                         <Route path="/product" element={<ProductPage />} />
+                        <Route path="/color" element={<ColorPage />} />
                     </Routes>
                 </main>
             </div>

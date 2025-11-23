@@ -10,8 +10,8 @@ const Header = ({ toggleMenu }) => {
         <button className="menu-toggle-header" onClick={toggleMenu}>☰</button>
         
         <NavLink to="/" className="header-logo-link">
-          <img src={logoUrl} alt="Logo" className="header-logo-image" />
           <h1 className="header-title">Two Six Cms</h1>
+          <img src={logoUrl} alt="Logo" className="header-logo-image" />
         </NavLink>
       </div>
     </header>
