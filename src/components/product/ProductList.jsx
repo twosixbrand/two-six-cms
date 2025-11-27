@@ -8,10 +8,14 @@ const ProductList = ({ items, onEdit, onDelete }) => {
       {items.map((item) => (
         <li key={item.id}>
           <span>
-            <strong>{item.name}</strong> ({item.active ? 'Active' : 'Inactive'})
+            <strong>(ID: {item.id}) {item.clothing_name}</strong> Active: {item.active ? 'Yes' : 'No'} | Outlet: {item.is_outlet ? 'Yes' : 'No'}
             <br />
             <small>
-              Active: {item.active ? 'Sí' : 'No'} | Prenda: {item.clothing_name} | Price: ${item.price} | Color: {item.color_name} | Size: {item.size_name} | Consecutive: {item.consecutive_number} | isOutlet: {item.is_outlet ? 'Sí' : 'No'} | Image: {item.image_url} | SKU: {item.sku} | Desc %: {item.discount_percentage} | Desc $: {item.discount_price}
+              SKU: {item.sku} | Price: ${item.price} | Color: {item.color_name} | Size: {item.size_name} | Collection: {item.collection_name} | Year: {item.year_production}
+            </small>
+            <br />
+            <small>
+              Desc: {item.description}
             </small>
           </span>
           <div>
