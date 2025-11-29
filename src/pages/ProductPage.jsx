@@ -61,13 +61,23 @@ const ProductPage = () => {
     });
   }, [products, searchTerm]);
 
+  const existingDesignClothingIds = useMemo(() => 
+    new Set(products.map(p => p.id_design_clothing)), 
+    [products]
+  );
+
   const handleSave = async (itemData) => {
     try {
       setError('');
       if (currentItem) {
         await productApi.updateProduct(currentItem.id, itemData);
       } else {
-        await productApi.createProduct(itemData);
+        if (Array.isArray(itemData)) {
+          // Creación múltiple
+          await Promise.all(itemData.map(item => productApi.createProduct(item)));
+        } else {
+          await productApi.createProduct(itemData);
+        }
       }
       fetchData();
       setCurrentItem(null);
@@ -109,6 +119,7 @@ const ProductPage = () => {
             currentItem={currentItem}
             onCancel={handleCancel}
             designClothings={designClothings}
+            existingDesignClothingIds={existingDesignClothingIds}
           />
         </div>
         <div className="list-card">

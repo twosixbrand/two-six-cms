@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
-const ProductForm = ({ onSave, currentItem, onCancel, designClothings }) => {
-  const getInitialState = () => ({
-    id_design_clothing: '',
+const ProductForm = ({ onSave, currentItem, onCancel, designClothings, existingDesignClothingIds }) => {
   // Estado para campos compartidos en modo de creación múltiple
   const getInitialSharedState = () => ({
     price: 0,
-    image_url: '',
     active: true,
     is_outlet: false,
     discount_percentage: 0,
     discount_price: 0,
   });
 
-  const [formData, setFormData] = useState(getInitialState());
   // Estado para una variante de diseño de prenda
   const getInitialVariantState = () => ({
     id_design_clothing: '',
@@ -28,7 +24,6 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings }) => {
 
   useEffect(() => {
     if (currentItem) {
-      setFormData({
       // Si estamos editando, usamos el estado del formulario de edición
       setEditFormData({
         id_design_clothing: currentItem.id_design_clothing || '',
@@ -40,19 +35,16 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings }) => {
         discount_price: currentItem.discount_price || 0,
       });
     } else {
-      setFormData(getInitialState());
       // Si estamos creando, reseteamos los formularios de creación
       setSharedData(getInitialSharedState());
       setVariants([getInitialVariantState()]);
     }
   }, [currentItem]);
 
-  const handleChange = (e) => {
   // --- Handlers para el modo de creación múltiple ---
   const handleSharedChange = (e) => {
     const { name, value } = e.target;
     const { type, checked } = e.target;
-    setFormData(prev => ({
     setSharedData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
@@ -86,17 +78,6 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const dataToSave = {
-      ...formData,
-      id_design_clothing: parseInt(formData.id_design_clothing, 10),
-      price: parseFloat(formData.price),
-      active: !!formData.active,
-      is_outlet: !!formData.is_outlet,
-      discount_percentage: formData.discount_percentage,
-      discount_price: formData.discount_price,
-    };
-    onSave(dataToSave);
-    setFormData(getInitialState());
     if (currentItem) {
       // Lógica para guardar en modo edición
       const dataToSave = {
@@ -152,17 +133,6 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings }) => {
   // Renderiza el nuevo formulario de creación múltiple
   return (
     <form onSubmit={handleSubmit}>
-      <h3>{currentItem ? 'Edit Product' : 'Add Product'}</h3>
-      <div className="form-group">
-        <label>Design Clothing</label>
-        <select name="id_design_clothing" value={formData.id_design_clothing} onChange={handleChange} required disabled={!!currentItem}>
-          <option value="">Select Design Clothing</option>
-          {designClothings.map(dc => (
-            <option key={dc.id} value={dc.id}>
-              {dc.design?.clothing?.name} - {dc.color?.name} - {dc.size?.name}
-            </option>
-          ))}
-        </select>
       <h3>Add Products</h3>
       {/* --- SECCIÓN DE DATOS COMUNES --- */}
       <div className="shared-fields-section" style={{ border: '1px solid #ccc', padding: '1rem', borderRadius: '8px', marginBottom: '1rem' }}>
@@ -173,9 +143,6 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings }) => {
         <div className="form-group"><label><input type="checkbox" name="active" checked={sharedData.active} onChange={handleSharedChange} /> Active</label></div>
         <div className="form-group"><label><input type="checkbox" name="is_outlet" checked={sharedData.is_outlet} onChange={handleSharedChange} /> Is Outlet</label></div>
       </div>
-      <div className="form-group">
-        <label>Price</label>
-        <input type="number" step="0.01" name="price" value={formData.price} onChange={handleChange} required />
 
       {/* --- SECCIÓN DE VARIANTES (DISEÑOS) --- */}
       <div className="variants-section">
@@ -186,7 +153,11 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings }) => {
               <label>Design Clothing</label>
               <select name="id_design_clothing" value={variant.id_design_clothing} onChange={(e) => handleVariantChange(index, e)} required>
                 <option value="">Select Design Clothing</option>
-                {designClothings.map(dc => <option key={dc.id} value={dc.id}>{dc.design?.clothing?.name} - {dc.color?.name} - {dc.size?.name}</option>)}
+                {designClothings
+                  .filter(dc => !existingDesignClothingIds.has(dc.id))
+                  .map(dc => (
+                    <option key={dc.id} value={dc.id}>{dc.design?.clothing?.name} - {dc.color?.name} - {dc.size?.name}</option>
+                  ))}
               </select>
             </div>
             <div className="form-group">
@@ -198,26 +169,6 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings }) => {
         ))}
         <button type="button" onClick={handleAddVariant}>Add Another Design</button>
       </div>
-      <div className="form-group">
-        <label>Image URL</label>
-        <input type="text" name="image_url" value={formData.image_url} onChange={handleChange} />
-      </div>
-      <div className="form-group">
-        <label>Discount Percentage</label>
-        <input type="text" name="discount_percentage" value={formData.discount_percentage} onChange={handleChange} />
-      </div>
-      <div className="form-group">
-        <label>Discount Price</label>
-        <input type="text" name="discount_price" value={formData.discount_price} onChange={handleChange} />
-      </div>
-      <div className="form-group">
-        <label><input type="checkbox" name="active" checked={formData.active} onChange={handleChange} /> Active</label>
-      </div>
-      <div className="form-group">
-        <label><input type="checkbox" name="is_outlet" checked={formData.is_outlet} onChange={handleChange} /> Is Outlet</label>
-      </div>
-      <button type="submit">{currentItem ? 'Update' : 'Create'}</button>
-      {currentItem && <button type="button" onClick={onCancel}>Cancel</button>}
 
       <button type="submit">Create Products</button>
     </form>

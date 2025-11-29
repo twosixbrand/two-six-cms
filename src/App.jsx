@@ -32,6 +32,7 @@ import DesignProviderPage from './pages/DesignProviderPage.jsx';
 import DesignClothingPage from "./pages/DesignClothingPage.jsx";
 import ProductPage from "./pages/ProductPage.jsx";
 import ColorPage from './pages/ColorPage.jsx';
+import PlanEstrategicoPage from './pages/PlanEstrategicoPage.jsx';
 
 
 
@@ -78,6 +79,7 @@ const MainLayout = () => {
                         <Route path="/design-clothing" element={<DesignClothingPage />} />
                         <Route path="/product" element={<ProductPage />} />
                         <Route path="/color" element={<ColorPage />} />
+                        <Route path="/plan-estrategico" element={<PlanEstrategicoPage />} />
                     </Routes>
                 </main>
             </div>

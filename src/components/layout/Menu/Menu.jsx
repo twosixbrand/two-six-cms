@@ -40,6 +40,13 @@ const menuData = [
     ],
   },
   {
+    title: 'Plan Estrategico',
+    path: '#',
+    subNav: [
+      { title: 'Ver plan', path: '/plan-estrategico' },
+    ],
+  },
+  {
     title: 'Logs App',
     path: '#',
     subNav: [
