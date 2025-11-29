@@ -33,14 +33,20 @@
   display: flex;
   align-items: center;
   position: absolute; /* Lo sacamos del flujo normal */
-  left: 50%; /* Lo movemos al 50% del contenedor */
-  transform: translateX(-50%); /* Lo centramos perfectamente con transform */
+  right: 0; /* Lo alineamos a la derecha */
   gap: 0.75rem;
   text-decoration: none;
 }
 
 .header-logo-image {
-  height: 40px;
+  height: 65px;
+}
+
+.header-title-link {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-decoration: none;
 }
 
 .header-title {
