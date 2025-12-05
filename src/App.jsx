@@ -33,6 +33,10 @@ import DesignClothingPage from "./pages/DesignClothingPage.jsx";
 import ProductPage from "./pages/ProductPage.jsx";
 import ColorPage from './pages/ColorPage.jsx';
 import PlanEstrategicoPage from './pages/PlanEstrategicoPage.jsx';
+import OrderPage from './pages/OrderPage.jsx';
+import OrderDetailPage from './pages/OrderDetailPage.jsx';
+import LocationPage from './pages/LocationPage.jsx';
+import LocationDetailPage from './pages/LocationDetailPage.jsx';
 
 
 
@@ -52,38 +56,43 @@ const MainLayout = () => {
   if (!isAuthenticated) {
     return null; // No renderizar nada si no está autenticado
   }
-  
+
   return (
     <>
       <Header toggleMenu={() => setMenuOpen(!isMenuOpen)} />
       <Menu isMenuOpen={isMenuOpen} toggleMenu={() => setMenuOpen(!isMenuOpen)} />
-        <div className={`app-content ${!isMenuOpen ? 'menu-closed' : ''}`}>
-            <div className="container">
-                <main>
-                    <Routes>
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/clothing" element={<ClothingPage />} />
-                        <Route path="/type-clothing" element={<TypeClothingPage />} />
-                        <Route path="/category" element={<CategoryPage />} />
-                        <Route path="/season" element={<SeasonPage />} />
-                        <Route path="/year-production" element={<YearProductionPage />} />
-                        <Route path="/provider" element={<ProviderPage />} />
-                        <Route path="/collection" element={<CollectionPage />} />
-                        <Route path="/master-design" element={<MasterDesignPage />} />
-                        <Route path="/role" element={<RolePage />} />
-                        <Route path="/user" element={<UserPage />} />
-                        <Route path="/user-role" element={<UserRolePage />} />
-                        <Route path="/logs" element={<ErrorLogPage />} />
-                        <Route path="/production-type" element={<ProductionTypePage />} />
-                        <Route path="/design-provider" element={<DesignProviderPage />} />
-                        <Route path="/design-clothing" element={<DesignClothingPage />} />
-                        <Route path="/product" element={<ProductPage />} />
-                        <Route path="/color" element={<ColorPage />} />
-                        <Route path="/plan-estrategico" element={<PlanEstrategicoPage />} />
-                    </Routes>
-                </main>
-            </div>
+      <div className={`app-content ${!isMenuOpen ? 'menu-closed' : ''}`}>
+        <div className="container">
+          <main>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/clothing" element={<ClothingPage />} />
+              <Route path="/type-clothing" element={<TypeClothingPage />} />
+              <Route path="/category" element={<CategoryPage />} />
+              <Route path="/season" element={<SeasonPage />} />
+              <Route path="/year-production" element={<YearProductionPage />} />
+              <Route path="/provider" element={<ProviderPage />} />
+              <Route path="/collection" element={<CollectionPage />} />
+              <Route path="/master-design" element={<MasterDesignPage />} />
+              <Route path="/role" element={<RolePage />} />
+              <Route path="/user" element={<UserPage />} />
+              <Route path="/user-role" element={<UserRolePage />} />
+              <Route path="/logs" element={<ErrorLogPage />} />
+              <Route path="/production-type" element={<ProductionTypePage />} />
+              <Route path="/design-provider" element={<DesignProviderPage />} />
+              <Route path="/design-clothing" element={<DesignClothingPage />} />
+              <Route path="/product" element={<ProductPage />} />
+              <Route path="/color" element={<ColorPage />} />
+              <Route path="/color" element={<ColorPage />} />
+              <Route path="/plan-estrategico" element={<PlanEstrategicoPage />} />
+              <Route path="/order" element={<OrderPage />} />
+              <Route path="/order/:id" element={<OrderDetailPage />} />
+              <Route path="/locations" element={<LocationPage />} />
+              <Route path="/locations/:id" element={<LocationDetailPage />} />
+            </Routes>
+          </main>
         </div>
+      </div>
       <Footer />
     </>
   );

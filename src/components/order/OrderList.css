@@ -1,0 +1,87 @@
+.list-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.table-responsive {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px; /* Ensure it doesn't get too squished */
+}
+
+.data-table th,
+.data-table td {
+  padding: 15px; /* More padding for breathing room */
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.data-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+}
+
+.data-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.status-badge.pagado {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge.pendiente {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.enviado {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.status-badge.entregado {
+  background-color: #e0e7ff;
+  color: #3730a3;
+}
+
+.status-badge.cancelado {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.action-btn {
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-btn {
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
+
+.view-btn:hover {
+  background-color: #bae6fd;
+}

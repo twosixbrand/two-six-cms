@@ -19,6 +19,13 @@ const menuData = [
     ],
   },
   {
+    title: 'Ventas',
+    path: '#',
+    subNav: [
+      { title: 'Pedidos', path: '/order' },
+    ],
+  },
+  {
     title: 'Users / providers',
     path: '#',
     subNav: [
@@ -53,6 +60,13 @@ const menuData = [
       { title: 'Logs', path: '/logs' },
     ],
   },
+  {
+    title: 'Configuración',
+    path: '#',
+    subNav: [
+      { title: 'Ubicaciones', path: '/locations' },
+    ],
+  },
 ];
 
 const Menu = ({ isMenuOpen, toggleMenu }) => {
@@ -67,7 +81,7 @@ const Menu = ({ isMenuOpen, toggleMenu }) => {
 
   return (
     <nav className={`navbar ${isMenuOpen ? '' : 'closed'}`}>
-      <div className="navbar-container">        
+      <div className="navbar-container">
         {isAuthenticated && (
           <ul className="nav-menu">
             {menuData.map((item, index) => (
