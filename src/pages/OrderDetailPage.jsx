@@ -67,9 +67,23 @@ const OrderDetailPage = () => {
                     <h3>Información General</h3>
                     <p><strong>Fecha:</strong> {new Date(order.order_date).toLocaleString()}</p>
                     <p><strong>Total:</strong> ${order.total_payment.toLocaleString()}</p>
-                    <p><strong>Método de Pago:</strong> {order.payment_method || 'N/A'}</p>
-                    <p><strong>Referencia Pago:</strong> {order.transaction_id || 'N/A'}</p>
                     <p><strong>Pagado:</strong> {order.is_paid ? 'Sí' : 'No'}</p>
+
+                    {order.payments && order.payments.length > 0 ? (
+                        <>
+                            <h4 style={{ marginTop: '15px', marginBottom: '10px', borderBottom: '1px solid #eee' }}>Pagos</h4>
+                            {order.payments.map((payment, index) => (
+                                <div key={payment.id || index} style={{ marginBottom: '10px', fontSize: '0.9em' }}>
+                                    <p><strong>Método:</strong> {payment.paymentMethod?.name || 'N/A'}</p>
+                                    <p><strong>Ref:</strong> {payment.transaction_reference || 'N/A'}</p>
+                                    <p><strong>Estado:</strong> {payment.status}</p>
+                                    <p><strong>Fecha:</strong> {new Date(payment.transaction_date).toLocaleString()}</p>
+                                </div>
+                            ))}
+                        </>
+                    ) : (
+                        <p><em>No hay pagos registrados</em></p>
+                    )}
                 </div>
 
                 {/* Información del Cliente */}
