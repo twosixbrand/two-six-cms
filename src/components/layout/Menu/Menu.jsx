@@ -14,8 +14,9 @@ const menuData = [
       { title: 'Type Clothing', path: '/type-clothing' },
       { title: 'Category', path: '/category' },
       { title: 'Design', path: '/master-design' },
-      { title: 'Design Clothing', path: '/design-clothing' },
+      { title: 'Clothing Color', path: '/clothing-color' },
       { title: 'Product', path: '/product' },
+      { title: 'Stock', path: '/stock' },
     ],
   },
   {

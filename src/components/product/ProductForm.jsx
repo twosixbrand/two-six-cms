@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const ProductForm = ({ onSave, currentItem, onCancel, designClothings, existingDesignClothingIds }) => {
+const ProductForm = ({ onSave, currentItem, onCancel, clothingSizes, existingClothingSizeIds }) => {
   // Estado para campos compartidos en modo de creación múltiple
   const getInitialSharedState = () => ({
     price: 0,
@@ -12,8 +12,7 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings, existingD
 
   // Estado para una variante de diseño de prenda
   const getInitialVariantState = () => ({
-    id_design_clothing: '',
-    image_url: '',
+    id_clothing_size: '',
   });
 
   // Estado para el formulario de edición
@@ -26,9 +25,8 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings, existingD
     if (currentItem) {
       // Si estamos editando, usamos el estado del formulario de edición
       setEditFormData({
-        id_design_clothing: currentItem.id_design_clothing || '',
+        id_clothing_size: currentItem.id_clothing_size || '',
         price: currentItem.price || 0,
-        image_url: currentItem.image_url || '',
         active: currentItem.active ?? true,
         is_outlet: currentItem.is_outlet || false,
         discount_percentage: currentItem.discount_percentage || 0,
@@ -88,14 +86,13 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings, existingD
     } else {
       // Lógica para guardar en modo creación múltiple
       const productsToCreate = variants
-        .filter(v => v.id_design_clothing) // Solo procesar variantes con un diseño seleccionado
+        .filter(v => v.id_clothing_size) // Solo procesar variantes con un diseño seleccionado
         .map(variant => ({
           ...sharedData,
-          id_design_clothing: parseInt(variant.id_design_clothing, 10),
-          image_url: variant.image_url,
+          id_clothing_size: parseInt(variant.id_clothing_size, 10),
           price: parseFloat(sharedData.price),
         }));
-      
+
       if (productsToCreate.length > 0) {
         onSave(productsToCreate);
         setSharedData(getInitialSharedState());
@@ -110,16 +107,15 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings, existingD
       <form onSubmit={handleSubmit}>
         <h3>Edit Product</h3>
         <div className="form-group">
-          <label>Design Clothing</label>
-          <select name="id_design_clothing" value={editFormData.id_design_clothing} onChange={handleEditChange} required disabled>
-            <option value="">Select Design Clothing</option>
-            {designClothings.map(dc => (
-              <option key={dc.id} value={dc.id}>{dc.design?.clothing?.name} - {dc.color?.name} - {dc.size?.name}</option>
+          <label>Clothing Variant</label>
+          <select name="id_clothing_size" value={editFormData.id_clothing_size} onChange={handleEditChange} required disabled>
+            <option value="">Select Clothing Variant</option>
+            {clothingSizes.map(cs => (
+              <option key={cs.id} value={cs.id}>{cs.clothingColor?.design?.clothing?.name} - {cs.clothingColor?.color?.name} - {cs.size?.name}</option>
             ))}
           </select>
         </div>
         <div className="form-group"><label>Price</label><input type="number" step="0.01" name="price" value={editFormData.price} onChange={handleEditChange} required /></div>
-        <div className="form-group"><label>Image URL</label><input type="text" name="image_url" value={editFormData.image_url} onChange={handleEditChange} /></div>
         <div className="form-group"><label>Discount Percentage</label><input type="text" name="discount_percentage" value={editFormData.discount_percentage} onChange={handleEditChange} /></div>
         <div className="form-group"><label>Discount Price</label><input type="text" name="discount_price" value={editFormData.discount_price} onChange={handleEditChange} /></div>
         <div className="form-group"><label><input type="checkbox" name="active" checked={editFormData.active} onChange={handleEditChange} /> Active</label></div>
@@ -146,28 +142,24 @@ const ProductForm = ({ onSave, currentItem, onCancel, designClothings, existingD
 
       {/* --- SECCIÓN DE VARIANTES (DISEÑOS) --- */}
       <div className="variants-section">
-        <h4>Designs to Create</h4>
+        <h4>Variants to Create</h4>
         {variants.map((variant, index) => (
           <div key={index} className="variant-card" style={{ border: '1px solid #eee', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', position: 'relative' }}>
             <div className="form-group">
-              <label>Design Clothing</label>
-              <select name="id_design_clothing" value={variant.id_design_clothing} onChange={(e) => handleVariantChange(index, e)} required>
-                <option value="">Select Design Clothing</option>
-                {designClothings
-                  .filter(dc => !existingDesignClothingIds.has(dc.id))
-                  .map(dc => (
-                    <option key={dc.id} value={dc.id}>{dc.design?.clothing?.name} - {dc.color?.name} - {dc.size?.name}</option>
+              <label>Clothing Variant</label>
+              <select name="id_clothing_size" value={variant.id_clothing_size} onChange={(e) => handleVariantChange(index, e)} required>
+                <option value="">Select Clothing Variant</option>
+                {clothingSizes
+                  .filter(cs => !existingClothingSizeIds.has(cs.id))
+                  .map(cs => (
+                    <option key={cs.id} value={cs.id}>{cs.clothingColor?.design?.clothing?.name} - {cs.clothingColor?.color?.name} - {cs.size?.name}</option>
                   ))}
               </select>
-            </div>
-            <div className="form-group">
-              <label>Image URL</label>
-              <input type="text" name="image_url" value={variant.image_url} onChange={(e) => handleVariantChange(index, e)} />
             </div>
             {variants.length > 1 && <button type="button" onClick={() => handleRemoveVariant(index)} style={{ position: 'absolute', top: '10px', right: '10px' }}>Remove</button>}
           </div>
         ))}
-        <button type="button" onClick={handleAddVariant}>Add Another Design</button>
+        <button type="button" onClick={handleAddVariant}>Add Another Variant</button>
       </div>
 
       <button type="submit">Create Products</button>

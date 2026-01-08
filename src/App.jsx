@@ -29,7 +29,7 @@ import ProviderPage from './pages/ProviderPage.jsx';
 import ProductionTypePage from './pages/ProductionTypePage.jsx';
 import ErrorLogPage from './pages/ErrorLogPage.jsx';
 import DesignProviderPage from './pages/DesignProviderPage.jsx';
-import DesignClothingPage from "./pages/DesignClothingPage.jsx";
+import ClothingColorPage from "./pages/ClothingColorPage.jsx";
 import ProductPage from "./pages/ProductPage.jsx";
 import ColorPage from './pages/ColorPage.jsx';
 import PlanEstrategicoPage from './pages/PlanEstrategicoPage.jsx';
@@ -37,6 +37,7 @@ import OrderPage from './pages/OrderPage.jsx';
 import OrderDetailPage from './pages/OrderDetailPage.jsx';
 import LocationPage from './pages/LocationPage.jsx';
 import LocationDetailPage from './pages/LocationDetailPage.jsx';
+import StockPage from './pages/StockPage.jsx';
 
 
 
@@ -51,6 +52,12 @@ const MainLayout = () => {
   useEffect(() => {
     // Este mensaje debe aparecer en la consola si se carga la versión correcta.
     console.log('¡MainLayout cargado correctamente! Versión: ', new Date().toLocaleTimeString());
+
+    const handleClick = (e) => {
+      console.log('Global click detected:', e.target, 'DefaultPrevented:', e.defaultPrevented);
+    };
+    window.addEventListener('click', handleClick);
+    return () => window.removeEventListener('click', handleClick);
   }, []);
 
   if (!isAuthenticated) {
@@ -80,7 +87,7 @@ const MainLayout = () => {
               <Route path="/logs" element={<ErrorLogPage />} />
               <Route path="/production-type" element={<ProductionTypePage />} />
               <Route path="/design-provider" element={<DesignProviderPage />} />
-              <Route path="/design-clothing" element={<DesignClothingPage />} />
+              <Route path="/clothing-color" element={<ClothingColorPage />} />
               <Route path="/product" element={<ProductPage />} />
               <Route path="/color" element={<ColorPage />} />
               <Route path="/color" element={<ColorPage />} />
@@ -89,6 +96,7 @@ const MainLayout = () => {
               <Route path="/order/:id" element={<OrderDetailPage />} />
               <Route path="/locations" element={<LocationPage />} />
               <Route path="/locations/:id" element={<LocationDetailPage />} />
+              <Route path="/stock" element={<StockPage />} />
             </Routes>
           </main>
         </div>

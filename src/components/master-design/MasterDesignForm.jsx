@@ -10,7 +10,6 @@ const MasterDesignForm = ({
 }) => {
   const [formData, setFormData] = useState({
     manufactured_cost: '',
-    quantity: '',
     description: '',
     id_clothing: '',
     id_collection: '',
@@ -21,20 +20,23 @@ const MasterDesignForm = ({
       setFormData({
         reference: initialData.reference || '',
         manufactured_cost: initialData.manufactured_cost || '',
-        quantity: initialData.quantity ? String(initialData.quantity) : '',
         description: initialData.description || '',
         id_clothing: initialData.id_clothing || '',
         id_collection: initialData.id_collection || '',
       });
     } else {
       // Limpiar el formulario para el modo creación
-      setFormData({ manufactured_cost: '', quantity: '', description: '', id_clothing: '', id_collection: '' });
+      setFormData({ manufactured_cost: '', description: '', id_clothing: '', id_collection: '' });
     }
   }, [initialData]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, files } = e.target;
+    if (name === 'file') {
+      setFormData((prev) => ({ ...prev, file: files[0] }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = (e) => {
@@ -72,10 +74,7 @@ const MasterDesignForm = ({
         <label htmlFor="manufactured_cost">Costo de Fabricación</label>
         <input type="number" step="0.01" id="manufactured_cost" name="manufactured_cost" value={formData.manufactured_cost} onChange={handleChange} required />
       </div>
-      <div className="form-group">
-        <label htmlFor="quantity">Cantidad</label>
-        <input type="number" id="quantity" name="quantity" value={formData.quantity} onChange={handleChange} required />
-      </div>
+
       <div className="form-group">
         <label htmlFor="description">Descripción</label>
         <textarea id="description" name="description" value={formData.description} onChange={handleChange} />

@@ -2,12 +2,12 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import ProductList from '../components/product/ProductList.jsx';
 import ProductForm from '../components/product/ProductForm.jsx';
 import * as productApi from '../services/productApi.js';
-import * as designClothingApi from '../services/designClothingApi.js';
+import * as clothingSizeApi from '../services/clothingSizeApi.js';
 import { logError } from '../services/errorApi.js';
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
-  const [designClothings, setDesignClothings] = useState([]);
+  const [clothingSizes, setClothingSizes] = useState([]);
   const [currentItem, setCurrentItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -17,12 +17,12 @@ const ProductPage = () => {
     try {
       setLoading(true);
       setError('');
-      const [productsData, designClothingsData] = await Promise.all([
+      const [productsData, clothingSizesData] = await Promise.all([
         productApi.getProducts(),
-        designClothingApi.getDesignClothings(),
+        clothingSizeApi.getClothingSizes(),
       ]);
       setProducts(productsData);
-      setDesignClothings(designClothingsData);
+      setClothingSizes(clothingSizesData);
     } catch (err) {
       logError(err, '/product');
       setError('Failed to fetch data. ' + err.message);
@@ -49,11 +49,11 @@ const ProductPage = () => {
         product.consecutive_number,
         product.discount_percentage,
         product.discount_price,
-        product.clothing_name,
-        product.color_name,
-        product.size_name,
-        product.collection_name,
-        product.year_production,
+        product.clothingSize?.clothingColor?.design?.clothing?.name,
+        product.clothingSize?.clothingColor?.color?.name,
+        product.clothingSize?.size?.name,
+        product.clothingSize?.clothingColor?.design?.collection?.name,
+        product.clothingSize?.clothingColor?.design?.collection?.id_year_production,
       ];
       return fieldsToSearch.some(field =>
         field?.toLowerCase().includes(searchTermLower)
@@ -61,8 +61,8 @@ const ProductPage = () => {
     });
   }, [products, searchTerm]);
 
-  const existingDesignClothingIds = useMemo(() => 
-    new Set(products.map(p => p.id_design_clothing)), 
+  const existingClothingSizeIds = useMemo(() =>
+    new Set(products.map(p => p.id_clothing_size)),
     [products]
   );
 
@@ -118,8 +118,8 @@ const ProductPage = () => {
             onSave={handleSave}
             currentItem={currentItem}
             onCancel={handleCancel}
-            designClothings={designClothings}
-            existingDesignClothingIds={existingDesignClothingIds}
+            clothingSizes={clothingSizes}
+            existingClothingSizeIds={existingClothingSizeIds}
           />
         </div>
         <div className="list-card">

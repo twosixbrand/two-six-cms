@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { EditIcon, DeleteIcon } from '../common/Icons.jsx';
 import ActionButton from '../common/ActionButton.jsx';
 
-const DesignClothingList = ({ items, onEdit, onDelete }) => {
+const ClothingColorList = ({ items, onEdit, onDelete }) => {
   const [filterText, setFilterText] = useState('');
 
   const filteredItems = useMemo(() => {
@@ -31,14 +31,11 @@ const DesignClothingList = ({ items, onEdit, onDelete }) => {
       const prendaB = b.design?.clothing?.name || '';
       const colorA = a.color?.name || '';
       const colorB = b.color?.name || '';
-      const sizeA = a.size?.id || '';
-      const sizeB = b.size?.id || '';
 
       return (
         refA.localeCompare(refB) ||
         prendaA.localeCompare(prendaB) ||
-        colorA.localeCompare(colorB) ||
-        sizeA.localeCompare(sizeB)
+        colorA.localeCompare(colorB)
       );
     });
 
@@ -54,7 +51,7 @@ const DesignClothingList = ({ items, onEdit, onDelete }) => {
   }, [filteredItems]);
 
   if (Object.keys(groupedAndSortedData).length === 0) {
-    return <p>No design clothing items found.</p>;
+    return <p>No clothing color items found.</p>;
   }
 
   return (
@@ -75,13 +72,19 @@ const DesignClothingList = ({ items, onEdit, onDelete }) => {
             {groupItems.map((item) => (
               <li key={item.id}>
                 <div className="item-info">
-                  <span>Color: {item.color?.name || 'N/A'}</span>
-                  <span>Size: {item.size?.name || 'N/A'}</span>
-                  <span>Produced: {item.quantity_produced}</span>
-                  <span>Available: {item.quantity_available}</span>
-                  <span>Sold: {item.quantity_sold}</span>
-                  <span>Consignment: {item.quantity_on_consignment}</span>
-                  <span>Warranty: {item.quantity_under_warranty}</span>
+                  <span>Gender: {item.design?.clothing?.gender || 'N/A'}</span><br />
+                  <span>Color: {item.color?.name || 'N/A'}</span><br />
+                  <div className="image-preview" style={{ marginTop: '5px' }}>
+                    {item.image_url ? (
+                      <img
+                        src={item.image_url}
+                        alt={`${item.design?.clothing?.name} - ${item.color?.name}`}
+                        style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }}
+                      />
+                    ) : (
+                      <span>No Image</span>
+                    )}
+                  </div>
                 </div>
                 <div className="item-actions">
                   <ActionButton onClick={() => onEdit(item)} className="button-edit" title="Editar"><EditIcon /></ActionButton>
@@ -99,4 +102,4 @@ const DesignClothingList = ({ items, onEdit, onDelete }) => {
   );
 };
 
-export default DesignClothingList;
+export default ClothingColorList;

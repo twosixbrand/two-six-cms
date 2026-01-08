@@ -5,7 +5,7 @@ import '../styles/HomePage.css';
 const HomePage = () => {
   return (
     <div className="home-container">
-      
+
       <p className="home-subtitle">Páginas Principales</p>
       <div className="home-cards">
         <Link to="/clothing" className="home-card">
@@ -20,13 +20,17 @@ const HomePage = () => {
           <h2>Design Provider Management</h2>
           <p>Assign providers to your master designs.</p>
         </Link>
-        <Link to="/design-clothing" className="home-card">
-          <h2>Design Clothing Management</h2>
+        <Link to="/clothing-color" className="home-card">
+          <h2>Clothing Color Management</h2>
           <p>Manage the specific variations (color/size) of your designs.</p>
         </Link>
         <Link to="/product" className="home-card">
           <h2>Product Management</h2>
           <p>Manage final products available for sale.</p>
+        </Link>
+        <Link to="/stock" className="home-card">
+          <h2>Stock Management</h2>
+          <p>Manage inventory levels for your clothing variants.</p>
         </Link>
         <Link to="/logs" className="home-card">
           <h2>Error Logs</h2>

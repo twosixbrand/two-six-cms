@@ -1,25 +1,19 @@
 import { handleResponse } from './apiUtils.js';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const API_ENDPOINT = `${API_BASE_URL}/design-clothing`;
-const API_NAME = 'design-clothing';
+const API_ENDPOINT = `${API_BASE_URL}/clothing-color`;
+const API_NAME = 'clothing-color';
 
-export const getDesignClothings = async () => {
+export const getClothingColors = async () => {
   const response = await fetch(API_ENDPOINT);
   return handleResponse(response, API_NAME);
 };
 
-export const createDesignClothing = async (item) => {
+export const createClothingColor = async (item) => {
   const dataToSend = {
     ...item,
     id_color: parseInt(item.id_color, 10),
-    id_size: parseInt(item.id_size, 10),
     id_design: parseInt(item.id_design, 10),
-    quantity_produced: parseInt(item.quantity_produced, 10),
-    quantity_available: parseInt(item.quantity_available, 10),
-    quantity_sold: parseInt(item.quantity_sold, 10),
-    quantity_on_consignment: parseInt(item.quantity_on_consignment, 10),
-    quantity_under_warranty: parseInt(item.quantity_under_warranty, 10),
   };
   const response = await fetch(API_ENDPOINT, {
     method: 'POST',
@@ -29,17 +23,11 @@ export const createDesignClothing = async (item) => {
   return handleResponse(response, API_NAME);
 };
 
-export const updateDesignClothing = async (id, item) => {
+export const updateClothingColor = async (id, item) => {
   const dataToSend = {
     ...item,
     id_color: parseInt(item.id_color, 10),
-    id_size: parseInt(item.id_size, 10),
     id_design: parseInt(item.id_design, 10),
-    quantity_produced: parseInt(item.quantity_produced, 10),
-    quantity_available: parseInt(item.quantity_available, 10),
-    quantity_sold: parseInt(item.quantity_sold, 10),
-    quantity_on_consignment: parseInt(item.quantity_on_consignment, 10),
-    quantity_under_warranty: parseInt(item.quantity_under_warranty, 10),
   };
   const response = await fetch(`${API_ENDPOINT}/${id}`, {
     method: 'PATCH',
@@ -49,8 +37,16 @@ export const updateDesignClothing = async (id, item) => {
   return handleResponse(response, API_NAME);
 };
 
-export const deleteDesignClothing = async (id) => {
+export const deleteClothingColor = async (id) => {
   const response = await fetch(`${API_ENDPOINT}/${id}`, { method: 'DELETE' });
   // La respuesta de un DELETE exitoso a menudo no tiene cuerpo.
+  return handleResponse(response, API_NAME);
+};
+
+export const createContextual = async (formData) => {
+  const response = await fetch(`${API_ENDPOINT}/contextual`, {
+    method: 'POST',
+    body: formData,
+  });
   return handleResponse(response, API_NAME);
 };

@@ -14,7 +14,6 @@ const MasterDesignList = ({ designs, onEdit, onDelete, onViewProviders }) => {
               <span>Prenda: {design.clothing?.name || design.id_clothing}</span>
               <span>Colección: {design.collection?.name || design.id_collection}</span>
               <span>Costo: ${design.manufactured_cost}</span>
-              <span>Cantidad: {design.quantity ?? '0'}</span>
             </div>
             <div className="design-actions">
               <ActionButton onClick={() => onViewProviders(design)} className="button-info" title="Ver Proveedores">
