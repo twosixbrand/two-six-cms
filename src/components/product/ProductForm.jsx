@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const ProductForm = ({ onSave, currentItem, onCancel, clothingSizes, existingClothingSizeIds }) => {
   // Estado para campos compartidos en modo de creación múltiple
@@ -20,6 +20,7 @@ const ProductForm = ({ onSave, currentItem, onCancel, clothingSizes, existingClo
   // Estados para el formulario de creación múltiple
   const [sharedData, setSharedData] = useState(getInitialSharedState());
   const [variants, setVariants] = useState([getInitialVariantState()]);
+  const priceInputRef = useRef(null);
 
   useEffect(() => {
     if (currentItem) {
@@ -36,6 +37,10 @@ const ProductForm = ({ onSave, currentItem, onCancel, clothingSizes, existingClo
       // Si estamos creando, reseteamos los formularios de creación
       setSharedData(getInitialSharedState());
       setVariants([getInitialVariantState()]);
+    }
+
+    if (currentItem && priceInputRef.current) {
+      priceInputRef.current.focus();
     }
   }, [currentItem]);
 
@@ -115,7 +120,7 @@ const ProductForm = ({ onSave, currentItem, onCancel, clothingSizes, existingClo
             ))}
           </select>
         </div>
-        <div className="form-group"><label>Price</label><input type="number" step="0.01" name="price" value={editFormData.price} onChange={handleEditChange} required /></div>
+        <div className="form-group"><label>Price</label><input type="number" step="0.01" name="price" value={editFormData.price} onChange={handleEditChange} required ref={priceInputRef} /></div>
         <div className="form-group"><label>Discount Percentage</label><input type="text" name="discount_percentage" value={editFormData.discount_percentage} onChange={handleEditChange} /></div>
         <div className="form-group"><label>Discount Price</label><input type="text" name="discount_price" value={editFormData.discount_price} onChange={handleEditChange} /></div>
         <div className="form-group"><label><input type="checkbox" name="active" checked={editFormData.active} onChange={handleEditChange} /> Active</label></div>
@@ -143,22 +148,33 @@ const ProductForm = ({ onSave, currentItem, onCancel, clothingSizes, existingClo
       {/* --- SECCIÓN DE VARIANTES (DISEÑOS) --- */}
       <div className="variants-section">
         <h4>Variants to Create</h4>
-        {variants.map((variant, index) => (
-          <div key={index} className="variant-card" style={{ border: '1px solid #eee', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', position: 'relative' }}>
-            <div className="form-group">
-              <label>Clothing Variant</label>
-              <select name="id_clothing_size" value={variant.id_clothing_size} onChange={(e) => handleVariantChange(index, e)} required>
-                <option value="">Select Clothing Variant</option>
-                {clothingSizes
-                  .filter(cs => !existingClothingSizeIds.has(cs.id))
-                  .map(cs => (
-                    <option key={cs.id} value={cs.id}>{cs.clothingColor?.design?.clothing?.name} - {cs.clothingColor?.color?.name} - {cs.size?.name}</option>
-                  ))}
-              </select>
+        {variants.map((variant, index) => {
+          const currentSelectedIds = variants
+            .map(v => parseInt(v.id_clothing_size, 10))
+            .filter(id => !isNaN(id));
+
+          return (
+            <div key={index} className="variant-card" style={{ border: '1px solid #eee', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', position: 'relative' }}>
+              <div className="form-group">
+                <label>Clothing Variant</label>
+                <select name="id_clothing_size" value={variant.id_clothing_size} onChange={(e) => handleVariantChange(index, e)} required>
+                  <option value="">Select Clothing Variant</option>
+                  {clothingSizes
+                    .filter(cs => !existingClothingSizeIds.has(cs.id))
+                    .filter(cs => {
+                      const isSelectedCurrent = parseInt(variant.id_clothing_size, 10) === cs.id;
+                      const isSelectedAnywhere = currentSelectedIds.includes(cs.id);
+                      return isSelectedCurrent || !isSelectedAnywhere;
+                    })
+                    .map(cs => (
+                      <option key={cs.id} value={cs.id}>{cs.clothingColor?.design?.clothing?.name} - {cs.clothingColor?.color?.name} - {cs.size?.name}</option>
+                    ))}
+                </select>
+              </div>
+              {variants.length > 1 && <button type="button" onClick={() => handleRemoveVariant(index)} style={{ position: 'absolute', top: '10px', right: '10px' }}>Remove</button>}
             </div>
-            {variants.length > 1 && <button type="button" onClick={() => handleRemoveVariant(index)} style={{ position: 'absolute', top: '10px', right: '10px' }}>Remove</button>}
-          </div>
-        ))}
+          );
+        })}
         <button type="button" onClick={handleAddVariant}>Add Another Variant</button>
       </div>
 

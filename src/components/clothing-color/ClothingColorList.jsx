@@ -72,19 +72,9 @@ const ClothingColorList = ({ items, onEdit, onDelete }) => {
             {groupItems.map((item) => (
               <li key={item.id}>
                 <div className="item-info">
-                  <span>Gender: {item.design?.clothing?.gender || 'N/A'}</span><br />
+                  <span>Gender: {item.design?.clothing?.gender?.name || 'N/A'}</span><br />
                   <span>Color: {item.color?.name || 'N/A'}</span><br />
-                  <div className="image-preview" style={{ marginTop: '5px' }}>
-                    {item.image_url ? (
-                      <img
-                        src={item.image_url}
-                        alt={`${item.design?.clothing?.name} - ${item.color?.name}`}
-                        style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }}
-                      />
-                    ) : (
-                      <span>No Image</span>
-                    )}
-                  </div>
+
                 </div>
                 <div className="item-actions">
                   <ActionButton onClick={() => onEdit(item)} className="button-edit" title="Editar"><EditIcon /></ActionButton>

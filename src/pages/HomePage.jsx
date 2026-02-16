@@ -24,6 +24,10 @@ const HomePage = () => {
           <h2>Clothing Color Management</h2>
           <p>Manage the specific variations (color/size) of your designs.</p>
         </Link>
+        <Link to="/image-clothing" className="home-card">
+          <h2>Image Clothing Management</h2>
+          <p>Manage images for clothing variants.</p>
+        </Link>
         <Link to="/product" className="home-card">
           <h2>Product Management</h2>
           <p>Manage final products available for sale.</p>

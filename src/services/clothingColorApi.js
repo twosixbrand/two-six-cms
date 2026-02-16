@@ -9,6 +9,11 @@ export const getClothingColors = async () => {
   return handleResponse(response, API_NAME);
 };
 
+export const getClothingColor = async (id) => {
+  const response = await fetch(`${API_ENDPOINT}/${id}`);
+  return handleResponse(response, API_NAME);
+};
+
 export const createClothingColor = async (item) => {
   const dataToSend = {
     ...item,
@@ -43,10 +48,11 @@ export const deleteClothingColor = async (id) => {
   return handleResponse(response, API_NAME);
 };
 
-export const createContextual = async (formData) => {
+export const createContextual = async (data) => {
   const response = await fetch(`${API_ENDPOINT}/contextual`, {
     method: 'POST',
-    body: formData,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
   });
   return handleResponse(response, API_NAME);
 };

@@ -8,7 +8,7 @@ const ClothingList = ({ items, onEdit, onDelete }) => {
       {items.map((item) => (
         <li key={item.id} className="clothing-list-item">
           <span>
-            <strong>{item.name}</strong> ({item.gender})
+            <strong>{item.name}</strong> ({item.genderClothing?.map(gc => gc.gender.name).join(', ') || 'N/A'})
             <br />
             <small>
               Type: {item.typeClothing?.name || 'N/A'} | Category: {item.category?.name || 'N/A'}

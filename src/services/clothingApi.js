@@ -32,7 +32,7 @@ export const getClothingById = async (id) => {
 export const createClothing = async (clothingData) => {
   const dataToSend = {
     name: clothingData.name,
-    gender: clothingData.gender,
+    id_gender: parseInt(clothingData.id_gender, 10),
     id_type_clothing: clothingData.id_type_clothing,
     id_category: parseInt(clothingData.id_category, 10),
   };
@@ -50,7 +50,7 @@ export const updateClothing = async (id, clothingData) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       name: clothingData.name,
-      gender: clothingData.gender,
+      id_gender: parseInt(clothingData.id_gender, 10),
       id_type_clothing: clothingData.id_type_clothing,
       id_category: parseInt(clothingData.id_category, 10),
     }),

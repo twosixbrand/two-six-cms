@@ -10,8 +10,17 @@ const MasterDesignList = ({ designs, onEdit, onDelete, onViewProviders }) => {
         {designs.map((design) => (
           <li key={design.id}>
             <div className="design-info">
+              {design.image_url && (
+                <img
+                  src={`${design.image_url}?t=${new Date(design.updatedAt).getTime()}`}
+                  alt={design.reference}
+                  className="design-thumbnail"
+                  style={{ width: '50px', height: '50px', objectFit: 'cover', marginRight: '10px', borderRadius: '4px' }}
+                />
+              )}
               <span className="design-reference">Ref: {design.reference}</span>
               <span>Prenda: {design.clothing?.name || design.id_clothing}</span>
+              <span>Genero: {design.clothing?.gender?.name || 'N/A'}</span>
               <span>Colección: {design.collection?.name || design.id_collection}</span>
               <span>Costo: ${design.manufactured_cost}</span>
             </div>

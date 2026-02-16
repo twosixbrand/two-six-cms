@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const ClothingColorForm = ({ onSave, currentItem, onCancel, designs, colors, sizes }) => {
+const ClothingColorForm = ({ onSave, currentItem, onCancel, designs, colors, sizes, genders }) => {
   const getInitialEditState = () => ({
     id_design: '',
     id_color: '',
@@ -10,13 +10,29 @@ const ClothingColorForm = ({ onSave, currentItem, onCancel, designs, colors, siz
     quantity_sold: 0,
     quantity_on_consignment: 0,
     quantity_under_warranty: 0,
-    image_url: '',
   });
 
   const [id_design, setIdDesign] = useState('');
   const [id_color, setIdColor] = useState('');
   const [editFormData, setEditFormData] = useState(getInitialEditState());
-  const [file, setFile] = useState(null);
+
+  const [filteredGenders, setFilteredGenders] = useState([]);
+
+  // Filter Genders based on selected Design
+  useEffect(() => {
+    if (id_design) {
+      const selectedDesign = designs.find(d => d.id === parseInt(id_design));
+      if (selectedDesign && selectedDesign.clothing && selectedDesign.clothing.genderClothing) {
+        const allowedGenderIds = selectedDesign.clothing.genderClothing.map(gc => gc.id_gender);
+        const filtered = genders.filter(g => allowedGenderIds.includes(g.id));
+        setFilteredGenders(filtered);
+      } else {
+        setFilteredGenders(genders); // Fallback to all if no relation found
+      }
+    } else {
+      setFilteredGenders([]);
+    }
+  }, [id_design, designs, genders]);
 
   // State for new flow: map sizeId -> { selected: boolean, quantity: number }
   const [sizeSelections, setSizeSelections] = useState({});
@@ -32,11 +48,9 @@ const ClothingColorForm = ({ onSave, currentItem, onCancel, designs, colors, siz
         quantity_sold: currentItem.quantity_sold || 0,
         quantity_on_consignment: currentItem.quantity_on_consignment || 0,
         quantity_under_warranty: currentItem.quantity_under_warranty || 0,
-        image_url: currentItem.image_url || ''
       });
       setIdDesign('');
       setIdColor('');
-      setFile(null);
       setSizeSelections({});
     } else {
       setEditFormData(getInitialEditState());
@@ -80,54 +94,40 @@ const ClothingColorForm = ({ onSave, currentItem, onCancel, designs, colors, siz
         quantity_sold: parseInt(editFormData.quantity_sold, 10),
         quantity_on_consignment: parseInt(editFormData.quantity_on_consignment, 10),
         quantity_under_warranty: parseInt(editFormData.quantity_under_warranty, 10),
-        image_url: editFormData.image_url,
       };
       delete dataToSave.id_design;
+      // Note: id_gender usually not editable here or needs Logic.
       onSave(dataToSave);
     } else {
       // New "Contextual" Creation Mode
-      if (file) {
-        // Use FormData for file upload
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('id_design', id_design);
-        formData.append('id_color', id_color);
-
-        const sizesData = [];
-        Object.keys(sizeSelections).forEach(sizeId => {
-          if (sizeSelections[sizeId].selected) {
-            sizesData.push({
-              id_size: parseInt(sizeId, 10),
-              quantity_produced: sizeSelections[sizeId].quantity,
-              quantity_available: sizeSelections[sizeId].quantity
-            });
-          }
-        });
-
-        if (sizesData.length === 0) {
-          alert("Please select at least one size.");
-          return;
+      const sizesData = [];
+      Object.keys(sizeSelections).forEach(sizeId => {
+        if (sizeSelections[sizeId].selected) {
+          sizesData.push({
+            id_size: parseInt(sizeId, 10),
+            quantity_produced: sizeSelections[sizeId].quantity,
+            quantity_available: sizeSelections[sizeId].quantity
+          });
         }
+      });
 
-        formData.append('sizes', JSON.stringify(sizesData));
-        onSave(formData); // Parent must handle FormData
-
-        // Reset
-        setIdDesign('');
-        setIdColor('');
-        setFile(null);
-        setSizeSelections({});
-      } else {
-        // Fallback or alert if no file? 
-        // Prompt implies this is THE way.
-        alert("Please upload an image.");
+      if (sizesData.length === 0) {
+        alert("Please select at least one size.");
+        return;
       }
-    }
-  };
 
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
+      const payload = {
+        id_design,
+        id_color,
+        sizes: JSON.stringify(sizesData)
+      };
+
+      onSave(payload);
+
+      // Reset
+      setIdDesign('');
+      setIdColor('');
+      setSizeSelections({});
     }
   };
 
@@ -138,7 +138,7 @@ const ClothingColorForm = ({ onSave, currentItem, onCancel, designs, colors, siz
         <h3>Edit Clothing Color</h3>
         <div className="form-group">
           <label>Design</label>
-          <select name="id_design" value={editFormData.id_design} onChange={handleEditFormChange} required>
+          <select name="id_design" value={editFormData.id_design} onChange={handleEditFormChange} required disabled>
             <option value="">Select Design</option>
             {designs.map(d => <option key={d.id} value={d.id}>{d.reference} - {d.clothing?.name}</option>)}
           </select>
@@ -150,6 +150,7 @@ const ClothingColorForm = ({ onSave, currentItem, onCancel, designs, colors, siz
             {colors.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
         </div>
+        {/* Gender usually comes from design->clothing->gender, but if customizable on this level: */}
         <div style={{ display: 'flex', gap: '10px', marginTop: '1rem' }}><button type="submit">Update</button><button type="button" onClick={onCancel}>Cancel</button></div>
       </form>
     );
@@ -175,28 +176,6 @@ const ClothingColorForm = ({ onSave, currentItem, onCancel, designs, colors, siz
             {colors.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
         </div>
-      </div>
-
-      <div className="form-group" style={{ border: '2px dashed #ccc', padding: '20px', textAlign: 'center' }}>
-        <p style={{ marginBottom: '10px' }}>Select Product Image:</p>
-
-        {/* Standard Visible Input for foolproof functionality */}
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            console.log("File input changed", e.target.files);
-            handleFileChange(e);
-          }}
-          style={{ display: 'block', margin: '0 auto' }}
-          required
-        />
-
-        {file && (
-          <div style={{ color: 'green', fontWeight: 'bold', marginTop: '10px' }}>
-            Selected: {file.name}
-          </div>
-        )}
       </div>
 
       <div className="sizes-section">
@@ -236,7 +215,7 @@ const ClothingColorForm = ({ onSave, currentItem, onCancel, designs, colors, siz
       </div>
 
       <div className="form-actions">
-        <button type="submit" disabled={!file || !id_design || !id_color}>Create Versions</button>
+        <button type="submit" disabled={!id_design || !id_color}>Create Versions</button>
       </div>
     </form>
   );

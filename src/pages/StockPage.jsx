@@ -34,19 +34,25 @@ const StockPage = () => {
         if (!searchTerm) {
             return inventoryItems;
         }
-        return inventoryItems.filter(item => {
-            const searchTermLower = searchTerm.toLowerCase();
-            const fieldsToSearch = [
-                item.clothingColor?.design?.reference,
-                item.clothingColor?.design?.clothing?.name,
-                item.clothingColor?.color?.name,
-                item.size?.name,
-                item.id.toString()
-            ];
-            return fieldsToSearch.some(field =>
-                field?.toLowerCase().includes(searchTermLower)
-            );
-        });
+        return inventoryItems
+            .filter(item => {
+                const searchTermLower = searchTerm.toLowerCase();
+                const fieldsToSearch = [
+                    item.clothingColor?.design?.reference,
+                    item.clothingColor?.design?.clothing?.name,
+                    item.clothingColor?.color?.name,
+                    item.size?.name,
+                    item.id.toString()
+                ];
+                return fieldsToSearch.some(field =>
+                    field?.toLowerCase().includes(searchTermLower)
+                );
+            })
+            .sort((a, b) => {
+                const refA = a.clothingColor?.design?.reference || '';
+                const refB = b.clothingColor?.design?.reference || '';
+                return refA.localeCompare(refB, undefined, { numeric: true, sensitivity: 'base' });
+            });
     }, [inventoryItems, searchTerm]);
 
     const handleSave = async (itemData) => {

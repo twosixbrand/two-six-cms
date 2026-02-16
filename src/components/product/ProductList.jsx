@@ -13,10 +13,6 @@ const ProductList = ({ items, onEdit, onDelete }) => {
             <small>
               SKU: {item.sku} | Price: ${item.price} | Color: {item.color_name} | Size: {item.size_name} | Collection: {item.collection_name} | Year: {item.year_production}
             </small>
-            <br />
-            <small>
-              Desc: {item.description}
-            </small>
           </span>
           <div>
             <ActionButton onClick={() => onEdit(item)} className="button-edit" title="Editar">

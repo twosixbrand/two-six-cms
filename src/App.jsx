@@ -38,6 +38,8 @@ import OrderDetailPage from './pages/OrderDetailPage.jsx';
 import LocationPage from './pages/LocationPage.jsx';
 import LocationDetailPage from './pages/LocationDetailPage.jsx';
 import StockPage from './pages/StockPage.jsx';
+import ImageClothingPage from './pages/ImageClothingPage.jsx';
+import GeneralSalesReportPage from './pages/GeneralSalesReportPage.jsx';
 
 
 
@@ -88,6 +90,8 @@ const MainLayout = () => {
               <Route path="/production-type" element={<ProductionTypePage />} />
               <Route path="/design-provider" element={<DesignProviderPage />} />
               <Route path="/clothing-color" element={<ClothingColorPage />} />
+              <Route path="/image-clothing" element={<ImageClothingPage />} />
+              <Route path="/image-clothing/:id" element={<ImageClothingPage />} />
               <Route path="/product" element={<ProductPage />} />
               <Route path="/color" element={<ColorPage />} />
               <Route path="/color" element={<ColorPage />} />
@@ -97,6 +101,7 @@ const MainLayout = () => {
               <Route path="/locations" element={<LocationPage />} />
               <Route path="/locations/:id" element={<LocationDetailPage />} />
               <Route path="/stock" element={<StockPage />} />
+              <Route path="/reports/sales/general" element={<GeneralSalesReportPage />} />
             </Routes>
           </main>
         </div>

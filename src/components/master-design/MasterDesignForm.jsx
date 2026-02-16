@@ -79,6 +79,17 @@ const MasterDesignForm = ({
         <label htmlFor="description">Descripción</label>
         <textarea id="description" name="description" value={formData.description} onChange={handleChange} />
       </div>
+
+      <div className="form-group">
+        <label htmlFor="file">Imagen Representativa</label>
+        <input
+          type="file"
+          id="file"
+          name="file"
+          accept="image/*"
+          onChange={handleChange}
+        />
+      </div>
       <button type="submit" className="button-primary">
         {initialData.id ? 'Actualizar Diseño' : 'Crear Diseño'}
       </button>

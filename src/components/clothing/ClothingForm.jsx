@@ -1,37 +1,54 @@
 import React, { useState, useEffect } from 'react';
-
-const GENDERS = ['MASCULINO', 'FEMENINO', 'UNISEX'];
+import { getGenders } from '../../services/genderApi';
 
 const ClothingForm = ({ onSave, currentItem, onCancel, typeClothings, categories }) => {
   const [item, setItem] = useState({
     name: '',
-    gender: '',
+    id_gender: '',
     id_type_clothing: '',
     id_category: '',
   });
+  const [genders, setGenders] = useState([]);
+
+  useEffect(() => {
+    const fetchGenders = async () => {
+      try {
+        const data = await getGenders();
+        setGenders(data);
+      } catch (error) {
+        console.error("Failed to fetch genders", error);
+      }
+    };
+    fetchGenders();
+  }, []);
 
   useEffect(() => {
     if (currentItem) {
       setItem({
         name: currentItem.name || '',
-        gender: currentItem.gender || '',
+        id_gender: currentItem.id_gender || (currentItem.gender ? currentItem.gender.id : '') || '',
         id_type_clothing: currentItem.id_type_clothing || '',
         id_category: currentItem.id_category || '',
       });
     } else {
-      setItem({ name: '', gender: '', id_type_clothing: '', id_category: '' });
+      setItem({ name: '', id_gender: '', id_type_clothing: '', id_category: '' });
     }
   }, [currentItem]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setItem({ ...item, [name]: value });
+    // Handle integer conversion for IDs
+    if (['id_gender', 'id_category'].includes(name)) {
+      setItem({ ...item, [name]: parseInt(value) || '' });
+    } else {
+      setItem({ ...item, [name]: value });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave(item);
-    setItem({ name: '', gender: '', id_type_clothing: '', id_category: '' }); // Reset form
+    setItem({ name: '', id_gender: '', id_type_clothing: '', id_category: '' }); // Reset form
   };
 
   return (
@@ -51,14 +68,21 @@ const ClothingForm = ({ onSave, currentItem, onCancel, typeClothings, categories
         onChange={handleChange}
         required
       />
-      <select name="gender" value={item.gender} onChange={handleChange} required>
+
+      <select
+        name="id_gender"
+        value={item.id_gender}
+        onChange={handleChange}
+        required
+      >
         <option value="">Select Gender</option>
-        {GENDERS.map((gender) => (
-          <option key={gender} value={gender}>
-            {gender}
+        {genders.map((gender) => (
+          <option key={gender.id} value={gender.id}>
+            {gender.name}
           </option>
         ))}
       </select>
+
       <select name="id_type_clothing" value={item.id_type_clothing} onChange={handleChange} required>
         <option value="">Select Type</option>
         {typeClothings.map((type) => (

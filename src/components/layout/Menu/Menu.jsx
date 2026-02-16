@@ -27,6 +27,13 @@ const menuData = [
     ],
   },
   {
+    title: 'Reports',
+    path: '#',
+    subNav: [
+      { title: 'General Sales', path: '/reports/sales/general' },
+    ],
+  },
+  {
     title: 'Users / providers',
     path: '#',
     subNav: [

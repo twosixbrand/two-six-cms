@@ -7,12 +7,15 @@ import * as colorApi from '../services/colorApi.js';
 import * as sizeApi from '../services/sizeApi.js';
 import { logError } from '../services/errorApi.js';
 
+import * as genderApi from '../services/genderApi.js';
+
 const ClothingColorPage = () => {
   const [items, setItems] = useState([]);
   const [currentItem, setCurrentItem] = useState(null);
   const [designs, setDesigns] = useState([]);
   const [colors, setColors] = useState([]);
   const [sizes, setSizes] = useState([]);
+  const [genders, setGenders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -20,16 +23,18 @@ const ClothingColorPage = () => {
     try {
       setLoading(true);
       setError('');
-      const [itemsData, designsData, colorsData, sizesData] = await Promise.all([
+      const [itemsData, designsData, colorsData, sizesData, gendersData] = await Promise.all([
         clothingColorApi.getClothingColors(),
         masterDesignApi.getMasterDesigns(),
         colorApi.getColors(),
         sizeApi.getSizes(),
+        genderApi.getGenders(),
       ]);
       setItems(itemsData);
       setDesigns(designsData);
       setColors(colorsData);
       setSizes(sizesData);
+      setGenders(gendersData);
     } catch (err) {
       logError(err, '/clothing-color');
       setError('Failed to fetch data. ' + err.message);
@@ -46,14 +51,24 @@ const ClothingColorPage = () => {
     try {
       setError('');
       if (itemData instanceof FormData) {
+        // Legacy check? No longer using FormData for this action
         await clothingColorApi.createContextual(itemData);
       } else if (Array.isArray(itemData)) {
-        // Creación múltiple
         await Promise.all(itemData.map(item => clothingColorApi.createClothingColor(item)));
       } else {
-        // Creación o actualización única
         if (currentItem) {
           await clothingColorApi.updateClothingColor(currentItem.id, itemData);
+        } else if (itemData.sizes) {
+          // Contextual creation (JSON)
+          const result = await clothingColorApi.createContextual(itemData);
+          // Redirect to Image Page?
+          if (result && result.clothingColor && result.clothingColor.id) {
+            const proceed = window.confirm("Clothing Color created! Do you want to upload images now?");
+            if (proceed) {
+              window.location.href = `/image-clothing/${result.clothingColor.id}`;
+              return;
+            }
+          }
         } else {
           await clothingColorApi.createClothingColor(itemData);
         }
@@ -100,6 +115,7 @@ const ClothingColorPage = () => {
             designs={designs}
             colors={colors}
             sizes={sizes}
+            genders={genders}
           />
         </div>
         <div className="list-card">
