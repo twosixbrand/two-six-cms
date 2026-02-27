@@ -16,10 +16,10 @@ const ProductForm = ({ onSave, currentItem, onCancel, clothingSizes, existingClo
   });
 
   // Estado para el formulario de edición
-  const [editFormData, setEditFormData] = useState(getInitialSharedState());
+  const [editFormData, setEditFormData] = useState<any>(getInitialSharedState());
   // Estados para el formulario de creación múltiple
-  const [sharedData, setSharedData] = useState(getInitialSharedState());
-  const [variants, setVariants] = useState([getInitialVariantState()]);
+  const [sharedData, setSharedData] = useState<any>(getInitialSharedState());
+  const [variants, setVariants] = useState<any[]>([getInitialVariantState()]);
   const priceInputRef = useRef(null);
 
   useEffect(() => {
@@ -85,7 +85,7 @@ const ProductForm = ({ onSave, currentItem, onCancel, clothingSizes, existingClo
       // Lógica para guardar en modo edición
       const dataToSave = {
         ...editFormData,
-        price: parseFloat(editFormData.price),
+        price: Number(editFormData.price),
       };
       onSave(dataToSave);
     } else {
@@ -94,8 +94,8 @@ const ProductForm = ({ onSave, currentItem, onCancel, clothingSizes, existingClo
         .filter(v => v.id_clothing_size) // Solo procesar variantes con un diseño seleccionado
         .map(variant => ({
           ...sharedData,
-          id_clothing_size: parseInt(variant.id_clothing_size, 10),
-          price: parseFloat(sharedData.price),
+          id_clothing_size: Number(variant.id_clothing_size),
+          price: Number(sharedData.price),
         }));
 
       if (productsToCreate.length > 0) {

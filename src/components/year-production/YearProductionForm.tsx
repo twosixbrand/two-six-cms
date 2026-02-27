@@ -31,7 +31,7 @@ const YearProductionForm = ({ onSave, currentItem, onCancel }) => {
         placeholder="ID (e.g., 24)"
         value={item.id}
         onChange={handleChange}
-        maxLength="2"
+        maxLength={2}
         required
         disabled={!!currentItem}
       />

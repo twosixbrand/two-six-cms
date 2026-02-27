@@ -6,32 +6,32 @@ import { AuthProvider, AuthContext } from '../context/AuthContext';
 // Styles
 import "../styles/App.css";
 // Layout Components
-import Header from "../components/layout/Header/Header.jsx";
-import Menu from "../components/layout/Menu/Menu.jsx";
-import Footer from "../components/layout/Footer/Footer.jsx";
-import ErrorBoundary from "../components/layout/ErrorBoundary.jsx";
-import ProtectedRoute from '../components/protectedRoute/ProtectedRoute.jsx';
+import Header from "../components/layout/Header/Header";
+import Menu from "../components/layout/Menu/Menu";
+import Footer from "../components/layout/Footer/Footer";
+import ErrorBoundary from "../components/layout/ErrorBoundary";
+import ProtectedRoute from '../components/protectedRoute/ProtectedRoute';
 
 // Page Components
-import HomePage from './HomePage.jsx';
-import LoginPage from './Login.jsx';
-import ClothingPage from './ClothingPage.jsx';
-import CategoryPage from "./CategoryPage.jsx";
-import RolePage from './RolePage.jsx';
-import UserPage from './UserPage.jsx';
-import UserRolePage from './UserRolePage.jsx';
-import TypeClothingPage from './TypeClothingPage.jsx';
-import MasterDesignPage from './MasterDesignPage.jsx';
-import SeasonPage from './SeasonPage.jsx';
-import YearProductionPage from './YearProductionPage.jsx';
-import CollectionPage from "./CollectionPage.jsx";
-import ProviderPage from './ProviderPage.jsx';
-import ProductionTypePage from './ProductionTypePage.jsx';
-import ErrorLogPage from './ErrorLogPage.jsx';
-import DesignProviderPage from './DesignProviderPage.jsx';
-import DesignClothingPage from "./DesignClothingPage.jsx";
-import ProductPage from "./ProductPage.jsx";
-import ColorPage from './ColorPage.jsx'; // <-- Importación añadida
+import HomePage from './HomePage';
+import LoginPage from './Login';
+import ClothingPage from './ClothingPage';
+import CategoryPage from "./CategoryPage";
+import RolePage from './RolePage';
+import UserPage from './UserPage';
+import UserRolePage from './UserRolePage';
+import TypeClothingPage from './TypeClothingPage';
+import MasterDesignPage from './MasterDesignPage';
+import SeasonPage from './SeasonPage';
+import YearProductionPage from './YearProductionPage';
+import CollectionPage from "./CollectionPage";
+import ProviderPage from './ProviderPage';
+import ProductionTypePage from './ProductionTypePage';
+import ErrorLogPage from './ErrorLogPage';
+import DesignProviderPage from './DesignProviderPage';
+// import DesignClothingPage from "./DesignClothingPage";
+import ProductPage from "./ProductPage";
+import ColorPage from './ColorPage'; // <-- Importación añadida
 
 /**
  * Componente que renderiza el layout principal (Menú, Contenido, Footer)
@@ -73,7 +73,7 @@ const MainLayout = () => {
                         <Route path="/logs" element={<ErrorLogPage />} />
                         <Route path="/production-type" element={<ProductionTypePage />} />
                         <Route path="/design-provider" element={<DesignProviderPage />} />
-                        <Route path="/design-clothing" element={<DesignClothingPage />} />
+                        {/* <Route path="/design-clothing" element={<DesignClothingPage />} /> */}
                         <Route path="/product" element={<ProductPage />} />
                         <Route path="/color" element={<ColorPage />} /> {/* <-- Ruta añadida */}
                     </Routes>

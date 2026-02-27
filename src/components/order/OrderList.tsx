@@ -46,7 +46,7 @@ const OrderList = ({ orders }) => {
                         ))}
                         {orders.length === 0 && (
                             <tr>
-                                <td colSpan="6" className="text-center">No hay pedidos registrados.</td>
+                                <td colSpan={6} className="text-center">No hay pedidos registrados.</td>
                             </tr>
                         )}
                     </tbody>

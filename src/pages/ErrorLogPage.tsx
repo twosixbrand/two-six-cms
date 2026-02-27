@@ -18,7 +18,7 @@ const ErrorLogPage = () => {
       try {
         setLoading(true);
         const data = await getLogs();
-        setLogs(data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+        setLogs(data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
         setError('');
       } catch (err) {
         setError('Failed to fetch error logs.');

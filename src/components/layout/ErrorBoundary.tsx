@@ -1,25 +1,35 @@
 import React from 'react';
-import ErrorModal from './ErrorModal.jsx';
-import { logError } from '../../services/errorApi.js';
+import ErrorModal from './ErrorModal';
+import { logError } from '../../services/errorApi';
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
+interface Props {
+  children: React.ReactNode;
+}
+
+interface State {
+  hasError: boolean;
+  error: any;
+  errorInfo: any;
+}
+
+class ErrorBoundary extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = { hasError: false, error: null, errorInfo: null };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error: any) {
     // Actualiza el estado para que el siguiente renderizado muestre la UI de fallback.
     return { hasError: true, error };
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: any, errorInfo: any) {
     // Guarda la información del error y el stack de componentes
     this.setState({ errorInfo });
 
     // También puedes registrar el error en un servicio de reporte de errores
     console.error("Error capturado por ErrorBoundary:", error, errorInfo);
-    logError(error);
+    logError(error, { componentStack: errorInfo.componentStack });
   }
 
   handleClose = () => {

@@ -97,7 +97,7 @@ const GeneralSalesReportPage = () => {
                     <tbody>
                         {reportData.length === 0 && !loading ? (
                             <tr>
-                                <td colSpan="7" style={{ textAlign: 'center' }}>No se encontraron ventas en el rango seleccionado.</td>
+                                <td colSpan={7} style={{ textAlign: 'center' }}>No se encontraron ventas en el rango seleccionado.</td>
                             </tr>
                         ) : (
                             reportData.map((order) => (

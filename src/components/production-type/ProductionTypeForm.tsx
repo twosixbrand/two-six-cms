@@ -28,7 +28,7 @@ const ProductionTypeForm = ({ onSave, currentItem, onCancel }) => {
       {currentItem && (
         <div className="form-group">
           <label>ID</label>
-          <input name="id" type="text" value={item.id} readOnly disabled />
+          <input name="id" type="text" value={(item as any).id} readOnly disabled />
         </div>
       )}
       <div className="form-group">

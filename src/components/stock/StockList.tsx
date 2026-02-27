@@ -27,7 +27,7 @@ const StockList = ({ items, onEdit, onDelete }) => {
                             <React.Fragment key={item.id}>
                                 {showHeader && (
                                     <tr className="reference-header-row" style={{ backgroundColor: '#f0f0f0' }}>
-                                        <td colSpan="8" style={{ fontWeight: 'bold', padding: '10px' }}>
+                                        <td colSpan={8} style={{ fontWeight: 'bold', padding: '10px' }}>
                                             Reference: {currentRef}
                                         </td>
                                     </tr>
@@ -64,7 +64,7 @@ const StockList = ({ items, onEdit, onDelete }) => {
                     })}
                     {items.length === 0 && (
                         <tr>
-                            <td colSpan="8" style={{ textAlign: 'center', padding: '20px' }}>
+                            <td colSpan={8} style={{ textAlign: 'center', padding: '20px' }}>
                                 No stock records found.
                             </td>
                         </tr>

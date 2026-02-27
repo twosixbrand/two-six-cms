@@ -31,7 +31,7 @@ const TypeClothingForm = ({ onSave, currentItem, onCancel }) => {
         onChange={handleChange}
         placeholder="ID (2 characters)"
         required
-        maxLength="2"
+        maxLength={2}
         disabled={!!currentItem}
       />
       <input

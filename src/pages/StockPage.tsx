@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import StockList from '../components/stock/StockList.jsx';
-import StockForm from '../components/stock/StockForm.jsx';
-import * as clothingSizeApi from '../services/clothingSizeApi.js';
-import { logError } from '../services/errorApi.js';
+import StockList from '../components/stock/StockList';
+import StockForm from '../components/stock/StockForm';
+import * as clothingSizeApi from '../services/clothingSizeApi';
+import { logError } from '../services/errorApi';
 
 const StockPage = () => {
     // We are now managing clothingSizes directly as "Inventory"
@@ -115,6 +115,7 @@ const StockPage = () => {
                         <StockList
                             items={filteredInventory}
                             onEdit={handleEdit}
+                            onDelete={() => {}}
                         // Delete removed because deleting the 'Size' deletes the product link. 
                         // User should delete from ClothingColor page if they want to remove the variant entirely.
                         />

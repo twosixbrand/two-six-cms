@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'; 
+import { categorySchema } from './category.schema';
+import logger from '../../utils/logger';
 
 const CategoryForm = ({ onSave, currentItem, onCancel }) => {
   const getInitialState = () => ({ name: '' });
-  const [formData, setFormData] = useState(getInitialState());
+  const [formData, setFormData] = useState<any>(getInitialState());
+  const [errors, setErrors] = useState<any>({});
 
   useEffect(() => {
     if (currentItem) {
@@ -19,7 +22,15 @@ const CategoryForm = ({ onSave, currentItem, onCancel }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(formData);
+    try {
+      categorySchema.parse(formData);
+      logger.info({ formData }, 'Category validated successfully');
+      onSave(formData);
+    } catch (err: any) {
+      const validationErrors = err.flatten().fieldErrors;
+      setErrors(validationErrors);
+      logger.error({ validationErrors }, 'Category validation failed');
+    }
   };
 
   return (
@@ -32,6 +43,7 @@ const CategoryForm = ({ onSave, currentItem, onCancel }) => {
         placeholder="Name"
         required
       />
+      {errors.name && <span className="error">{errors.name[0]}</span>}
       <button type="submit">Save</button>
       {currentItem && <button type="button" onClick={onCancel}>Cancel</button>}
     </form>

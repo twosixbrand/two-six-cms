@@ -3,12 +3,12 @@ import '../../styles/MasterDesign.css';
 
 const MasterDesignForm = ({
   onSubmit,
-  initialData = {},
-  clothings = [],
-  collections = [],
-  years = [],
+  initialData = {} as any,
+  clothings = [] as any[],
+  collections = [] as any[],
+  years = [] as any[],
 }) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<any>({
     manufactured_cost: '',
     description: '',
     id_clothing: '',

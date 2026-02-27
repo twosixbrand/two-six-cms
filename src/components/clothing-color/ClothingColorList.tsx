@@ -69,7 +69,7 @@ const ClothingColorList = ({ items, onEdit, onDelete }) => {
         <div key={groupName} className="group-card">
           <h3 className="group-header">{groupName}</h3>
           <ul>
-            {groupItems.map((item) => (
+            {(groupItems as any[]).map((item) => (
               <li key={item.id}>
                 <div className="item-info">
                   <span>Gender: {item.design?.clothing?.gender?.name || 'N/A'}</span><br />

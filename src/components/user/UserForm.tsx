@@ -28,7 +28,7 @@ const UserForm = ({ onSave, currentItem, onCancel, allRoles }) => {
   };
 
   const handleRoleChange = (e) => {
-    const selectedRoles = Array.from(e.target.selectedOptions, option => parseInt(option.value, 10));
+    const selectedRoles = Array.from(e.target.selectedOptions).map(option => parseInt((option as HTMLOptionElement).value, 10));
     setFormData(prev => ({ ...prev, roles: selectedRoles }));
   };
 

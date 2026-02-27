@@ -13,7 +13,7 @@ const OrderPage = () => {
             setLoading(true);
             const data = await orderApi.getOrders();
             // Ordenar por fecha descendente (más recientes primero)
-            const sortedData = data.sort((a, b) => new Date(b.order_date) - new Date(a.order_date));
+            const sortedData = data.sort((a, b) => new Date(b.order_date).getTime() - new Date(a.order_date).getTime());
             setOrders(sortedData);
         } catch (err) {
             logError(err, '/order');

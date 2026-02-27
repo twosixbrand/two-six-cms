@@ -67,6 +67,7 @@ const UserRolePage = () => {
         <div className="form-card">
           <UserRoleForm
             onSave={handleSave}
+            onCancel={() => {}}
             allUsers={users}
             allRoles={roles}
           />

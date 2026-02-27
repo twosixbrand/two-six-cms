@@ -87,13 +87,13 @@ const ClothingColorForm = ({ onSave, currentItem, onCancel, designs, colors, siz
       // Edit Mode
       const dataToSave = {
         ...editFormData,
-        id_color: parseInt(editFormData.id_color, 10),
-        id_size: parseInt(editFormData.id_size, 10),
-        quantity_produced: parseInt(editFormData.quantity_produced, 10),
-        quantity_available: parseInt(editFormData.quantity_available, 10),
-        quantity_sold: parseInt(editFormData.quantity_sold, 10),
-        quantity_on_consignment: parseInt(editFormData.quantity_on_consignment, 10),
-        quantity_under_warranty: parseInt(editFormData.quantity_under_warranty, 10),
+        id_color: Number(editFormData.id_color),
+        id_size: Number(editFormData.id_size),
+        quantity_produced: Number(editFormData.quantity_produced),
+        quantity_available: Number(editFormData.quantity_available),
+        quantity_sold: Number(editFormData.quantity_sold),
+        quantity_on_consignment: Number(editFormData.quantity_on_consignment),
+        quantity_under_warranty: Number(editFormData.quantity_under_warranty),
       };
       delete dataToSave.id_design;
       // Note: id_gender usually not editable here or needs Logic.

@@ -62,7 +62,7 @@ const metricBoxStyle = {
     color: '#ffffff',
     padding: '20px',
     borderRadius: '8px',
-    textAlign: 'center',
+    textAlign: 'center' as const,
 };
 
 const metricValueStyle = {
@@ -97,7 +97,7 @@ const PlanEstrategico = () => {
     <div style={containerStyle}>
       {/* 1. Plan Estratégico de Crecimiento (Título principal) */}
       <h1 style={{...sectionTitleStyle, fontSize: '3.5em', borderBottom: 'none'}}>Plan Estratégico de Crecimiento</h1>
-      <p style={{fontSize: '1.2em', textAlign: 'center', marginBottom: '40px'}}>
+      <p style={{fontSize: '1.2em', textAlign: 'center' as const, marginBottom: '40px'}}>
         Transformando la moda urbana colombiana a través de una experiencia digital excepcional y diseños únicos que conectan con el estilo de vida actual.
       </p>
 
@@ -396,7 +396,7 @@ const PlanEstrategico = () => {
         </p>
       </section>
 
-      <footer style={{textAlign: 'center', fontSize: '0.9em', color: '#6e5d59', marginTop: '50px'}}>
+      <footer style={{textAlign: 'center' as const, fontSize: '0.9em', color: '#6e5d59', marginTop: '50px'}}>
         <p>
             "El éxito no es el resultado de acciones esporádicas, sino de la ejecución disciplinada y consistente de un plan estratégico bien pensado. Estos primeros 90 días marcan el inicio de la transformación de nuestra marca hacia un modelo de negocio profesional, sostenible y escalable que honre la calidad de nuestros productos y la confianza de nuestros clientes."
         </p>
