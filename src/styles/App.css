@@ -1,25 +1,35 @@
 /* 1. Importar una fuente limpia y moderna */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* 2. Definir la nueva paleta de colores (Tema Claro) */
+/* 2. Definir la nueva paleta de colores (Tema Claro con Degradado) */
 :root {
-  /* Paleta de colores */
-  --background-color: #f4f7fa; /* Fondo principal muy claro */
-  --surface-color: #ffffff; /* Color para tarjetas, etc. */
-  --primary-color: #d4af37; /* Dorado como color principal */
-  --primary-hover-color: #b8860b; /* Dorado más oscuro para hover */
-  
+  /* Paleta de colores Premium Light (2025/2026 Trenz) */
+  --background-gradient: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 50%, #cbd5e1 100%);
+  /* Degradado gris azulado claro y profesional */
+  --surface-color: rgba(255, 255, 255, 0.6);
+  /* Superficie translucida clara para Glassmorphism */
+  --primary-color: #d4af37;
+  /* Dorado premium */
+  --primary-hover-color: #b8860b;
+  /* Dorado más oscuro para hover */
+
   /* Colores de texto */
-  --text-primary: #1f2937;   /* Texto principal (casi negro) */
-  --text-secondary: #6b7280; /* Texto secundario (gris) */
-  --text-on-primary: #ffffff;   /* Texto sobre botones primarios */
+  --text-primary: #1e293b;
+  /* Texto principal oscuro para buen contraste */
+  --text-secondary: #475569;
+  /* Gris azulado medio para texto secundario */
+  --text-on-primary: #ffffff;
+  /* Texto claro sobre el acento dorado */
 
   /* Otros colores */
-  --menu-bg: #000000; /* Negro puro para menú y footer */
-  --menu-text: #9ca3af; /* Gris claro para texto normal del menú */
-  --menu-text-active: var(--primary-color); /* Dorado para texto activo/hover del menú */
+  --menu-bg: #0f172a;
+  /* Navbar oscura para mantener la identidad visual del sidebar */
+  --menu-text: #94a3b8;
+  /* Gris claro para el sidebar */
+  --menu-text-active: var(--primary-color);
 
-  --border-color: #e5e7eb;
+  --border-color: rgba(255, 255, 255, 0.4);
+  /* Borde de vidrio tenue (blanco) */
   --error-color: #ef4444;
   --success-color: #22c55e;
 
@@ -30,31 +40,50 @@
 }
 
 /* 3. Reset y estilos base */
-* {
-  margin: 0;
-  padding: 0;
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-body, #root {
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: #f0f4f8;
+  /* Color de fallback que empata con el gradient claro */
+}
+
+body,
+#root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   font-family: 'Inter', sans-serif;
-  background-color: var(--background-color);
+  background: var(--background-gradient);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--text-primary);
   font-weight: 600;
 }
 
 /* 4. Estilos para el layout principal */
 .app-content {
-  padding-left: 280px; /* Espacio para el menú lateral */
+  padding-left: 280px;
+  /* Espacio para el menú lateral */
   padding-top: 2rem;
   padding-bottom: 2rem;
   transition: padding-left 0.3s ease-in-out;
@@ -77,6 +106,7 @@ h1, h2, h3, h4, h5, h6 {
   .app-content {
     padding-left: 0;
   }
+
   .app-content.menu-closed {
     /* En móvil no hay menú colapsado, siempre se oculta */
     padding-left: 0;
@@ -105,16 +135,30 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (min-width: 1024px) {
   .grid-container {
-    grid-template-columns: 450px 1fr; /* Formulario más ancho */
+    grid-template-columns: 450px 1fr;
+    /* Formulario más ancho */
   }
 }
 
-.form-card, .list-card {
+.form-card,
+.list-card {
   background-color: var(--surface-color);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   padding: 1.5rem;
   border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  /* Sombra clara muy suave */
   border: 1px solid var(--border-color);
+  border-top: 1px solid rgba(255, 255, 255, 0.8);
+  /* Reflejo más fuerte para vidrio claro */
+  border-left: 1px solid rgba(255, 255, 255, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-card:hover,
+.list-card:hover {
+  box-shadow: 0 8px 32px rgba(212, 175, 55, 0.1);
 }
 
 .list-card h2 {
@@ -129,7 +173,8 @@ form {
   gap: 1rem;
 }
 
-form h2, form h3 {
+form h2,
+form h3 {
   text-align: center;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 1rem;
@@ -145,22 +190,26 @@ textarea,
 select {
   width: 100%;
   padding: 0.75rem;
-  background-color: var(--surface-color);
-  border: 1px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.7);
+  /* Input claro translucido */
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: var(--border-radius);
   color: var(--text-primary);
   font-family: inherit;
   font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
 }
 
-input:disabled, select:disabled {
+input:disabled,
+select:disabled {
   background-color: #f3f4f6;
   cursor: not-allowed;
 }
@@ -211,22 +260,25 @@ button:active {
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 1rem;
-  background-color: var(--surface-color);
+  background-color: transparent;
+  /* Permite ver el glassmorphism trasero */
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  transition: box-shadow 0.2s, border-color 0.2s;
+  transition: box-shadow 0.2s, border-color 0.2s, background-color 0.2s;
 }
 
 .list-card li:hover {
   border-color: var(--primary-color);
+  background-color: rgba(212, 175, 55, 0.15);
+  /* Efecto hover dorado un poco más fuerte para fondo claro */
   box-shadow: 0 0 0 1px var(--primary-color);
 }
 
-.list-card li > div:first-child {
+.list-card li>div:first-child {
   flex-grow: 1;
 }
 
-.list-card li > div:last-child {
+.list-card li>div:last-child {
   display: flex;
   gap: 0.5rem;
 }
@@ -244,18 +296,48 @@ button:active {
 /* Estilos para el Footer */
 .footer {
   background-color: var(--menu-bg);
-  color: #ffffff; /* Cambiado a blanco */
+  color: #ffffff;
+  /* Cambiado a blanco */
   padding: 1.5rem 2rem;
   text-align: center;
   border-top: 1px solid #374151;
 }
 
-/* Added from index.css */
-main {
-  padding: 2rem;
+/* Estilos de Paginación */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  list-style-type: none;
+  padding: 0;
 }
 
-/* Scrollbar styles */
+.pagination a {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  color: var(--text-primary);
+  text-decoration: none;
+  cursor: pointer;
+  background-color: var(--surface-color);
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  /* Sombra tenue */
+}
+
+.pagination a:hover {
+  background-color: var(--primary-color);
+  color: var(--text-on-primary);
+  border-color: var(--primary-color);
+}
+
+.pagination .active a {
+  background-color: var(--primary-color);
+  color: var(--text-on-primary);
+  border-color: var(--primary-color);
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -266,5 +348,6 @@ main {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background-color);
+  background: #f0f4f8;
+  /* Fondo claro para el scrollbar */
 }
