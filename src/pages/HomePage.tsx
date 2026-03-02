@@ -15,9 +15,9 @@ import '../styles/HomePage.css';
 
 const HomePage = () => {
   return (
-    <div className="home-container">
+    <div className="home-container page-container">
 
-      <p className="home-subtitle">Páginas Principales</p>
+      <h1>Páginas Principales</h1>
       <div className="home-cards">
         <Link to="/clothing" className="home-card">
           <div className="card-watermark"><FaTshirt /></div>
