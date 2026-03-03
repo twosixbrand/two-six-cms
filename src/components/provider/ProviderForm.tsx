@@ -40,47 +40,88 @@ const ProviderForm = ({ onSave, currentItem, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3>{currentItem ? 'Edit Provider' : 'Add Provider'}</h3>
-      <input
-        name="id"
-        type="text"
-        placeholder="NIT"
-        value={item.id}
-        onChange={handleChange}
-        required
-        disabled={!!currentItem}
-      />
-      <input
-        name="company_name"
-        type="text"
-        placeholder="Company Name"
-        value={item.company_name}
-        onChange={handleChange}
-        required
-      />
-      <input
-        name="email"
-        type="email"
-        placeholder="Email"
-        value={item.email}
-        onChange={handleChange}
-        required
-      />
-      <input name="phone" type="text" placeholder="Phone" value={item.phone} onChange={handleChange} required />
-      <input
-        name="account_number"
-        type="text"
-        placeholder="Account Number"
-        value={item.account_number}
-        onChange={handleChange}
-        required
-      />
-      <input name="account_type" type="text" placeholder="Account Type" value={item.account_type} onChange={handleChange} required />
-      <input name="bank_name" type="text" placeholder="Bank Name" value={item.bank_name} onChange={handleChange} required />
+      <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.8rem' }}>
+        {currentItem ? 'Editar Proveedor' : 'Agregar Proveedor'}
+      </h3>
 
-      <div style={{ display: 'flex', gap: '10px', marginTop: '1rem' }}>
-        <button type="submit">{currentItem ? 'Update' : 'Create'}</button>
-        {currentItem && <button type="button" onClick={onCancel}>Cancel</button>}
+      <div className="form-group">
+        <label htmlFor="id">NIT / Documento</label>
+        <input
+          id="id"
+          name="id"
+          type="text"
+          placeholder="Ej: 900123456"
+          value={item.id}
+          onChange={handleChange}
+          required
+          disabled={!!currentItem}
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="company_name">Nombre de Empresa</label>
+        <input
+          id="company_name"
+          name="company_name"
+          type="text"
+          placeholder="Ej: Telas Premium SAS"
+          value={item.company_name}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="email">Correo Electrónico</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="contacto@empresa.com"
+          value={item.email}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="phone">Teléfono</label>
+        <input id="phone" name="phone" type="text" placeholder="Ej: 3001234567" value={item.phone} onChange={handleChange} required />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="account_number">Número de Cuenta</label>
+        <input
+          id="account_number"
+          name="account_number"
+          type="text"
+          placeholder="Ej: 1234567890"
+          value={item.account_number}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div style={{ display: 'flex', gap: '1rem' }}>
+        <div className="form-group" style={{ flex: 1 }}>
+          <label htmlFor="account_type">Tipo de Cuenta</label>
+          <input id="account_type" name="account_type" type="text" placeholder="Ej: Ahorros" value={item.account_type} onChange={handleChange} required />
+        </div>
+        <div className="form-group" style={{ flex: 1 }}>
+          <label htmlFor="bank_name">Banco</label>
+          <input id="bank_name" name="bank_name" type="text" placeholder="Ej: Bancolombia" value={item.bank_name} onChange={handleChange} required />
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', gap: '10px', marginTop: '1.5rem' }}>
+        <button type="submit" className="btn-primary" style={{ flex: 1 }}>
+          {currentItem ? 'Actualizar' : 'Crear'}
+        </button>
+        {currentItem && (
+          <button type="button" className="btn-secondary" onClick={onCancel} style={{ flex: 1 }}>
+            Cancelar
+          </button>
+        )}
       </div>
     </form>
   );

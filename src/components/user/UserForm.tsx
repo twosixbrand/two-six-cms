@@ -43,19 +43,35 @@ const UserForm = ({ onSave, currentItem, onCancel, allRoles }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3>{currentItem ? 'Edit' : 'Add'} User</h3>
-      <input name="name" value={formData.name} onChange={handleChange} placeholder="Name" required />
-      <input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
-      <input
-        name="password"
-        type="password"
-        value={formData.password}
-        onChange={handleChange}
-        placeholder={currentItem ? 'New Password (optional)' : 'Password'}
-        required={!currentItem}
-      />
-      <div>
-        <label htmlFor="roles">Roles</label>
+      <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.8rem' }}>
+        {currentItem ? 'Editar Usuario' : 'Agregar Usuario'}
+      </h3>
+
+      <div className="form-group">
+        <label htmlFor="name">Nombre Completo</label>
+        <input id="name" name="name" value={formData.name} onChange={handleChange} placeholder="Ej: Juan Pérez" required />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="email">Correo Electrónico</label>
+        <input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="juan.perez@empresa.com" required />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="password">Contraseña</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder={currentItem ? '(Opcional) Cambiar contraseña' : 'Password seguro'}
+          required={!currentItem}
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="roles">Roles Asignados</label>
         <select
           id="roles"
           name="roles"
@@ -63,6 +79,7 @@ const UserForm = ({ onSave, currentItem, onCancel, allRoles }) => {
           value={formData.roles}
           onChange={handleRoleChange}
           required
+          style={{ height: 'auto', minHeight: '100px' }}
         >
           {allRoles.map(role => (
             <option key={role.id} value={role.id}>
@@ -70,9 +87,19 @@ const UserForm = ({ onSave, currentItem, onCancel, allRoles }) => {
             </option>
           ))}
         </select>
+        <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>Mantén presionado Ctrl (Windows) o Cmd (Mac) para seleccionar múltiples roles.</span>
       </div>
-      <button type="submit">Save</button>
-      {currentItem && <button type="button" onClick={onCancel}>Cancel</button>}
+
+      <div style={{ display: 'flex', gap: '10px', marginTop: '1.5rem' }}>
+        <button type="submit" className="btn-primary" style={{ flex: 1 }}>
+          {currentItem ? 'Actualizar' : 'Guardar'}
+        </button>
+        {currentItem && (
+          <button type="button" className="btn-secondary" onClick={onCancel} style={{ flex: 1 }}>
+            Cancelar
+          </button>
+        )}
+      </div>
     </form>
   );
 };

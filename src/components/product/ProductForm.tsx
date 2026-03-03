@@ -110,9 +110,11 @@ const ProductForm = ({ onSave, currentItem, onCancel, clothingSizes, existingClo
   if (currentItem) {
     return (
       <form onSubmit={handleSubmit}>
-        <h3>Edit Product</h3>
+        <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.8rem' }}>
+          Editar Producto
+        </h3>
         <div className="form-group">
-          <label>Clothing Variant</label>
+          <label htmlFor="id_clothing_size">Variante de Prenda</label>
           <select name="id_clothing_size" value={editFormData.id_clothing_size} onChange={handleEditChange} required disabled>
             <option value="">Select Clothing Variant</option>
             {clothingSizes.map(cs => (
@@ -120,13 +122,25 @@ const ProductForm = ({ onSave, currentItem, onCancel, clothingSizes, existingClo
             ))}
           </select>
         </div>
-        <div className="form-group"><label>Price</label><input type="number" step="0.01" name="price" value={editFormData.price} onChange={handleEditChange} required ref={priceInputRef} /></div>
-        <div className="form-group"><label>Discount Percentage</label><input type="text" name="discount_percentage" value={editFormData.discount_percentage} onChange={handleEditChange} /></div>
-        <div className="form-group"><label>Discount Price</label><input type="text" name="discount_price" value={editFormData.discount_price} onChange={handleEditChange} /></div>
-        <div className="form-group"><label><input type="checkbox" name="active" checked={editFormData.active} onChange={handleEditChange} /> Active</label></div>
-        <div className="form-group"><label><input type="checkbox" name="is_outlet" checked={editFormData.is_outlet} onChange={handleEditChange} /> Is Outlet</label></div>
-        <button type="submit">Update</button>
-        {currentItem && <button type="button" onClick={onCancel}>Cancel</button>}
+        <div className="form-group"><label htmlFor="price">Precio BASE</label><input type="number" step="0.01" id="price" name="price" value={editFormData.price} onChange={handleEditChange} required ref={priceInputRef} /></div>
+        <div className="form-group"><label htmlFor="discount_percentage">Porcentaje Descuento</label><input type="text" id="discount_percentage" name="discount_percentage" value={editFormData.discount_percentage} onChange={handleEditChange} /></div>
+        <div className="form-group"><label htmlFor="discount_price">Precio Descuento</label><input type="text" id="discount_price" name="discount_price" value={editFormData.discount_price} onChange={handleEditChange} /></div>
+
+        <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
+          <div className="form-group" style={{ flexDirection: 'row', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
+            <input type="checkbox" id="active" name="active" checked={editFormData.active} onChange={handleEditChange} style={{ width: 'auto' }} />
+            <label htmlFor="active" style={{ marginBottom: 0 }}>Activo</label>
+          </div>
+          <div className="form-group" style={{ flexDirection: 'row', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
+            <input type="checkbox" id="is_outlet" name="is_outlet" checked={editFormData.is_outlet} onChange={handleEditChange} style={{ width: 'auto' }} />
+            <label htmlFor="is_outlet" style={{ marginBottom: 0 }}>Es Outlet</label>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', gap: '10px', marginTop: '1.5rem' }}>
+          <button type="submit" className="btn-primary" style={{ flex: 1 }}>Actualizar</button>
+          {currentItem && <button type="button" className="btn-secondary" onClick={onCancel} style={{ flex: 1 }}>Cancelar</button>}
+        </div>
       </form>
     );
   }
@@ -134,31 +148,45 @@ const ProductForm = ({ onSave, currentItem, onCancel, clothingSizes, existingClo
   // Renderiza el nuevo formulario de creación múltiple
   return (
     <form onSubmit={handleSubmit}>
-      <h3>Add Products</h3>
+      <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.8rem' }}>
+        Agregar Productos
+      </h3>
       {/* --- SECCIÓN DE DATOS COMUNES --- */}
-      <div className="shared-fields-section" style={{ border: '1px solid #ccc', padding: '1rem', borderRadius: '8px', marginBottom: '1rem' }}>
-        <h4>Common Data</h4>
-        <div className="form-group"><label>Price</label><input type="number" step="0.01" name="price" value={sharedData.price} onChange={handleSharedChange} required /></div>
-        <div className="form-group"><label>Discount Percentage</label><input type="text" name="discount_percentage" value={sharedData.discount_percentage} onChange={handleSharedChange} /></div>
-        <div className="form-group"><label>Discount Price</label><input type="text" name="discount_price" value={sharedData.discount_price} onChange={handleSharedChange} /></div>
-        <div className="form-group"><label><input type="checkbox" name="active" checked={sharedData.active} onChange={handleSharedChange} /> Active</label></div>
-        <div className="form-group"><label><input type="checkbox" name="is_outlet" checked={sharedData.is_outlet} onChange={handleSharedChange} /> Is Outlet</label></div>
+      <div className="shared-fields-section" style={{ border: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.2)', padding: '1.5rem', borderRadius: '12px', marginBottom: '1.5rem' }}>
+        <h4 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--primary-color)' }}>Datos Comunes</h4>
+        <div className="form-group"><label htmlFor="shared_price">Precio BASE</label><input type="number" step="0.01" id="shared_price" name="price" value={sharedData.price} onChange={handleSharedChange} required /></div>
+
+        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+          <div className="form-group" style={{ flex: 1 }}><label htmlFor="shared_discount_percentage">Porcentaje Descuento</label><input type="text" id="shared_discount_percentage" name="discount_percentage" value={sharedData.discount_percentage} onChange={handleSharedChange} /></div>
+          <div className="form-group" style={{ flex: 1 }}><label htmlFor="shared_discount_price">Precio Descuento</label><input type="text" id="shared_discount_price" name="discount_price" value={sharedData.discount_price} onChange={handleSharedChange} /></div>
+        </div>
+
+        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+          <div className="form-group" style={{ flexDirection: 'row', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
+            <input type="checkbox" id="shared_active" name="active" checked={sharedData.active} onChange={handleSharedChange} style={{ width: 'auto' }} />
+            <label htmlFor="shared_active" style={{ marginBottom: 0 }}>Activo</label>
+          </div>
+          <div className="form-group" style={{ flexDirection: 'row', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
+            <input type="checkbox" id="shared_is_outlet" name="is_outlet" checked={sharedData.is_outlet} onChange={handleSharedChange} style={{ width: 'auto' }} />
+            <label htmlFor="shared_is_outlet" style={{ marginBottom: 0 }}>Es Outlet</label>
+          </div>
+        </div>
       </div>
 
       {/* --- SECCIÓN DE VARIANTES (DISEÑOS) --- */}
       <div className="variants-section">
-        <h4>Variants to Create</h4>
+        <h4 style={{ marginBottom: '1rem', color: 'var(--primary-color)' }}>Variantes a Crear</h4>
         {variants.map((variant, index) => {
           const currentSelectedIds = variants
             .map(v => parseInt(v.id_clothing_size, 10))
             .filter(id => !isNaN(id));
 
           return (
-            <div key={index} className="variant-card" style={{ border: '1px solid #eee', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', position: 'relative' }}>
+            <div key={index} className="variant-card" style={{ border: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.4)', padding: '1.5rem', borderRadius: '12px', marginBottom: '1rem', position: 'relative' }}>
               <div className="form-group">
-                <label>Clothing Variant</label>
-                <select name="id_clothing_size" value={variant.id_clothing_size} onChange={(e) => handleVariantChange(index, e)} required>
-                  <option value="">Select Clothing Variant</option>
+                <label htmlFor={`variant_${index}`}>Variante de Prenda</label>
+                <select id={`variant_${index}`} name="id_clothing_size" value={variant.id_clothing_size} onChange={(e) => handleVariantChange(index, e)} required>
+                  <option value="">Seleccione Variante</option>
                   {clothingSizes
                     .filter(cs => !existingClothingSizeIds.has(cs.id))
                     .filter(cs => {
@@ -171,14 +199,23 @@ const ProductForm = ({ onSave, currentItem, onCancel, clothingSizes, existingClo
                     ))}
                 </select>
               </div>
-              {variants.length > 1 && <button type="button" onClick={() => handleRemoveVariant(index)} style={{ position: 'absolute', top: '10px', right: '10px' }}>Remove</button>}
+              {variants.length > 1 && (
+                <button type="button" className="btn-destructive" onClick={() => handleRemoveVariant(index)} style={{ position: 'absolute', top: '15px', right: '15px', padding: '0.4rem 0.8rem', fontSize: '0.75rem' }}>
+                  Remover
+                </button>
+              )}
             </div>
           );
         })}
-        <button type="button" onClick={handleAddVariant}>Add Another Variant</button>
-      </div>
 
-      <button type="submit">Create Products</button>
+        <div style={{ display: 'flex', gap: '10px', marginTop: '1.5rem', flexDirection: 'column' }}>
+          <button type="button" className="btn-secondary" onClick={handleAddVariant} style={{ alignSelf: 'flex-start' }}>+ Agregar Otra Variante</button>
+
+          <button type="submit" className="btn-primary" style={{ marginTop: '1rem' }}>
+            Crear Productos
+          </button>
+        </div>
+      </div>
     </form>
   );
 };

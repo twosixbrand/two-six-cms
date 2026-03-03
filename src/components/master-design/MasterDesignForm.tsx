@@ -45,7 +45,10 @@ const MasterDesignForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="form-container">
+    <form onSubmit={handleSubmit}>
+      <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.8rem' }}>
+        {initialData.id ? 'Editar Master Design' : 'Agregar Master Design'}
+      </h3>
       {initialData.id && (
         <div className="form-group">
           <label htmlFor="reference">Referencia</label>
@@ -90,9 +93,11 @@ const MasterDesignForm = ({
           onChange={handleChange}
         />
       </div>
-      <button type="submit" className="button-primary">
-        {initialData.id ? 'Actualizar Diseño' : 'Crear Diseño'}
-      </button>
+      <div style={{ display: 'flex', gap: '10px', marginTop: '1.5rem' }}>
+        <button type="submit" className="btn-primary" style={{ flex: 1 }}>
+          {initialData.id ? 'Actualizar Diseño' : 'Crear Diseño'}
+        </button>
+      </div>
     </form>
   );
 };

@@ -135,9 +135,11 @@ const ClothingColorForm = ({ onSave, currentItem, onCancel, designs, colors, siz
     // Edit Form (unchanged structure mostly)
     return (
       <form onSubmit={handleSubmit}>
-        <h3>Edit Clothing Color</h3>
+        <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.8rem' }}>
+          Editar Color de Prenda
+        </h3>
         <div className="form-group">
-          <label>Design</label>
+          <label htmlFor="id_design">Diseño</label>
           <select name="id_design" value={editFormData.id_design} onChange={handleEditFormChange} required disabled>
             <option value="">Select Design</option>
             {designs.map(d => <option key={d.id} value={d.id}>{d.reference} - {d.clothing?.name}</option>)}
@@ -151,7 +153,10 @@ const ClothingColorForm = ({ onSave, currentItem, onCancel, designs, colors, siz
           </select>
         </div>
         {/* Gender usually comes from design->clothing->gender, but if customizable on this level: */}
-        <div style={{ display: 'flex', gap: '10px', marginTop: '1rem' }}><button type="submit">Update</button><button type="button" onClick={onCancel}>Cancel</button></div>
+        <div style={{ display: 'flex', gap: '10px', marginTop: '1.5rem' }}>
+          <button type="submit" className="btn-primary" style={{ flex: 1 }}>Actualizar</button>
+          <button type="button" className="btn-secondary" onClick={onCancel} style={{ flex: 1 }}>Cancelar</button>
+        </div>
       </form>
     );
   }
@@ -159,11 +164,13 @@ const ClothingColorForm = ({ onSave, currentItem, onCancel, designs, colors, siz
   // New "Contextual" Creation Form
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <h3>Create Contextual Clothing Color</h3>
+      <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.8rem' }}>
+        Crear Versiones por Tamaño
+      </h3>
 
-      <div className="main-fields-section">
+      <div className="main-fields-section" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <div className="form-group">
-          <label>Design (Product Parent)</label>
+          <label htmlFor="id_design">Diseño (Producto Padre)</label>
           <select name="id_design" value={id_design} onChange={(e) => setIdDesign(e.target.value)} required>
             <option value="">Select Design Model</option>
             {designs.map(d => <option key={d.id} value={d.id}>{d.reference} - {d.clothing?.name} ({d.collection?.name})</option>)}
@@ -214,8 +221,10 @@ const ClothingColorForm = ({ onSave, currentItem, onCancel, designs, colors, siz
         </div>
       </div>
 
-      <div className="form-actions">
-        <button type="submit" disabled={!id_design || !id_color}>Create Versions</button>
+      <div className="form-actions" style={{ marginTop: '1.5rem' }}>
+        <button type="submit" className="btn-primary" style={{ width: '100%' }} disabled={!id_design || !id_color}>
+          Crear Versiones
+        </button>
       </div>
     </form>
   );

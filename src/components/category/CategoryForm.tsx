@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import { categorySchema } from './category.schema';
 import logger from '../../utils/logger';
 
@@ -35,17 +35,34 @@ const CategoryForm = ({ onSave, currentItem, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3>{currentItem ? 'Edit' : 'Add'} Category</h3>
-      <input
-        name="name"
-        value={formData.name}
-        onChange={handleChange}
-        placeholder="Name"
-        required
-      />
-      {errors.name && <span className="error">{errors.name[0]}</span>}
-      <button type="submit">Save</button>
-      {currentItem && <button type="button" onClick={onCancel}>Cancel</button>}
+      <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.8rem' }}>
+        {currentItem ? 'Editar Categoría' : 'Agregar Categoría'}
+      </h3>
+
+      <div className="form-group">
+        <label htmlFor="name">Nombre de Categoría</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Ej: Ropa de Invierno"
+          required
+        />
+        {errors.name && <span className="error" style={{ color: 'var(--error-color)', fontSize: '0.8rem', marginTop: '0.2rem' }}>{errors.name[0]}</span>}
+      </div>
+
+      <div style={{ display: 'flex', gap: '10px', marginTop: '1.5rem' }}>
+        <button type="submit" className="btn-primary" style={{ flex: 1 }}>
+          {currentItem ? 'Actualizar' : 'Guardar'}
+        </button>
+        {currentItem && (
+          <button type="button" className="btn-secondary" onClick={onCancel} style={{ flex: 1 }}>
+            Cancelar
+          </button>
+        )}
+      </div>
     </form>
   );
 };

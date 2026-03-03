@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { FiPenTool } from 'react-icons/fi';
+import React, { useState, useEffect, useMemo } from 'react';
+import { FiPenTool, FiSearch } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
 import '../styles/MasterDesign.css';
 import MasterDesignList from '../components/master-design/MasterDesignList';
@@ -13,6 +13,7 @@ const MasterDesignPage = () => {
   const [designs, setDesigns] = useState([]);
   const [currentItem, setCurrentItem] = useState(null);
   const [error, setError] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   // Estados para los datos de los selects del formulario
   const [clothings, setClothings] = useState([]);
@@ -38,6 +39,17 @@ const MasterDesignPage = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const filteredDesigns = useMemo(() => {
+    if (!searchTerm) return designs;
+    const lowerTerm = searchTerm.toLowerCase();
+    return designs.filter(design =>
+      design.reference?.toLowerCase().includes(lowerTerm) ||
+      design.clothing?.name?.toLowerCase().includes(lowerTerm) ||
+      design.collection?.name?.toLowerCase().includes(lowerTerm) ||
+      design.clothing?.gender?.name?.toLowerCase().includes(lowerTerm)
+    );
+  }, [designs, searchTerm]);
 
   const handleSave = async (itemData) => {
     try {
@@ -78,7 +90,38 @@ const MasterDesignPage = () => {
 
   return (
     <div className="master-design-container">
-      <PageHeader title="Master Design Management" icon={<FiPenTool />} />
+      <PageHeader title="Master Design Management" icon={<FiPenTool />}>
+        <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
+          <FiSearch style={{ position: 'absolute', left: '1.2rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)', fontSize: '1.2rem', zIndex: 2 }} />
+          <input
+            type="text"
+            placeholder="Search by ref, clothing or collection..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '0.8rem 1rem 0.8rem 3.2rem',
+              borderRadius: '50px',
+              background: 'var(--surface-color)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid var(--border-color)',
+              boxShadow: '0 4px 15px rgba(0,0,0,0.02)',
+              color: 'var(--text-primary)',
+              transition: 'all 0.3s ease',
+              fontSize: '0.95rem'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = 'var(--primary-color)';
+              e.target.style.boxShadow = '0 4px 20px rgba(212,175,55,0.15)';
+              e.target.style.outline = 'none';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = 'var(--border-color)';
+              e.target.style.boxShadow = '0 4px 15px rgba(0,0,0,0.02)';
+            }}
+          />
+        </div>
+      </PageHeader>
       {error && <p className="error-message">{error}</p>}
       {selectedProvidersDetail && (
         <div className="providers-detail-modal">
@@ -95,7 +138,7 @@ const MasterDesignPage = () => {
           collections={collections}
         />
         <MasterDesignList
-          designs={designs}
+          designs={filteredDesigns}
           onEdit={handleEdit}
           onDelete={handleDelete}
           onViewProviders={handleViewProviders} // Pasamos la nueva función

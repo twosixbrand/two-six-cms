@@ -60,51 +60,66 @@ const ClothingForm = ({ onSave, currentItem, onCancel, typeClothings, categories
           <input name="id" type="text" value={currentItem.id} readOnly disabled />
         </div>
       )}
-      <input
-        name="name"
-        type="text"
-        placeholder="Name"
-        value={item.name}
-        onChange={handleChange}
-        required
-      />
+      <div className="form-group">
+        <label htmlFor="name">Nombre de Prenda</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          placeholder="Ej: Camiseta Básica"
+          value={item.name}
+          onChange={handleChange}
+          required
+        />
+      </div>
 
-      <select
-        name="id_gender"
-        value={item.id_gender}
-        onChange={handleChange}
-        required
-      >
-        <option value="">Select Gender</option>
-        {genders.map((gender) => (
-          <option key={gender.id} value={gender.id}>
-            {gender.name}
-          </option>
-        ))}
-      </select>
+      <div className="form-group">
+        <label htmlFor="id_gender">Género</label>
+        <select
+          id="id_gender"
+          name="id_gender"
+          value={item.id_gender}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Seleccione Género</option>
+          {genders.map((gender) => (
+            <option key={gender.id} value={gender.id}>
+              {gender.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      <select name="id_type_clothing" value={item.id_type_clothing} onChange={handleChange} required>
-        <option value="">Select Type</option>
-        {typeClothings.map((type) => (
-          <option key={type.id} value={type.id}>
-            {type.name}
-          </option>
-        ))}
-      </select>
-      <select name="id_category" value={item.id_category} onChange={handleChange} required>
-        <option value="">Select Category</option>
-        {categories.map((category) => (
-          <option key={category.id} value={category.id}>
-            {category.name}
-          </option>
-        ))}
-      </select>
+      <div className="form-group">
+        <label htmlFor="id_type_clothing">Tipo de Prenda</label>
+        <select id="id_type_clothing" name="id_type_clothing" value={item.id_type_clothing} onChange={handleChange} required>
+          <option value="">Seleccione Tipo</option>
+          {typeClothings.map((type) => (
+            <option key={type.id} value={type.id}>
+              {type.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="id_category">Categoría</label>
+        <select id="id_category" name="id_category" value={item.id_category} onChange={handleChange} required>
+          <option value="">Seleccione Categoría</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <div style={{ display: 'flex', gap: '10px', marginTop: '1rem' }}>
-        <button type="submit">{currentItem ? 'Update' : 'Create'}</button>
+        <button type="submit" className="btn-primary" style={{ flex: 1 }}>{currentItem ? 'Actualizar' : 'Crear'}</button>
         {currentItem && (
-          <button type="button" onClick={onCancel}>
-            Cancel
+          <button type="button" className="btn-secondary" onClick={onCancel} style={{ flex: 1 }}>
+            Cancelar
           </button>
         )}
       </div>

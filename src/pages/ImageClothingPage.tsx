@@ -223,9 +223,8 @@ const ImageClothingPage = () => {
                 {/* Panel Izquierdo: Subida / Info */}
                 <div className="upload-section">
                     <form
-                        className="form-card"
                         onSubmit={handleUpload}
-                        style={{ padding: '1.5rem', position: 'relative' }}
+                        style={{ position: 'relative' }}
                     >
                         <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.1rem', textAlign: 'left', borderBottom: 'none', paddingBottom: '0' }}>Carga de Activos</h3>
 
@@ -243,18 +242,18 @@ const ImageClothingPage = () => {
                         </div>
 
                         {selectedFiles.length > 0 && (
-                            <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                                <button type="submit" className="btn-primary" disabled={uploading}>
+                            <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
+                                <button type="submit" className="btn-primary" disabled={uploading} style={{ flex: 1 }}>
                                     {uploading ? 'PROCESANDO...' : 'SUBIR AHORA'}
                                 </button>
-                                <button type="button" className="btn-secondary" onClick={() => setSelectedFiles([])}>
+                                <button type="button" className="btn-secondary" onClick={() => setSelectedFiles([])} style={{ flex: 1 }}>
                                     Cancelar
                                 </button>
                             </div>
                         )}
                     </form>
 
-                    <div className="form-card" style={{ padding: '1.5rem' }}>
+                    <div style={{ marginTop: '1.5rem' }}>
                         <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.1rem', textAlign: 'left', borderBottom: 'none', paddingBottom: '0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             <FiInfo color="var(--primary-color)" /> Detalles Variante
                         </h3>

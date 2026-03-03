@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { FiUsers } from 'react-icons/fi';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { FiUsers, FiSearch } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
+import UserList from '../components/user/UserList';
 import { getUsers, createUser, updateUser, deleteUser } from '../services/userApi';
 import { logError } from '../services/errorApi';
-import { EditIcon, DeleteIcon } from '../components/common/Icons.jsx';
-import ActionButton from '../components/common/ActionButton.jsx';
 import '../styles/MasterDesign.css';
 
 const UserPage = () => {
@@ -19,6 +18,7 @@ const UserPage = () => {
   });
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -33,6 +33,16 @@ const UserPage = () => {
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
+
+  const filteredUsers = useMemo(() => {
+    if (!searchTerm) return users;
+    const lowerTerm = searchTerm.toLowerCase();
+    return users.filter(user =>
+      user.name?.toLowerCase().includes(lowerTerm) ||
+      user.email?.toLowerCase().includes(lowerTerm) ||
+      user.login?.toLowerCase().includes(lowerTerm)
+    );
+  }, [users, searchTerm]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -87,11 +97,42 @@ const UserPage = () => {
   };
 
   return (
-    <div className="master-design-container">
-      <PageHeader title="User Management" icon={<FiUsers />} />
+    <div className="page-container">
+      <PageHeader title="User Management" icon={<FiUsers />}>
+        <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
+          <FiSearch style={{ position: 'absolute', left: '1.2rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)', fontSize: '1.2rem', zIndex: 2 }} />
+          <input
+            type="text"
+            placeholder="Search by name, email or login..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '0.8rem 1rem 0.8rem 3.2rem',
+              borderRadius: '50px',
+              background: 'var(--surface-color)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid var(--border-color)',
+              boxShadow: '0 4px 15px rgba(0,0,0,0.02)',
+              color: 'var(--text-primary)',
+              transition: 'all 0.3s ease',
+              fontSize: '0.95rem'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = 'var(--primary-color)';
+              e.target.style.boxShadow = '0 4px 20px rgba(212,175,55,0.15)';
+              e.target.style.outline = 'none';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = 'var(--border-color)';
+              e.target.style.boxShadow = '0 4px 15px rgba(0,0,0,0.02)';
+            }}
+          />
+        </div>
+      </PageHeader>
       {error && <p className="error-message" style={{ color: 'red' }}>{error}</p>}
-      <div className="master-design-content">
-        <div className="form-container">
+      <div className="grid-container">
+        <div className="form-card">
           <h2>{isEditing ? 'Edit User' : 'Add User'}</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
@@ -118,33 +159,8 @@ const UserPage = () => {
             {isEditing && <button type="button" onClick={resetForm} style={{ marginLeft: '10px' }}>Cancel</button>}
           </form>
         </div>
-        <div className="table-container">
-          <h2>User List</h2>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Login</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.name}</td>
-                  <td>{user.login}</td>
-                  <td>{user.email}</td>
-                  <td>{user.phone}</td>
-                  <td>
-                    <button onClick={() => handleEdit(user)} className="action-button button-edit" title="Editar"><EditIcon /></button>
-                    <button onClick={() => handleDelete(user.id)} className="action-button button-delete" title="Eliminar"><DeleteIcon /></button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="list-card">
+          <UserList items={filteredUsers} onEdit={handleEdit} onDelete={handleDelete} />
         </div>
       </div>
     </div>

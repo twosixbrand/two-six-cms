@@ -24,25 +24,46 @@ const TypeClothingForm = ({ onSave, currentItem, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3>{currentItem ? 'Edit' : 'Add'} Type Clothing</h3>
-      <input
-        name="id"
-        value={formData.id}
-        onChange={handleChange}
-        placeholder="ID (2 characters)"
-        required
-        maxLength={2}
-        disabled={!!currentItem}
-      />
-      <input
-        name="name"
-        value={formData.name}
-        onChange={handleChange}
-        placeholder="Name"
-        required
-      />
-      <button type="submit">Save</button>
-      {currentItem && <button type="button" onClick={onCancel}>Cancel</button>}
+      <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.8rem' }}>
+        {currentItem ? 'Editar Tipo de Prenda' : 'Agregar Tipo de Prenda'}
+      </h3>
+
+      <div className="form-group">
+        <label htmlFor="id">ID (2 caracteres)</label>
+        <input
+          id="id"
+          name="id"
+          value={formData.id}
+          onChange={handleChange}
+          placeholder="Ej: CM"
+          required
+          maxLength={2}
+          disabled={!!currentItem}
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="name">Nombre</label>
+        <input
+          id="name"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Ej: Camiseta"
+          required
+        />
+      </div>
+
+      <div style={{ display: 'flex', gap: '10px', marginTop: '1.5rem' }}>
+        <button type="submit" className="btn-primary" style={{ flex: 1 }}>
+          {currentItem ? 'Actualizar' : 'Guardar'}
+        </button>
+        {currentItem && (
+          <button type="button" className="btn-secondary" onClick={onCancel} style={{ flex: 1 }}>
+            Cancelar
+          </button>
+        )}
+      </div>
     </form>
   );
 };

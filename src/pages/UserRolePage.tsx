@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { FiLink, FiSearch } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import UserRoleList from '../components/user-role/UserRoleList';
 import UserRoleForm from '../components/user-role/UserRoleForm';
 import * as userRoleApi from '../services/userRoleApi';
@@ -12,6 +14,7 @@ const UserRolePage = () => {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const fetchData = useCallback(async () => {
     try {
@@ -37,6 +40,17 @@ const UserRolePage = () => {
     fetchData();
   }, [fetchData]);
 
+  const filteredAssignments = useMemo(() => {
+    if (!searchTerm) return assignments;
+    const lowerTerm = searchTerm.toLowerCase();
+    return assignments.filter(item =>
+      item.user?.name?.toLowerCase().includes(lowerTerm) ||
+      item.role?.name?.toLowerCase().includes(lowerTerm) ||
+      item.user?.email?.toLowerCase().includes(lowerTerm) ||
+      item.user?.login?.toLowerCase().includes(lowerTerm)
+    );
+  }, [assignments, searchTerm]);
+
   const handleSave = async (assignmentData) => {
     try {
       await userRoleApi.createUserRole(assignmentData);
@@ -61,13 +75,44 @@ const UserRolePage = () => {
 
   return (
     <div className="page-container">
-      <h1>User Role Management</h1>
+      <PageHeader title="User Role Management" icon={<FiLink />}>
+        <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
+          <FiSearch style={{ position: 'absolute', left: '1.2rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)', fontSize: '1.2rem', zIndex: 2 }} />
+          <input
+            type="text"
+            placeholder="Search by user, email or role..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '0.8rem 1rem 0.8rem 3.2rem',
+              borderRadius: '50px',
+              background: 'var(--surface-color)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid var(--border-color)',
+              boxShadow: '0 4px 15px rgba(0,0,0,0.02)',
+              color: 'var(--text-primary)',
+              transition: 'all 0.3s ease',
+              fontSize: '0.95rem'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = 'var(--primary-color)';
+              e.target.style.boxShadow = '0 4px 20px rgba(212,175,55,0.15)';
+              e.target.style.outline = 'none';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = 'var(--border-color)';
+              e.target.style.boxShadow = '0 4px 15px rgba(0,0,0,0.02)';
+            }}
+          />
+        </div>
+      </PageHeader>
       {error && <p className="error-message">{error}</p>}
       <div className="grid-container">
         <div className="form-card">
           <UserRoleForm
             onSave={handleSave}
-            onCancel={() => {}}
+            onCancel={() => { }}
             allUsers={users}
             allRoles={roles}
           />
@@ -77,7 +122,7 @@ const UserRolePage = () => {
             <p>Loading assignments...</p>
           ) : (
             <UserRoleList
-              items={assignments}
+              items={filteredAssignments}
               onDelete={handleDelete}
             />
           )}

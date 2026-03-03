@@ -51,14 +51,18 @@
 
 .login-box input:focus {
   outline: none;
-  border-color: 
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
 
 .login-box button {
   width: 100%;
   padding: 14px;
   background-color: var(--primary-color);
-  color: var(--
- -cursor: pointer;
+  color: var(--text-on-primary);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
   font-size: 16px;
   font-weight: 600;
   text-transform: uppercase;
@@ -67,10 +71,12 @@
 }
 
 .login-box button:hover {
-  background-color: var(--primary-hover-color);
+  background-color: var(--primary-color);
+  filter: brightness(0.9);
 }
 
-.login-box button:active 
+.login-box button:active {
+  transform: translateY(1px);
 }
 
 .login-error {
