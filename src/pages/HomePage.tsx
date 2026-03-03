@@ -1,80 +1,101 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiHome } from 'react-icons/fi';
+import { FiHome, FiLayers, FiBarChart2, FiSettings, FiUsers, FiMap, FiTerminal } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
 import {
-  FaTshirt,
-  FaPaintBrush,
-  FaIndustry,
-  FaPalette,
-  FaImage,
-  FaBoxOpen,
-  FaWarehouse,
-  FaExclamationTriangle,
-  FaEyeDropper
+  FaTshirt, FaPaintBrush, FaPalette, FaImage, FaBoxOpen, FaWarehouse,
+  FaShoppingCart, FaChartLine,
+  FaCalendarAlt, FaCloud, FaArchive, FaIndustry, FaTags, FaFolder, FaEyeDropper,
+  FaTruck, FaUsers as FaUsersIcon, FaShieldAlt, FaUserTag,
+  FaMapSigns,
+  FaExclamationTriangle
 } from 'react-icons/fa';
 import '../styles/HomePage.css';
+
+const homeSections = [
+  {
+    title: 'Admin Prendas',
+    icon: <FiLayers />,
+    items: [
+      { path: '/clothing', icon: <FaTshirt />, title: 'Clothing', desc: 'Gestión de inventario de prendas, tallas y stock.' },
+      { path: '/master-design', icon: <FaPaintBrush />, title: 'Design', desc: 'Creación y gestión de diseños maestros.' },
+      { path: '/clothing-color', icon: <FaPalette />, title: 'Clothing Color', desc: 'Gestión de variaciones específicas (color/talla).' },
+      { path: '/image-clothing', icon: <FaImage />, title: 'Image Clothing', desc: 'Gestión de imágenes para variantes de prendas.' },
+      { path: '/product', icon: <FaBoxOpen />, title: 'Product', desc: 'Gestión de productos finales para la venta.' },
+      { path: '/stock', icon: <FaWarehouse />, title: 'Stock', desc: 'Gestión de niveles de inventario.' },
+    ]
+  },
+  {
+    title: 'Reports',
+    icon: <FiBarChart2 />,
+    items: [
+      { path: '/order', icon: <FaShoppingCart />, title: 'Pedidos', desc: 'Visualización y seguimiento de pedidos cliente.' },
+      { path: '/reports/sales/general', icon: <FaChartLine />, title: 'General Sales', desc: 'Reporte general de ventas del sistema.' },
+    ]
+  },
+  {
+    title: 'Admin Maestros',
+    icon: <FiSettings />,
+    items: [
+      { path: '/year-production', icon: <FaCalendarAlt />, title: 'Year Production', desc: 'Definición de años productivos.' },
+      { path: '/season', icon: <FaCloud />, title: 'Season', desc: 'Gestión de temporadas.' },
+      { path: '/collection', icon: <FaArchive />, title: 'Collection', desc: 'Gestión de colecciones de diseño.' },
+      { path: '/production-type', icon: <FaIndustry />, title: 'Production type', desc: 'Tipos de producción disponibles.' },
+      { path: '/type-clothing', icon: <FaTags />, title: 'Type Clothing', desc: 'Tipologías de prendas registradas.' },
+      { path: '/category', icon: <FaFolder />, title: 'Category', desc: 'Categorías principales del sistema.' },
+      { path: '/color', icon: <FaEyeDropper />, title: 'Color', desc: 'Gestión de colores disponibles en producción.' },
+    ]
+  },
+  {
+    title: 'Users / providers',
+    icon: <FiUsers />,
+    items: [
+      { path: '/provider', icon: <FaTruck />, title: 'Provider', desc: 'Gestión de proveedores externos.' },
+      { path: '/user', icon: <FaUsersIcon />, title: 'User', desc: 'Administración de usuarios del sistema.' },
+      { path: '/role', icon: <FaShieldAlt />, title: 'Role', desc: 'Gestión de roles de seguridad.' },
+      { path: '/user-role', icon: <FaUserTag />, title: 'User Roles', desc: 'Asignación de roles a los usuarios.' },
+    ]
+  },
+  {
+    title: 'Plan Estrategico',
+    icon: <FiMap />,
+    items: [
+      { path: '/plan-estrategico', icon: <FaMapSigns />, title: 'Ver plan', desc: 'Visualización del plan estratégico anual.' },
+    ]
+  },
+  {
+    title: 'Logs App',
+    icon: <FiTerminal />,
+    items: [
+      { path: '/logs', icon: <FaExclamationTriangle />, title: 'Logs', desc: 'Registro de errores y debug del panel.' },
+    ]
+  }
+];
 
 const HomePage = () => {
   return (
     <div className="home-container page-container">
       <PageHeader title="Páginas Principales" icon={<FiHome />} />
-      <div className="home-cards">
-        <Link to="/clothing" className="home-card">
-          <div className="card-watermark"><FaTshirt /></div>
-          <div className="card-icon-container"><FaTshirt /></div>
-          <h2>Clothing Management</h2>
-          <p>Manage your clothing inventory, sizes, colors, and stock.</p>
-        </Link>
-        <Link to="/master-design" className="home-card">
-          <div className="card-watermark"><FaPaintBrush /></div>
-          <div className="card-icon-container"><FaPaintBrush /></div>
-          <h2>Master Design Management</h2>
-          <p>Create and manage master designs.</p>
-        </Link>
-        <Link to="/design-provider" className="home-card">
-          <div className="card-watermark"><FaIndustry /></div>
-          <div className="card-icon-container"><FaIndustry /></div>
-          <h2>Design Provider Management</h2>
-          <p>Assign providers to your master designs.</p>
-        </Link>
-        <Link to="/clothing-color" className="home-card">
-          <div className="card-watermark"><FaPalette /></div>
-          <div className="card-icon-container"><FaPalette /></div>
-          <h2>Clothing Color Management</h2>
-          <p>Manage the specific variations (color/size) of your designs.</p>
-        </Link>
-        <Link to="/image-clothing" className="home-card">
-          <div className="card-watermark"><FaImage /></div>
-          <div className="card-icon-container"><FaImage /></div>
-          <h2>Image Clothing Management</h2>
-          <p>Manage images for clothing variants.</p>
-        </Link>
-        <Link to="/product" className="home-card">
-          <div className="card-watermark"><FaBoxOpen /></div>
-          <div className="card-icon-container"><FaBoxOpen /></div>
-          <h2>Product Management</h2>
-          <p>Manage final products available for sale.</p>
-        </Link>
-        <Link to="/stock" className="home-card">
-          <div className="card-watermark"><FaWarehouse /></div>
-          <div className="card-icon-container"><FaWarehouse /></div>
-          <h2>Stock Management</h2>
-          <p>Manage inventory levels for your clothing variants.</p>
-        </Link>
-        <Link to="/logs" className="home-card">
-          <div className="card-watermark"><FaExclamationTriangle /></div>
-          <div className="card-icon-container"><FaExclamationTriangle /></div>
-          <h2>Error Logs</h2>
-          <p>View and filter application error logs for debugging.</p>
-        </Link>
-        <Link to="/color" className="home-card">
-          <div className="card-watermark"><FaEyeDropper /></div>
-          <div className="card-icon-container"><FaEyeDropper /></div>
-          <h2>Color Management</h2>
-          <p>Manage the available colors for products.</p>
-        </Link>
-      </div>
+
+      {homeSections.map((section, idx) => (
+        <section key={idx} className="home-section">
+          <h2 className="home-section-title">
+            {section.icon}
+            {section.title}
+          </h2>
+          <div className="home-cards">
+            {section.items.map((item, itemIdx) => (
+              <Link to={item.path} className="home-card" key={itemIdx}>
+                <div className="card-watermark">{item.icon}</div>
+                <div className="card-icon-container">{item.icon}</div>
+                <h2>{item.title}</h2>
+                <p>{item.desc}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ))}
+
     </div>
   );
 };
