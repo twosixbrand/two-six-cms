@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FiPenTool } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import '../styles/MasterDesign.css';
 import MasterDesignList from '../components/master-design/MasterDesignList';
 import MasterDesignForm from '../components/master-design/MasterDesignForm';
@@ -11,7 +13,7 @@ const MasterDesignPage = () => {
   const [designs, setDesigns] = useState([]);
   const [currentItem, setCurrentItem] = useState(null);
   const [error, setError] = useState('');
-  
+
   // Estados para los datos de los selects del formulario
   const [clothings, setClothings] = useState([]);
   const [collections, setCollections] = useState([]);
@@ -76,7 +78,7 @@ const MasterDesignPage = () => {
 
   return (
     <div className="master-design-container">
-      <h1>Master Design Management</h1>
+      <PageHeader title="Master Design Management" icon={<FiPenTool />} />
       {error && <p className="error-message">{error}</p>}
       {selectedProvidersDetail && (
         <div className="providers-detail-modal">

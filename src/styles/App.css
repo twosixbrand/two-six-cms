@@ -84,8 +84,8 @@ h6 {
 .app-content {
   padding-left: 280px;
   /* Espacio para el menú lateral */
-  padding-top: calc(70px + 2rem);
-  /* 70px del header fijo + espacio adicional */
+  padding-top: calc(70px + 0.5rem);
+  /* Reducido de 2rem a 0.5rem */
   padding-bottom: 2rem;
   transition: padding-left 0.3s ease-in-out;
   width: 100%;
@@ -215,37 +215,147 @@ select:disabled {
   cursor: not-allowed;
 }
 
-/* Estilos de Botones */
+/* 6. Sistema de Botones Premium Unified */
 button {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: var(--border-radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.4rem;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: background-color 0.2s, transform 0.1s;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  border: 1px solid transparent;
+  outline: none;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
 }
 
-button[type="submit"] {
-  background-color: var(--primary-color);
-  color: var(--text-on-primary);
+/* Botón Primario (Guardar, Confirmar, Crear) */
+button[type="submit"], .btn-primary {
+  background: linear-gradient(135deg, #d4af37 0%, #f5d76e 50%, #d4af37 100%);
+  background-size: 200% auto;
+  color: #0f172a;
+  border: 1px solid rgba(184, 134, 11, 0.3);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.4);
 }
 
-button[type="submit"]:hover {
-  background-color: var(--primary-hover-color);
+button[type="submit"]:hover, .btn-primary:hover {
+  background-position: right center;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
 }
 
-button[type="button"] {
-  background-color: #e5e7eb;
+/* Botón Secundario (Cancelar, Volver, Cerrar) */
+button[type="button"], .btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--text-primary);
+  border: 1.5px solid rgba(212, 175, 55, 0.25);
 }
 
-button[type="button"]:hover {
-  background-color: #d1d5db;
+button[type="button"]:hover, .btn-secondary:hover {
+  background: rgba(212, 175, 55, 0.08);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+/* Botón Destructivo (Eliminar, Borrar) - Identificado por clase específica */
+.btn-destructive {
+  background: rgba(239, 68, 68, 0.05);
+  color: #ef4444;
+  border: 1.5px solid rgba(239, 68, 68, 0.2);
+}
+
+.btn-destructive:hover {
+  background: #ef4444;
+  color: #ffffff;
+  border-color: #ef4444;
+  box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+}
+
+/* Botones de Acción de Tabla / Ghost (Editar, Ver) */
+.btn-ghost {
+  padding: 0.5rem;
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 10px;
+}
+
+.btn-ghost:hover {
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--primary-color);
+  transform: scale(1.1);
 }
 
 button:active {
-  transform: scale(0.98);
+  transform: scale(0.96);
+}
+
+/* 7. Tooltip System (CSS Native) */
+[data-tooltip] {
+  position: relative;
+  cursor: pointer;
+}
+
+[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  padding: 0.5rem 0.8rem;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: none;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 1000;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(212, 175, 55, 0.1);
+  pointer-events: none;
+}
+
+[data-tooltip]:hover::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Arrow */
+[data-tooltip]::after {
+  content: '';
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: rgba(212, 175, 55, 0.3) transparent transparent transparent;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+[data-tooltip]:hover::after {
+  opacity: 1;
+  visibility: visible;
 }
 
 /* Estilos de Listas */

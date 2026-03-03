@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FiTruck } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import ProviderList from '../components/provider/ProviderList';
 import ProviderForm from '../components/provider/ProviderForm';
 import * as providerApi from '../services/providerApi';
@@ -65,7 +67,7 @@ const ProviderPage = () => {
 
   return (
     <div className="page-container">
-      <h1>Provider Management</h1>
+      <PageHeader title="Provider Management" icon={<FiTruck />} />
       {error && <p className="error-message">{error}</p>}
       <div className="grid-container">
         <div className="form-card">

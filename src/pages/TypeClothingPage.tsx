@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FiTag } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import TypeClothingList from '../components/type-clothing/TypeClothingList';
 import TypeClothingForm from '../components/type-clothing/TypeClothingForm';
 import * as typeClothingApi from '../services/typeClothingApi';
@@ -63,7 +65,7 @@ const TypeClothingPage = () => {
 
   return (
     <div className="page-container">
-      <h1>Type Clothing Management</h1>
+      <PageHeader title="Type Clothing Management" icon={<FiTag />} />
       {error && <p className="error-message">{error}</p>}
       <div className="grid-container">
         <div className="form-card">

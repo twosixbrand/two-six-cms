@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { FiBox, FiSearch } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import StockList from '../components/stock/StockList';
 import StockForm from '../components/stock/StockForm';
 import * as clothingSizeApi from '../services/clothingSizeApi';
@@ -80,7 +82,38 @@ const StockPage = () => {
 
     return (
         <div className="page-container">
-            <h1>Inventory Management</h1>
+            <PageHeader title="Inventory Management" icon={<FiBox />}>
+                <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
+                    <FiSearch style={{ position: 'absolute', left: '1.2rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)', fontSize: '1.2rem', zIndex: 2 }} />
+                    <input
+                        type="text"
+                        placeholder="Search by ref, color, size..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{
+                            width: '100%',
+                            padding: '0.8rem 1rem 0.8rem 3.2rem',
+                            borderRadius: '50px',
+                            background: 'var(--surface-color)',
+                            backdropFilter: 'blur(10px)',
+                            border: '1px solid var(--border-color)',
+                            boxShadow: '0 4px 15px rgba(0,0,0,0.02)',
+                            color: 'var(--text-primary)',
+                            transition: 'all 0.3s ease',
+                            fontSize: '0.95rem'
+                        }}
+                        onFocus={(e) => {
+                            e.target.style.borderColor = 'var(--primary-color)';
+                            e.target.style.boxShadow = '0 4px 20px rgba(212,175,55,0.15)';
+                            e.target.style.outline = 'none';
+                        }}
+                        onBlur={(e) => {
+                            e.target.style.borderColor = 'var(--border-color)';
+                            e.target.style.boxShadow = '0 4px 15px rgba(0,0,0,0.02)';
+                        }}
+                    />
+                </div>
+            </PageHeader>
             {error && <p className="error-message">{error}</p>}
 
             <div className="grid-container">
@@ -96,18 +129,6 @@ const StockPage = () => {
                 <div className="list-card">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
                         <h2>Inventory List</h2>
-                        <input
-                            type="text"
-                            placeholder="Search by ref, color, size..."
-                            value={searchTerm}
-                            onChange={e => setSearchTerm(e.target.value)}
-                            style={{
-                                padding: '8px',
-                                border: '1px solid #ddd',
-                                borderRadius: '4px',
-                                width: '250px'
-                            }}
-                        />
                     </div>
                     {loading ? (
                         <p>Loading...</p>
@@ -115,7 +136,7 @@ const StockPage = () => {
                         <StockList
                             items={filteredInventory}
                             onEdit={handleEdit}
-                            onDelete={() => {}}
+                            onDelete={() => { }}
                         // Delete removed because deleting the 'Size' deletes the product link. 
                         // User should delete from ClothingColor page if they want to remove the variant entirely.
                         />

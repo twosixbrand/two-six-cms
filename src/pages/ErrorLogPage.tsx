@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { FiAlertTriangle } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import { getLogs } from '../services/errorLogApi';
 import { logError } from '../services/errorApi';
 import '../styles/ErrorLogPage.css';
@@ -41,7 +43,7 @@ const ErrorLogPage = () => {
 
   return (
     <div className="page-container">
-      <h1>Error Logs</h1>
+      <PageHeader title="Error Logs" icon={<FiAlertTriangle />} />
 
       <div className="log-filters">
         <select value={filterApp} onChange={(e) => setFilterApp(e.target.value)}>

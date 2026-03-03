@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FiTrendingUp } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import { getGeneralSalesReport } from '../services/reportApi';
 import './GeneralSalesReportPage.css';
 
@@ -50,7 +52,7 @@ const GeneralSalesReportPage = () => {
 
     return (
         <div className="report-page-container">
-            <h1>Reporte General de Ventas</h1>
+            <PageHeader title="Reporte General de Ventas" icon={<FiTrendingUp />} />
 
             <form onSubmit={handleSearch} className="report-filters">
                 <div className="filter-group">

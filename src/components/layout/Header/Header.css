@@ -58,20 +58,20 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  width: 42px;
-  height: 42px;
-  border: 2px solid #d4af37;
+  gap: 3px;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid #d4af37;
   border-radius: 50%;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 8px rgba(212, 175, 55, 0.3), inset 0 0 6px rgba(212, 175, 55, 0.1);
+  box-shadow: 0 0 6px rgba(212, 175, 55, 0.2), inset 0 0 4px rgba(212, 175, 55, 0.1);
   position: relative;
 }
 
 .hamburger-line {
   display: block;
-  width: 18px;
-  height: 2px;
+  width: 14px;
+  height: 1.5px;
   background: linear-gradient(90deg, #d4af37, #f5d76e);
   border-radius: 2px;
   transition: all 0.3s ease;
@@ -147,32 +147,36 @@
 .header-datetime {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.35rem 0.85rem;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  gap: 0.6rem;
+  padding: 0.4rem 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.3);
   border-radius: 20px;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .header-datetime:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #d4af37;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.15), inset 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .datetime-icon {
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
   color: #d4af37;
   flex-shrink: 0;
+  filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.4));
 }
 
 .datetime-text {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: #94a3b8;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #f8fafc; /* Blanco azulado brillante */
   white-space: nowrap;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* User Info */

@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { FiPackage, FiSearch } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import ProductList from '../components/product/ProductList.jsx';
 import ProductForm from '../components/product/ProductForm.jsx';
 import * as productApi from '../services/productApi.js';
@@ -110,7 +112,38 @@ const ProductPage = () => {
 
   return (
     <div className="page-container">
-      <h1>Product Management</h1>
+      <PageHeader title="Product Management" icon={<FiPackage />}>
+        <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
+          <FiSearch style={{ position: 'absolute', left: '1.2rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)', fontSize: '1.2rem', zIndex: 2 }} />
+          <input
+            type="text"
+            placeholder="Filter products..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '0.8rem 1rem 0.8rem 3.2rem',
+              borderRadius: '50px',
+              background: 'var(--surface-color)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid var(--border-color)',
+              boxShadow: '0 4px 15px rgba(0,0,0,0.02)',
+              color: 'var(--text-primary)',
+              transition: 'all 0.3s ease',
+              fontSize: '0.95rem'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = 'var(--primary-color)';
+              e.target.style.boxShadow = '0 4px 20px rgba(212,175,55,0.15)';
+              e.target.style.outline = 'none';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = 'var(--border-color)';
+              e.target.style.boxShadow = '0 4px 15px rgba(0,0,0,0.02)';
+            }}
+          />
+        </div>
+      </PageHeader>
       {error && <p className="error-message">{error}</p>}
       <div className="grid-container">
         <div className="form-card">
@@ -123,9 +156,8 @@ const ProductPage = () => {
           />
         </div>
         <div className="list-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
             <h2>Products</h2>
-            <input type="text" placeholder="Filter products..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} style={{ width: '250px' }} />
           </div>
           {loading ? (
             <p>Loading...</p>

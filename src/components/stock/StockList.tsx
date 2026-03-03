@@ -55,7 +55,13 @@ const StockList = ({ items, onEdit, onDelete }) => {
                                     <td>{item.quantity_minimum_alert !== null ? item.quantity_minimum_alert : '-'}</td>
                                     <td>
                                         <div className="action-buttons">
-                                            <button onClick={() => onEdit(item)} className="btn-edit">Edit</button>
+                                            <button 
+                                                onClick={() => onEdit(item)} 
+                                                className="btn-ghost"
+                                                data-tooltip="Editar registro de inventario"
+                                            >
+                                                Editar
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>

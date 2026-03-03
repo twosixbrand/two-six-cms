@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { FiUsers } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import { getUsers, createUser, updateUser, deleteUser } from '../services/userApi';
 import { logError } from '../services/errorApi';
 import { EditIcon, DeleteIcon } from '../components/common/Icons.jsx';
@@ -86,7 +88,7 @@ const UserPage = () => {
 
   return (
     <div className="master-design-container">
-      <h1>User Management</h1>
+      <PageHeader title="User Management" icon={<FiUsers />} />
       {error && <p className="error-message" style={{ color: 'red' }}>{error}</p>}
       <div className="master-design-content">
         <div className="form-container">

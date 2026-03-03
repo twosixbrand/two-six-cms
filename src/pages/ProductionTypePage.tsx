@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { FiTool } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import ProductionTypeList from '../components/production-type/ProductionTypeList.jsx';
 import ProductionTypeForm from '../components/production-type/ProductionTypeForm.jsx';
 import * as productionTypeApi from '../services/productionTypeApi.js';
@@ -63,7 +65,7 @@ const ProductionTypePage = () => {
 
   return (
     <div className="page-container">
-      <h1>Production Type Management</h1>
+      <PageHeader title="Production Type Management" icon={<FiTool />} />
       {error && <p className="error-message">{error}</p>}
       <div className="grid-container">
         <div className="form-card">

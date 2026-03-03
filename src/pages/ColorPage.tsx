@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { FiAperture } from "react-icons/fi";
+import PageHeader from '../components/common/PageHeader';
 import ColorList from '../components/color/ColorList';
 import ColorForm from '../components/color/ColorForm';
 import { logError } from "../services/errorApi";
@@ -68,7 +70,7 @@ const ColorPage = () => {
 
   return (
     <div className="page-container">
-      <h1>Administrar Colores</h1>
+      <PageHeader title="Administrar Colores" icon={<FiAperture />} />
       {error && <p className="error-message">{error}</p>}
       <div className="grid-container">
         <div className="form-card">

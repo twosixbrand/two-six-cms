@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { FiBriefcase } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import DesignProviderList from '../components/design-provider/DesignProviderList.jsx';
 import DesignProviderForm from '../components/design-provider/DesignProviderForm.jsx';
 import * as designProviderApi from '../services/designProviderApi.js';
@@ -61,7 +63,7 @@ const DesignProviderPage = () => {
 
   return (
     <div className="page-container">
-      <h1>Design Provider Management</h1>
+      <PageHeader title="Design Provider Management" icon={<FiBriefcase />} />
       {error && <p className="error-message">{error}</p>}
       <div className="grid-container">
         <div className="form-card">

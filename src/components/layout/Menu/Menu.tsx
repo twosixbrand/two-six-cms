@@ -11,36 +11,24 @@ const menuData = [
     path: '#',
     subNav: [
       { title: 'Clothing', path: '/clothing' },
-      { title: 'Type Clothing', path: '/type-clothing' },
-      { title: 'Category', path: '/category' },
       { title: 'Design', path: '/master-design' },
       { title: 'Clothing Color', path: '/clothing-color' },
+      { title: 'Image Clothing', path: '/image-clothing' },
       { title: 'Product', path: '/product' },
       { title: 'Stock', path: '/stock' },
-    ],
-  },
-  {
-    title: 'Ventas',
-    path: '#',
-    subNav: [
-      { title: 'Pedidos', path: '/order' },
+
+
+
+
+
     ],
   },
   {
     title: 'Reports',
     path: '#',
     subNav: [
+      { title: 'Pedidos', path: '/order' },
       { title: 'General Sales', path: '/reports/sales/general' },
-    ],
-  },
-  {
-    title: 'Users / providers',
-    path: '#',
-    subNav: [
-      { title: 'Provider', path: '/provider' },
-      { title: 'User', path: '/user' },
-      { title: 'Role', path: '/role' },
-      { title: 'User Roles', path: '/user-role' },
     ],
   },
   {
@@ -51,7 +39,19 @@ const menuData = [
       { title: 'Season', path: '/season' },
       { title: 'Collection', path: '/collection' },
       { title: 'Production type', path: '/production-type' },
+      { title: 'Type Clothing', path: '/type-clothing' },
+      { title: 'Category', path: '/category' },
       { title: 'Color', path: '/color' },
+    ],
+  },
+  {
+    title: 'Users / providers',
+    path: '#',
+    subNav: [
+      { title: 'Provider', path: '/provider' },
+      { title: 'User', path: '/user' },
+      { title: 'Role', path: '/role' },
+      { title: 'User Roles', path: '/user-role' },
     ],
   },
   {
@@ -66,13 +66,6 @@ const menuData = [
     path: '#',
     subNav: [
       { title: 'Logs', path: '/logs' },
-    ],
-  },
-  {
-    title: 'Configuración',
-    path: '#',
-    subNav: [
-      { title: 'Ubicaciones', path: '/locations' },
     ],
   },
 ];

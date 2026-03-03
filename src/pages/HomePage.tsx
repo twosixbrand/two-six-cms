@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FiHome } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import {
   FaTshirt,
   FaPaintBrush,
@@ -16,8 +18,7 @@ import '../styles/HomePage.css';
 const HomePage = () => {
   return (
     <div className="home-container page-container">
-
-      <h1>Páginas Principales</h1>
+      <PageHeader title="Páginas Principales" icon={<FiHome />} />
       <div className="home-cards">
         <Link to="/clothing" className="home-card">
           <div className="card-watermark"><FaTshirt /></div>

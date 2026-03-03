@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FiMap } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import locationApi from '../services/locationApi';
 import './LocationPage.css';
 
@@ -50,9 +52,7 @@ const LocationPage = () => {
 
     return (
         <div className="location-page">
-            <div className="location-header">
-                <h1>Gestión de Ubicaciones y Envíos</h1>
-            </div>
+            <PageHeader title="Gestión de Ubicaciones y Envíos" icon={<FiMap />} />
 
             <table className="location-table">
                 <thead>

@@ -6,42 +6,40 @@ import { AuthProvider, AuthContext } from './context/AuthContext';
 // Estilos
 import './styles/App.css';
 // Componentes de Layout y Rutas
-import Header from './components/layout/Header/Header.jsx';
-import Menu from './components/layout/Menu/Menu.jsx';
-import Footer from './components/layout/Footer/Footer.jsx';
-import ErrorBoundary from './components/layout/ErrorBoundary.jsx';
-import ProtectedRoute from './components/protectedRoute/ProtectedRoute.jsx';
+import Header from './components/layout/Header/Header.tsx';
+import Menu from './components/layout/Menu/Menu.tsx';
+import Footer from './components/layout/Footer/Footer.tsx';
+import ErrorBoundary from './components/layout/ErrorBoundary.tsx';
+import ProtectedRoute from './components/protectedRoute/ProtectedRoute.tsx';
 
 // Páginas
-import HomePage from './pages/HomePage.jsx';
-import LoginPage from './pages/Login.jsx';
-import ClothingPage from './pages/ClothingPage.jsx';
-import CategoryPage from "./pages/CategoryPage.jsx";
-import RolePage from './pages/RolePage.jsx';
-import UserPage from './pages/UserPage.jsx';
-import UserRolePage from './pages/UserRolePage.jsx';
-import TypeClothingPage from './pages/TypeClothingPage.jsx';
-import MasterDesignPage from './pages/MasterDesignPage.jsx';
-import SeasonPage from './pages/SeasonPage.jsx';
-import YearProductionPage from './pages/YearProductionPage.jsx';
-import CollectionPage from "./pages/CollectionPage.jsx";
-import ProviderPage from './pages/ProviderPage.jsx';
-import ProductionTypePage from './pages/ProductionTypePage.jsx';
-import ErrorLogPage from './pages/ErrorLogPage.jsx';
-import DesignProviderPage from './pages/DesignProviderPage.jsx';
-import ClothingColorPage from "./pages/ClothingColorPage.jsx";
-import ProductPage from "./pages/ProductPage.jsx";
-import ColorPage from './pages/ColorPage.jsx';
-import PlanEstrategicoPage from './pages/PlanEstrategicoPage.jsx';
-import OrderPage from './pages/OrderPage.jsx';
-import OrderDetailPage from './pages/OrderDetailPage.jsx';
-import LocationPage from './pages/LocationPage.jsx';
-import LocationDetailPage from './pages/LocationDetailPage.jsx';
-import StockPage from './pages/StockPage.jsx';
-import ImageClothingPage from './pages/ImageClothingPage.jsx';
-import GeneralSalesReportPage from './pages/GeneralSalesReportPage.jsx';
-
-
+import HomePage from './pages/HomePage.tsx';
+import LoginPage from './pages/Login.tsx';
+import ClothingPage from './pages/ClothingPage.tsx';
+import CategoryPage from "./pages/CategoryPage.tsx";
+import RolePage from './pages/RolePage.tsx';
+import UserPage from './pages/UserPage.tsx';
+import UserRolePage from './pages/UserRolePage.tsx';
+import TypeClothingPage from './pages/TypeClothingPage.tsx';
+import MasterDesignPage from './pages/MasterDesignPage.tsx';
+import SeasonPage from './pages/SeasonPage.tsx';
+import YearProductionPage from './pages/YearProductionPage.tsx';
+import CollectionPage from "./pages/CollectionPage.tsx";
+import ProviderPage from './pages/ProviderPage.tsx';
+import ProductionTypePage from './pages/ProductionTypePage.tsx';
+import ErrorLogPage from './pages/ErrorLogPage.tsx';
+import DesignProviderPage from './pages/DesignProviderPage.tsx';
+import ClothingColorPage from "./pages/ClothingColorPage.tsx";
+import ProductPage from "./pages/ProductPage.tsx";
+import ColorPage from './pages/ColorPage.tsx';
+import PlanEstrategicoPage from './pages/PlanEstrategicoPage.tsx';
+import OrderPage from './pages/OrderPage.tsx';
+import OrderDetailPage from './pages/OrderDetailPage.tsx';
+import LocationPage from './pages/LocationPage.tsx';
+import LocationDetailPage from './pages/LocationDetailPage.tsx';
+import StockPage from './pages/StockPage.tsx';
+import ImageClothingPage from './pages/ImageClothingPage.tsx';
+import GeneralSalesReportPage from './pages/GeneralSalesReportPage.tsx';
 
 /**
  * Componente que renderiza el layout principal (Menú, Contenido, Footer)
@@ -94,7 +92,6 @@ const MainLayout = () => {
               <Route path="/image-clothing/:id" element={<ImageClothingPage />} />
               <Route path="/product" element={<ProductPage />} />
               <Route path="/color" element={<ColorPage />} />
-              <Route path="/color" element={<ColorPage />} />
               <Route path="/plan-estrategico" element={<PlanEstrategicoPage />} />
               <Route path="/order" element={<OrderPage />} />
               <Route path="/order/:id" element={<OrderDetailPage />} />
@@ -105,8 +102,8 @@ const MainLayout = () => {
             </Routes>
           </main>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 };

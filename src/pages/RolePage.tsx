@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FiShield } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import RoleList from '../components/role/RoleList';
 import RoleForm from '../components/role/RoleForm';
 import * as roleApi from '../services/roleApi';
@@ -63,7 +65,7 @@ const RolePage = () => {
 
   return (
     <div className="page-container">
-      <h1>Role Management</h1>
+      <PageHeader title="Role Management" icon={<FiShield />} />
       {error && <p className="error-message">{error}</p>}
       <div className="grid-container">
         <div className="form-card">

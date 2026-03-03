@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { FiDroplet } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import ClothingColorList from '../components/clothing-color/ClothingColorList.jsx';
 import ClothingColorForm from '../components/clothing-color/ClothingColorForm.jsx';
 import * as clothingColorApi from '../services/clothingColorApi.js';
@@ -104,7 +106,7 @@ const ClothingColorPage = () => {
 
   return (
     <div className="page-container">
-      <h1>Clothing Color Management</h1>
+      <PageHeader title="Clothing Color Management" icon={<FiDroplet />} />
       {error && <p className="error-message">{error}</p>}
       <div className="grid-container">
         <div className="form-card">

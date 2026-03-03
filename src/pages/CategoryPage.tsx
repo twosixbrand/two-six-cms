@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FiFolder } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import CategoryList from '../components/category/CategoryList';
 import CategoryForm from '../components/category/CategoryForm';
 import * as categoryApi from '../services/categoryApi';
@@ -58,7 +60,7 @@ const CategoryPage = () => {
 
   return (
     <div className="page-container">
-      <h1>Category Management</h1>
+      <PageHeader title="Category Management" icon={<FiFolder />} />
       {error && <p className="error-message">{error}</p>}
       <div className="grid-container">
         <div className="form-card">

@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import * as orderApi from '../services/orderApi';
 import { logError } from '../services/errorApi';
 import { FaArrowLeft, FaSave } from 'react-icons/fa';
+import { FiFileText } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import './OrderDetailPage.css';
 
 const OrderDetailPage = () => {
@@ -52,12 +54,13 @@ const OrderDetailPage = () => {
 
     return (
         <div className="page-container">
-            <div className="header-actions">
-                <button className="back-btn" onClick={() => navigate('/order')}>
-                    <FaArrowLeft /> Volver
-                </button>
-                <h1>Detalle del Pedido #{order.id}</h1>
-            </div>
+            <PageHeader title={`Detalle del Pedido #${order.id}`} icon={<FiFileText />}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <button className="back-btn" onClick={() => navigate('/order')}>
+                        <FaArrowLeft /> Volver
+                    </button>
+                </div>
+            </PageHeader>
 
             {error && <p className="error-message">{error}</p>}
 

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { FiMapPin } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import locationApi from '../services/locationApi';
 import './LocationPage.css'; // Reuse CSS
 
@@ -78,10 +80,11 @@ const LocationDetailPage = () => {
 
     return (
         <div className="location-page">
-            <div className="location-header">
-                <h1>Municipios de {departmentName}</h1>
-                <Link to="/locations" className="btn-edit" style={{ textDecoration: 'none' }}>Volver</Link>
-            </div>
+            <PageHeader title={`Municipios de ${departmentName}`} icon={<FiMapPin />}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Link to="/locations" className="btn-edit" style={{ textDecoration: 'none' }}>Volver</Link>
+                </div>
+            </PageHeader>
 
             <table className="location-table">
                 <thead>

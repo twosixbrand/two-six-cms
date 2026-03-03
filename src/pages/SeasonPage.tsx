@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FiCloud } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import SeasonList from '../components/season/SeasonList';
 import SeasonForm from '../components/season/SeasonForm';
 import * as seasonApi from '../services/seasonApi';
@@ -65,7 +67,7 @@ const SeasonPage = () => {
 
   return (
     <div className="page-container">
-      <h1>Season Management</h1>
+      <PageHeader title="Season Management" icon={<FiCloud />} />
       {error && <p className="error-message">{error}</p>}
       <div className="grid-container">
         <div className="form-card">

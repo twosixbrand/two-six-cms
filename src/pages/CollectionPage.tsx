@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FiArchive } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import CollectionList from '../components/collection/CollectionList.jsx';
 import CollectionForm from '../components/collection/CollectionForm';
 import * as collectionApi from '../services/collectionApi';
@@ -82,7 +84,7 @@ const CollectionPage = () => {
 
   return (
     <div className="page-container">
-      <h1>Collection Management</h1>
+      <PageHeader title="Collection Management" icon={<FiArchive />} />
       {error && <p className="error-message">{error}</p>}
       <div className="grid-container">
         <div className="form-card">

@@ -1,7 +1,7 @@
 .home-container {
   display: flex;
   flex-direction: column;
-  padding: 3rem;
+  padding: 1rem 3rem 3rem; /* Reducido top padding de 3rem a 1rem */
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -10,56 +10,53 @@
   font-size: 1.5rem;
   font-weight: 500;
   color: var(--text-primary);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem; /* Reducido de 2rem a 1rem */
   letter-spacing: 0.5px;
 }
 
 .home-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  grid-auto-rows: 200px;
-  /* Bento grid base height */
-  gap: 1.5rem;
-  margin-top: 1rem;
+  grid-auto-rows: 160px; /* Reducido de 200px a 160px para mayor visibilidad */
+  gap: 1rem; /* Reducido de 1.5rem a 1rem */
+  margin-top: 0.5rem;
 }
 
 .home-card {
   position: relative;
-  background-color: var(--surface-color);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  padding: 2rem;
-  border-radius: 16px;
-  /* Bordes más redondeados para tendencia 2026 */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.4) 100%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  padding: 1.25rem;
+  padding-top: 3.25rem; /* Espacio para el icono sin solapamiento */
+  border-radius: 20px;
   text-decoration: none;
-  color: var(--text-secondary);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  border: 1px solid var(--border-color);
-  border-top: 1px solid rgba(255, 255, 255, 0.9);
-  /* Efecto Glass 3D Fuerte para fondo claro */
-  border-left: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  /* Sombra clara */
+  justify-content: flex-start;
+  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  border: 1.5px solid rgba(212, 175, 55, 0.25); /* Borde dorado más definido */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
   overflow: hidden;
   align-items: flex-start;
-  /* Alineación izquierda para el contenido */
-  padding-top: 3.5rem;
-  /* Espacio extra arriba para el icono */
 }
 
 .card-icon-container {
   position: absolute;
-  top: 1.5rem;
-  left: 1.8rem;
-  font-size: 2rem;
+  top: 1rem;
+  left: 1.25rem;
+  font-size: 1.4rem;
   color: var(--primary-color);
-  opacity: 0.8;
-  transition: all 0.3s ease;
+  background: rgba(212, 175, 55, 0.1);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  transition: all 0.4s ease;
   z-index: 2;
-  /* Por encima del watermark */
+  border: 1px solid rgba(212, 175, 55, 0.1);
 }
 
 /* Marca de agua de fondo elegante */
@@ -68,84 +65,66 @@
   bottom: -15px;
   right: -10px;
   font-size: 8rem;
-  /* Ícono gigante */
   color: var(--primary-color);
   opacity: 0.04;
-  /* Casi invisible, muy sutil y profesional */
   transform: rotate(-15deg);
-  /* Ligera inclinación para dinamismo */
   pointer-events: none;
-  /* Evitar que atrape clics */
   transition: all 0.5s ease;
   z-index: 0;
 }
 
-.home-card h2,
-.home-card p {
-  position: relative;
-  z-index: 2;
-  /* Texto por encima del watermark */
-}
-
-.home-card:hover .card-icon-container {
-  transform: scale(1.1);
-  opacity: 1;
-  color: var(--primary-color);
-  text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
-}
-
-/* Pseudo-elemento para el brillo interno hover */
-.home-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  /* Brillo blanco sobre fondo claro */
-  transform: skewX(-25deg);
-  transition: left 0.5s ease;
-}
-
-.home-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 15px 30px rgba(212, 175, 55, 0.15), 0 0 15px rgba(212, 175, 55, 0.1);
-  /* Brillo dorado dinámico visible en fondo claro */
-  border-color: rgba(212, 175, 55, 0.5);
-  color: var(--text-primary);
-}
-
-.home-card:hover .card-watermark {
-  opacity: 0.12;
-  /* El watermark brilla suavemente en hover */
-  transform: rotate(0deg) scale(1.1);
-  /* Se endereza y crece un poco interactuando con el mouse */
-}
-
-.home-card:hover::before {
-  left: 200%;
-}
-
 .home-card h2 {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   margin-top: 0;
-  margin-bottom: 0.5rem;
-  color: var(--primary-color);
-  font-weight: 600;
-  transition: color 0.3s ease;
+  margin-bottom: 0.4rem;
+  color: var(--text-primary);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  z-index: 2;
+  transition: all 0.3s ease;
 }
 
 .home-card p {
   color: var(--text-secondary);
-  font-size: 0.95rem;
-  line-height: 1.5;
-  transition: color 0.3s ease;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin: 0;
+  z-index: 2;
+  opacity: 0.8;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.home-card:hover {
+  transform: translateY(-5px) scale(1.01);
+  background: rgba(255, 255, 255, 0.9);
+  border-color: var(--primary-color);
+  box-shadow: 0 20px 40px rgba(212, 175, 55, 0.12), 0 0 20px rgba(212, 175, 55, 0.05);
+}
+
+.home-card:hover .card-icon-container {
+  background: var(--primary-color);
+  color: white;
+  transform: rotate(-10deg) scale(1.1);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+}
+
+.home-card:hover .card-watermark {
+  opacity: 0.12;
+  transform: rotate(0deg) scale(1.1);
+}
+
+.home-card:hover h2 {
+  color: var(--primary-color);
+  transform: translateX(2px);
 }
 
 .home-card:hover p {
   color: var(--text-primary);
-  /* Iluminar texto al hover */
+  opacity: 1;
 }
 
 @media (max-width: 1024px) {

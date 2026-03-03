@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FiShoppingCart } from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import OrderList from '../components/order/OrderList';
 import * as orderApi from '../services/orderApi';
 import { logError } from '../services/errorApi';
@@ -29,7 +31,7 @@ const OrderPage = () => {
 
     return (
         <div className="page-container">
-            <h1>Gestión de Pedidos</h1>
+            <PageHeader title="Gestión de Pedidos" icon={<FiShoppingCart />} />
             {error && <p className="error-message">{error}</p>}
             {loading ? (
                 <p>Cargando pedidos...</p>
