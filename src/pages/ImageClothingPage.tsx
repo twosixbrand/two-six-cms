@@ -162,7 +162,7 @@ const ImageClothingPage = () => {
                     {filteredClothingColors.map(item => (
                         <div key={item.id} className="studio-ref-card">
                             <div className="ref-card-content">
-                                <div className="ref-badge">
+                                <div className={`ref-badge ${item._count?.imageClothing > 0 ? 'has-images' : ''}`}>
                                     {item.design?.reference?.substring(0, 2) || 'RX'}
                                 </div>
                                 <div className="ref-info">
