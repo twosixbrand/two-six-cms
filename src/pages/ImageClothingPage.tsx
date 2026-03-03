@@ -36,7 +36,13 @@ const ImageClothingPage = () => {
             list.sort((a, b) => {
                 const refA = a.design?.reference || '';
                 const refB = b.design?.reference || '';
-                return refA.localeCompare(refB, undefined, { numeric: true, sensitivity: 'base' });
+                const refCompare = refA.localeCompare(refB, undefined, { numeric: true, sensitivity: 'base' });
+
+                if (refCompare !== 0) return refCompare;
+
+                const colorA = a.color?.name || '';
+                const colorB = b.color?.name || '';
+                return colorA.localeCompare(colorB, undefined, { sensitivity: 'base' });
             });
             setClothingColors(list);
         } catch (err) {

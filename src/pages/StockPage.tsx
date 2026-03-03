@@ -53,7 +53,17 @@ const StockPage = () => {
             .sort((a, b) => {
                 const refA = a.clothingColor?.design?.reference || '';
                 const refB = b.clothingColor?.design?.reference || '';
-                return refA.localeCompare(refB, undefined, { numeric: true, sensitivity: 'base' });
+                const refComp = refA.localeCompare(refB, undefined, { numeric: true, sensitivity: 'base' });
+                if (refComp !== 0) return refComp;
+
+                const sizeOrder = { 'XS': 1, 'S': 2, 'M': 3, 'L': 4, 'XL': 5, 'XXL': 6 };
+                const sizeA = a.size?.name || '';
+                const sizeB = b.size?.name || '';
+                const orderA = sizeOrder[sizeA.toUpperCase()] || 99;
+                const orderB = sizeOrder[sizeB.toUpperCase()] || 99;
+
+                if (orderA !== orderB) return orderA - orderB;
+                return sizeA.localeCompare(sizeB, undefined, { numeric: true, sensitivity: 'base' });
             });
     }, [inventoryItems, searchTerm]);
 

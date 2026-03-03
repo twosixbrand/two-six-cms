@@ -38,28 +38,44 @@ const ProductPage = () => {
   }, [fetchData]);
 
   const filteredProducts = useMemo(() => {
-    if (!searchTerm) {
-      return products;
+    let result = products;
+    if (searchTerm) {
+      result = products.filter(product => {
+        const searchTermLower = searchTerm.toLowerCase();
+        const fieldsToSearch = [
+          product.name,
+          product.description,
+          product.sku,
+          product.price.toString(),
+          product.consecutive_number,
+          product.discount_percentage,
+          product.discount_price,
+          product.clothingSize?.clothingColor?.design?.clothing?.name,
+          product.clothingSize?.clothingColor?.color?.name,
+          product.clothingSize?.size?.name,
+          product.clothingSize?.clothingColor?.design?.collection?.name,
+          product.clothingSize?.clothingColor?.design?.collection?.id_year_production,
+        ];
+        return fieldsToSearch.some(field =>
+          field?.toLowerCase().includes(searchTermLower)
+        );
+      });
     }
-    return products.filter(product => {
-      const searchTermLower = searchTerm.toLowerCase();
-      const fieldsToSearch = [
-        product.name,
-        product.description,
-        product.sku,
-        product.price.toString(),
-        product.consecutive_number,
-        product.discount_percentage,
-        product.discount_price,
-        product.clothingSize?.clothingColor?.design?.clothing?.name,
-        product.clothingSize?.clothingColor?.color?.name,
-        product.clothingSize?.size?.name,
-        product.clothingSize?.clothingColor?.design?.collection?.name,
-        product.clothingSize?.clothingColor?.design?.collection?.id_year_production,
-      ];
-      return fieldsToSearch.some(field =>
-        field?.toLowerCase().includes(searchTermLower)
-      );
+
+    const sizeOrder = { 'XS': 1, 'S': 2, 'M': 3, 'L': 4, 'XL': 5, 'XXL': 6 };
+    return [...result].sort((a, b) => {
+      const refA = a.clothingSize?.clothingColor?.design?.reference || '';
+      const refB = b.clothingSize?.clothingColor?.design?.reference || '';
+      const refComp = refA.localeCompare(refB, undefined, { numeric: true, sensitivity: 'base' });
+      if (refComp !== 0) return refComp;
+
+      const sizeA = a.clothingSize?.size?.name || '';
+      const sizeB = b.clothingSize?.size?.name || '';
+      const orderA = sizeOrder[sizeA.toUpperCase()] || 99;
+      const orderB = sizeOrder[sizeB.toUpperCase()] || 99;
+
+      if (orderA !== orderB) return orderA - orderB;
+      return sizeA.localeCompare(sizeB, undefined, { numeric: true, sensitivity: 'base' });
     });
   }, [products, searchTerm]);
 

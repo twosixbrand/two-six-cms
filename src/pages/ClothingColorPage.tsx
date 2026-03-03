@@ -49,6 +49,14 @@ const ClothingColorPage = () => {
     fetchData();
   }, [fetchData]);
 
+  const sortedItems = React.useMemo(() => {
+    return [...items].sort((a, b) => {
+      const refA = a.design?.reference || '';
+      const refB = b.design?.reference || '';
+      return refA.localeCompare(refB, undefined, { numeric: true, sensitivity: 'base' });
+    });
+  }, [items]);
+
   const handleSave = async (itemData) => {
     try {
       setError('');
@@ -126,7 +134,7 @@ const ClothingColorPage = () => {
             <p>Loading...</p>
           ) : (
             <ClothingColorList
-              items={items}
+              items={sortedItems}
               onEdit={handleEdit}
               onDelete={handleDelete}
             />

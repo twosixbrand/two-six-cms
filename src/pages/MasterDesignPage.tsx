@@ -41,14 +41,27 @@ const MasterDesignPage = () => {
   }, []);
 
   const filteredDesigns = useMemo(() => {
-    if (!searchTerm) return designs;
-    const lowerTerm = searchTerm.toLowerCase();
-    return designs.filter(design =>
-      design.reference?.toLowerCase().includes(lowerTerm) ||
-      design.clothing?.name?.toLowerCase().includes(lowerTerm) ||
-      design.collection?.name?.toLowerCase().includes(lowerTerm) ||
-      design.clothing?.gender?.name?.toLowerCase().includes(lowerTerm)
-    );
+    let result = designs;
+    if (searchTerm) {
+      const lowerTerm = searchTerm.toLowerCase();
+      result = designs.filter(design =>
+        design.reference?.toLowerCase().includes(lowerTerm) ||
+        design.clothing?.name?.toLowerCase().includes(lowerTerm) ||
+        design.collection?.name?.toLowerCase().includes(lowerTerm) ||
+        design.clothing?.gender?.name?.toLowerCase().includes(lowerTerm)
+      );
+    }
+
+    return [...result].sort((a, b) => {
+      const colA = a.collection?.name || '';
+      const colB = b.collection?.name || '';
+      const colComp = colA.localeCompare(colB, undefined, { sensitivity: 'base' });
+      if (colComp !== 0) return colComp;
+
+      const genA = a.clothing?.gender?.name || '';
+      const genB = b.clothing?.gender?.name || '';
+      return genA.localeCompare(genB, undefined, { sensitivity: 'base' });
+    });
   }, [designs, searchTerm]);
 
   const handleSave = async (itemData) => {
