@@ -6,7 +6,7 @@ import {
   FaTshirt, FaPaintBrush, FaPalette, FaImage, FaBoxOpen, FaWarehouse,
   FaShoppingCart, FaChartLine,
   FaCalendarAlt, FaCloud, FaArchive, FaIndustry, FaTags, FaFolder, FaEyeDropper,
-  FaTruck, FaUsers as FaUsersIcon, FaShieldAlt, FaUserTag,
+  FaTruck, FaUsers as FaUsersIcon, FaShieldAlt, FaUserTag, FaEnvelope,
   FaMapSigns,
   FaExclamationTriangle
 } from 'react-icons/fa';
@@ -54,6 +54,7 @@ const homeSections = [
       { path: '/user', icon: <FaUsersIcon />, title: 'User', desc: 'Administración de usuarios del sistema.' },
       { path: '/role', icon: <FaShieldAlt />, title: 'Role', desc: 'Gestión de roles de seguridad.' },
       { path: '/user-role', icon: <FaUserTag />, title: 'User Roles', desc: 'Asignación de roles a los usuarios.' },
+      { path: '/subscriber', icon: <FaEnvelope />, title: 'Suscriber', desc: 'Gestión de suscriptores del newsletter.' },
     ]
   },
   {

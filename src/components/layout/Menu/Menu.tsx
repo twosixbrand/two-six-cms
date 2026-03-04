@@ -52,6 +52,7 @@ const menuData = [
       { title: 'User', path: '/user' },
       { title: 'Role', path: '/role' },
       { title: 'User Roles', path: '/user-role' },
+      { title: 'Suscriber', path: '/subscriber' },
     ],
   },
   {

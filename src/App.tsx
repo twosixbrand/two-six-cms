@@ -40,6 +40,7 @@ import LocationDetailPage from './pages/LocationDetailPage.tsx';
 import StockPage from './pages/StockPage.tsx';
 import ImageClothingPage from './pages/ImageClothingPage.tsx';
 import GeneralSalesReportPage from './pages/GeneralSalesReportPage.tsx';
+import SubscriberPage from './pages/SubscriberPage.tsx';
 
 /**
  * Componente que renderiza el layout principal (Menú, Contenido, Footer)
@@ -99,6 +100,7 @@ const MainLayout = () => {
               <Route path="/locations/:id" element={<LocationDetailPage />} />
               <Route path="/stock" element={<StockPage />} />
               <Route path="/reports/sales/general" element={<GeneralSalesReportPage />} />
+              <Route path="/subscriber" element={<SubscriberPage />} />
             </Routes>
           </main>
         </div>
