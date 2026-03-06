@@ -56,6 +56,13 @@ const menuData = [
     ],
   },
   {
+    title: 'Atención Cliente',
+    path: '#',
+    subNav: [
+      { title: 'Gestión PQR', path: '/pqr' },
+    ],
+  },
+  {
     title: 'Plan Estrategico',
     path: '#',
     subNav: [

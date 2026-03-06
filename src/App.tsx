@@ -41,6 +41,7 @@ import StockPage from './pages/StockPage.tsx';
 import ImageClothingPage from './pages/ImageClothingPage.tsx';
 import GeneralSalesReportPage from './pages/GeneralSalesReportPage.tsx';
 import SubscriberPage from './pages/SubscriberPage.tsx';
+import PqrManagementPage from './pages/pqr/index.tsx';
 
 /**
  * Componente que renderiza el layout principal (Menú, Contenido, Footer)
@@ -101,6 +102,7 @@ const MainLayout = () => {
               <Route path="/stock" element={<StockPage />} />
               <Route path="/reports/sales/general" element={<GeneralSalesReportPage />} />
               <Route path="/subscriber" element={<SubscriberPage />} />
+              <Route path="/pqr" element={<PqrManagementPage />} />
             </Routes>
           </main>
         </div>
