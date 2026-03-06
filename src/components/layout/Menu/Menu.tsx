@@ -32,6 +32,13 @@ const menuData = [
     ],
   },
   {
+    title: 'Atención Cliente',
+    path: '#',
+    subNav: [
+      { title: 'Gestión PQR', path: '/pqr' },
+    ],
+  },
+  {
     title: 'Admin Maestros',
     path: '#',
     subNav: [
@@ -53,13 +60,6 @@ const menuData = [
       { title: 'Role', path: '/role' },
       { title: 'User Roles', path: '/user-role' },
       { title: 'Suscriber', path: '/subscriber' },
-    ],
-  },
-  {
-    title: 'Atención Cliente',
-    path: '#',
-    subNav: [
-      { title: 'Gestión PQR', path: '/pqr' },
     ],
   },
   {

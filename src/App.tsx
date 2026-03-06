@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
 // Contexto de Autenticación
 import { AuthProvider, AuthContext } from './context/AuthContext';
@@ -42,6 +42,20 @@ import ImageClothingPage from './pages/ImageClothingPage.tsx';
 import GeneralSalesReportPage from './pages/GeneralSalesReportPage.tsx';
 import SubscriberPage from './pages/SubscriberPage.tsx';
 import PqrManagementPage from './pages/pqr/index.tsx';
+
+/**
+ * Componente que hace scroll al inicio de la página
+ * cada vez que cambia la ruta.
+ */
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
 
 /**
  * Componente que renderiza el layout principal (Menú, Contenido, Footer)
@@ -116,6 +130,7 @@ function App() {
   return (
     <ErrorBoundary>
       <Router>
+        <ScrollToTop />
         <AuthProvider>
           <Routes>
             {/* Ruta pública para el login */}

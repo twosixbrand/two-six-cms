@@ -34,6 +34,13 @@ const homeSections = [
     ]
   },
   {
+    title: 'Atención Cliente',
+    icon: <FiUsers />,
+    items: [
+      { path: '/pqr', icon: <FaEnvelope />, title: 'Gestión PQR', desc: 'Administración de Peticiones, Quejas y Reclamos.' },
+    ]
+  },
+  {
     title: 'Admin Maestros',
     icon: <FiSettings />,
     items: [

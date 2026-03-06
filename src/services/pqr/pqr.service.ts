@@ -26,12 +26,12 @@ export const PqrService = {
     },
 
     // Actualizar el estado de una PQR
-    updatePqrStatus: async (id: number, status: string) => {
+    updatePqrStatus: async (id: number, status: string, observation?: string) => {
         try {
             const response = await fetch(`${API_URL}/pqr/${id}/status`, {
-                method: 'PUT',
+                method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status })
+                body: JSON.stringify({ status, observation })
             });
             return await handleResponse(response, `PQR_UPDATE_${id}`);
         } catch (error) {
