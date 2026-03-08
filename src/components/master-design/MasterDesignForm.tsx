@@ -3,9 +3,11 @@ import '../../styles/MasterDesign.css';
 
 const MasterDesignForm = ({
   onSubmit,
+  onCancel,
   initialData = {} as any,
   clothings = [] as any[],
   collections = [] as any[],
+  designs = [] as any[],
   years = [] as any[],
 }) => {
   const [formData, setFormData] = useState<any>({
@@ -14,6 +16,16 @@ const MasterDesignForm = ({
     id_clothing: '',
     id_collection: '',
   });
+
+  const availableClothings = React.useMemo(() => {
+    const usedClothingIds = designs.map(d => d.id_clothing);
+    return clothings.filter(c => {
+      // Allow the currently selected clothing if editing
+      if (initialData.id_clothing === c.id) return true;
+      // Otherwise only allow if not used
+      return !usedClothingIds.includes(c.id);
+    });
+  }, [clothings, designs, initialData.id_clothing]);
 
   useEffect(() => {
     if (initialData.id) {
@@ -59,7 +71,7 @@ const MasterDesignForm = ({
         <label htmlFor="id_clothing">Prenda</label>
         <select id="id_clothing" name="id_clothing" value={formData.id_clothing} onChange={handleChange} required>
           <option value="">Seleccione una prenda</option>
-          {clothings.map((clothing) => (
+          {availableClothings.map((clothing) => (
             <option key={clothing.id} value={clothing.id}>{clothing.name}</option>
           ))}
         </select>
@@ -97,6 +109,11 @@ const MasterDesignForm = ({
         <button type="submit" className="btn-primary" style={{ flex: 1 }}>
           {initialData.id ? 'Actualizar Diseño' : 'Crear Diseño'}
         </button>
+        {initialData.id && (
+          <button type="button" className="btn-secondary" onClick={onCancel} style={{ flex: 1 }}>
+            Cancelar
+          </button>
+        )}
       </div>
     </form>
   );

@@ -49,6 +49,7 @@ const menuData = [
       { title: 'Type Clothing', path: '/type-clothing' },
       { title: 'Category', path: '/category' },
       { title: 'Color', path: '/color' },
+      { title: 'Guía de Tallas', path: '/size-guide' },
     ],
   },
   {

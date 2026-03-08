@@ -146,9 +146,11 @@ const MasterDesignPage = () => {
       <div className="master-design-content">
         <MasterDesignForm
           onSubmit={handleSave}
+          onCancel={() => setCurrentItem(null)}
           initialData={currentItem || {}}
           clothings={clothings}
           collections={collections}
+          designs={designs}
         />
         <MasterDesignList
           designs={filteredDesigns}
