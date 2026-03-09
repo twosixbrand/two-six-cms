@@ -1,4 +1,5 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const RAW_API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3050/api';
+const API_BASE_URL = RAW_API_URL.startsWith('http') ? RAW_API_URL : `https://${RAW_API_URL}`;
 
 const handleResponse = async (response) => {
     if (!response.ok) {
