@@ -28,7 +28,9 @@ const SizeGuideForm = ({ onSave, currentItem, onCancel }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <h3>{currentItem ? 'Editar Medida de Talla' : 'Nueva Medida de Talla'}</h3>
+            <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.8rem' }}>
+                {currentItem ? 'Editar Medida de Talla' : 'Nueva Medida de Talla'}
+            </h3>
 
             {currentItem && (
                 <div className="form-group">

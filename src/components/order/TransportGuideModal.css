@@ -1,0 +1,353 @@
+/* ============================
+   TRANSPORT GUIDE MODAL
+   ============================ */
+
+/* Modal Overlay */
+.tg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(4px);
+}
+
+/* Modal Container */
+.tg-modal {
+    background: #fff;
+    border-radius: 12px;
+    width: 95%;
+    max-width: 420px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    animation: tg-slide-up 0.3s ease-out;
+}
+
+@keyframes tg-slide-up {
+    from {
+        transform: translateY(40px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Modal Header */
+.tg-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+}
+
+.tg-modal-header h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #1a1a1a;
+}
+
+.tg-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #999;
+    line-height: 1;
+    padding: 0;
+}
+
+.tg-close-btn:hover {
+    color: #333;
+}
+
+/* Modal Actions (outside printable area) */
+.tg-modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-top: 1px solid #eee;
+    background: #fafafa;
+    border-radius: 0 0 12px 12px;
+}
+
+.tg-print-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 22px;
+    background: #1a1a1a;
+    color: #d4a853;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+}
+
+.tg-print-btn:hover {
+    background: #333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.tg-cancel-btn {
+    padding: 8px 22px;
+    background: #f0f0f0;
+    color: #666;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.tg-cancel-btn:hover {
+    background: #e0e0e0;
+}
+
+/* ============================
+   PRINTABLE GUIDE CONTENT
+   Compact for media carta (half-letter)
+   ============================ */
+
+.tg-guide {
+    padding: 0;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    color: #1a1a1a;
+    font-size: 11px;
+}
+
+/* Brand Header — compact, ink-efficient */
+.tg-brand-header {
+    background: #fff;
+    color: #1a1a1a;
+    padding: 6px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #b8960c;
+}
+
+.tg-brand-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tg-brand-logo {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.tg-brand-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #1a1a1a;
+}
+
+.tg-brand-tagline {
+    font-size: 0.45rem;
+    letter-spacing: 1px;
+    color: #b8960c;
+    text-transform: uppercase;
+    margin-top: 0;
+}
+
+.tg-brand-right {
+    text-align: right;
+}
+
+.tg-carrier-name {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #b8960c;
+    letter-spacing: 1px;
+}
+
+.tg-guide-date {
+    font-size: 0.5rem;
+    color: #777;
+    margin-top: 1px;
+}
+
+/* Order ID Banner — compact */
+.tg-order-banner {
+    background: #fff;
+    color: #1a1a1a;
+    text-align: center;
+    padding: 3px;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    border-bottom: 1px solid #b8960c;
+}
+
+/* Info Sections */
+.tg-sections {
+    padding: 6px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tg-section {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.tg-section-title {
+    background: #f8f8f8;
+    padding: 2px 8px;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #555;
+    border-bottom: 1px solid #ddd;
+}
+
+.tg-section-body {
+    padding: 4px 8px;
+}
+
+.tg-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1px;
+    font-size: 0.65rem;
+    line-height: 1.25;
+}
+
+.tg-row:last-child {
+    margin-bottom: 0;
+}
+
+.tg-label {
+    font-weight: 600;
+    color: #555;
+    flex-shrink: 0;
+    margin-right: 6px;
+}
+
+.tg-value {
+    text-align: right;
+    color: #1a1a1a;
+    word-break: break-word;
+}
+
+.tg-value.address {
+    max-width: 200px;
+}
+
+/* Items Summary */
+.tg-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.6rem;
+}
+
+.tg-items-table th {
+    text-align: left;
+    padding: 2px 6px;
+    border-bottom: 1px solid #b8960c;
+    font-weight: 700;
+    color: #333;
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.tg-items-table td {
+    padding: 2px 6px;
+    border-bottom: 1px solid #eee;
+    color: #444;
+}
+
+/* Total Row */
+.tg-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px;
+    background: #fff;
+    color: #1a1a1a;
+    font-weight: 700;
+    font-size: 0.65rem;
+    letter-spacing: 0.5px;
+    border-radius: 0 0 3px 3px;
+    border-top: 1px solid #b8960c;
+}
+
+/* Guide Number Area */
+.tg-barcode-area {
+    text-align: center;
+    padding: 6px 12px;
+    border-top: 1px dashed #ccc;
+}
+
+.tg-barcode-area p {
+    font-size: 0.5rem;
+    color: #999;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tg-guide-number {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: #1a1a1a;
+    font-family: 'Courier New', monospace;
+}
+
+/* Footer */
+.tg-footer {
+    text-align: center;
+    padding: 4px;
+    border-top: 1px solid #eee;
+    font-size: 0.45rem;
+    color: #aaa;
+    letter-spacing: 1px;
+}
+
+/* Guide button in table */
+.guide-btn {
+    background-color: #fff8e1;
+    color: #b8860b;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.guide-btn:hover {
+    background-color: #ffecb3;
+}
+
+.guide-btn:disabled {
+    background-color: #f5f5f5;
+    color: #ccc;
+    cursor: not-allowed;
+}

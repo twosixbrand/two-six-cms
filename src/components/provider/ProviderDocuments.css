@@ -1,0 +1,261 @@
+/* ============================
+   PROVIDER DOCUMENTS MODAL
+   ============================ */
+
+.pd-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(4px);
+}
+
+.pd-modal {
+    background: var(--bg-color, #0f1117);
+    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+    border-radius: 16px;
+    width: 95%;
+    max-width: 560px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    animation: pd-slide-up 0.3s ease-out;
+}
+
+@keyframes pd-slide-up {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.pd-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+}
+
+.pd-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #fff;
+    font-weight: 700;
+}
+
+.pd-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-secondary, #888);
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.pd-close-btn:hover {
+    color: var(--text-primary, #fff);
+}
+
+/* Status Summary */
+.pd-status-summary {
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+}
+
+.pd-status-badge {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.pd-status-badge.completo {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.pd-status-badge.incompleto {
+    background: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.pd-status-text {
+    font-size: 0.82rem;
+    color: #c0c0c0;
+}
+
+/* Document List */
+.pd-docs {
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pd-doc-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--surface-color, rgba(255, 255, 255, 0.04));
+    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+    border-radius: 10px;
+    transition: border-color 0.2s;
+}
+
+.pd-doc-row:hover {
+    border-color: rgba(212, 175, 55, 0.3);
+}
+
+.pd-doc-row.has-file {
+    border-color: rgba(16, 185, 129, 0.25);
+}
+
+.pd-doc-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+}
+
+.pd-doc-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.pd-doc-icon.uploaded {
+    color: #34d399;
+}
+
+.pd-doc-icon.missing {
+    color: #9ca3af;
+}
+
+.pd-doc-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.pd-doc-label {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #f0f0f0;
+}
+
+.pd-doc-required {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+    font-weight: 600;
+}
+
+.pd-doc-required.required {
+    color: #fbbf24;
+}
+
+.pd-doc-required.optional {
+    color: #9ca3af;
+}
+
+.pd-doc-filename {
+    font-size: 0.72rem;
+    color: #a0aec0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    margin-top: 2px;
+}
+
+.pd-doc-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.pd-action-btn {
+    padding: 6px 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pd-upload-btn {
+    background: #d4af37;
+    color: #1a1a1a;
+    border: none;
+    font-weight: 700;
+}
+
+.pd-upload-btn:hover {
+    background: #e6c34a;
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+}
+
+.pd-view-btn {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.pd-view-btn:hover {
+    background: rgba(59, 130, 246, 0.25);
+}
+
+.pd-delete-btn {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.pd-delete-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+}
+
+.pd-upload-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Hidden file input */
+.pd-file-input {
+    display: none;
+}
+
+/* Loading overlay */
+.pd-loading {
+    text-align: center;
+    padding: 20px;
+    color: #c0c0c0;
+    font-size: 0.85rem;
+}

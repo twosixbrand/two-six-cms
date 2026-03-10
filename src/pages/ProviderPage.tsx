@@ -119,7 +119,7 @@ const ProviderPage = () => {
           {loading ? (
             <p>Loading providers...</p>
           ) : (
-            <ProviderList items={filteredItems} onEdit={handleEdit} onDelete={handleDelete} />
+            <ProviderList items={filteredItems} onEdit={handleEdit} onDelete={handleDelete} onRefresh={fetchItems} />
           )}
         </div>
       </div>
