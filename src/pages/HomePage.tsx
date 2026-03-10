@@ -8,7 +8,7 @@ import {
   FaCalendarAlt, FaCloud, FaArchive, FaIndustry, FaTags, FaFolder, FaEyeDropper,
   FaTruck, FaUsers as FaUsersIcon, FaShieldAlt, FaUserTag, FaEnvelope,
   FaMapSigns,
-  FaExclamationTriangle, FaRulerCombined
+  FaExclamationTriangle, FaRulerCombined, FaMapMarkerAlt
 } from 'react-icons/fa';
 import '../styles/HomePage.css';
 
@@ -52,6 +52,7 @@ const homeSections = [
       { path: '/category', icon: <FaFolder />, title: 'Category', desc: 'Categorías principales del sistema.' },
       { path: '/color', icon: <FaEyeDropper />, title: 'Color', desc: 'Gestión de colores disponibles en producción.' },
       { path: '/size-guide', icon: <FaRulerCombined />, title: 'Guía de Tallas', desc: 'Gestión de guías de tallas para el sitio web.' },
+      { path: '/locations', icon: <FaMapMarkerAlt />, title: 'Ubicaciones', desc: 'Departamentos, ciudades y costos de envío.' },
     ]
   },
   {

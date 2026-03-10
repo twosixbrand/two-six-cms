@@ -36,7 +36,6 @@ import PlanEstrategicoPage from './pages/PlanEstrategicoPage.tsx';
 import OrderPage from './pages/OrderPage.tsx';
 import OrderDetailPage from './pages/OrderDetailPage.tsx';
 import LocationPage from './pages/LocationPage.tsx';
-import LocationDetailPage from './pages/LocationDetailPage.tsx';
 import StockPage from './pages/StockPage.tsx';
 import ImageClothingPage from './pages/ImageClothingPage.tsx';
 import GeneralSalesReportPage from './pages/GeneralSalesReportPage.tsx';
@@ -113,7 +112,6 @@ const MainLayout = () => {
               <Route path="/order" element={<OrderPage />} />
               <Route path="/order/:id" element={<OrderDetailPage />} />
               <Route path="/locations" element={<LocationPage />} />
-              <Route path="/locations/:id" element={<LocationDetailPage />} />
               <Route path="/stock" element={<StockPage />} />
               <Route path="/reports/sales/general" element={<GeneralSalesReportPage />} />
               <Route path="/subscriber" element={<SubscriberPage />} />

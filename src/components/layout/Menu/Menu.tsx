@@ -50,6 +50,7 @@ const menuData = [
       { title: 'Category', path: '/category' },
       { title: 'Color', path: '/color' },
       { title: 'Guía de Tallas', path: '/size-guide' },
+      { title: 'Ubicaciones', path: '/locations' },
     ],
   },
   {

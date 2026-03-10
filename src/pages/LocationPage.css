@@ -1,108 +1,404 @@
-.location-page {
-    padding: 20px;
-}
+/* =================================
+   LOCATIONS PAGE — Premium Accordion
+   ================================= */
 
-.location-header {
+/* Search bar */
+.loc-search-bar {
+    position: relative;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    background: var(--surface-color);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 0 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.location-table {
+.loc-search-bar:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
+}
+
+.loc-search-icon {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.loc-search-input {
+    flex: 1;
+    border: none !important;
+    background: transparent !important;
+    padding: 0.85rem 0.8rem !important;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    outline: none;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+.loc-search-clear {
+    background: rgba(0, 0, 0, 0.06);
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 0;
+    transition: all 0.2s;
+}
+
+.loc-search-clear:hover {
+    background: rgba(0, 0, 0, 0.12);
+    color: var(--text-primary);
+}
+
+/* Summary */
+.loc-summary {
+    display: flex;
+    gap: 1rem;
+}
+
+.loc-summary-item {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Loading */
+.loc-loading {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Accordion container */
+.loc-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Department card */
+.loc-dept-card {
+    background: var(--surface-color);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.loc-dept-card:hover {
+    border-color: rgba(212, 175, 55, 0.25);
+}
+
+.loc-dept-card.expanded {
+    border-color: rgba(212, 175, 55, 0.35);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.08);
+}
+
+/* Department header */
+.loc-dept-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    user-select: none;
+}
+
+.loc-dept-header:hover {
+    background: rgba(212, 175, 55, 0.04);
+}
+
+.loc-dept-left {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.loc-dept-chevron {
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    transition: transform 0.2s;
+}
+
+.loc-dept-name {
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--text-primary);
+}
+
+.loc-dept-right {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.loc-dept-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: #d4af37;
+    color: #1a1a1a;
+    letter-spacing: 0.3px;
+}
+
+/* Bulk edit button */
+.loc-bulk-btn {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    background: #d4af37;
+    color: #1a1a1a;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    font-weight: 700;
+}
+
+.loc-bulk-btn:hover {
+    background: #e6c34a;
+    color: #1a1a1a;
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+}
+
+/* Bulk edit inline row */
+.loc-bulk-edit {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.loc-bulk-input {
+    width: 120px !important;
+    padding: 0.35rem 0.5rem !important;
+    font-size: 0.82rem !important;
+    border: 1px solid var(--primary-color) !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, 0.6) !important;
+    text-align: right;
+}
+
+/* Cities panel */
+.loc-cities-panel {
+    border-top: 1px solid var(--border-color);
+    animation: loc-slide-down 0.25s ease-out;
+}
+
+@keyframes loc-slide-down {
+    from {
+        opacity: 0;
+        max-height: 0;
+    }
+
+    to {
+        opacity: 1;
+        max-height: 2000px;
+    }
+}
+
+.loc-cities-loading,
+.loc-cities-empty {
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+/* Cities table */
+.loc-cities-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: white;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
+    font-size: 0.85rem;
 }
 
-.location-table th,
-.location-table td {
-    padding: 12px 15px;
+.loc-cities-table thead th {
+    padding: 0.65rem 1.2rem;
     text-align: left;
-    border-bottom: 1px solid #eee;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-secondary);
+    background: rgba(0, 0, 0, 0.02);
+    border-bottom: 1px solid var(--border-color);
 }
 
-.location-table th {
-    background-color: #f8f9fa;
+.loc-cities-table tbody tr {
+    transition: background-color 0.15s;
+}
+
+.loc-cities-table tbody tr:hover {
+    background: rgba(212, 175, 55, 0.03);
+}
+
+.loc-cities-table tbody tr.inactive-row {
+    opacity: 0.5;
+}
+
+.loc-cities-table tbody td {
+    padding: 0.6rem 1.2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    vertical-align: middle;
+}
+
+.loc-city-name {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+/* Cost display & edit */
+.loc-cost-display {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 0.3rem 0.6rem;
+    border-radius: 8px;
+    transition: background 0.2s;
     font-weight: 600;
-    color: #333;
+    color: var(--text-primary);
 }
 
-.location-table tr:hover {
-    background-color: #f5f5f5;
+.loc-cost-display:hover {
+    background: rgba(212, 175, 55, 0.08);
 }
 
-.btn-edit,
-.btn-view {
-    padding: 6px 12px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    margin-right: 5px;
-}
-
-.btn-edit {
-    background-color: #3b82f6;
-    color: white;
-}
-
-.btn-view {
-    background-color: #10b981;
-    color: white;
-}
-
-.shipping-input {
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    width: 100px;
-}
-
-.toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 40px;
-    height: 20px;
-}
-
-.toggle-switch input {
+.loc-edit-icon {
     opacity: 0;
-    width: 0;
-    height: 0;
+    color: var(--primary-color);
+    transition: opacity 0.2s;
 }
 
-.slider {
-    position: absolute;
+.loc-cost-display:hover .loc-edit-icon {
+    opacity: 1;
+}
+
+/* Inline edit */
+.loc-inline-edit {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.loc-currency {
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.loc-cost-input {
+    width: 90px !important;
+    padding: 0.35rem 0.5rem !important;
+    font-size: 0.85rem !important;
+    border: 1px solid var(--primary-color) !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, 0.6) !important;
+    text-align: right;
+}
+
+.loc-save-btn,
+.loc-cancel-btn {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.loc-save-btn {
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+}
+
+.loc-save-btn:hover {
+    background: #10b981;
+    color: #fff;
+}
+
+.loc-cancel-btn {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.loc-cancel-btn:hover {
+    background: #ef4444;
+    color: #fff;
+}
+
+/* Toggle switch */
+.loc-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.loc-toggle input {
+    display: none;
+}
+
+.loc-toggle-slider {
+    position: relative;
+    width: 36px;
+    height: 20px;
+    background: #b0b0b0;
     border-radius: 20px;
+    transition: background 0.3s;
+    flex-shrink: 0;
 }
 
-.slider:before {
+.loc-toggle-slider::before {
+    content: '';
     position: absolute;
-    content: "";
-    height: 16px;
     width: 16px;
+    height: 16px;
     left: 2px;
-    bottom: 2px;
-    background-color: white;
-    transition: .4s;
+    top: 2px;
+    background: #fff;
     border-radius: 50%;
+    transition: transform 0.3s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
-input:checked+.slider {
-    background-color: #10b981;
+.loc-toggle input:checked+.loc-toggle-slider {
+    background: #d4af37;
 }
 
-input:checked+.slider:before {
-    transform: translateX(20px);
+.loc-toggle input:checked+.loc-toggle-slider::before {
+    transform: translateX(16px);
+}
+
+.loc-toggle-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.loc-toggle input:checked~.loc-toggle-label {
+    color: #b8860b;
 }

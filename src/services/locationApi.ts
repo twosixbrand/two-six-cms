@@ -24,6 +24,11 @@ const locationApi = {
         const response = await axios.patch(`${API_URL}/locations/cities/${id}`, data);
         return response.data;
     },
+
+    bulkUpdateCitiesCost: async (departmentId, shippingCost) => {
+        const response = await axios.patch(`${API_URL}/locations/departments/${departmentId}/bulk-cost`, { shipping_cost: shippingCost });
+        return response.data;
+    },
 };
 
 export default locationApi;
