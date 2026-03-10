@@ -8,11 +8,13 @@ const Login = () => {
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { login } = useContext(AuthContext);
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
     try {
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, {
         method: 'POST',
@@ -27,6 +29,8 @@ const Login = () => {
       setIsOtpSent(true);
     } catch (err) {
       setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -63,8 +67,8 @@ const Login = () => {
           <form onSubmit={handleEmailSubmit}>
             <h2>Login</h2>
             <p>Enter your email to receive a login code.</p>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="your-email@example.com" required />
-            <button type="submit">Send Code</button>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="your-email@example.com" required disabled={isLoading} />
+            <button type="submit" disabled={isLoading}>{isLoading ? 'Sending...' : 'Send Code'}</button>
           </form>
         ) : (
           <form onSubmit={handleOtpSubmit}>
