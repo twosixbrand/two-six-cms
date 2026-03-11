@@ -77,11 +77,19 @@
   justify-content: center;
 }
 
-.view-btn {
-  background-color: #e0f2fe;
-  color: #0284c7;
+.view-btn, .guide-btn {
+  background-color: #d4af37 !important;
+  color: #1a1a1a !important;
 }
 
-.view-btn:hover {
-  background-color: #bae6fd;
+.view-btn:hover, .guide-btn:hover:not(:disabled) {
+  background-color: #e6c34a !important;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3) !important;
+}
+
+.guide-btn:disabled {
+  background-color: #e5e7eb !important;
+  color: #9ca3af !important;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
