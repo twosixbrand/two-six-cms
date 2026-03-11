@@ -54,7 +54,7 @@ const OrderDetailPage = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title={`Detalle del Pedido #${order.id}`} icon={<FiFileText />}>
+            <PageHeader title={`Detalle del Pedido ${order.order_reference || '#' + order.id}`} icon={<FiFileText />}>
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <button className="back-btn" onClick={() => navigate('/order')}>
                         <FaArrowLeft /> Volver

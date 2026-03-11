@@ -36,7 +36,7 @@ const OrderList = ({ orders }) => {
                 <table className="data-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Referencia</th>
                             <th>Cliente</th>
                             <th>Fecha</th>
                             <th>Estado</th>
@@ -48,7 +48,7 @@ const OrderList = ({ orders }) => {
                     <tbody>
                         {orders.map((order) => (
                             <tr key={order.id}>
-                                <td>{order.id}</td>
+                                <td>{order.order_reference || order.id}</td>
                                 <td>{order.customer?.name || 'N/A'}</td>
                                 <td>{new Date(order.order_date).toLocaleDateString()}</td>
                                 <td>
