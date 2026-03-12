@@ -173,9 +173,19 @@ const TransportGuideModal = ({ order, onClose }) => {
                             </div>
                             <div className="tg-total-row">
                                 <span>Total Artículos: {totalItems}</span>
-                                <span>Valor Declarado: ${order.total_payment?.toLocaleString()}</span>
+                                <span>Valor Declarado: ${((order.total_payment || 0) - (order.shipping_cost || 0)).toLocaleString()}</span>
                             </div>
                         </div>
+
+                        {order.payment_method === 'WOMPI_COD' && (
+                            <div className="tg-section tg-cod-alert">
+                                <div className="tg-section-title" style={{ background: '#fef3c7', color: '#b45309', borderBottomColor: '#fde68a' }}>⚠️ RECAUDO CONTRA ENTREGA (PCE)</div>
+                                <div className="tg-section-body" style={{ textAlign: 'center', padding: '10px 5px' }}>
+                                    <span style={{ fontSize: '0.65rem', color: '#666', display: 'block', marginBottom: '4px' }}>Cobrar al destinatario:</span>
+                                    <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#b45309' }}>${order.cod_amount?.toLocaleString()}</span>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* Barcode / Guide Number */}

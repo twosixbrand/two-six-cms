@@ -34,16 +34,21 @@ const OrderDetailPage = () => {
         fetchOrder();
     }, [id]);
 
-    const handleStatusChange = async () => {
+    const handleStatusChange = async (overrideStatus?: string) => {
+        const finalStatus = overrideStatus || status;
+        if (!finalStatus) return;
+
         try {
             setSaving(true);
-            await orderApi.updateOrder(id, { status });
-            // Recargar datos para confirmar cambios
-            await fetchOrder();
-            alert('Estado actualizado correctamente');
+            await orderApi.updateOrder(id, { status: finalStatus });
+            // Refresh order
+            const updatedOrder = await orderApi.getOrder(id);
+            setOrder(updatedOrder);
+            setStatus(updatedOrder.status);
+            alert(`Estado actualizado exitosamente a ${finalStatus}`);
         } catch (err) {
-            logError(err, `/order/${id}`);
-            setError('Error al actualizar el estado.');
+            console.error('Error updating order status:', err);
+            alert('Error al actualizar el estado del pedido.');
         } finally {
             setSaving(false);
         }
@@ -71,6 +76,12 @@ const OrderDetailPage = () => {
                     <p><strong>Fecha:</strong> {new Date(order.order_date).toLocaleString()}</p>
                     <p><strong>Total:</strong> ${order.total_payment.toLocaleString()}</p>
                     <p><strong>Pagado:</strong> {order.is_paid ? 'Sí' : 'No'}</p>
+                    {order.payment_method === 'WOMPI_COD' && (
+                        <div style={{ marginTop: '10px', background: '#fef3c7', padding: '10px', borderRadius: '4px', borderLeft: '4px solid #f59e0b' }}>
+                            <p style={{ margin: 0, color: '#b45309', fontWeight: 'bold' }}>⚠️ PEDIDO PAGO CONTRA ENTREGA</p>
+                            <p style={{ margin: '5px 0 0 0', color: '#92400e' }}>Valor Recaudo: <strong>${order.cod_amount?.toLocaleString()}</strong></p>
+                        </div>
+                    )}
 
                     {order.payments && order.payments.length > 0 ? (
                         <>
@@ -110,6 +121,7 @@ const OrderDetailPage = () => {
                             className="form-input"
                         >
                             <option value="Pendiente">Pendiente</option>
+                            <option value="Aprobado PCE">Aprobado PCE</option>
                             <option value="Pagado">Pagado</option>
                             <option value="Enviado">Enviado</option>
                             <option value="Entregado">Entregado</option>
@@ -117,12 +129,31 @@ const OrderDetailPage = () => {
                         </select>
                         <button
                             className="action-btn save-btn"
-                            onClick={handleStatusChange}
+                            onClick={() => handleStatusChange()}
                             disabled={saving || status === order.status}
                         >
                             <FaSave /> {saving ? 'Guardando...' : 'Actualizar Estado'}
                         </button>
                     </div>
+
+                    {order.payment_method === 'WOMPI_COD' && order.status === 'Enviado' && (
+                        <div style={{ marginTop: '15px', paddingTop: '15px', borderTop: '1px solid #eee' }}>
+                            <p style={{ marginBottom: '10px', fontSize: '0.9rem', color: '#666' }}>
+                                Si la transportadora ya entregó el dinero del recaudo, marca el pedido como Pagado.
+                            </p>
+                            <button
+                                className="action-btn"
+                                style={{ background: '#10b981', color: 'white', fontWeight: 'bold', width: '100%', padding: '10px' }}
+                                onClick={() => {
+                                    setStatus('Pagado');
+                                    handleStatusChange('Pagado');
+                                }}
+                                disabled={saving}
+                            >
+                                ✅ Confirmar Recaudo Recibido (${order.cod_amount?.toLocaleString()})
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 {/* Productos */}

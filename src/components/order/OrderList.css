@@ -46,6 +46,12 @@
   color: #065f46;
 }
 
+.status-badge.aprobado-pce {
+  background-color: #ffedd5;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
+}
+
 .status-badge.pendiente {
   background-color: #fef3c7;
   color: #92400e;
