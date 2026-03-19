@@ -29,6 +29,7 @@ const menuData = [
     subNav: [
       { title: 'Pedidos', path: '/order' },
       { title: 'General Sales', path: '/reports/sales/general' },
+      { title: 'Facturación DIAN', path: '/dian-invoices' },
     ],
   },
   {

@@ -4,7 +4,7 @@ import { FiHome, FiLayers, FiBarChart2, FiSettings, FiUsers, FiMap, FiTerminal }
 import PageHeader from '../components/common/PageHeader';
 import {
   FaTshirt, FaPaintBrush, FaPalette, FaImage, FaBoxOpen, FaWarehouse,
-  FaShoppingCart, FaChartLine,
+  FaShoppingCart, FaChartLine, FaFileInvoiceDollar,
   FaCalendarAlt, FaCloud, FaArchive, FaIndustry, FaTags, FaFolder, FaEyeDropper,
   FaTruck, FaUsers as FaUsersIcon, FaShieldAlt, FaUserTag, FaEnvelope,
   FaMapSigns,
@@ -31,6 +31,7 @@ const homeSections = [
     items: [
       { path: '/order', icon: <FaShoppingCart />, title: 'Pedidos', desc: 'Visualización y seguimiento de pedidos cliente.' },
       { path: '/reports/sales/general', icon: <FaChartLine />, title: 'General Sales', desc: 'Reporte general de ventas del sistema.' },
+      { path: '/dian-invoices', icon: <FaFileInvoiceDollar />, title: 'Facturación DIAN', desc: 'Gestión y emisión de facturas electrónicas.' },
     ]
   },
   {
