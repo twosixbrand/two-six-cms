@@ -70,3 +70,49 @@ export const createDianInvoice = async (data: any) => {
     }
 };
 
+export const createCreditNote = async (id: number, data: any) => {
+    try {
+        const response = await fetch(`${API_URL}/v1/dian/invoices/${id}/credit-note`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': 'TwoSixAdminKey123!'
+            },
+            body: JSON.stringify(data)
+        });
+        return await handleResponse(response, 'createCreditNote');
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const createDebitNote = async (id: number, data: any) => {
+    try {
+        const response = await fetch(`${API_URL}/v1/dian/invoices/${id}/debit-note`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': 'TwoSixAdminKey123!'
+            },
+            body: JSON.stringify(data)
+        });
+        return await handleResponse(response, 'createDebitNote');
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const syncNoteStatus = async (noteId: number) => {
+    try {
+        const response = await fetch(`${API_URL}/v1/dian/notes/${noteId}/sync-status`, {
+            method: 'POST',
+            headers: {
+                'x-api-key': 'TwoSixAdminKey123!'
+            }
+        });
+        return await handleResponse(response, 'syncNoteStatus');
+    } catch (error) {
+        throw error;
+    }
+};
+

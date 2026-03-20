@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import * as orderApi from '../services/orderApi';
+import * as dianApi from '../services/dianApi';
 import { logError } from '../services/errorApi';
-import { FaArrowLeft, FaSave } from 'react-icons/fa';
-import { FiFileText } from 'react-icons/fi';
+import { FaArrowLeft, FaSave, FaFilePdf, FaFileCode, FaUndo, FaMoneyBillWave } from 'react-icons/fa';
+import { FiFileText, FiRefreshCw } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
 import './OrderDetailPage.css';
 
@@ -15,6 +16,12 @@ const OrderDetailPage = () => {
     const [error, setError] = useState('');
     const [status, setStatus] = useState('');
     const [saving, setSaving] = useState(false);
+    
+    // UI states for DIAN Modals
+    const [isDianGenerating, setIsDianGenerating] = useState(false);
+    const [noteType, setNoteType] = useState<'CREDIT' | 'DEBIT' | null>(null);
+    const [noteReasonCode, setNoteReasonCode] = useState('2');
+    const [noteReasonDesc, setNoteReasonDesc] = useState('');
 
     const fetchOrder = async () => {
         try {
@@ -51,6 +58,78 @@ const OrderDetailPage = () => {
             alert('Error al actualizar el estado del pedido.');
         } finally {
             setSaving(false);
+        }
+    };
+
+    const handleCreateInvoice = async () => {
+        if (!window.confirm('¿Seguro de generar la Factura Electrónica en la DIAN para este pedido?')) return;
+        try {
+            setIsDianGenerating(true);
+            const res = await dianApi.createDianInvoice({
+                orderId: order.id,
+                date: new Date().toISOString().split('T')[0],
+                time: '12:00:00-05:00',
+                customerName: order.customer?.name || 'Cliente',
+                customerDoc: '222222222222',
+                customerDocType: '13',
+            });
+            alert('Factura enviada a DIAN exitosamente');
+            fetchOrder();
+        } catch (err: any) {
+            alert(`Error al generar factura DIAN: ${err?.message || 'Error desconocido'}`);
+        } finally {
+            setIsDianGenerating(false);
+        }
+    };
+
+    const handleCreateNote = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!order.dianEInvoicing?.id) return;
+        if (!window.confirm(`¿Seguro de generar Nota ${noteType === 'CREDIT' ? 'Crédito' : 'Débito'} en la DIAN?`)) return;
+
+        try {
+            setIsDianGenerating(true);
+            const payload = {
+                reasonCode: noteReasonCode,
+                reasonDesc: noteReasonDesc,
+                customerDoc: '222222222222',
+                customerDocType: '13',
+            };
+
+            if (noteType === 'CREDIT') {
+                await dianApi.createCreditNote(order.dianEInvoicing.id, payload);
+                alert('Nota Crédito enviada exitosamente a la DIAN');
+            } else {
+                await dianApi.createDebitNote(order.dianEInvoicing.id, payload);
+                alert('Nota Débito enviada exitosamente a la DIAN');
+            }
+            setNoteType(null);
+            fetchOrder();
+        } catch (err: any) {
+            alert(`Error al generar Nota DIAN: ${err?.message || 'Error desconocido'}`);
+        } finally {
+            setIsDianGenerating(false);
+        }
+    };
+
+    const handleSyncNoteStatus = async (noteId: number) => {
+        try {
+            setIsDianGenerating(true);
+            const res = await dianApi.syncNoteStatus(noteId);
+            if (res.isValid && res.statusCode === '00') {
+                alert('¡Éxito! La Nota ha sido Autorizada por la DIAN.');
+            } else if (!res.isValid && res.statusCode === '2') {
+                alert(`¡SET DE PRUEBAS FINALIZADO!\nLa DIAN indica: "${res.statusDescription}"\nEsto significa que Two Six ya pasó las pruebas de habilitación en Sandbox y el set de pruebas se cerró. Para seguir enviando, deben pasar a Producción o generar un nuevo Test Set.`);
+            } else if (!res.isValid) {
+                alert(`Nota Rechazada o con Errores: ${res.statusCode} - ${res.statusDescription}`);
+            } else {
+                alert(`Estado: ${res.statusCode} - ${res.statusDescription}`);
+            }
+            fetchOrder();
+        } catch (err: any) {
+            alert(`Error sincronizando estado: ${err?.message || 'Error desconocido'}`);
+        } finally {
+            setIsDianGenerating(false);
         }
     };
 
@@ -151,6 +230,186 @@ const OrderDetailPage = () => {
                                 disabled={saving}
                             >
                                 ✅ Confirmar Recaudo Recibido (${order.cod_amount?.toLocaleString()})
+                            </button>
+                        </div>
+                    )}
+                </div>
+
+                {/* Gestión DIAN */}
+                <div className="detail-card full-width">
+                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ fontSize: '1.2em' }}>💼</span> Gestión DIAN
+                    </h3>
+
+                    {order.dianEInvoicing ? (
+                        <>
+                            <div style={{ background: '#f8fafc', padding: '15px', borderRadius: '6px', border: '1px solid #e2e8f0', marginBottom: '15px' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px', marginBottom: '15px' }}>
+                                    <div>
+                                        <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: '#64748b' }}>FACTURA ELECTRÓNICA</p>
+                                        <p style={{ margin: 0, fontWeight: 'bold', fontSize: '14px' }}>{order.dianEInvoicing.document_number}</p>
+                                    </div>
+                                    <div>
+                                        <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: '#64748b' }}>ESTADO</p>
+                                        <span style={{ background: '#dcfce7', color: '#166534', padding: '2px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: 'bold' }}>
+                                            {order.dianEInvoicing.status}
+                                        </span>
+                                    </div>
+                                    <div style={{ wordBreak: 'break-all', gridColumn: '1 / -1' }}>
+                                        <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: '#64748b' }}>CUFE</p>
+                                        <p style={{ margin: 0, fontSize: '11px', fontFamily: 'monospace' }}>{order.dianEInvoicing.cufe_code || 'No asignado'}</p>
+                                    </div>
+                                </div>
+                                <div style={{ display: 'flex', gap: '10px' }}>
+                                    <button 
+                                        className="action-btn" 
+                                        style={{ background: '#ef4444', color: 'white' }}
+                                        onClick={() => dianApi.downloadInvoicePdf(order.dianEInvoicing.id)}
+                                    >
+                                        <FaFilePdf /> Descargar PDF
+                                    </button>
+                                    <button 
+                                        className="action-btn" 
+                                        style={{ background: '#64748b', color: 'white' }}
+                                        onClick={() => dianApi.downloadInvoiceXml(order.dianEInvoicing.id, order.dianEInvoicing.document_number)}
+                                    >
+                                        <FaFileCode /> Descargar UBL (XML)
+                                    </button>
+                                    <button 
+                                        className="action-btn" 
+                                        style={{ background: '#f59e0b', color: 'white', marginLeft: 'auto' }}
+                                        onClick={() => setNoteType('CREDIT')}
+                                        disabled={isDianGenerating}
+                                    >
+                                        <FaUndo /> Devolución (Nota Crédito)
+                                    </button>
+                                    <button 
+                                        className="action-btn" 
+                                        style={{ background: '#3b82f6', color: 'white' }}
+                                        onClick={() => setNoteType('DEBIT')}
+                                        disabled={isDianGenerating}
+                                    >
+                                        <FaMoneyBillWave /> Ajuste (Nota Débito)
+                                    </button>
+                                </div>
+                            </div>
+
+                            {noteType && (
+                                <div style={{ background: '#fff', border: '1px solid #cbd5e1', padding: '15px', borderRadius: '6px', marginBottom: '15px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>
+                                    <h4 style={{ marginTop: 0, borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
+                                        Generar Nota {noteType === 'CREDIT' ? 'Crédito' : 'Débito'} para {order.dianEInvoicing.document_number}
+                                    </h4>
+                                    <form onSubmit={handleCreateNote}>
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '10px', marginBottom: '15px' }}>
+                                            <div>
+                                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '12px', fontWeight: 'bold' }}>Motivo DIAN:</label>
+                                                <select className="form-input" value={noteReasonCode} onChange={(e) => setNoteReasonCode(e.target.value)} required>
+                                                    {noteType === 'CREDIT' ? (
+                                                        <>
+                                                            <option value="1">1 - Devolución de parte o totalidad (Devolución Real)</option>
+                                                            <option value="2">2 - Anulación de factura electrónica (Error administrativo)</option>
+                                                            <option value="3">3 - Rebaja o descuento comercial</option>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <option value="1">1 - Intereses</option>
+                                                            <option value="2">2 - Gastos por cobrar</option>
+                                                            <option value="3">3 - Cambio del valor</option>
+                                                            <option value="4">4 - Otros</option>
+                                                        </>
+                                                    )}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '12px', fontWeight: 'bold' }}>Descripción Justificativa:</label>
+                                                <textarea 
+                                                    className="form-input" 
+                                                    rows={2} 
+                                                    value={noteReasonDesc} 
+                                                    onChange={(e) => setNoteReasonDesc(e.target.value)} 
+                                                    placeholder="Ej: Devolución de prenda por garantía"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                        <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                                            <button type="button" className="action-btn" onClick={() => setNoteType(null)} disabled={isDianGenerating}>Cancelar</button>
+                                            <button type="submit" className="action-btn save-btn" disabled={isDianGenerating}>
+                                                {isDianGenerating ? <><FiRefreshCw className="spinner" /> Procesando DIAN...</> : 'Emitir Nota al DIAN'}
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            )}
+
+                            {order.dianEInvoicing.dianNotes && order.dianEInvoicing.dianNotes.length > 0 && (
+                                <div>
+                                    <h4 style={{ margin: '0 0 10px 0' }}>Notas Asociadas</h4>
+                                    <table className="data-table" style={{ fontSize: '12px' }}>
+                                        <thead>
+                                            <tr>
+                                                <th>Tipo</th>
+                                                <th>Número</th>
+                                                <th>Monto</th>
+                                                <th>Emisión</th>
+                                                <th>Estado DIAN</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {order.dianEInvoicing.dianNotes.map((note: any) => (
+                                                <tr key={note.id}>
+                                                    <td>{note.type === 'CREDIT' ? <span style={{color: '#d97706'}}>Nota Crédito</span> : <span style={{color: '#2563eb'}}>Nota Débito</span>}</td>
+                                                    <td style={{ fontWeight: 'bold' }}>{note.note_number}</td>
+                                                    <td>${note.amount?.toLocaleString()}</td>
+                                                    <td>{new Date(note.issue_date).toLocaleDateString()}</td>
+                                                    <td>
+                                                        {note.status === 'AUTHORIZED' && <span style={{color: '#16a34a', fontWeight: 'bold'}}>Autorizada</span>}
+                                                        {note.status === 'REJECTED' && <span style={{color: '#dc2626', fontWeight: 'bold'}}>Rechazada</span>}
+                                                        {note.status === 'ERROR' && <span style={{color: '#dc2626', fontWeight: 'bold'}}>Error</span>}
+                                                        {note.status === 'PROCESSED' && <span style={{color: '#ca8a04', fontWeight: 'bold'}}>Procesado</span>}
+                                                        {note.status === 'PENDING' && <span style={{color: '#64748b'}}>Pendiente</span>}
+                                                        {note.status === 'SENT' && <span style={{color: '#2563eb', fontWeight: 'bold'}}>Enviado</span>}
+                                                    </td>
+                                                    <td>
+                                                        <div style={{ display: 'flex', gap: '5px' }}>
+                                                            <button 
+                                                                onClick={() => handleSyncNoteStatus(note.id)} 
+                                                                className="action-btn" 
+                                                                style={{ padding: '4px 8px', fontSize: '10px', background: '#3b82f6', color: 'white' }}
+                                                                disabled={isDianGenerating}
+                                                            >
+                                                                Verificar
+                                                            </button>
+                                                            {(note.status === 'AUTHORIZED' || note.status === 'REJECTED' || note.status === 'PROCESSED') && (
+                                                                <a 
+                                                                    href={`${import.meta.env.VITE_API_BASE_URL}/v1/dian/status/${note.status_message?.match(/<b:ZipKey>(.*?)<\/b:ZipKey>/)?.[1]}/xml`} 
+                                                                    className="action-btn" 
+                                                                    style={{ padding: '4px 8px', fontSize: '10px', background: '#eab308', color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+                                                                    target="_blank" rel="noreferrer"
+                                                                >
+                                                                    XML
+                                                                </a>
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </>
+                    ) : (
+                        <div style={{ textAlign: 'center', padding: '20px', background: '#f8fafc', border: '1px dashed #cbd5e1', borderRadius: '6px' }}>
+                            <p style={{ color: '#64748b', marginBottom: '15px' }}>Este pedido aún no cuenta con Factura Electrónica emitida en la DIAN.</p>
+                            <button 
+                                className="action-btn" 
+                                style={{ background: '#10b981', color: 'white' }}
+                                onClick={handleCreateInvoice}
+                                disabled={isDianGenerating || order.status === 'Cancelado'}
+                            >
+                                {isDianGenerating ? <><FiRefreshCw className="spinner" /> Generando...</> : 'Generar Factura Electrónica'}
                             </button>
                         </div>
                     )}
