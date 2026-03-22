@@ -72,6 +72,7 @@ const homeSections = [
     icon: <FiMap />,
     items: [
       { path: '/plan-estrategico', icon: <FaMapSigns />, title: 'Ver plan', desc: 'Visualización del plan estratégico anual.' },
+      { path: '/dian-documentation', icon: <FaFileInvoiceDollar />, title: 'Documentación DIAN', desc: 'Arquitectura y flujos de Facturación Electrónica DIAN.' },
     ]
   },
   {

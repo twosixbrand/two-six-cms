@@ -10,6 +10,7 @@ const DianInvoicePage = () => {
     const [error, setError] = useState('');
     const [statusModal, setStatusModal] = useState<any>(null);
     const [statusLoading, setStatusLoading] = useState(false);
+    const [downloadingPdfId, setDownloadingPdfId] = useState<number | null>(null);
 
     const fetchInvoices = async () => {
         try {
@@ -39,7 +40,9 @@ const DianInvoicePage = () => {
     const handleCheckStatus = async (inv: any) => {
         try {
             setStatusLoading(true);
-            const result = await dianApi.checkInvoiceStatus(inv.dian_response);
+            const zipKeyMatch = inv.dian_response?.match(/<b:ZipKey>(.*?)<\/b:ZipKey>/);
+            if (!zipKeyMatch) throw new Error('No se encontró ZipKey en la respuesta DIAN');
+            const result = await dianApi.checkInvoiceStatus(zipKeyMatch[1]);
             setStatusModal({ ...result, documentNumber: inv.document_number });
         } catch (err: any) {
             setStatusModal({
@@ -124,10 +127,18 @@ const DianInvoicePage = () => {
                                         <button
                                             className="btn btn-sm"
                                             title="Ver PDF"
-                                            onClick={() => dianApi.downloadInvoicePdf(inv.id)}
+                                            onClick={async () => {
+                                                try {
+                                                    setDownloadingPdfId(inv.id);
+                                                    await dianApi.downloadInvoicePdf(inv.id, inv.document_number);
+                                                } finally {
+                                                    setDownloadingPdfId(null);
+                                                }
+                                            }}
+                                            disabled={downloadingPdfId === inv.id}
                                             style={{ padding: '4px 8px', fontSize: '12px' }}
                                         >
-                                            <FiEye /> PDF
+                                            {downloadingPdfId === inv.id ? <><FiRefreshCcw className="spinner" /> PDF...</> : <><FiEye /> PDF</>}
                                         </button>
                                     </td>
                                 </tr>

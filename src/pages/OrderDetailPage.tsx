@@ -22,6 +22,7 @@ const OrderDetailPage = () => {
     const [noteType, setNoteType] = useState<'CREDIT' | 'DEBIT' | null>(null);
     const [noteReasonCode, setNoteReasonCode] = useState('2');
     const [noteReasonDesc, setNoteReasonDesc] = useState('');
+    const [isDownloadingPdf, setIsDownloadingPdf] = useState(false);
 
     const fetchOrder = async () => {
         try {
@@ -124,6 +125,57 @@ const OrderDetailPage = () => {
                 alert(`Nota Rechazada o con Errores: ${res.statusCode} - ${res.statusDescription}`);
             } else {
                 alert(`Estado: ${res.statusCode} - ${res.statusDescription}`);
+            }
+            fetchOrder();
+        } catch (err: any) {
+            alert(`Error sincronizando estado: ${err?.message || 'Error desconocido'}`);
+        } finally {
+            setIsDianGenerating(false);
+        }
+    };
+
+    const handleRetryInvoice = async () => {
+        if (!order) return;
+        if (!window.confirm('¿Estás seguro de que deseas generar un NUEVO consecutivo y reintentar el envío a la DIAN para este pedido?')) return;
+        
+        setIsDianGenerating(true);
+        try {
+            const res = await dianApi.retryInvoice(order.id, {
+                date: new Date().toISOString().split('T')[0],
+                time: '12:00:00-05:00',
+            });
+            if (res.success) {
+                alert('¡Factura Reintentada Exitosamente!');
+                fetchOrder();
+            } else {
+                alert(`Error al reintentar: ${res.error || 'Desconocido'}`);
+            }
+        } catch (error: any) {
+            console.error('Error reintentando factura DIAN:', error);
+            alert(`Error interno: ${error.message || 'Error en comunicación con DIAN'}`);
+        } finally {
+            setIsDianGenerating(false);
+        }
+    };
+
+    const handleCheckInvoiceStatus = async () => {
+        if (!order || !order.dianEInvoicing || !order.dianEInvoicing.dian_response) return;
+        const zipKeyMatch = order.dianEInvoicing.dian_response.match(/<b:ZipKey>(.*?)<\/b:ZipKey>/);
+        if (!zipKeyMatch) {
+            alert('No se encontró ZipKey válido para esta factura, no se puede consultar estado.');
+            return;
+        }
+        setIsDianGenerating(true);
+        try {
+            const res = await dianApi.checkInvoiceStatus(zipKeyMatch[1]);
+            if (res.isValid === 'true' && res.statusCode === '00') {
+                alert('¡Éxito! La Factura ha sido Autorizada por la DIAN.');
+            } else if (res.isValid === 'false' && res.statusCode === '2') {
+                alert(`¡SET DE PRUEBAS FINALIZADO!\nLa DIAN indica: "${res.statusDescription}"`);
+            } else if (res.isValid === 'false') {
+                alert(`Factura Rechazada o con Errores: ${res.statusCode} - ${res.statusDescription}`);
+            } else {
+                alert(`Estado DIAN: ${res.statusCode} - ${res.statusDescription}`);
             }
             fetchOrder();
         } catch (err: any) {
@@ -260,13 +312,30 @@ const OrderDetailPage = () => {
                                         <p style={{ margin: 0, fontSize: '11px', fontFamily: 'monospace' }}>{order.dianEInvoicing.cufe_code || 'No asignado'}</p>
                                     </div>
                                 </div>
-                                <div style={{ display: 'flex', gap: '10px' }}>
+                                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                                    <button 
+                                        className="action-btn" 
+                                        style={{ background: '#3b82f6', color: 'white' }}
+                                        onClick={handleCheckInvoiceStatus}
+                                        disabled={isDianGenerating}
+                                        title="Consultar estado actual en la DIAN"
+                                    >
+                                        {isDianGenerating ? <><FiRefreshCw className="spinner" /> Consultando...</> : 'Verificar Estado'}
+                                    </button>
                                     <button 
                                         className="action-btn" 
                                         style={{ background: '#ef4444', color: 'white' }}
-                                        onClick={() => dianApi.downloadInvoicePdf(order.dianEInvoicing.id)}
+                                        onClick={async () => {
+                                            try {
+                                                setIsDownloadingPdf(true);
+                                                await dianApi.downloadInvoicePdf(order.dianEInvoicing.id, order.dianEInvoicing.document_number);
+                                            } finally {
+                                                setIsDownloadingPdf(false);
+                                            }
+                                        }}
+                                        disabled={isDownloadingPdf || isDianGenerating}
                                     >
-                                        <FaFilePdf /> Descargar PDF
+                                        {isDownloadingPdf ? <><FiRefreshCw className="spinner" /> Generando PDF...</> : <><FaFilePdf /> Descargar PDF</>}
                                     </button>
                                     <button 
                                         className="action-btn" 
@@ -283,6 +352,17 @@ const OrderDetailPage = () => {
                                     >
                                         <FaUndo /> Devolución (Nota Crédito)
                                     </button>
+                                    {(order.dianEInvoicing.status === 'REJECTED' || order.dianEInvoicing.status === 'ERROR') && (
+                                        <button 
+                                            className="action-btn" 
+                                            style={{ background: '#f43f5e', color: 'white' }}
+                                            onClick={handleRetryInvoice}
+                                            disabled={isDianGenerating}
+                                            title="Reintenta generar la factura electrónica si la anterior falló y no está autorizada"
+                                        >
+                                            {isDianGenerating ? <><FiRefreshCw className="spinner" /> Reintentando...</> : <><FaUndo /> Reintentar DIAN</>}
+                                        </button>
+                                    )}
                                     <button 
                                         className="action-btn" 
                                         style={{ background: '#3b82f6', color: 'white' }}
@@ -293,6 +373,77 @@ const OrderDetailPage = () => {
                                     </button>
                                 </div>
                             </div>
+
+                            {/* Historial de Envíos */}
+                            {order.dianEInvoicings && order.dianEInvoicings.length > 1 && (
+                                <div style={{ background: '#f8fafc', padding: '15px', borderRadius: '6px', border: '1px solid #e2e8f0', marginBottom: '15px' }}>
+                                    <h4 style={{ margin: '0 0 10px 0', fontSize: '13px', color: '#475569' }}>Historial de Intentos de Envío</h4>
+                                    <table className="data-table" style={{ fontSize: '11px', marginBottom: 0 }}>
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Estado</th>
+                                                <th>Verificación</th>
+                                                <th>Número</th>
+                                                <th>CUFE</th>
+                                                <th>Respuesta DIAN (Reglas)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {order.dianEInvoicings.map((inv: any) => (
+                                                <tr key={inv.id} style={{ opacity: inv.id === order.dianEInvoicing?.id ? 1 : 0.7 }}>
+                                                    <td>{new Date(inv.createdAt).toLocaleString()}</td>
+                                                    <td>
+                                                        <span style={{ 
+                                                            padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold',
+                                                            background: inv.status === 'AUTHORIZED' ? '#dcfce7' : (inv.status === 'REJECTED' || inv.status === 'ERROR' ? '#fee2e2' : '#f1f5f9'),
+                                                            color: inv.status === 'AUTHORIZED' ? '#166534' : (inv.status === 'REJECTED' || inv.status === 'ERROR' ? '#991b1b' : '#334155')
+                                                        }}>
+                                                            {inv.status}
+                                                            {inv.id === order.dianEInvoicing?.id && ' (Actual)'}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        {inv.status !== 'AUTHORIZED' && inv.dian_response?.includes('ZipKey') && (
+                                                            <button 
+                                                                className="action-btn" 
+                                                                style={{ padding: '2px 6px', fontSize: '10px', background: '#3b82f6', color: 'white' }}
+                                                                onClick={async () => {
+                                                                    const zipKeyMatch = inv.dian_response.match(/<b:ZipKey>(.*?)<\/b:ZipKey>/);
+                                                                    if (!zipKeyMatch) return;
+                                                                    setIsDianGenerating(true);
+                                                                    try {
+                                                                        const res = await dianApi.checkInvoiceStatus(zipKeyMatch[1]);
+                                                                        alert(`Estado Histórico (${inv.document_number}):\n${res.statusCode} - ${res.statusDescription}`);
+                                                                    } finally { setIsDianGenerating(false); }
+                                                                }}
+                                                            >Verificar</button>
+                                                        )}
+                                                        {inv.dian_response?.includes('ZipKey') && (
+                                                            <button 
+                                                                className="action-btn" 
+                                                                style={{ padding: '2px 6px', fontSize: '10px', background: '#eab308', color: 'white', marginLeft: '5px' }}
+                                                                onClick={() => {
+                                                                    const zipKeyMatch = inv.dian_response.match(/<b:ZipKey>(.*?)<\/b:ZipKey>/);
+                                                                    if (zipKeyMatch) {
+                                                                        dianApi.downloadInvoiceZip(zipKeyMatch[1], inv.document_number);
+                                                                    }
+                                                                }}
+                                                                title="Descargar ApplicationResponse.zip de la DIAN"
+                                                            >Descargar ZIP</button>
+                                                        )}
+                                                    </td>
+                                                    <td>{inv.document_number}</td>
+                                                    <td style={{ fontFamily: 'monospace', maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={inv.cufe_code}>{inv.cufe_code || '-'}</td>
+                                                    <td style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={inv.dian_response}>
+                                                        {inv.dian_response ? (inv.dian_response.includes('<b:StatusDescription>') ? inv.dian_response.match(/<b:StatusDescription>(.*?)<\/b:StatusDescription>/)?.[1] : 'Error de Generación') : '-'}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
 
                             {noteType && (
                                 <div style={{ background: '#fff', border: '1px solid #cbd5e1', padding: '15px', borderRadius: '6px', marginBottom: '15px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>

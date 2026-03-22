@@ -30,28 +30,54 @@ export const downloadInvoiceXml = async (id: number, docNumber: string) => {
     URL.revokeObjectURL(url);
 };
 
-export const downloadInvoicePdf = async (id: number) => {
+export const downloadInvoicePdf = async (id: number, docNumber: string) => {
     const response = await fetch(`${API_URL}/v1/dian/invoices/${id}/pdf`, {
         headers: { 'x-api-key': 'TwoSixAdminKey123!' },
     });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        alert('Error generando el PDF: ' + (errorText || response.statusText));
+        return;
+    }
+
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
-    window.open(url, '_blank');
+    const a = document.createElement('a');
+    a.href = url;
+    let fileName = `${docNumber}.pdf`;
+    const contentDisposition = response.headers.get('content-disposition');
+    if (contentDisposition) {
+        const match = contentDisposition.match(/filename="?([^"]+)"?/);
+        if (match) fileName = match[1];
+    }
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 };
 
-export const checkInvoiceStatus = async (dianResponse: string) => {
-    // Extraer ZipKey del dian_response guardado
-    const zipKeyMatch = dianResponse?.match(/<b:ZipKey>(.*?)<\/b:ZipKey>/);
-    if (!zipKeyMatch) throw new Error('No se encontró ZipKey en la respuesta DIAN');
-    const trackId = zipKeyMatch[1];
-
-    const response = await fetch(`${API_URL}/v1/dian/status/${trackId}`, {
-        headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': 'TwoSixAdminKey123!'
-        },
+export const downloadInvoiceZip = async (trackId: string, docNumber: string) => {
+    const response = await fetch(`${API_URL}/v1/dian/status/${trackId}/xml`, {
+        headers: { 'x-api-key': 'TwoSixAdminKey123!' },
     });
-    return await handleResponse(response, 'checkInvoiceStatus');
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        alert('Error descargando el ZIP: ' + (errorText || response.statusText));
+        return;
+    }
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ApplicationResponse_${docNumber}.zip`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 };
 
 export const createDianInvoice = async (data: any) => {
@@ -65,6 +91,22 @@ export const createDianInvoice = async (data: any) => {
             body: JSON.stringify(data)
         });
         return await handleResponse(response, 'createDianInvoice');
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const retryInvoice = async (orderId: number, data: any) => {
+    try {
+        const response = await fetch(`${API_URL}/v1/dian/invoices/retry/${orderId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': 'TwoSixAdminKey123!'
+            },
+            body: JSON.stringify(data)
+        });
+        return await handleResponse(response, 'retryInvoice');
     } catch (error) {
         throw error;
     }
@@ -111,6 +153,20 @@ export const syncNoteStatus = async (noteId: number) => {
             }
         });
         return await handleResponse(response, 'syncNoteStatus');
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const checkInvoiceStatus = async (trackId: string) => {
+    try {
+        const response = await fetch(`${API_URL}/v1/dian/status/${trackId}`, {
+            method: 'GET',
+            headers: {
+                'x-api-key': 'TwoSixAdminKey123!'
+            }
+        });
+        return await handleResponse(response, 'checkInvoiceStatus');
     } catch (error) {
         throw error;
     }

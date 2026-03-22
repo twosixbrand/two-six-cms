@@ -70,6 +70,7 @@ const menuData = [
     path: '#',
     subNav: [
       { title: 'Ver plan', path: '/plan-estrategico' },
+      { title: 'Documentación DIAN', path: '/dian-documentation' },
     ],
   },
   {

@@ -43,6 +43,7 @@ import SubscriberPage from './pages/SubscriberPage.tsx';
 import PqrManagementPage from './pages/pqr/index.tsx';
 import SizeGuidePage from './pages/SizeGuidePage.tsx';
 import DianInvoicePage from './pages/DianInvoicePage';
+import DianDocumentationPage from './pages/DianDocumentationPage.tsx';
 
 /**
  * Componente que hace scroll al inicio de la página
@@ -110,6 +111,7 @@ const MainLayout = () => {
               <Route path="/product" element={<ProductPage />} />
               <Route path="/color" element={<ColorPage />} />
               <Route path="/plan-estrategico" element={<PlanEstrategicoPage />} />
+              <Route path="/dian-documentation" element={<DianDocumentationPage />} />
               <Route path="/order" element={<OrderPage />} />
               <Route path="/order/:id" element={<OrderDetailPage />} />
               <Route path="/locations" element={<LocationPage />} />
