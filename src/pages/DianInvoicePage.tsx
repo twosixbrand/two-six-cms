@@ -40,8 +40,33 @@ const DianInvoicePage = () => {
     const handleCheckStatus = async (inv: any) => {
         try {
             setStatusLoading(true);
+
+            // Si ya está AUTHORIZED o REJECTED, mostrar directo sin consultar DIAN
+            if (inv.status === 'AUTHORIZED') {
+                setStatusModal({
+                    documentNumber: inv.document_number,
+                    statusCode: '00',
+                    statusDescription: 'Documento validado y autorizado por la DIAN.',
+                    isValid: 'true',
+                    validationMessages: [],
+                });
+                setStatusLoading(false);
+                return;
+            }
+            if (inv.status === 'REJECTED') {
+                setStatusModal({
+                    documentNumber: inv.document_number,
+                    statusCode: 'REJECTED',
+                    statusDescription: 'Documento rechazado por la DIAN.',
+                    isValid: 'false',
+                    validationMessages: [],
+                });
+                setStatusLoading(false);
+                return;
+            }
+
             const zipKeyMatch = inv.dian_response?.match(/<b:ZipKey>(.*?)<\/b:ZipKey>/);
-            if (!zipKeyMatch) throw new Error('No se encontró ZipKey en la respuesta DIAN');
+            if (!zipKeyMatch) throw new Error('No se encontró ZipKey. El estado actual es: ' + inv.status);
             const result = await dianApi.checkInvoiceStatus(zipKeyMatch[1]);
             setStatusModal({ ...result, documentNumber: inv.document_number });
         } catch (err: any) {
