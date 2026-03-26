@@ -30,6 +30,7 @@ const menuData = [
       { title: 'Pedidos', path: '/order' },
       { title: 'General Sales', path: '/reports/sales/general' },
       { title: 'Facturación DIAN', path: '/dian-invoices' },
+      { title: 'Retiros en Tienda', path: '/reports/pickup-dashboard' },
     ],
   },
   {
@@ -59,6 +60,7 @@ const menuData = [
     path: '#',
     subNav: [
       { title: 'Provider', path: '/provider' },
+      { title: 'Clientes', path: '/customer' },
       { title: 'User', path: '/user' },
       { title: 'Role', path: '/role' },
       { title: 'User Roles', path: '/user-role' },

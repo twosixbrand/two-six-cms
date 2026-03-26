@@ -10,6 +10,9 @@ const OrderList = ({ orders }) => {
     const navigate = useNavigate();
     const [guideOrder, setGuideOrder] = useState(null);
     const [loadingGuide, setLoadingGuide] = useState(false);
+    const [filterTab, setFilterTab] = useState('ALL');
+
+    const filteredOrders = orders.filter((o) => filterTab === 'ALL' || o.delivery_method === filterTab);
 
     const handleOpenGuide = async (orderId) => {
         try {
@@ -31,7 +34,30 @@ const OrderList = ({ orders }) => {
 
     return (
         <div className="list-container">
-            <h2>Pedidos</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                <h2>Pedidos</h2>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <button 
+                        onClick={() => setFilterTab('ALL')} 
+                        style={{ padding: '8px 16px', borderRadius: '8px', border: filterTab === 'ALL' ? '2px solid #111' : '1px solid #ccc', backgroundColor: filterTab === 'ALL' ? '#111' : '#fff', color: filterTab === 'ALL' ? '#fff' : '#333', cursor: 'pointer', fontWeight: 'bold', transition: 'all 0.2s' }}
+                    >
+                        Todos
+                    </button>
+                    <button 
+                        onClick={() => setFilterTab('SHIPPING')} 
+                        style={{ padding: '8px 16px', borderRadius: '8px', border: filterTab === 'SHIPPING' ? '2px solid #111' : '1px solid #ccc', backgroundColor: filterTab === 'SHIPPING' ? '#111' : '#fff', color: filterTab === 'SHIPPING' ? '#fff' : '#333', cursor: 'pointer', fontWeight: 'bold', transition: 'all 0.2s' }}
+                    >
+                        🚚 Envíos
+                    </button>
+                    <button 
+                        onClick={() => setFilterTab('PICKUP')} 
+                        style={{ padding: '8px 16px', borderRadius: '8px', border: filterTab === 'PICKUP' ? '2px solid #111' : '1px solid #ccc', backgroundColor: filterTab === 'PICKUP' ? '#111' : '#fff', color: filterTab === 'PICKUP' ? '#fff' : '#333', cursor: 'pointer', fontWeight: 'bold', transition: 'all 0.2s' }}
+                    >
+                        📍 Para Recoger
+                    </button>
+                </div>
+            </div>
+            
             <div className="table-responsive">
                 <table className="data-table">
                     <thead>
@@ -48,12 +74,26 @@ const OrderList = ({ orders }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {orders.map((order) => (
+                        {filteredOrders.map((order) => (
                             <tr key={order.id}>
                                 <td>{order.id}</td>
                                 <td>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                                         <span>{order.order_reference || '-'}</span>
+                                        {order.delivery_method === 'PICKUP' && (
+                                            <span style={{ 
+                                                padding: '2px 8px', 
+                                                backgroundColor: '#dbeafe', 
+                                                color: '#1e3a8a', 
+                                                borderRadius: '12px', 
+                                                fontSize: '0.7rem', 
+                                                fontWeight: 'bold',
+                                                whiteSpace: 'nowrap',
+                                                border: '1px solid #bfdbfe'
+                                            }}>
+                                                📍 Retiro
+                                            </span>
+                                        )}
                                         {order.payment_method === 'WOMPI_COD' && (
                                             <span style={{ 
                                                 padding: '2px 8px', 
@@ -100,8 +140,8 @@ const OrderList = ({ orders }) => {
                                     <button
                                         className="action-btn guide-btn"
                                         onClick={() => handleOpenGuide(order.id)}
-                                        disabled={!canGenerateGuide(order.status)}
-                                        title={canGenerateGuide(order.status) ? 'Generar Guía de Transporte' : 'Disponible solo para pedidos Pagados, Enviados o Entregados'}
+                                        disabled={!canGenerateGuide(order.status) || order.delivery_method === 'PICKUP'}
+                                        title={order.delivery_method === 'PICKUP' ? 'No requiere guía (Recoge en punto)' : canGenerateGuide(order.status) ? 'Generar Guía de Transporte' : 'Disponible solo para pedidos Pagados, Enviados o Entregados'}
                                     >
                                         <FiTruck />
                                     </button>
@@ -117,9 +157,9 @@ const OrderList = ({ orders }) => {
                                 </td>
                             </tr>
                         ))}
-                        {orders.length === 0 && (
+                        {filteredOrders.length === 0 && (
                             <tr>
-                                <td colSpan={8} className="text-center">No hay pedidos registrados.</td>
+                                <td colSpan={8} className="text-center" style={{ padding: '2rem' }}>No hay pedidos registrados para el filtro seleccionado.</td>
                             </tr>
                         )}
                     </tbody>

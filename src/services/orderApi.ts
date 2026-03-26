@@ -51,3 +51,13 @@ export const deleteOrder = async (id) => {
     }
     return handleResponse(response);
 };
+
+export const markAsReadyForPickup = async (id: number | string) => {
+    const response = await fetch(`\${ENDPOINT}/\${id}/ready-for-pickup`, { method: 'POST' });
+    return handleResponse(response);
+};
+
+export const markAsCollected = async (id: number | string) => {
+    const response = await fetch(`\${ENDPOINT}/\${id}/collected`, { method: 'POST' });
+    return handleResponse(response);
+};

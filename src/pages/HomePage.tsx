@@ -7,7 +7,7 @@ import {
   FaShoppingCart, FaChartLine, FaFileInvoiceDollar,
   FaCalendarAlt, FaCloud, FaArchive, FaIndustry, FaTags, FaFolder, FaEyeDropper,
   FaTruck, FaUsers as FaUsersIcon, FaShieldAlt, FaUserTag, FaEnvelope,
-  FaMapSigns,
+  FaMapSigns, FaAddressBook,
   FaExclamationTriangle, FaRulerCombined, FaMapMarkerAlt
 } from 'react-icons/fa';
 import '../styles/HomePage.css';
@@ -32,6 +32,7 @@ const homeSections = [
       { path: '/order', icon: <FaShoppingCart />, title: 'Pedidos', desc: 'Visualización y seguimiento de pedidos cliente.' },
       { path: '/reports/sales/general', icon: <FaChartLine />, title: 'General Sales', desc: 'Reporte general de ventas del sistema.' },
       { path: '/dian-invoices', icon: <FaFileInvoiceDollar />, title: 'Facturación DIAN', desc: 'Gestión y emisión de facturas electrónicas.' },
+      { path: '/reports/pickup-dashboard', icon: <FaBoxOpen />, title: 'Retiros en Tienda', desc: 'Tablero para gestión de pedidos a entregar en punto físico.' },
     ]
   },
   {
@@ -61,6 +62,7 @@ const homeSections = [
     icon: <FiUsers />,
     items: [
       { path: '/provider', icon: <FaTruck />, title: 'Provider', desc: 'Gestión de proveedores externos.' },
+      { path: '/customer', icon: <FaAddressBook />, title: 'Clientes', desc: 'Consulta y edición de información de clientes.' },
       { path: '/user', icon: <FaUsersIcon />, title: 'User', desc: 'Administración de usuarios del sistema.' },
       { path: '/role', icon: <FaShieldAlt />, title: 'Role', desc: 'Gestión de roles de seguridad.' },
       { path: '/user-role', icon: <FaUserTag />, title: 'User Roles', desc: 'Asignación de roles a los usuarios.' },

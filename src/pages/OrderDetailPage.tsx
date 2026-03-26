@@ -23,6 +23,35 @@ const OrderDetailPage = () => {
     const [noteReasonCode, setNoteReasonCode] = useState('2');
     const [noteReasonDesc, setNoteReasonDesc] = useState('');
     const [isDownloadingPdf, setIsDownloadingPdf] = useState(false);
+    const [isPickupActionLoading, setIsPickupActionLoading] = useState(false);
+
+    const handleMarkAsReadyForPickup = async () => {
+        if (!window.confirm('¿Seguro de enviar el correo "Listo para recoger" al cliente?')) return;
+        try {
+            setIsPickupActionLoading(true);
+            await orderApi.markAsReadyForPickup(id);
+            alert('Correo enviado exitosamente.');
+            fetchOrder();
+        } catch (err) {
+            alert('Error al marcar como listo para recoger.');
+        } finally {
+            setIsPickupActionLoading(false);
+        }
+    };
+
+    const handleMarkAsCollected = async () => {
+        if (!window.confirm('¿Seguro de marcar este pedido como entregado en el punto físico?')) return;
+        try {
+            setIsPickupActionLoading(true);
+            await orderApi.markAsCollected(id);
+            alert('Pedido marcado como entregado (Recogido).');
+            fetchOrder();
+        } catch (err) {
+            alert('Error al actualizar a recogido.');
+        } finally {
+            setIsPickupActionLoading(false);
+        }
+    };
 
     const fetchOrder = async () => {
         try {
@@ -240,6 +269,43 @@ const OrderDetailPage = () => {
                     <p><strong>Dirección de Envío:</strong> {order.shipping_address}</p>
                     <p><strong>Ciudad:</strong> {order.customer?.city}, {order.customer?.state}</p>
                 </div>
+
+                {/* Gestión de Recogida */}
+                {order.delivery_method === 'PICKUP' && (
+                    <div className="detail-card full-width" style={{ border: '2px solid #aecbfa', backgroundColor: '#f4f8ff' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '15px' }}>
+                            <div>
+                                <h3 style={{ color: '#1e3a8a', margin: '0 0 10px 0' }}>📍 Gestión de Recogida en Punto</h3>
+                                <p style={{ margin: 0 }}><strong>Estado de Recogida:</strong> {order.pickup_status === 'READY' ? '🟢 Listo para Recoger (Notificado)' : order.pickup_status === 'COLLECTED' ? '🔵 Cliente Recogió el Pedido' : '🟡 Pendiente de Empaque'}</p>
+                            </div>
+                            {order.pickup_pin && (
+                                <div style={{ background: '#fef3c7', border: '2px dashed #f59e0b', padding: '10px 20px', borderRadius: '8px', textAlign: 'center' }}>
+                                    <p style={{ margin: '0 0 5px 0', fontSize: '12px', color: '#b45309', fontWeight: 'bold', textTransform: 'uppercase' }}>PIN de Seguridad</p>
+                                    <div style={{ fontSize: '24px', fontWeight: '900', letterSpacing: '4px', color: '#000' }}>{order.pickup_pin}</div>
+                                </div>
+                            )}
+                        </div>
+                        
+                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                            <button
+                                className="action-btn"
+                                style={{ background: '#3b82f6', color: 'white', flex: 1, padding: '10px', fontWeight: 'bold' }}
+                                onClick={handleMarkAsReadyForPickup}
+                                disabled={isPickupActionLoading || order.pickup_status === 'READY' || order.pickup_status === 'COLLECTED'}
+                            >
+                                {isPickupActionLoading ? 'Procesando...' : '1. Notificar: Listo para Recoger'}
+                            </button>
+                            <button
+                                className="action-btn save-btn"
+                                style={{ flex: 1, padding: '10px', fontWeight: 'bold' }}
+                                onClick={handleMarkAsCollected}
+                                disabled={isPickupActionLoading || order.pickup_status === 'COLLECTED'}
+                            >
+                                {isPickupActionLoading ? 'Procesando...' : '2. Marcar como Entregado al Cliente'}
+                            </button>
+                        </div>
+                    </div>
+                )}
 
                 {/* Gestión de Estado */}
                 <div className="detail-card full-width">

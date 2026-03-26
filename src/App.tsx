@@ -44,6 +44,8 @@ import PqrManagementPage from './pages/pqr/index.tsx';
 import SizeGuidePage from './pages/SizeGuidePage.tsx';
 import DianInvoicePage from './pages/DianInvoicePage';
 import DianDocumentationPage from './pages/DianDocumentationPage.tsx';
+import PickupDashboardPage from './pages/PickupDashboardPage.tsx';
+import CustomerPage from './pages/CustomerPage.tsx';
 
 /**
  * Componente que hace scroll al inicio de la página
@@ -117,10 +119,12 @@ const MainLayout = () => {
               <Route path="/locations" element={<LocationPage />} />
               <Route path="/stock" element={<StockPage />} />
               <Route path="/reports/sales/general" element={<GeneralSalesReportPage />} />
+              <Route path="/reports/pickup-dashboard" element={<PickupDashboardPage />} />
               <Route path="/subscriber" element={<SubscriberPage />} />
               <Route path="/pqr" element={<PqrManagementPage />} />
               <Route path="/size-guide" element={<SizeGuidePage />} />
               <Route path="/dian-invoices" element={<DianInvoicePage />} />
+              <Route path="/customer" element={<CustomerPage />} />
             </Routes>
           </main>
         </div>
