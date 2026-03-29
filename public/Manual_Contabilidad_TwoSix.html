@@ -1,0 +1,2373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual del Módulo de Contabilidad — TWO SIX S.A.S.</title>
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #d4af37;
+  --gold-light: #f5e6b8;
+  --gold-dark: #b8960e;
+  --black: #1a1a1a;
+  --white: #ffffff;
+  --gray-50: #fafafa;
+  --gray-100: #f5f5f5;
+  --gray-200: #e5e5e5;
+  --gray-300: #d4d4d4;
+  --gray-500: #737373;
+  --gray-700: #404040;
+  --gray-800: #262626;
+  --blue-info: #1e40af;
+  --blue-bg: #eff6ff;
+  --green-tip: #166534;
+  --green-bg: #f0fdf4;
+  --amber-warn: #92400e;
+  --amber-bg: #fffbeb;
+  --red-danger: #991b1b;
+  --red-bg: #fef2f2;
+}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--black);
+  background: var(--white);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== COVER PAGE ===== */
+.cover-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(160deg, var(--black) 0%, #2a2a2a 50%, var(--black) 100%);
+  color: var(--white);
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover-page::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 30% 50%, rgba(212,175,55,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.cover-logo {
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.cover-logo-sub {
+  font-size: 1rem;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gray-300);
+  margin-bottom: 4rem;
+}
+
+.cover-divider {
+  width: 120px;
+  height: 2px;
+  background: var(--gold);
+  margin: 0 auto 3rem;
+}
+
+.cover-title {
+  font-size: 2.2rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+}
+
+.cover-subtitle {
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--gray-300);
+  margin-bottom: 4rem;
+  letter-spacing: 0.02em;
+}
+
+.cover-meta {
+  font-size: 0.9rem;
+  color: var(--gray-500);
+  letter-spacing: 0.1em;
+}
+
+.cover-meta span { color: var(--gold); }
+
+/* ===== TABLE OF CONTENTS ===== */
+.toc-page {
+  min-height: 100vh;
+  padding: 4rem 3rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.toc-page h2 {
+  font-size: 2rem;
+  color: var(--black);
+  border-bottom: 3px solid var(--gold);
+  padding-bottom: 0.75rem;
+  margin-bottom: 2rem;
+  letter-spacing: 0.05em;
+}
+
+.toc-list { list-style: none; }
+
+.toc-list li {
+  border-bottom: 1px dotted var(--gray-300);
+  padding: 0.5rem 0;
+}
+
+.toc-list li a {
+  text-decoration: none;
+  color: var(--black);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  transition: color 0.2s;
+}
+
+.toc-list li a:hover { color: var(--gold-dark); }
+
+.toc-list .toc-chapter {
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding-top: 0.8rem;
+}
+
+.toc-list .toc-section {
+  font-weight: 400;
+  font-size: 0.95rem;
+  padding-left: 1.5rem;
+  color: var(--gray-700);
+}
+
+.toc-list .toc-appendix {
+  font-weight: 600;
+  font-size: 1rem;
+  padding-top: 0.8rem;
+  color: var(--gray-700);
+}
+
+/* ===== CHAPTER LAYOUT ===== */
+.chapter {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 3rem 4rem;
+}
+
+.chapter-header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 3px solid var(--gold);
+  margin-bottom: 2.5rem;
+}
+
+.chapter-number {
+  display: inline-block;
+  background: var(--black);
+  color: var(--gold);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  padding: 0.4rem 1.5rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.chapter-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--black);
+  letter-spacing: 0.02em;
+}
+
+/* ===== HEADINGS ===== */
+h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--black);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--gold-light);
+}
+
+h4 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+h5 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ===== TEXT ===== */
+p { margin-bottom: 1rem; }
+
+strong { font-weight: 600; }
+
+code {
+  background: var(--gray-100);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+  font-family: "SF Mono", "Fira Code", "Fira Mono", Menlo, Consolas, monospace;
+  color: var(--gray-800);
+}
+
+/* ===== LISTS ===== */
+ul, ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin-bottom: 0.4rem; }
+
+li ul, li ol { margin-top: 0.4rem; margin-bottom: 0.4rem; }
+
+/* ===== TABLES ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.92rem;
+}
+
+thead th {
+  background: var(--black);
+  color: var(--gold);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.7rem 0.8rem;
+  letter-spacing: 0.03em;
+  border: 1px solid var(--gray-700);
+}
+
+tbody td {
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--gray-200);
+  vertical-align: top;
+}
+
+tbody tr:nth-child(even) { background: var(--gray-50); }
+tbody tr:hover { background: var(--gold-light); }
+
+/* ===== CALLOUT BOXES ===== */
+.callout {
+  padding: 1rem 1.25rem;
+  border-radius: 6px;
+  margin: 1.5rem 0;
+  border-left: 4px solid;
+  font-size: 0.95rem;
+}
+
+.callout-title {
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.callout-info {
+  background: var(--blue-bg);
+  border-color: var(--blue-info);
+  color: var(--blue-info);
+}
+
+.callout-tip {
+  background: var(--green-bg);
+  border-color: var(--green-tip);
+  color: var(--green-tip);
+}
+
+.callout-warning {
+  background: var(--amber-bg);
+  border-color: var(--amber-warn);
+  color: var(--amber-warn);
+}
+
+.callout-danger {
+  background: var(--red-bg);
+  border-color: var(--red-danger);
+  color: var(--red-danger);
+}
+
+/* ===== STEP LISTS ===== */
+.steps {
+  counter-reset: step;
+  list-style: none;
+  padding-left: 0;
+}
+
+.steps li {
+  counter-increment: step;
+  padding: 0.75rem 0 0.75rem 3.5rem;
+  position: relative;
+  border-left: 2px solid var(--gray-200);
+  margin-left: 1rem;
+  margin-bottom: 0;
+}
+
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: -1rem;
+  top: 0.65rem;
+  width: 2rem;
+  height: 2rem;
+  background: var(--gold);
+  color: var(--black);
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.steps li:last-child { border-left-color: transparent; }
+
+/* ===== SCREENSHOT PLACEHOLDER ===== */
+.screenshot {
+  background: var(--gray-100);
+  border: 2px dashed var(--gray-300);
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  color: var(--gray-500);
+  font-size: 0.9rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+}
+
+/* ===== FORMULA ===== */
+.formula {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  font-family: "SF Mono", "Fira Code", Menlo, Consolas, monospace;
+  font-size: 0.95rem;
+  text-align: center;
+  color: var(--black);
+  letter-spacing: 0.02em;
+}
+
+/* ===== KEYBOARD SHORTCUT ===== */
+kbd {
+  background: var(--gray-100);
+  border: 1px solid var(--gray-300);
+  border-radius: 3px;
+  padding: 0.1em 0.4em;
+  font-family: inherit;
+  font-size: 0.85em;
+  box-shadow: 0 1px 0 var(--gray-300);
+}
+
+/* ===== INDICATOR COLORS ===== */
+.ind-green { color: #166534; font-weight: 600; }
+.ind-yellow { color: #a16207; font-weight: 600; }
+.ind-red { color: #dc2626; font-weight: 600; }
+
+/* ===== STATUS BADGES ===== */
+.badge {
+  display: inline-block;
+  padding: 0.15em 0.6em;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.badge-posted { background: #dcfce7; color: #166534; }
+.badge-draft { background: #fef9c3; color: #854d0e; }
+.badge-voided { background: #fee2e2; color: #991b1b; }
+.badge-pending { background: #e0e7ff; color: #3730a3; }
+.badge-reconciled { background: #dcfce7; color: #166534; }
+.badge-partial { background: #fef9c3; color: #854d0e; }
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  html { font-size: 11pt; }
+  body { background: white; color: black; }
+
+  .cover-page {
+    min-height: auto;
+    height: 100vh;
+    background: white !important;
+    color: black !important;
+    border: 3px solid var(--gold);
+    padding: 4cm 2cm;
+  }
+
+  .cover-page::before { display: none; }
+  .cover-logo { color: var(--gold) !important; font-size: 2.5rem; }
+  .cover-logo-sub { color: var(--gray-500) !important; }
+  .cover-title { color: black !important; }
+  .cover-subtitle { color: var(--gray-500) !important; }
+
+  .toc-page { page-break-before: always; min-height: auto; }
+
+  .chapter { page-break-before: always; padding: 1.5cm 0; }
+
+  .chapter-header { padding-top: 0; }
+
+  h3 { page-break-after: avoid; }
+  h4 { page-break-after: avoid; }
+  table { page-break-inside: avoid; }
+  .callout { page-break-inside: avoid; }
+  .steps li { page-break-inside: avoid; }
+
+  thead th {
+    background: var(--gray-100) !important;
+    color: black !important;
+    border: 1px solid #999;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  tbody tr:nth-child(even) {
+    background: #f5f5f5 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  tbody tr:hover { background: inherit; }
+
+  .callout {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .chapter-number {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .badge {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  a { color: inherit !important; text-decoration: none !important; }
+
+  @page { margin: 2cm; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- COVER PAGE                                                    -->
+<!-- ============================================================ -->
+<div class="cover-page">
+  <div class="cover-logo">TWO SIX</div>
+  <div class="cover-logo-sub">S.A.S.</div>
+  <div class="cover-divider"></div>
+  <div class="cover-title">Manual del Módulo de Contabilidad</div>
+  <div class="cover-subtitle">Sistema de Gestión Contable y Financiera</div>
+  <div class="cover-meta">Versión 1.0 &mdash; <span>Marzo 2026</span></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TABLE OF CONTENTS                                             -->
+<!-- ============================================================ -->
+<div class="toc-page" id="toc">
+  <h2>Tabla de Contenido</h2>
+  <ul class="toc-list">
+    <li class="toc-chapter"><a href="#cap1">Capítulo 1: Introducción</a></li>
+    <li class="toc-section"><a href="#cap1-1">1.1 Qué es el módulo contable</a></li>
+    <li class="toc-section"><a href="#cap1-2">1.2 Alcance del módulo</a></li>
+    <li class="toc-section"><a href="#cap1-3">1.3 Requisitos previos</a></li>
+    <li class="toc-section"><a href="#cap1-4">1.4 Acceso al módulo</a></li>
+
+    <li class="toc-chapter"><a href="#cap2">Capítulo 2: Plan Único de Cuentas (PUC)</a></li>
+    <li class="toc-section"><a href="#cap2-1">2.1 Qué es el PUC y su estructura</a></li>
+    <li class="toc-section"><a href="#cap2-2">2.2 Navegación del árbol de cuentas</a></li>
+    <li class="toc-section"><a href="#cap2-3">2.3 Crear, editar y eliminar cuentas</a></li>
+    <li class="toc-section"><a href="#cap2-4">2.4 Cuentas que aceptan movimientos</a></li>
+    <li class="toc-section"><a href="#cap2-5">2.5 Interfaz del PUC</a></li>
+
+    <li class="toc-chapter"><a href="#cap3">Capítulo 3: Asientos Contables</a></li>
+    <li class="toc-section"><a href="#cap3-1">3.1 Qué es un asiento contable</a></li>
+    <li class="toc-section"><a href="#cap3-2">3.2 Asientos automáticos</a></li>
+    <li class="toc-section"><a href="#cap3-3">3.3 Asientos manuales</a></li>
+    <li class="toc-section"><a href="#cap3-4">3.4 Filtros y búsqueda</a></li>
+    <li class="toc-section"><a href="#cap3-5">3.5 Estados de un asiento</a></li>
+
+    <li class="toc-chapter"><a href="#cap4">Capítulo 4: Gastos y Compras</a></li>
+    <li class="toc-section"><a href="#cap4-1">4.1 Tipos de gastos</a></li>
+    <li class="toc-section"><a href="#cap4-2">4.2 Registrar un gasto</a></li>
+    <li class="toc-section"><a href="#cap4-3">4.3 Campos del formulario</a></li>
+    <li class="toc-section"><a href="#cap4-4">4.4 Marcar como pagado</a></li>
+    <li class="toc-section"><a href="#cap4-5">4.5 Retenciones</a></li>
+
+    <li class="toc-chapter"><a href="#cap5">Capítulo 5: Nómina</a></li>
+    <li class="toc-section"><a href="#cap5-1">5.1 Configurar empleados</a></li>
+    <li class="toc-section"><a href="#cap5-2">5.2 Crear período de nómina</a></li>
+    <li class="toc-section"><a href="#cap5-3">5.3 Calcular nómina</a></li>
+    <li class="toc-section"><a href="#cap5-4">5.4 Aprobar nómina</a></li>
+
+    <li class="toc-chapter"><a href="#cap6">Capítulo 6: Conciliación Bancaria</a></li>
+    <li class="toc-section"><a href="#cap6-1">6.1 Crear cuentas bancarias</a></li>
+    <li class="toc-section"><a href="#cap6-2">6.2 Subir extracto bancario</a></li>
+    <li class="toc-section"><a href="#cap6-3">6.3 Formato del archivo CSV</a></li>
+    <li class="toc-section"><a href="#cap6-4">6.4 Auto-match</a></li>
+    <li class="toc-section"><a href="#cap6-5">6.5 Match manual</a></li>
+    <li class="toc-section"><a href="#cap6-6">6.6 Estados de conciliación</a></li>
+
+    <li class="toc-chapter"><a href="#cap7">Capítulo 7: Cierre Contable</a></li>
+    <li class="toc-section"><a href="#cap7-1">7.1 Qué es el cierre contable</a></li>
+    <li class="toc-section"><a href="#cap7-2">7.2 Cierre mensual</a></li>
+    <li class="toc-section"><a href="#cap7-3">7.3 Cierre anual</a></li>
+    <li class="toc-section"><a href="#cap7-4">7.4 Cuándo realizar el cierre</a></li>
+
+    <li class="toc-chapter"><a href="#cap8">Capítulo 8: Reportes Financieros</a></li>
+    <li class="toc-section"><a href="#cap8-1">8.1 Balance General</a></li>
+    <li class="toc-section"><a href="#cap8-2">8.2 Estado de Resultados (P&amp;G)</a></li>
+    <li class="toc-section"><a href="#cap8-3">8.3 Libro Mayor</a></li>
+    <li class="toc-section"><a href="#cap8-4">8.4 Libro Auxiliar</a></li>
+    <li class="toc-section"><a href="#cap8-5">8.5 Flujo de Caja</a></li>
+    <li class="toc-section"><a href="#cap8-6">8.6 Cartera por Edades</a></li>
+    <li class="toc-section"><a href="#cap8-7">8.7 Exportar reportes a Excel</a></li>
+
+    <li class="toc-chapter"><a href="#cap9">Capítulo 9: Presupuesto</a></li>
+    <li class="toc-section"><a href="#cap9-1">9.1 Crear presupuesto anual</a></li>
+    <li class="toc-section"><a href="#cap9-2">9.2 Editar montos mensuales</a></li>
+    <li class="toc-section"><a href="#cap9-3">9.3 Comparativo presupuesto vs ejecución</a></li>
+
+    <li class="toc-chapter"><a href="#cap10">Capítulo 10: Activos Fijos y Depreciación</a></li>
+    <li class="toc-section"><a href="#cap10-1">10.1 Registrar un activo fijo</a></li>
+    <li class="toc-section"><a href="#cap10-2">10.2 Asignar cuentas PUC</a></li>
+    <li class="toc-section"><a href="#cap10-3">10.3 Ejecutar depreciación mensual</a></li>
+    <li class="toc-section"><a href="#cap10-4">10.4 Historial de depreciación</a></li>
+
+    <li class="toc-chapter"><a href="#cap11">Capítulo 11: Declaraciones Fiscales</a></li>
+    <li class="toc-section"><a href="#cap11-1">11.1 Declaración de IVA (Formulario 300)</a></li>
+    <li class="toc-section"><a href="#cap11-2">11.2 Retención en la Fuente (Formulario 350)</a></li>
+    <li class="toc-section"><a href="#cap11-3">11.3 Certificados de Retención</a></li>
+
+    <li class="toc-chapter"><a href="#cap12">Capítulo 12: Indicadores Financieros</a></li>
+    <li class="toc-section"><a href="#cap12-1">12.1 Indicadores de liquidez</a></li>
+    <li class="toc-section"><a href="#cap12-2">12.2 Indicadores de solvencia</a></li>
+    <li class="toc-section"><a href="#cap12-3">12.3 Indicadores de rentabilidad</a></li>
+    <li class="toc-section"><a href="#cap12-4">12.4 Indicadores de eficiencia</a></li>
+    <li class="toc-section"><a href="#cap12-5">12.5 Interpretación de colores</a></li>
+
+    <li class="toc-chapter"><a href="#cap13">Capítulo 13: Información Exógena (Medios Magnéticos)</a></li>
+    <li class="toc-section"><a href="#cap13-1">13.1 Qué es y cuándo se presenta</a></li>
+    <li class="toc-section"><a href="#cap13-2">13.2 Formatos disponibles</a></li>
+    <li class="toc-section"><a href="#cap13-3">13.3 Previsualizar y generar Excel</a></li>
+
+    <li class="toc-chapter"><a href="#cap14">Capítulo 14: Auditoría</a></li>
+    <li class="toc-section"><a href="#cap14-1">14.1 Qué registra el log de auditoría</a></li>
+    <li class="toc-section"><a href="#cap14-2">14.2 Acciones rastreadas</a></li>
+    <li class="toc-section"><a href="#cap14-3">14.3 Filtros disponibles</a></li>
+    <li class="toc-section"><a href="#cap14-4">14.4 Dashboard financiero</a></li>
+
+    <li class="toc-chapter"><a href="#cap15">Capítulo 15: Facturación Electrónica DIAN</a></li>
+    <li class="toc-section"><a href="#cap15-1">15.1 Flujo automático al pagar una orden</a></li>
+    <li class="toc-section"><a href="#cap15-2">15.2 Consultar estado de facturas</a></li>
+    <li class="toc-section"><a href="#cap15-3">15.3 Descargar XML y PDF</a></li>
+    <li class="toc-section"><a href="#cap15-4">15.4 Notas crédito y débito</a></li>
+    <li class="toc-section"><a href="#cap15-5">15.5 Configuración de resolución y certificado</a></li>
+
+    <li class="toc-appendix"><a href="#apA">Apéndice A: Plan Único de Cuentas (Resumen)</a></li>
+    <li class="toc-appendix"><a href="#apB">Apéndice B: Tarifas de Retención en Colombia</a></li>
+    <li class="toc-appendix"><a href="#apC">Apéndice C: Glosario</a></li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 1: INTRODUCCIÓN                                       -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap1">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 1</div>
+    <h2 class="chapter-title">Introducción</h2>
+  </div>
+
+  <h3 id="cap1-1">1.1 Qué es el módulo contable</h3>
+  <p>El Módulo de Contabilidad de Two Six es el componente central del sistema de gestión empresarial que permite llevar un registro completo, ordenado y automatizado de todas las operaciones financieras de la compañía. Está diseñado conforme a las Normas Internacionales de Información Financiera (NIIF) y las regulaciones contables colombianas, incluyendo el Plan Único de Cuentas (PUC) establecido por el Decreto 2650 de 1993.</p>
+  <p>El módulo integra de forma nativa la contabilidad por partida doble, la facturación electrónica ante la DIAN, el manejo de nómina, la gestión de activos fijos, el control presupuestal y la generación de reportes financieros, proporcionando una solución integral para la gestión contable y financiera.</p>
+
+  <h3 id="cap1-2">1.2 Alcance del módulo</h3>
+  <p>El módulo contable abarca las siguientes áreas funcionales:</p>
+  <ul>
+    <li><strong>Facturación electrónica DIAN:</strong> Emisión automática de facturas electrónicas con validación en tiempo real ante la DIAN, generación de notas crédito y débito, y cumplimiento de la resolución de numeración vigente.</li>
+    <li><strong>Contabilidad por partida doble:</strong> Registro de asientos contables manuales y automáticos, garantizando que cada transacción cumpla con la ecuación fundamental: <em>Débito = Crédito</em>.</li>
+    <li><strong>Reportes financieros:</strong> Balance General, Estado de Resultados, Libro Mayor, Libro Auxiliar, Flujo de Caja y Cartera por Edades, todos exportables a Excel.</li>
+    <li><strong>Nómina:</strong> Liquidación quincenal o mensual de nómina con cálculo automático de devengados, deducciones, aportes patronales y provisiones.</li>
+    <li><strong>Conciliación bancaria:</strong> Cruce automático y manual de transacciones con extractos bancarios.</li>
+    <li><strong>Declaraciones fiscales:</strong> Preparación de declaraciones de IVA (Formulario 300), Retención en la Fuente (Formulario 350) y certificados de retención.</li>
+    <li><strong>Información exógena:</strong> Generación de medios magnéticos en los formatos 1001, 1005, 1006 y 1007.</li>
+    <li><strong>Presupuesto:</strong> Control presupuestal con comparativo contra la ejecución real.</li>
+    <li><strong>Activos fijos:</strong> Registro y depreciación automática por método de línea recta.</li>
+    <li><strong>Indicadores financieros:</strong> Dashboard con indicadores de liquidez, solvencia, rentabilidad y eficiencia.</li>
+  </ul>
+
+  <h3 id="cap1-3">1.3 Requisitos previos</h3>
+  <p>Para utilizar el módulo de contabilidad es necesario contar con:</p>
+  <ul>
+    <li><strong>Acceso al CMS:</strong> Credenciales válidas para ingresar al sistema de gestión de Two Six.</li>
+    <li><strong>Permisos de contabilidad:</strong> El administrador del sistema debe haber asignado al usuario los permisos correspondientes al módulo contable. Los roles disponibles son:
+      <ul>
+        <li><strong>Contador:</strong> Acceso completo a todas las funciones contables.</li>
+        <li><strong>Auxiliar contable:</strong> Puede registrar gastos, crear asientos manuales y consultar reportes.</li>
+        <li><strong>Consulta:</strong> Solo lectura de reportes y estados financieros.</li>
+      </ul>
+    </li>
+    <li><strong>Navegador web actualizado:</strong> Google Chrome (recomendado), Firefox, Safari o Edge en su versión más reciente.</li>
+    <li><strong>Conexión a internet:</strong> Necesaria para la comunicación con los servicios de la DIAN.</li>
+  </ul>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Nota</div>
+    Si no cuenta con los permisos necesarios, contacte al administrador del sistema para que le asigne el rol correspondiente desde la sección de <strong>Usuarios y Permisos</strong> del CMS.
+  </div>
+
+  <h3 id="cap1-4">1.4 Acceso al módulo</h3>
+  <p>Para acceder al módulo de contabilidad:</p>
+  <ol class="steps">
+    <li>Inicie sesión en el CMS de Two Six con sus credenciales.</li>
+    <li>En el menú lateral izquierdo, localice la sección <strong>Contabilidad</strong>.</li>
+    <li>Haga clic para desplegar las opciones del módulo: PUC, Asientos, Gastos, Nómina, Conciliación, Cierre, Reportes, Presupuesto, Activos, Declaraciones, Indicadores, Exógena, Auditoría y Facturación.</li>
+    <li>Seleccione la opción deseada para ingresar a la pantalla correspondiente.</li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    El módulo de contabilidad también muestra un <strong>dashboard financiero</strong> en la página de inicio del CMS con un resumen de los principales indicadores y alertas pendientes.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 2: PUC                                                -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap2">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 2</div>
+    <h2 class="chapter-title">Plan Único de Cuentas (PUC)</h2>
+  </div>
+
+  <h3 id="cap2-1">2.1 Qué es el PUC y su estructura</h3>
+  <p>El Plan Único de Cuentas (PUC) es el catálogo oficial de cuentas contables establecido por la normatividad colombiana. Su propósito es unificar el registro de las operaciones económicas realizadas por los comerciantes, facilitando la claridad, confiabilidad y comparabilidad de la información contable.</p>
+  <p>El PUC se organiza en <strong>6 clases</strong> principales:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Clase</th>
+        <th>Nombre</th>
+        <th>Naturaleza</th>
+        <th>Descripción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1</strong></td>
+        <td>Activos</td>
+        <td>Débito</td>
+        <td>Bienes y derechos de la empresa: bancos, inventarios, cuentas por cobrar, propiedad planta y equipo.</td>
+      </tr>
+      <tr>
+        <td><strong>2</strong></td>
+        <td>Pasivos</td>
+        <td>Crédito</td>
+        <td>Obligaciones de la empresa: proveedores, impuestos por pagar, obligaciones financieras.</td>
+      </tr>
+      <tr>
+        <td><strong>3</strong></td>
+        <td>Patrimonio</td>
+        <td>Crédito</td>
+        <td>Capital social, reservas, resultados del ejercicio, resultados de ejercicios anteriores.</td>
+      </tr>
+      <tr>
+        <td><strong>4</strong></td>
+        <td>Ingresos</td>
+        <td>Crédito</td>
+        <td>Ingresos operacionales y no operacionales obtenidos durante el período.</td>
+      </tr>
+      <tr>
+        <td><strong>5</strong></td>
+        <td>Gastos</td>
+        <td>Débito</td>
+        <td>Gastos operacionales de administración y de ventas.</td>
+      </tr>
+      <tr>
+        <td><strong>6</strong></td>
+        <td>Costos</td>
+        <td>Débito</td>
+        <td>Costo de ventas y costo de producción.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Cada clase se subdivide en <strong>5 niveles</strong> jerárquicos:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nivel</th>
+        <th>Nombre</th>
+        <th>Dígitos</th>
+        <th>Ejemplo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Clase</td><td>1 dígito</td><td><code>1</code> &mdash; Activos</td></tr>
+      <tr><td>2</td><td>Grupo</td><td>2 dígitos</td><td><code>11</code> &mdash; Disponible</td></tr>
+      <tr><td>3</td><td>Cuenta</td><td>4 dígitos</td><td><code>1105</code> &mdash; Caja</td></tr>
+      <tr><td>4</td><td>Subcuenta</td><td>6 dígitos</td><td><code>110505</code> &mdash; Caja General</td></tr>
+      <tr><td>5</td><td>Auxiliar</td><td>8+ dígitos</td><td><code>11050501</code> &mdash; Caja Principal Bogotá</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Nota</div>
+    Solo las cuentas de <strong>nivel 5 (auxiliar)</strong> aceptan movimientos contables. Las cuentas de niveles superiores funcionan como agrupadores y sus saldos se calculan automáticamente como la sumatoria de sus cuentas hijas.
+  </div>
+
+  <h3 id="cap2-2">2.2 Navegación del árbol de cuentas</h3>
+  <p>El módulo presenta el PUC en formato de <strong>árbol jerárquico expandible</strong>. Para navegar:</p>
+  <ul>
+    <li>Haga clic en el ícono de flecha <strong>(&gt;)</strong> junto a una cuenta para expandir y ver sus cuentas hijas.</li>
+    <li>Utilice el campo de <strong>búsqueda</strong> en la parte superior para localizar una cuenta por su código o nombre. El árbol se filtrará automáticamente mostrando solo las cuentas coincidentes.</li>
+    <li>Las cuentas que aceptan movimientos se muestran con un ícono indicador distinto (hoja) frente a las cuentas padre (carpeta).</li>
+  </ul>
+
+  <div class="screenshot">[Captura de pantalla: Árbol del PUC mostrando las 6 clases principales expandidas con sus grupos y cuentas. Campo de búsqueda en la parte superior con el texto "1105" filtrando las cuentas de Caja.]</div>
+
+  <h3 id="cap2-3">2.3 Crear, editar y eliminar cuentas</h3>
+
+  <h4>Crear una cuenta nueva</h4>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; PUC</strong>.</li>
+    <li>Haga clic en el botón <strong>"Nueva Cuenta"</strong>.</li>
+    <li>Complete los campos requeridos:
+      <ul>
+        <li><strong>Código:</strong> El código numérico de la cuenta siguiendo la estructura PUC.</li>
+        <li><strong>Nombre:</strong> Nombre descriptivo de la cuenta.</li>
+        <li><strong>Naturaleza:</strong> Débito o Crédito (se sugiere automáticamente según la clase).</li>
+        <li><strong>Cuenta padre:</strong> Se asigna automáticamente según el código ingresado.</li>
+        <li><strong>Acepta movimientos:</strong> Marque esta opción solo para cuentas de nivel auxiliar.</li>
+      </ul>
+    </li>
+    <li>Haga clic en <strong>"Guardar"</strong>.</li>
+  </ol>
+
+  <h4>Editar una cuenta existente</h4>
+  <p>Haga clic sobre la cuenta en el árbol y luego en el botón de edición. Puede modificar el nombre y la descripción. El código no es editable una vez creada la cuenta.</p>
+
+  <h4>Eliminar una cuenta</h4>
+  <p>Solo se pueden eliminar cuentas que <strong>no tengan movimientos asociados</strong> ni cuentas hijas. Si intenta eliminar una cuenta con saldo, el sistema mostrará un mensaje de error.</p>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">Advertencia</div>
+    Eliminar una cuenta del PUC es una acción irreversible. Antes de eliminar, asegúrese de que la cuenta no haya sido utilizada en ningún asiento contable ni esté referenciada en configuraciones de gastos o facturación.
+  </div>
+
+  <h3 id="cap2-4">2.4 Cuentas que aceptan movimientos</h3>
+  <p>En el sistema Two Six, las cuentas están marcadas con la propiedad <strong>"accepts_movements"</strong>. Solo las cuentas con esta propiedad activada pueden ser seleccionadas como línea de un asiento contable, un gasto o cualquier otra transacción.</p>
+  <p>Las cuentas padre (clases, grupos, cuentas y subcuentas) actúan como <strong>agrupadores</strong>. Su saldo se calcula de forma dinámica sumando los saldos de todas sus cuentas auxiliares descendientes.</p>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    Si al registrar un gasto o crear un asiento no encuentra una cuenta, verifique que la cuenta objetivo sea de <strong>nivel auxiliar</strong> y tenga activada la opción "Acepta movimientos".
+  </div>
+
+  <h3 id="cap2-5">2.5 Interfaz del PUC</h3>
+  <p>La interfaz del PUC se compone de los siguientes elementos:</p>
+  <ul>
+    <li><strong>Barra de búsqueda:</strong> Permite filtrar cuentas por código o nombre en tiempo real.</li>
+    <li><strong>Árbol de cuentas:</strong> Estructura jerárquica expandible con indicadores visuales de nivel.</li>
+    <li><strong>Panel de detalle:</strong> Al seleccionar una cuenta, se muestra en el lado derecho su información completa: código, nombre, naturaleza, nivel, saldo actual y los últimos movimientos.</li>
+    <li><strong>Botones de acción:</strong> Nueva cuenta, editar, eliminar (según permisos).</li>
+  </ul>
+
+  <div class="screenshot">[Captura de pantalla: Vista completa del módulo PUC mostrando el árbol a la izquierda con cuentas expandidas de la clase 1 (Activos), y el panel de detalle a la derecha con la información de la cuenta 11100501 Banco Bancolombia.]</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 3: ASIENTOS CONTABLES                                 -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap3">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 3</div>
+    <h2 class="chapter-title">Asientos Contables</h2>
+  </div>
+
+  <h3 id="cap3-1">3.1 Qué es un asiento contable</h3>
+  <p>Un asiento contable es el registro formal de una transacción económica en el sistema de contabilidad. Se basa en el principio de <strong>partida doble</strong>, que establece que toda operación financiera afecta al menos dos cuentas: una se debita y otra se acredita, de manera que la suma total de los débitos sea <strong>siempre igual</strong> a la suma total de los créditos.</p>
+
+  <div class="formula">Total Débitos = Total Créditos</div>
+
+  <p>Cada asiento contable contiene:</p>
+  <ul>
+    <li><strong>Fecha:</strong> Fecha en que ocurrió la transacción.</li>
+    <li><strong>Descripción:</strong> Texto explicativo de la transacción.</li>
+    <li><strong>Tipo:</strong> Indica el origen del asiento (VENTA, GASTO, NÓMINA, AJUSTE, DEPRECIACIÓN, CIERRE, MANUAL).</li>
+    <li><strong>Líneas:</strong> Cada línea especifica una cuenta PUC, un monto al débito o al crédito, y una descripción opcional.</li>
+    <li><strong>Estado:</strong> DRAFT, POSTED o VOIDED.</li>
+  </ul>
+
+  <h3 id="cap3-2">3.2 Asientos automáticos</h3>
+  <p>El sistema genera asientos contables automáticamente en los siguientes escenarios:</p>
+
+  <h4>3.2.1 Al pagar una orden (venta)</h4>
+  <p>Cuando un pedido se marca como pagado, el sistema genera un asiento que registra el ingreso del dinero, la obligación tributaria por IVA y el reconocimiento del ingreso operacional:</p>
+
+  <table>
+    <thead>
+      <tr><th>Cuenta</th><th>Concepto</th><th>Débito</th><th>Crédito</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1110 Bancos</td><td>Valor total recibido</td><td>$1.190.000</td><td></td></tr>
+      <tr><td>2408 IVA Generado</td><td>IVA 19%</td><td></td><td>$190.000</td></tr>
+      <tr><td>4135 Ingresos Operacionales</td><td>Valor neto de la venta</td><td></td><td>$1.000.000</td></tr>
+    </tbody>
+  </table>
+
+  <h4>3.2.2 Al registrar un gasto</h4>
+  <p>Cuando se registra un gasto, el asiento refleja el reconocimiento del gasto, el IVA descontable y la obligación con el proveedor, menos las retenciones aplicables:</p>
+
+  <table>
+    <thead>
+      <tr><th>Cuenta</th><th>Concepto</th><th>Débito</th><th>Crédito</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>5195 Gastos Diversos</td><td>Valor del gasto</td><td>$1.000.000</td><td></td></tr>
+      <tr><td>2408 IVA Descontable</td><td>IVA 19%</td><td>$190.000</td><td></td></tr>
+      <tr><td>2205 Proveedores</td><td>Valor a pagar al proveedor</td><td></td><td>$1.165.000</td></tr>
+      <tr><td>2365 Retención en la Fuente</td><td>ReteFuente 2.5%</td><td></td><td>$25.000</td></tr>
+    </tbody>
+  </table>
+
+  <h4>3.2.3 Al vender (Costo de Mercancía Vendida)</h4>
+  <p>Adicionalmente al asiento de ingreso, el sistema registra automáticamente el costo de la mercancía vendida, moviendo el valor del inventario a la cuenta de costos:</p>
+
+  <table>
+    <thead>
+      <tr><th>Cuenta</th><th>Concepto</th><th>Débito</th><th>Crédito</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>6135 Costo de Ventas</td><td>Costo de los productos vendidos</td><td>$600.000</td><td></td></tr>
+      <tr><td>1435 Inventarios</td><td>Salida de mercancía</td><td></td><td>$600.000</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Nota</div>
+    Los asientos automáticos se crean en estado <span class="badge badge-posted">POSTED</span> y no requieren aprobación adicional. Si necesita reversar un asiento automático, debe crear un asiento manual de ajuste o anular el documento origen.
+  </div>
+
+  <h3 id="cap3-3">3.3 Asientos manuales</h3>
+  <p>Para registrar transacciones que no están automatizadas (ajustes, reclasificaciones, correcciones), se pueden crear asientos manuales:</p>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Asientos Contables</strong>.</li>
+    <li>Haga clic en <strong>"Nuevo Asiento"</strong>.</li>
+    <li>Seleccione la <strong>fecha</strong> del asiento.</li>
+    <li>Escriba una <strong>descripción</strong> clara del motivo del asiento.</li>
+    <li>Agregue las <strong>líneas</strong> del asiento:
+      <ul>
+        <li>Para cada línea, seleccione la cuenta PUC (solo se mostrarán las que aceptan movimientos).</li>
+        <li>Ingrese el monto en la columna <strong>Débito</strong> o <strong>Crédito</strong> según corresponda.</li>
+        <li>Opcionalmente, agregue una descripción para la línea.</li>
+      </ul>
+    </li>
+    <li>Verifique que el total de débitos sea <strong>igual</strong> al total de créditos. El sistema muestra un indicador en tiempo real.</li>
+    <li>Haga clic en <strong>"Guardar como Borrador"</strong> para guardarlo sin publicar, o en <strong>"Publicar"</strong> para registrarlo directamente.</li>
+  </ol>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">Advertencia</div>
+    El sistema <strong>no permitirá publicar</strong> un asiento si los débitos no son iguales a los créditos. Revise las cifras antes de intentar publicar.
+  </div>
+
+  <h3 id="cap3-4">3.4 Filtros y búsqueda</h3>
+  <p>La lista de asientos contables permite filtrar por:</p>
+  <ul>
+    <li><strong>Rango de fechas:</strong> Seleccione fecha inicial y fecha final.</li>
+    <li><strong>Tipo de asiento:</strong> VENTA, GASTO, NÓMINA, AJUSTE, DEPRECIACIÓN, CIERRE, MANUAL.</li>
+    <li><strong>Estado:</strong> POSTED, DRAFT, VOIDED.</li>
+    <li><strong>Búsqueda por texto:</strong> Busca en la descripción y referencia del asiento.</li>
+  </ul>
+
+  <h3 id="cap3-5">3.5 Estados de un asiento</h3>
+
+  <table>
+    <thead>
+      <tr><th>Estado</th><th>Descripción</th><th>Afecta saldos</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-draft">DRAFT</span></td>
+        <td>Borrador. El asiento está guardado pero aún no ha sido publicado. Puede ser editado o eliminado.</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-posted">POSTED</span></td>
+        <td>Publicado. El asiento ha sido contabilizado y afecta los saldos de las cuentas. No puede ser editado.</td>
+        <td>Sí</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-voided">VOIDED</span></td>
+        <td>Anulado. El asiento fue revertido y ya no afecta los saldos. Se mantiene en el sistema por auditoría.</td>
+        <td>No</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    Para corregir un asiento publicado, no lo anule directamente. En su lugar, cree un <strong>asiento de ajuste</strong> que revierta las líneas incorrectas y registre las correctas. Así se mantiene una pista de auditoría completa.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 4: GASTOS Y COMPRAS                                   -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap4">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 4</div>
+    <h2 class="chapter-title">Gastos y Compras</h2>
+  </div>
+
+  <h3 id="cap4-1">4.1 Tipos de gastos</h3>
+  <p>El módulo clasifica los gastos en <strong>10 categorías</strong> predefinidas, las cuales pueden ser personalizadas según las necesidades de la empresa:</p>
+
+  <table>
+    <thead>
+      <tr><th>#</th><th>Categoría</th><th>Cuenta PUC sugerida</th><th>Ejemplo</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Arriendo</td><td>5120 &mdash; Arrendamientos</td><td>Arriendo de oficina o bodega</td></tr>
+      <tr><td>2</td><td>Servicios públicos</td><td>5135 &mdash; Servicios</td><td>Energía, agua, gas, internet</td></tr>
+      <tr><td>3</td><td>Honorarios</td><td>5110 &mdash; Honorarios</td><td>Servicios profesionales, asesorías</td></tr>
+      <tr><td>4</td><td>Compra de mercancía</td><td>6205 &mdash; Compra de Mercancía</td><td>Adquisición de inventario para venta</td></tr>
+      <tr><td>5</td><td>Transporte y fletes</td><td>5155 &mdash; Gastos de Viaje</td><td>Envíos, mensajería, transporte</td></tr>
+      <tr><td>6</td><td>Mantenimiento</td><td>5145 &mdash; Mantenimiento y Reparaciones</td><td>Reparación de equipos, instalaciones</td></tr>
+      <tr><td>7</td><td>Publicidad</td><td>5230 &mdash; Publicidad y Propaganda</td><td>Pautas digitales, impresos</td></tr>
+      <tr><td>8</td><td>Papelería y suministros</td><td>5195 &mdash; Diversos</td><td>Elementos de oficina</td></tr>
+      <tr><td>9</td><td>Impuestos y tasas</td><td>5115 &mdash; Impuestos</td><td>ICA, predial, vehículos</td></tr>
+      <tr><td>10</td><td>Otros gastos</td><td>5195 &mdash; Diversos</td><td>Gastos no clasificados</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="cap4-2">4.2 Registrar un gasto</h3>
+  <p>Para registrar un nuevo gasto, siga estos pasos:</p>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Gastos</strong>.</li>
+    <li>Haga clic en el botón <strong>"Nuevo Gasto"</strong>.</li>
+    <li>Seleccione la <strong>categoría</strong> del gasto de la lista desplegable.</li>
+    <li>Seleccione o cree el <strong>proveedor</strong>. Si el proveedor no existe, puede crearlo directamente desde este formulario ingresando su NIT, razón social y datos de contacto.</li>
+    <li>Ingrese el número de <strong>factura</strong> del proveedor como referencia.</li>
+    <li>Seleccione la <strong>fecha</strong> del gasto.</li>
+    <li>Ingrese el <strong>subtotal</strong> (valor antes de IVA).</li>
+    <li>Seleccione la <strong>tarifa de IVA</strong> aplicable (0%, 5%, 19%). El sistema calculará el IVA automáticamente.</li>
+    <li>Configure las <strong>retenciones</strong> aplicables (ReteFuente, ReteICA, ReteIVA) según corresponda.</li>
+    <li>Verifique el <strong>total a pagar</strong> calculado por el sistema: Subtotal + IVA - Retenciones.</li>
+    <li>Haga clic en <strong>"Guardar"</strong>.</li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    Al seleccionar la categoría, el sistema sugiere automáticamente la <strong>cuenta PUC</strong> asociada. Puede cambiarla manualmente si el gasto requiere una cuenta diferente.
+  </div>
+
+  <h3 id="cap4-3">4.3 Campos del formulario</h3>
+
+  <table>
+    <thead>
+      <tr><th>Campo</th><th>Tipo</th><th>Obligatorio</th><th>Descripción</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Categoría</td><td>Selección</td><td>Sí</td><td>Tipo de gasto según las 10 categorías definidas.</td></tr>
+      <tr><td>Cuenta PUC</td><td>Selección</td><td>Sí</td><td>Cuenta contable donde se registrará el gasto.</td></tr>
+      <tr><td>Proveedor</td><td>Selección/Creación</td><td>Sí</td><td>Tercero al que se le compra el bien o servicio.</td></tr>
+      <tr><td>No. Factura</td><td>Texto</td><td>Sí</td><td>Número de la factura emitida por el proveedor.</td></tr>
+      <tr><td>Fecha</td><td>Fecha</td><td>Sí</td><td>Fecha de la transacción.</td></tr>
+      <tr><td>Subtotal</td><td>Numérico</td><td>Sí</td><td>Valor antes de impuestos.</td></tr>
+      <tr><td>Tarifa IVA</td><td>Selección</td><td>Sí</td><td>0%, 5% o 19%.</td></tr>
+      <tr><td>IVA</td><td>Calculado</td><td>&mdash;</td><td>Subtotal &times; Tarifa IVA (calculado automáticamente).</td></tr>
+      <tr><td>ReteFuente</td><td>Numérico</td><td>No</td><td>Valor de la retención en la fuente.</td></tr>
+      <tr><td>ReteICA</td><td>Numérico</td><td>No</td><td>Valor de la retención de ICA.</td></tr>
+      <tr><td>ReteIVA</td><td>Numérico</td><td>No</td><td>Valor de la retención de IVA.</td></tr>
+      <tr><td>Total</td><td>Calculado</td><td>&mdash;</td><td>Subtotal + IVA - ReteFuente - ReteICA - ReteIVA.</td></tr>
+      <tr><td>Descripción</td><td>Texto</td><td>No</td><td>Notas adicionales sobre el gasto.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="cap4-4">4.4 Marcar como pagado</h3>
+  <p>Los gastos se crean inicialmente como <strong>pendientes de pago</strong>. Para marcar un gasto como pagado:</p>
+  <ol class="steps">
+    <li>Localice el gasto en la lista y haga clic para ver su detalle.</li>
+    <li>Haga clic en el botón <strong>"Marcar como Pagado"</strong>.</li>
+    <li>Seleccione la <strong>cuenta bancaria</strong> desde la cual se realizó el pago.</li>
+    <li>Confirme la operación.</li>
+  </ol>
+  <p>Al marcar como pagado, el sistema genera automáticamente un asiento contable adicional que debita la cuenta de proveedores y acredita la cuenta bancaria seleccionada.</p>
+
+  <h3 id="cap4-5">4.5 Retenciones</h3>
+  <p>Colombia cuenta con un sistema de retenciones en la fuente que actúan como un mecanismo de recaudo anticipado de impuestos. Las retenciones que maneja el módulo son:</p>
+
+  <h4>Retención en la Fuente (ReteFuente)</h4>
+  <p>Se aplica sobre la base gravable del gasto según el concepto. Las tarifas más comunes son:</p>
+  <ul>
+    <li>Compras generales: <strong>2.5%</strong></li>
+    <li>Servicios generales: <strong>4%</strong></li>
+    <li>Servicios profesionales: <strong>6%</strong></li>
+    <li>Honorarios (declarante): <strong>10%</strong></li>
+    <li>Honorarios (no declarante): <strong>11%</strong></li>
+    <li>Arrendamientos: <strong>3.5%</strong></li>
+  </ul>
+
+  <h4>Retención de ICA (ReteICA)</h4>
+  <p>Se aplica sobre la base gravable según la actividad económica y el municipio. La tarifa varía por municipio (generalmente entre 4.14 y 13.8 por mil).</p>
+
+  <h4>Retención de IVA (ReteIVA)</h4>
+  <p>Se aplica sobre el valor del IVA cuando el comprador es agente de retención de IVA. La tarifa general es del <strong>15%</strong> del valor del IVA.</p>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Nota</div>
+    Las retenciones se aplican cuando la empresa actúa como <strong>agente de retención</strong>. Verifique con su contador si su empresa está obligada a practicar retenciones según su régimen tributario.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 5: NÓMINA                                             -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap5">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 5</div>
+    <h2 class="chapter-title">Nómina</h2>
+  </div>
+
+  <h3 id="cap5-1">5.1 Configurar empleados</h3>
+  <p>Antes de liquidar nómina, es necesario configurar la información de cada empleado. Navegue a <strong>Contabilidad &rarr; Nómina &rarr; Empleados</strong> y para cada uno registre:</p>
+
+  <h4>Datos personales</h4>
+  <ul>
+    <li>Nombre completo</li>
+    <li>Tipo y número de documento de identidad</li>
+    <li>Dirección, ciudad, teléfono, correo electrónico</li>
+    <li>Fecha de ingreso a la empresa</li>
+  </ul>
+
+  <h4>Datos laborales</h4>
+  <ul>
+    <li><strong>Salario base mensual:</strong> Valor del salario ordinario pactado.</li>
+    <li><strong>Tipo de contrato:</strong> Término fijo, indefinido, obra o labor.</li>
+    <li><strong>Cargo:</strong> Puesto que desempeña en la empresa.</li>
+    <li><strong>Centro de costo:</strong> Área o departamento al que se carga la nómina.</li>
+  </ul>
+
+  <h4>Seguridad social y parafiscales</h4>
+  <ul>
+    <li><strong>EPS:</strong> Entidad Promotora de Salud a la que está afiliado.</li>
+    <li><strong>Fondo de Pensión:</strong> Administradora de Fondo de Pensiones.</li>
+    <li><strong>ARL:</strong> Administradora de Riesgos Laborales y el nivel de riesgo (I a V).</li>
+    <li><strong>Caja de Compensación:</strong> Caja de compensación familiar.</li>
+  </ul>
+
+  <h4>Datos bancarios</h4>
+  <ul>
+    <li>Banco, tipo de cuenta y número de cuenta para el pago.</li>
+  </ul>
+
+  <h3 id="cap5-2">5.2 Crear período de nómina</h3>
+  <p>Para crear un nuevo período de nómina:</p>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Nómina &rarr; Períodos</strong>.</li>
+    <li>Haga clic en <strong>"Nuevo Período"</strong>.</li>
+    <li>Seleccione la <strong>frecuencia</strong>: Quincenal o Mensual.</li>
+    <li>Seleccione el <strong>mes y año</strong> del período.</li>
+    <li>Si es quincenal, seleccione <strong>primera quincena</strong> (1-15) o <strong>segunda quincena</strong> (16-último día).</li>
+    <li>El sistema mostrará automáticamente los empleados activos para el período.</li>
+  </ol>
+
+  <h3 id="cap5-3">5.3 Calcular nómina</h3>
+  <p>Una vez creado el período, haga clic en <strong>"Calcular Nómina"</strong>. El sistema realizará los siguientes cálculos para cada empleado:</p>
+
+  <h4>5.3.1 Devengados</h4>
+  <p>Conceptos que recibe el empleado:</p>
+  <table>
+    <thead>
+      <tr><th>Concepto</th><th>Cálculo</th><th>Ejemplo (Salario $3.000.000)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Salario base</td><td>Salario mensual / 30 &times; días trabajados</td><td>$3.000.000</td></tr>
+      <tr><td>Horas extras diurnas</td><td>Valor hora &times; 1.25 &times; cantidad</td><td>Variable</td></tr>
+      <tr><td>Horas extras nocturnas</td><td>Valor hora &times; 1.75 &times; cantidad</td><td>Variable</td></tr>
+      <tr><td>Horas extras dominicales/festivas</td><td>Valor hora &times; 2.0 &times; cantidad</td><td>Variable</td></tr>
+      <tr><td>Comisiones</td><td>Según lo pactado</td><td>Variable</td></tr>
+      <tr><td>Auxilio de transporte</td><td>Valor legal vigente (si salario &le; 2 SMLMV)</td><td>$200.000 (referencia)</td></tr>
+    </tbody>
+  </table>
+
+  <h4>5.3.2 Deducciones del empleado</h4>
+  <table>
+    <thead>
+      <tr><th>Concepto</th><th>Tarifa</th><th>Base</th><th>Ejemplo</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>EPS (Salud)</td><td>4%</td><td>Salario + horas extras + comisiones</td><td>$120.000</td></tr>
+      <tr><td>Pensión</td><td>4%</td><td>Salario + horas extras + comisiones</td><td>$120.000</td></tr>
+    </tbody>
+  </table>
+
+  <div class="formula">Neto a Pagar = Total Devengados - Deducciones Empleado</div>
+
+  <h4>5.3.3 Aportes del empleador</h4>
+  <p>Estos valores no se deducen del salario del empleado. Son un costo adicional para la empresa:</p>
+  <table>
+    <thead>
+      <tr><th>Concepto</th><th>Tarifa</th><th>Base</th><th>Ejemplo</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>EPS (Salud)</td><td>8.5%</td><td>Salario + horas extras + comisiones</td><td>$255.000</td></tr>
+      <tr><td>Pensión</td><td>12%</td><td>Salario + horas extras + comisiones</td><td>$360.000</td></tr>
+      <tr><td>ARL</td><td>0.522% &ndash; 6.96%</td><td>Salario + horas extras + comisiones</td><td>$15.660 (Riesgo I)</td></tr>
+      <tr><td>SENA</td><td>2%</td><td>Salario + horas extras + comisiones</td><td>$60.000</td></tr>
+      <tr><td>ICBF</td><td>3%</td><td>Salario + horas extras + comisiones</td><td>$90.000</td></tr>
+      <tr><td>Caja de Compensación</td><td>4%</td><td>Salario + horas extras + comisiones</td><td>$120.000</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Nota</div>
+    Las empresas acogidas a la Ley 1607 de 2012 (y modificaciones posteriores) con empleados que devenguen menos de 10 SMLMV están <strong>exoneradas</strong> del pago de aportes a SENA e ICBF, y del aporte patronal a EPS (8.5%). El sistema aplica esta exoneración automáticamente según la configuración de la empresa.
+  </div>
+
+  <h4>5.3.4 Provisiones de prestaciones sociales</h4>
+  <p>El sistema calcula mensualmente las provisiones correspondientes a las prestaciones sociales:</p>
+  <table>
+    <thead>
+      <tr><th>Concepto</th><th>Porcentaje</th><th>Base</th><th>Ejemplo</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Prima de servicios</td><td>8.33%</td><td>Salario + Aux. Transporte</td><td>$266.560</td></tr>
+      <tr><td>Cesantías</td><td>8.33%</td><td>Salario + Aux. Transporte</td><td>$266.560</td></tr>
+      <tr><td>Intereses sobre cesantías</td><td>1% (12% anual / 12)</td><td>Cesantías provisionadas</td><td>$32.000</td></tr>
+      <tr><td>Vacaciones</td><td>4.17%</td><td>Salario (sin Aux. Transporte)</td><td>$125.100</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="cap5-4">5.4 Aprobar nómina</h3>
+  <p>Una vez calculada y revisada la nómina:</p>
+  <ol class="steps">
+    <li>Revise el resumen de nómina: total devengados, deducciones, neto a pagar, aportes patronales y provisiones.</li>
+    <li>Si hay ajustes necesarios (horas extras, comisiones adicionales, novedades), edite los valores antes de aprobar.</li>
+    <li>Haga clic en <strong>"Aprobar Nómina"</strong>.</li>
+    <li>El sistema generará automáticamente el <strong>asiento contable</strong> correspondiente, debitando las cuentas de gasto de nómina (51XX), provisiones (2610, 2615, 2620, 2625) y acreditando las cuentas de seguridad social por pagar (2370), retenciones, y la obligación con los empleados (2505).</li>
+  </ol>
+
+  <div class="callout callout-danger">
+    <div class="callout-title">Importante</div>
+    Una vez aprobada la nómina, <strong>no puede ser modificada</strong>. Si detecta un error, deberá crear una nómina de ajuste en un nuevo período. Revise cuidadosamente todos los valores antes de aprobar.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 6: CONCILIACIÓN BANCARIA                              -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap6">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 6</div>
+    <h2 class="chapter-title">Conciliación Bancaria</h2>
+  </div>
+
+  <h3 id="cap6-1">6.1 Crear cuentas bancarias</h3>
+  <p>Antes de realizar conciliación bancaria, registre las cuentas bancarias de la empresa:</p>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Conciliación Bancaria &rarr; Cuentas Bancarias</strong>.</li>
+    <li>Haga clic en <strong>"Nueva Cuenta Bancaria"</strong>.</li>
+    <li>Complete los datos:
+      <ul>
+        <li><strong>Nombre del banco:</strong> Ej. Bancolombia, Davivienda, BBVA.</li>
+        <li><strong>Tipo de cuenta:</strong> Corriente o Ahorros.</li>
+        <li><strong>Número de cuenta:</strong> Número completo de la cuenta.</li>
+        <li><strong>Cuenta PUC asociada:</strong> Seleccione la cuenta del PUC que corresponde a esta cuenta bancaria (ej. 11100501).</li>
+      </ul>
+    </li>
+    <li>Haga clic en <strong>"Guardar"</strong>.</li>
+  </ol>
+
+  <h3 id="cap6-2">6.2 Subir extracto bancario</h3>
+  <p>Para iniciar una conciliación, suba el extracto bancario del período a conciliar:</p>
+  <ol class="steps">
+    <li>Seleccione la <strong>cuenta bancaria</strong> que desea conciliar.</li>
+    <li>Haga clic en <strong>"Nueva Conciliación"</strong>.</li>
+    <li>Seleccione el <strong>período</strong> (mes y año).</li>
+    <li>Haga clic en <strong>"Subir Extracto"</strong> y seleccione el archivo CSV del extracto bancario.</li>
+    <li>El sistema procesará el archivo y mostrará las transacciones importadas.</li>
+  </ol>
+
+  <h3 id="cap6-3">6.3 Formato del archivo CSV</h3>
+  <p>El archivo CSV del extracto bancario debe tener el siguiente formato:</p>
+
+  <table>
+    <thead>
+      <tr><th>Columna</th><th>Nombre</th><th>Formato</th><th>Ejemplo</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Fecha</td><td>YYYY-MM-DD</td><td>2026-03-15</td></tr>
+      <tr><td>2</td><td>Descripción</td><td>Texto</td><td>TRANSFERENCIA RECIBIDA</td></tr>
+      <tr><td>3</td><td>Referencia</td><td>Texto</td><td>REF-001234</td></tr>
+      <tr><td>4</td><td>Débito</td><td>Numérico</td><td>500000.00</td></tr>
+      <tr><td>5</td><td>Crédito</td><td>Numérico</td><td>0.00</td></tr>
+      <tr><td>6</td><td>Saldo</td><td>Numérico</td><td>15300000.00</td></tr>
+    </tbody>
+  </table>
+
+  <p>Ejemplo de contenido CSV:</p>
+  <div class="formula" style="text-align:left; font-size: 0.85rem;">
+    fecha,descripcion,referencia,debito,credito,saldo<br>
+    2026-03-01,SALDO ANTERIOR,,,0.00,15800000.00<br>
+    2026-03-05,TRANSFERENCIA RECIBIDA,REF-001234,500000.00,0.00,16300000.00<br>
+    2026-03-10,PAGO PROVEEDOR ABC,PAG-005678,0.00,1200000.00,15100000.00<br>
+    2026-03-15,CONSIGNACIÓN CLIENTE,CON-009012,1500000.00,0.00,16600000.00
+  </div>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">Advertencia</div>
+    Asegúrese de que el archivo CSV utilice <strong>coma</strong> como separador de columnas y <strong>punto</strong> como separador decimal. El archivo debe estar codificado en <strong>UTF-8</strong>. Si su banco proporciona el extracto en formato Excel, conviértalo primero a CSV.
+  </div>
+
+  <h3 id="cap6-4">6.4 Auto-match</h3>
+  <p>Después de subir el extracto, el sistema ejecuta automáticamente un proceso de <strong>cruce automático (auto-match)</strong> que intenta emparejar cada transacción del extracto bancario con los movimientos registrados en el sistema contable.</p>
+  <p>El algoritmo de auto-match funciona de la siguiente manera:</p>
+  <ul>
+    <li><strong>Criterio de monto:</strong> Busca movimientos contables cuyo valor coincida con el de la transacción bancaria, con una tolerancia de <strong>&plusmn; $0.01</strong> (un centavo).</li>
+    <li><strong>Criterio de fecha:</strong> El movimiento contable debe estar dentro de un rango de <strong>&plusmn; 2 días</strong> respecto a la fecha de la transacción bancaria.</li>
+    <li>Si ambos criterios se cumplen y hay un <strong>único match</strong> posible, la transacción se empareja automáticamente.</li>
+    <li>Si hay múltiples matches posibles, la transacción queda como <strong>pendiente</strong> para revisión manual.</li>
+  </ul>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    Para mejorar la tasa de auto-match, asegúrese de registrar los gastos y pagos en el sistema <strong>el mismo día</strong> en que ocurren. Entre más precisa sea la fecha de registro, mayor será la probabilidad de cruce automático.
+  </div>
+
+  <h3 id="cap6-5">6.5 Match manual</h3>
+  <p>Las transacciones que no fueron emparejadas automáticamente requieren intervención manual:</p>
+  <ol class="steps">
+    <li>En la pantalla de conciliación, localice las transacciones con estado <strong>"Sin Match"</strong>.</li>
+    <li>Para cada transacción, el sistema muestra una lista de <strong>posibles matches</strong> ordenados por relevancia.</li>
+    <li>Seleccione el movimiento contable correcto y haga clic en <strong>"Emparejar"</strong>.</li>
+    <li>Si no existe un movimiento contable correspondiente (por ejemplo, una comisión bancaria), haga clic en <strong>"Crear Asiento"</strong> para registrar la transacción directamente.</li>
+    <li>Repita para todas las transacciones pendientes.</li>
+  </ol>
+
+  <h3 id="cap6-6">6.6 Estados de conciliación</h3>
+
+  <table>
+    <thead>
+      <tr><th>Estado</th><th>Descripción</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-pending">PENDING</span></td>
+        <td>La conciliación fue creada y el extracto fue cargado, pero quedan transacciones sin emparejar.</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-partial">PARTIAL</span></td>
+        <td>Algunas transacciones han sido emparejadas, pero aún hay pendientes por conciliar.</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-reconciled">RECONCILED</span></td>
+        <td>Todas las transacciones del extracto han sido emparejadas. La conciliación está completa.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 7: CIERRE CONTABLE                                    -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap7">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 7</div>
+    <h2 class="chapter-title">Cierre Contable</h2>
+  </div>
+
+  <h3 id="cap7-1">7.1 Qué es el cierre contable</h3>
+  <p>El cierre contable es el proceso mediante el cual se finalizan las cuentas de resultado (ingresos, gastos y costos) de un período, trasladando el resultado neto (utilidad o pérdida) a las cuentas de patrimonio. Es un proceso obligatorio para presentar estados financieros correctos.</p>
+  <p>El módulo Two Six soporta dos tipos de cierre:</p>
+  <ul>
+    <li><strong>Cierre mensual:</strong> Se realiza al finalizar cada mes.</li>
+    <li><strong>Cierre anual:</strong> Se realiza al finalizar el año fiscal.</li>
+  </ul>
+
+  <h3 id="cap7-2">7.2 Cierre mensual</h3>
+  <p>El cierre mensual realiza las siguientes operaciones automáticamente:</p>
+  <ol>
+    <li><strong>Zerifica las cuentas de Ingresos (clase 4):</strong> Debita el saldo total de cada cuenta de ingresos, dejándolo en cero.</li>
+    <li><strong>Zerifica las cuentas de Gastos (clase 5):</strong> Acredita el saldo total de cada cuenta de gastos, dejándolo en cero.</li>
+    <li><strong>Zerifica las cuentas de Costos (clase 6):</strong> Acredita el saldo total de cada cuenta de costos, dejándolo en cero.</li>
+    <li><strong>Traslada el resultado a Utilidad del Ejercicio:</strong> La diferencia (Ingresos - Gastos - Costos) se traslada a la cuenta <strong>3605 &mdash; Utilidad del Ejercicio</strong> si es positiva, o a <strong>3610 &mdash; Pérdida del Ejercicio</strong> si es negativa.</li>
+  </ol>
+
+  <p>Para ejecutar el cierre mensual:</p>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Cierre Contable</strong>.</li>
+    <li>Seleccione <strong>"Cierre Mensual"</strong>.</li>
+    <li>Seleccione el <strong>mes y año</strong> a cerrar.</li>
+    <li>El sistema mostrará un <strong>resumen previo</strong> con los saldos que serán cerrados y el resultado del período.</li>
+    <li>Verifique que los datos sean correctos y haga clic en <strong>"Ejecutar Cierre"</strong>.</li>
+    <li>El sistema generará automáticamente el <strong>asiento de cierre</strong>.</li>
+  </ol>
+
+  <div class="callout callout-danger">
+    <div class="callout-title">Importante</div>
+    El cierre mensual es un proceso <strong>irreversible</strong>. Una vez ejecutado, no se podrán registrar nuevos movimientos en el mes cerrado. Asegúrese de que <strong>todos los gastos, ventas, nóminas y ajustes</strong> del mes estén registrados antes de ejecutar el cierre.
+  </div>
+
+  <h3 id="cap7-3">7.3 Cierre anual</h3>
+  <p>El cierre anual es un proceso más completo que:</p>
+  <ol>
+    <li>Ejecuta el cierre de todos los meses pendientes del año (si no se han cerrado individualmente).</li>
+    <li>Traslada la utilidad o pérdida del ejercicio de la cuenta <strong>3605</strong> a la cuenta <strong>3705 &mdash; Resultados de Ejercicios Anteriores</strong>.</li>
+    <li>Marca el año fiscal como cerrado.</li>
+  </ol>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">Advertencia</div>
+    El cierre anual debe ejecutarse <strong>después de haber conciliado todas las cuentas bancarias</strong>, aprobado las nóminas pendientes, registrado todos los gastos y ajustes de fin de año, y calculado la depreciación del último mes.
+  </div>
+
+  <h3 id="cap7-4">7.4 Cuándo realizar el cierre</h3>
+  <ul>
+    <li><strong>Cierre mensual:</strong> Después del último día del mes, una vez se hayan registrado todas las transacciones. Se recomienda ejecutarlo dentro de los primeros 5 días del mes siguiente.</li>
+    <li><strong>Cierre anual:</strong> Después del 31 de diciembre, una vez se hayan completado todos los cierres mensuales y ajustes de fin de año. Generalmente se ejecuta en enero o febrero del año siguiente.</li>
+  </ul>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    El sistema muestra un <strong>indicador de alerta</strong> en el dashboard cuando hay meses pendientes de cierre. Mantenga los cierres al día para garantizar la integridad de los reportes financieros.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 8: REPORTES FINANCIEROS                               -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap8">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 8</div>
+    <h2 class="chapter-title">Reportes Financieros</h2>
+  </div>
+
+  <p>El módulo de contabilidad de Two Six ofrece un conjunto completo de reportes financieros que permiten analizar la situación económica de la empresa. Todos los reportes son consultables en pantalla y exportables a Excel.</p>
+
+  <h3 id="cap8-1">8.1 Balance General</h3>
+  <p>El Balance General (o Estado de Situación Financiera) presenta la situación patrimonial de la empresa en un momento determinado, siguiendo la ecuación contable fundamental:</p>
+
+  <div class="formula">Activos = Pasivos + Patrimonio</div>
+
+  <h4>Cómo generar el reporte</h4>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Reportes &rarr; Balance General</strong>.</li>
+    <li>Seleccione el <strong>año</strong> y el <strong>mes</strong> de corte.</li>
+    <li>Haga clic en <strong>"Generar"</strong>.</li>
+  </ol>
+
+  <p>El reporte muestra:</p>
+  <ul>
+    <li><strong>Activos:</strong> Desglosados en corrientes (disponible, inversiones, deudores, inventarios) y no corrientes (propiedad planta y equipo, intangibles).</li>
+    <li><strong>Pasivos:</strong> Desglosados en corrientes (proveedores, impuestos, obligaciones laborales) y no corrientes (obligaciones financieras a largo plazo).</li>
+    <li><strong>Patrimonio:</strong> Capital social, reservas, resultados del ejercicio, resultados anteriores.</li>
+    <li><strong>Verificación:</strong> Al final, el sistema muestra si la ecuación contable se cumple correctamente.</li>
+  </ul>
+
+  <h3 id="cap8-2">8.2 Estado de Resultados (P&amp;G)</h3>
+  <p>El Estado de Resultados (también conocido como Estado de Pérdidas y Ganancias) muestra los ingresos, gastos y costos de un período determinado, calculando la utilidad o pérdida neta:</p>
+
+  <div class="formula">Utilidad Neta = Ingresos Operacionales - Costo de Ventas - Gastos Operacionales + Ingresos No Operacionales - Gastos No Operacionales</div>
+
+  <h4>Cómo generar el reporte</h4>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Reportes &rarr; Estado de Resultados</strong>.</li>
+    <li>Seleccione la <strong>fecha de inicio</strong> y la <strong>fecha de fin</strong> del período.</li>
+    <li>Haga clic en <strong>"Generar"</strong>.</li>
+  </ol>
+
+  <p>El reporte presenta:</p>
+  <ul>
+    <li><strong>Ingresos operacionales (clase 4):</strong> Ventas y otros ingresos de la operación.</li>
+    <li><strong>Costo de ventas (clase 6):</strong> Costo de la mercancía vendida.</li>
+    <li><strong>Utilidad bruta:</strong> Ingresos - Costo de ventas.</li>
+    <li><strong>Gastos operacionales (clase 5):</strong> Gastos de administración y de ventas.</li>
+    <li><strong>Utilidad operacional:</strong> Utilidad bruta - Gastos operacionales.</li>
+    <li><strong>Ingresos/Gastos no operacionales:</strong> Intereses, rendimientos financieros, etc.</li>
+    <li><strong>Utilidad neta:</strong> Resultado final del período.</li>
+  </ul>
+
+  <h3 id="cap8-3">8.3 Libro Mayor</h3>
+  <p>El Libro Mayor muestra todos los movimientos de una <strong>cuenta específica</strong> durante un período, con el saldo corrido (acumulado) después de cada movimiento.</p>
+
+  <div class="formula">Saldo Inicial + Débitos - Créditos = Saldo Final</div>
+
+  <h4>Cómo generar el reporte</h4>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Reportes &rarr; Libro Mayor</strong>.</li>
+    <li>Seleccione la <strong>cuenta PUC</strong> que desea consultar.</li>
+    <li>Seleccione el <strong>rango de fechas</strong>.</li>
+    <li>Haga clic en <strong>"Generar"</strong>.</li>
+  </ol>
+
+  <p>El reporte incluye:</p>
+  <ul>
+    <li><strong>Saldo inicial:</strong> Saldo de la cuenta al inicio del período.</li>
+    <li><strong>Detalle de movimientos:</strong> Fecha, descripción del asiento, referencia, monto débito, monto crédito y saldo acumulado.</li>
+    <li><strong>Saldo final:</strong> Saldo de la cuenta al cierre del período.</li>
+  </ul>
+
+  <h3 id="cap8-4">8.4 Libro Auxiliar</h3>
+  <p>El Libro Auxiliar es similar al Libro Mayor, pero muestra el detalle por <strong>sub-cuentas</strong> de una cuenta padre. Es útil para ver el desglose de una cuenta de grupo o cuenta de nivel superior.</p>
+
+  <h4>Cómo generar el reporte</h4>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Reportes &rarr; Libro Auxiliar</strong>.</li>
+    <li>Seleccione la <strong>cuenta padre</strong> (puede ser de cualquier nivel).</li>
+    <li>Seleccione el <strong>rango de fechas</strong>.</li>
+    <li>Haga clic en <strong>"Generar"</strong>.</li>
+  </ol>
+
+  <p>El sistema mostrará una sección por cada sub-cuenta, con sus movimientos individuales y saldos, además de un consolidado al final.</p>
+
+  <h3 id="cap8-5">8.5 Flujo de Caja</h3>
+  <p>El Estado de Flujo de Caja presenta los movimientos de efectivo de la empresa clasificados según su origen, utilizando el <strong>método indirecto</strong>:</p>
+
+  <ul>
+    <li><strong>Actividades de operación:</strong> Utilidad neta, ajustes por depreciación, cambios en cuentas por cobrar, inventarios, proveedores y otras cuentas operativas.</li>
+    <li><strong>Actividades de inversión:</strong> Compra y venta de activos fijos, inversiones.</li>
+    <li><strong>Actividades de financiación:</strong> Préstamos recibidos y pagados, aportes de capital, dividendos pagados.</li>
+  </ul>
+
+  <div class="formula">Efectivo Final = Efectivo Inicial + Flujo Operación + Flujo Inversión + Flujo Financiación</div>
+
+  <h3 id="cap8-6">8.6 Cartera por Edades</h3>
+  <p>El reporte de Cartera por Edades muestra los pedidos con método de pago <strong>COD (contra entrega)</strong> que están pendientes de cobro, agrupados por antigüedad:</p>
+
+  <table>
+    <thead>
+      <tr><th>Rango</th><th>Clasificación</th><th>Color</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>0 &ndash; 30 días</td><td>Corriente</td><td class="ind-green">Verde</td></tr>
+      <tr><td>31 &ndash; 60 días</td><td>Vencida 30 días</td><td class="ind-yellow">Amarillo</td></tr>
+      <tr><td>61 &ndash; 90 días</td><td>Vencida 60 días</td><td class="ind-yellow">Naranja</td></tr>
+      <tr><td>90+ días</td><td>Vencida 90+ días</td><td class="ind-red">Rojo</td></tr>
+    </tbody>
+  </table>
+
+  <p>El reporte incluye para cada rango: número de pedidos, valor total, porcentaje del total de cartera, y el listado detallado de cada pedido con su cliente, fecha y monto.</p>
+
+  <h3 id="cap8-7">8.7 Exportar reportes a Excel</h3>
+  <p>Todos los reportes financieros pueden exportarse a formato Excel (.xlsx) para análisis adicional o archivo:</p>
+  <ol class="steps">
+    <li>Genere el reporte deseado con los filtros seleccionados.</li>
+    <li>Haga clic en el botón <strong>"Exportar a Excel"</strong> ubicado en la esquina superior derecha del reporte.</li>
+    <li>El archivo se descargará automáticamente al equipo con el nombre del reporte, el período y la fecha de generación.</li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    Los archivos Excel exportados mantienen el formato y la estructura del reporte en pantalla, incluyendo encabezados, subtotales y fórmulas. Puede usarlos como base para presentaciones a la gerencia o para reportes personalizados.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 9: PRESUPUESTO                                        -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap9">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 9</div>
+    <h2 class="chapter-title">Presupuesto</h2>
+  </div>
+
+  <h3 id="cap9-1">9.1 Crear presupuesto anual</h3>
+  <p>El módulo de presupuesto permite definir metas financieras anuales por cuenta PUC y hacer seguimiento mensual contra la ejecución real.</p>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Presupuesto</strong>.</li>
+    <li>Haga clic en <strong>"Nuevo Presupuesto"</strong>.</li>
+    <li>Seleccione el <strong>año</strong> del presupuesto.</li>
+    <li>Ingrese un <strong>nombre</strong> descriptivo (ej. "Presupuesto Operativo 2026").</li>
+    <li>Haga clic en <strong>"Crear"</strong>.</li>
+  </ol>
+
+  <h3 id="cap9-2">9.2 Editar montos mensuales</h3>
+  <p>Una vez creado el presupuesto, se presenta una <strong>grilla editable</strong> donde las filas son las cuentas PUC y las columnas son los 12 meses del año:</p>
+  <ol class="steps">
+    <li>Haga clic en <strong>"Agregar Cuenta"</strong> para incluir una cuenta PUC al presupuesto.</li>
+    <li>En la grilla, haga clic en la celda correspondiente al mes y cuenta que desea presupuestar.</li>
+    <li>Ingrese el <strong>monto presupuestado</strong> para ese mes.</li>
+    <li>Repita para todas las cuentas y meses necesarios.</li>
+    <li>El sistema calcula automáticamente los <strong>totales por cuenta</strong> (fila) y <strong>totales por mes</strong> (columna).</li>
+    <li>Haga clic en <strong>"Guardar"</strong> para conservar los cambios.</li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    Puede usar la función <strong>"Distribuir uniformemente"</strong> para dividir un monto anual en 12 partes iguales. Ingrese el total anual y el sistema lo distribuirá automáticamente en los 12 meses.
+  </div>
+
+  <h3 id="cap9-3">9.3 Comparativo presupuesto vs ejecución</h3>
+  <p>El reporte de comparativo muestra para cada cuenta y cada mes:</p>
+
+  <table>
+    <thead>
+      <tr><th>Columna</th><th>Descripción</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Presupuestado</strong></td><td>Monto que se planeó para el período.</td></tr>
+      <tr><td><strong>Ejecutado</strong></td><td>Monto real registrado en contabilidad durante el período.</td></tr>
+      <tr><td><strong>Variación ($)</strong></td><td>Presupuestado - Ejecutado. Positivo = sub-ejecución, Negativo = sobre-ejecución.</td></tr>
+      <tr><td><strong>Variación (%)</strong></td><td>Porcentaje de ejecución: (Ejecutado / Presupuestado) &times; 100.</td></tr>
+    </tbody>
+  </table>
+
+  <p>Las celdas se colorean según el nivel de ejecución:</p>
+  <ul>
+    <li><span class="ind-green">Verde:</span> Ejecución entre 90% y 110% del presupuesto.</li>
+    <li><span class="ind-yellow">Amarillo:</span> Ejecución entre 70%-90% o 110%-130%.</li>
+    <li><span class="ind-red">Rojo:</span> Ejecución por debajo del 70% o por encima del 130%.</li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 10: ACTIVOS FIJOS                                     -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap10">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 10</div>
+    <h2 class="chapter-title">Activos Fijos y Depreciación</h2>
+  </div>
+
+  <h3 id="cap10-1">10.1 Registrar un activo fijo</h3>
+  <p>Los activos fijos son bienes tangibles de la empresa con una vida útil mayor a un año, utilizados en la operación y no destinados a la venta (equipos de cómputo, muebles, vehículos, maquinaria, etc.).</p>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Activos Fijos</strong>.</li>
+    <li>Haga clic en <strong>"Nuevo Activo"</strong>.</li>
+    <li>Complete los campos requeridos:
+      <ul>
+        <li><strong>Nombre:</strong> Descripción del activo (ej. "Computador portátil Dell Latitude").</li>
+        <li><strong>Fecha de adquisición:</strong> Fecha en que se compró o recibió el activo.</li>
+        <li><strong>Costo de adquisición:</strong> Valor total pagado por el activo, incluyendo fletes e instalación.</li>
+        <li><strong>Vida útil (meses):</strong> Número de meses durante los cuales se depreciará el activo.</li>
+        <li><strong>Valor de salvamento:</strong> Valor residual estimado al final de la vida útil. Puede ser $0.</li>
+      </ul>
+    </li>
+    <li>Haga clic en <strong>"Guardar"</strong>.</li>
+  </ol>
+
+  <p>Vidas útiles sugeridas según la normatividad colombiana:</p>
+  <table>
+    <thead>
+      <tr><th>Tipo de activo</th><th>Vida útil</th><th>Meses</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Edificios y construcciones</td><td>20 años</td><td>240</td></tr>
+      <tr><td>Maquinaria y equipo</td><td>10 años</td><td>120</td></tr>
+      <tr><td>Muebles y enseres</td><td>10 años</td><td>120</td></tr>
+      <tr><td>Equipo de cómputo</td><td>5 años</td><td>60</td></tr>
+      <tr><td>Vehículos</td><td>5 años</td><td>60</td></tr>
+      <tr><td>Equipo de oficina</td><td>10 años</td><td>120</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="cap10-2">10.2 Asignar cuentas PUC</h3>
+  <p>Cada activo fijo debe tener asignadas tres cuentas PUC:</p>
+  <table>
+    <thead>
+      <tr><th>Cuenta</th><th>Propósito</th><th>Ejemplo</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Cuenta del activo</strong></td><td>Donde se registra el costo del activo</td><td>1524 &mdash; Equipo de Oficina</td></tr>
+      <tr><td><strong>Cuenta de depreciación acumulada</strong></td><td>Donde se acumula la depreciación mes a mes (contra-activo)</td><td>1592 &mdash; Depreciación Acumulada</td></tr>
+      <tr><td><strong>Cuenta de gasto de depreciación</strong></td><td>Donde se registra el gasto mensual por depreciación</td><td>5160 &mdash; Depreciaciones</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="cap10-3">10.3 Ejecutar depreciación mensual</h3>
+  <p>El sistema utiliza el <strong>método de línea recta</strong> para calcular la depreciación mensual:</p>
+
+  <div class="formula">Depreciación Mensual = (Costo de Adquisición - Valor de Salvamento) / Vida Útil en Meses</div>
+
+  <p>Para ejecutar la depreciación:</p>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Activos Fijos &rarr; Depreciación</strong>.</li>
+    <li>Seleccione el <strong>mes y año</strong> a depreciar.</li>
+    <li>El sistema mostrará un resumen con todos los activos activos y el monto de depreciación de cada uno.</li>
+    <li>Verifique los montos y haga clic en <strong>"Ejecutar Depreciación"</strong>.</li>
+    <li>Se generará automáticamente un asiento contable que debita la cuenta de gasto de depreciación y acredita la cuenta de depreciación acumulada.</li>
+  </ol>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Nota</div>
+    La depreciación se ejecuta <strong>una vez al mes</strong>. Si intenta ejecutarla para un mes que ya fue procesado, el sistema le notificará que la depreciación de ese período ya fue registrada. Los activos que ya completaron su vida útil no se incluyen en el cálculo.
+  </div>
+
+  <h3 id="cap10-4">10.4 Historial de depreciación</h3>
+  <p>Cada activo fijo cuenta con un historial detallado de depreciación que muestra:</p>
+  <ul>
+    <li><strong>Mes/Año:</strong> Período de la depreciación.</li>
+    <li><strong>Depreciación del mes:</strong> Monto depreciado en ese período.</li>
+    <li><strong>Depreciación acumulada:</strong> Total depreciado desde la adquisición hasta ese mes.</li>
+    <li><strong>Valor en libros:</strong> Costo de adquisición - Depreciación acumulada.</li>
+    <li><strong>Referencia del asiento:</strong> Enlace al asiento contable generado.</li>
+  </ul>
+
+  <p>Para consultar el historial, seleccione un activo y haga clic en la pestaña <strong>"Historial de Depreciación"</strong>.</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 11: DECLARACIONES FISCALES                            -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap11">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 11</div>
+    <h2 class="chapter-title">Declaraciones Fiscales</h2>
+  </div>
+
+  <h3 id="cap11-1">11.1 Declaración de IVA (Formulario 300)</h3>
+  <p>La declaración de IVA se presenta de forma <strong>bimestral</strong> (o cuatrimestral según el régimen) ante la DIAN. El módulo calcula automáticamente los valores a partir de la información contable registrada.</p>
+
+  <h4>Períodos bimestrales</h4>
+  <table>
+    <thead>
+      <tr><th>Bimestre</th><th>Período</th><th>Vencimiento aproximado</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Enero &ndash; Febrero</td><td>Marzo</td></tr>
+      <tr><td>2</td><td>Marzo &ndash; Abril</td><td>Mayo</td></tr>
+      <tr><td>3</td><td>Mayo &ndash; Junio</td><td>Julio</td></tr>
+      <tr><td>4</td><td>Julio &ndash; Agosto</td><td>Septiembre</td></tr>
+      <tr><td>5</td><td>Septiembre &ndash; Octubre</td><td>Noviembre</td></tr>
+      <tr><td>6</td><td>Noviembre &ndash; Diciembre</td><td>Enero (año siguiente)</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Conceptos principales</h4>
+  <ul>
+    <li><strong>IVA Generado (cuenta 2408xx):</strong> IVA cobrado a los clientes en las ventas del período. Representa una obligación con la DIAN.</li>
+    <li><strong>IVA Descontable (cuenta 2408xx):</strong> IVA pagado a proveedores en las compras del período. Es un derecho que se puede descontar.</li>
+    <li><strong>Saldo a pagar:</strong> Si IVA Generado > IVA Descontable, la diferencia se debe pagar a la DIAN.</li>
+    <li><strong>Saldo a favor:</strong> Si IVA Descontable > IVA Generado, queda un saldo a favor que se puede imputar al siguiente período.</li>
+  </ul>
+
+  <div class="formula">Saldo de IVA = IVA Generado - IVA Descontable</div>
+
+  <h4>Cómo generar la declaración</h4>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Declaraciones &rarr; IVA</strong>.</li>
+    <li>Seleccione el <strong>bimestre y año</strong>.</li>
+    <li>Haga clic en <strong>"Calcular"</strong>.</li>
+    <li>El sistema presentará los renglones del Formulario 300 con los valores calculados automáticamente.</li>
+    <li>Revise los valores y, si es necesario, ajuste manualmente algún renglón.</li>
+    <li>Use los valores para diligenciar el formulario en la plataforma MUISCA de la DIAN.</li>
+  </ol>
+
+  <h3 id="cap11-2">11.2 Retención en la Fuente (Formulario 350)</h3>
+  <p>La declaración de Retención en la Fuente se presenta de forma <strong>mensual</strong>. Recoge las retenciones practicadas por la empresa durante el mes como agente de retención.</p>
+
+  <h4>Conceptos y tarifas</h4>
+  <table>
+    <thead>
+      <tr><th>Concepto</th><th>Base mínima (UVT)</th><th>Tarifa</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Compras generales</td><td>27 UVT</td><td>2.5%</td></tr>
+      <tr><td>Servicios generales</td><td>4 UVT</td><td>4%</td></tr>
+      <tr><td>Servicios profesionales</td><td>4 UVT</td><td>6%</td></tr>
+      <tr><td>Honorarios (declarante)</td><td>0 UVT</td><td>10%</td></tr>
+      <tr><td>Honorarios (no declarante)</td><td>0 UVT</td><td>11%</td></tr>
+      <tr><td>Arrendamiento bienes inmuebles</td><td>27 UVT</td><td>3.5%</td></tr>
+      <tr><td>Arrendamiento bienes muebles</td><td>0 UVT</td><td>4%</td></tr>
+      <tr><td>Salarios</td><td>Según tabla</td><td>Tabla Art. 383 E.T.</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Cómo generar la declaración</h4>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Declaraciones &rarr; Retención en la Fuente</strong>.</li>
+    <li>Seleccione el <strong>mes y año</strong>.</li>
+    <li>Haga clic en <strong>"Calcular"</strong>.</li>
+    <li>El sistema presenta los conceptos de retención con base gravable, tarifa, número de operaciones y valor retenido.</li>
+    <li>Revise y transfiera los valores al Formulario 350 en la plataforma MUISCA.</li>
+  </ol>
+
+  <h3 id="cap11-3">11.3 Certificados de Retención</h3>
+  <p>La empresa debe emitir anualmente certificados de retención a cada proveedor al que le haya practicado retenciones durante el año fiscal.</p>
+
+  <h4>Generar certificados</h4>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Declaraciones &rarr; Certificados de Retención</strong>.</li>
+    <li>Seleccione el <strong>año fiscal</strong>.</li>
+    <li>El sistema mostrará la lista de proveedores con retenciones practicadas, el total retenido y el concepto.</li>
+    <li>Para generar un certificado individual, haga clic en <strong>"Generar PDF"</strong> junto al proveedor.</li>
+    <li>Para generar todos los certificados a la vez, haga clic en <strong>"Generar Todos"</strong>. Se descargará un archivo ZIP con todos los PDFs.</li>
+  </ol>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Nota</div>
+    Los certificados de retención deben entregarse a los proveedores <strong>antes del 31 de marzo</strong> del año siguiente al que se practicaron las retenciones. El certificado incluye los datos de la empresa retenedora, del proveedor retenido, el concepto, la base gravable y el valor retenido.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 12: INDICADORES FINANCIEROS                           -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap12">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 12</div>
+    <h2 class="chapter-title">Indicadores Financieros</h2>
+  </div>
+
+  <p>El módulo de indicadores financieros calcula automáticamente métricas clave a partir de la información contable registrada en el sistema. Los indicadores se presentan en un dashboard visual con tarjetas de colores según su resultado.</p>
+
+  <h3 id="cap12-1">12.1 Indicadores de liquidez</h3>
+  <p>Miden la capacidad de la empresa para cumplir con sus obligaciones a corto plazo.</p>
+
+  <table>
+    <thead>
+      <tr><th>Indicador</th><th>Fórmula</th><th>Interpretación</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Razón Corriente</strong></td>
+        <td>Activo Corriente / Pasivo Corriente</td>
+        <td>Un valor &ge; 1.5 indica buena capacidad de pago. Un valor &lt; 1 indica riesgo de liquidez.</td>
+      </tr>
+      <tr>
+        <td><strong>Prueba Ácida</strong></td>
+        <td>(Activo Corriente - Inventarios) / Pasivo Corriente</td>
+        <td>Mide la liquidez sin depender de la venta de inventarios. Un valor &ge; 1 es saludable.</td>
+      </tr>
+      <tr>
+        <td><strong>Capital de Trabajo</strong></td>
+        <td>Activo Corriente - Pasivo Corriente</td>
+        <td>Valor positivo indica que la empresa puede cubrir sus deudas a corto plazo y aún tener recursos disponibles.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="cap12-2">12.2 Indicadores de solvencia</h3>
+  <p>Miden la capacidad de la empresa para cumplir con todas sus obligaciones (corto y largo plazo).</p>
+
+  <table>
+    <thead>
+      <tr><th>Indicador</th><th>Fórmula</th><th>Interpretación</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Endeudamiento Total</strong></td>
+        <td>(Total Pasivos / Total Activos) &times; 100</td>
+        <td>Porcentaje de los activos financiados con deuda. Valores superiores al 60% pueden indicar alto apalancamiento.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="cap12-3">12.3 Indicadores de rentabilidad</h3>
+  <p>Miden la capacidad de la empresa para generar utilidades.</p>
+
+  <table>
+    <thead>
+      <tr><th>Indicador</th><th>Fórmula</th><th>Interpretación</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>ROE (Return on Equity)</strong></td>
+        <td>(Utilidad Neta / Patrimonio) &times; 100</td>
+        <td>Rentabilidad sobre el capital de los accionistas. Cuanto mayor, mejor.</td>
+      </tr>
+      <tr>
+        <td><strong>ROA (Return on Assets)</strong></td>
+        <td>(Utilidad Neta / Total Activos) &times; 100</td>
+        <td>Eficiencia en el uso de los activos para generar utilidades.</td>
+      </tr>
+      <tr>
+        <td><strong>Margen Bruto</strong></td>
+        <td>((Ingresos - Costo de Ventas) / Ingresos) &times; 100</td>
+        <td>Porcentaje de ganancia después de cubrir el costo de los productos vendidos.</td>
+      </tr>
+      <tr>
+        <td><strong>Margen Neto</strong></td>
+        <td>(Utilidad Neta / Ingresos) &times; 100</td>
+        <td>Porcentaje final de utilidad por cada peso de ingreso.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="cap12-4">12.4 Indicadores de eficiencia</h3>
+  <p>Miden qué tan bien la empresa utiliza sus recursos.</p>
+
+  <table>
+    <thead>
+      <tr><th>Indicador</th><th>Fórmula</th><th>Interpretación</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Rotación de Inventarios</strong></td>
+        <td>Costo de Ventas / Inventario Promedio</td>
+        <td>Número de veces que el inventario se renueva en el período. Mayor rotación indica mejor eficiencia.</td>
+      </tr>
+      <tr>
+        <td><strong>Días de Inventario</strong></td>
+        <td>365 / Rotación de Inventarios</td>
+        <td>Número promedio de días que tarda en venderse el inventario. Menor es mejor.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="cap12-5">12.5 Interpretación de colores</h3>
+  <p>Cada indicador se presenta con un <strong>código de colores semáforo</strong> que facilita su interpretación rápida:</p>
+
+  <table>
+    <thead>
+      <tr><th>Color</th><th>Significado</th><th>Acción</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="ind-green">Verde</span></td>
+        <td>El indicador está en un rango saludable o por encima de la meta.</td>
+        <td>Mantener la gestión actual.</td>
+      </tr>
+      <tr>
+        <td><span class="ind-yellow">Amarillo</span></td>
+        <td>El indicador muestra una situación de alerta o cercana al límite.</td>
+        <td>Monitorear de cerca y tomar medidas preventivas.</td>
+      </tr>
+      <tr>
+        <td><span class="ind-red">Rojo</span></td>
+        <td>El indicador está en un rango crítico que requiere atención inmediata.</td>
+        <td>Tomar acciones correctivas urgentes.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    Los umbrales de cada color son configurables por el administrador del sistema. Puede ajustarlos según las metas y estándares de su industria en <strong>Contabilidad &rarr; Configuración &rarr; Indicadores</strong>.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 13: INFORMACIÓN EXÓGENA                               -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap13">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 13</div>
+    <h2 class="chapter-title">Información Exógena (Medios Magnéticos)</h2>
+  </div>
+
+  <h3 id="cap13-1">13.1 Qué es y cuándo se presenta</h3>
+  <p>La Información Exógena, también conocida como <strong>Medios Magnéticos</strong>, es un reporte detallado de las operaciones económicas de la empresa que debe presentarse ante la <strong>DIAN</strong> de forma anual. Su propósito es permitir el cruce de información tributaria entre contribuyentes.</p>
+  <p>La información se presenta durante los <strong>primeros meses del año siguiente</strong> al que se reporta, según el calendario establecido por la DIAN con base en el último dígito del NIT de la empresa. Generalmente los vencimientos caen entre marzo y abril.</p>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">Advertencia</div>
+    La no presentación o presentación extemporánea de la información exógena genera <strong>sanciones económicas</strong> significativas. Consulte el calendario de vencimientos publicado anualmente por la DIAN.
+  </div>
+
+  <h3 id="cap13-2">13.2 Formatos disponibles</h3>
+  <p>El módulo genera automáticamente los siguientes formatos a partir de la información contable del año:</p>
+
+  <table>
+    <thead>
+      <tr><th>Formato</th><th>Nombre</th><th>Contenido</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1001</strong></td>
+        <td>Pagos a terceros</td>
+        <td>Detalle de todos los pagos realizados a proveedores y terceros durante el año, incluyendo retenciones practicadas. Agrupa por NIT del beneficiario, concepto de pago, valor base y retenciones.</td>
+      </tr>
+      <tr>
+        <td><strong>1005</strong></td>
+        <td>IVA Descontable</td>
+        <td>Relación del IVA pagado en compras que fue llevado como descontable, desglosado por proveedor.</td>
+      </tr>
+      <tr>
+        <td><strong>1006</strong></td>
+        <td>IVA Generado</td>
+        <td>Relación del IVA cobrado en ventas, desglosado por cliente (cuando aplica).</td>
+      </tr>
+      <tr>
+        <td><strong>1007</strong></td>
+        <td>Ingresos recibidos</td>
+        <td>Detalle de todos los ingresos recibidos durante el año, desglosados por tercero (cliente) y concepto.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="cap13-3">13.3 Previsualizar y generar Excel</h3>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Información Exógena</strong>.</li>
+    <li>Seleccione el <strong>año a reportar</strong>.</li>
+    <li>Seleccione el <strong>formato</strong> que desea generar (1001, 1005, 1006 o 1007).</li>
+    <li>Haga clic en <strong>"Previsualizar"</strong> para ver la información en pantalla antes de generar el archivo.</li>
+    <li>Revise la información y corrija cualquier inconsistencia (terceros sin NIT, valores inusuales, etc.).</li>
+    <li>Haga clic en <strong>"Generar Excel"</strong> para descargar el archivo en el formato requerido por la DIAN.</li>
+    <li>Cargue el archivo en la plataforma <strong>MUISCA</strong> de la DIAN para su presentación oficial.</li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    Ejecute la previsualización con anticipación (en enero) para identificar y corregir inconsistencias. Los problemas más comunes son proveedores sin NIT registrado y operaciones sin tercero asociado.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 14: AUDITORÍA                                         -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap14">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 14</div>
+    <h2 class="chapter-title">Auditoría</h2>
+  </div>
+
+  <h3 id="cap14-1">14.1 Qué registra el log de auditoría</h3>
+  <p>El sistema de auditoría registra de forma automática e inmutable todas las operaciones realizadas sobre las entidades contables. Cada entrada del log contiene:</p>
+  <ul>
+    <li><strong>Fecha y hora:</strong> Marca temporal exacta de la operación.</li>
+    <li><strong>Usuario:</strong> Nombre y correo del usuario que realizó la acción.</li>
+    <li><strong>Acción:</strong> Tipo de operación realizada.</li>
+    <li><strong>Entidad:</strong> Tipo de registro afectado (asiento, gasto, cuenta PUC, nómina, etc.).</li>
+    <li><strong>ID del registro:</strong> Identificador único del registro afectado.</li>
+    <li><strong>Detalle:</strong> Descripción de los campos modificados, con el valor anterior y el valor nuevo.</li>
+    <li><strong>Dirección IP:</strong> IP desde la cual se realizó la operación.</li>
+  </ul>
+
+  <h3 id="cap14-2">14.2 Acciones rastreadas</h3>
+
+  <table>
+    <thead>
+      <tr><th>Acción</th><th>Código</th><th>Descripción</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Creación</td><td><code>CREATE</code></td><td>Se creó un nuevo registro (gasto, asiento, empleado, activo, etc.).</td></tr>
+      <tr><td>Actualización</td><td><code>UPDATE</code></td><td>Se modificó un registro existente. El log detalla qué campos cambiaron.</td></tr>
+      <tr><td>Eliminación</td><td><code>DELETE</code></td><td>Se eliminó un registro del sistema.</td></tr>
+      <tr><td>Anulación</td><td><code>VOID</code></td><td>Se anuló un asiento contable o documento. El registro no se elimina, solo cambia de estado.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Nota</div>
+    Los registros de auditoría <strong>no pueden ser modificados ni eliminados</strong> por ningún usuario, incluyendo administradores. Esto garantiza la integridad y trazabilidad completa de todas las operaciones contables.
+  </div>
+
+  <h3 id="cap14-3">14.3 Filtros disponibles</h3>
+  <p>El log de auditoría puede filtrarse por:</p>
+  <ul>
+    <li><strong>Tipo de entidad:</strong> Asientos, Gastos, Cuentas PUC, Nómina, Activos, Conciliaciones, etc.</li>
+    <li><strong>Acción:</strong> CREATE, UPDATE, DELETE, VOID.</li>
+    <li><strong>Rango de fechas:</strong> Fecha inicial y final.</li>
+    <li><strong>Usuario:</strong> Para auditar las acciones de un usuario específico.</li>
+    <li><strong>Búsqueda por texto:</strong> Busca en la descripción y detalle de la operación.</li>
+  </ul>
+
+  <h3 id="cap14-4">14.4 Dashboard financiero</h3>
+  <p>La página de inicio del módulo contable presenta un <strong>dashboard financiero</strong> con información consolidada:</p>
+  <ul>
+    <li><strong>Resumen de ingresos y gastos del mes:</strong> Gráfico comparativo con el mes anterior.</li>
+    <li><strong>Saldos bancarios:</strong> Saldo actual de cada cuenta bancaria registrada.</li>
+    <li><strong>Indicadores clave:</strong> Razón corriente, margen neto y endeudamiento.</li>
+    <li><strong>Alertas pendientes:</strong>
+      <ul>
+        <li>Meses sin cierre contable.</li>
+        <li>Conciliaciones bancarias pendientes.</li>
+        <li>Depreciación del mes sin ejecutar.</li>
+        <li>Nóminas por aprobar.</li>
+        <li>Declaraciones próximas a vencer.</li>
+      </ul>
+    </li>
+    <li><strong>Últimas operaciones:</strong> Lista de los últimos asientos contables registrados.</li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 15: FACTURACIÓN ELECTRÓNICA DIAN                      -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap15">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 15</div>
+    <h2 class="chapter-title">Facturación Electrónica DIAN</h2>
+  </div>
+
+  <h3 id="cap15-1">15.1 Flujo automático al pagar una orden</h3>
+  <p>El sistema Two Six genera facturas electrónicas de forma <strong>automática</strong> cuando un pedido es marcado como pagado. El flujo es el siguiente:</p>
+  <ol>
+    <li><strong>Pago del pedido:</strong> El operador marca el pedido como pagado en el módulo de ventas.</li>
+    <li><strong>Generación del XML:</strong> El sistema genera automáticamente el archivo XML de la factura en formato UBL 2.1 conforme a la resolución DIAN vigente.</li>
+    <li><strong>Firma digital:</strong> El XML se firma digitalmente con el certificado de la empresa.</li>
+    <li><strong>Envío a la DIAN:</strong> El documento firmado se envía a los servidores de la DIAN para validación.</li>
+    <li><strong>Respuesta de la DIAN:</strong> La DIAN responde con un CUFE (Código Único de Factura Electrónica) si la factura es aprobada, o con un código de rechazo si hay errores.</li>
+    <li><strong>Asiento contable:</strong> Si la factura es aprobada, se genera automáticamente el asiento contable correspondiente.</li>
+    <li><strong>Envío al cliente:</strong> Se envía automáticamente el PDF y XML de la factura al correo electrónico del cliente.</li>
+  </ol>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Nota</div>
+    Todo este proceso ocurre en <strong>segundos</strong>. Si la DIAN rechaza la factura, el sistema registra el error y muestra una alerta para que se corrija y reenvíe.
+  </div>
+
+  <h3 id="cap15-2">15.2 Consultar estado de facturas</h3>
+  <p>Para consultar el estado de las facturas electrónicas:</p>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Facturación Electrónica</strong>.</li>
+    <li>La lista muestra todas las facturas con su estado:
+      <ul>
+        <li><span class="badge badge-posted">APROBADA</span> &mdash; La DIAN validó y aceptó la factura.</li>
+        <li><span class="badge badge-pending">PENDIENTE</span> &mdash; Enviada a la DIAN, esperando respuesta.</li>
+        <li><span class="badge badge-voided">RECHAZADA</span> &mdash; La DIAN rechazó la factura. Requiere corrección.</li>
+      </ul>
+    </li>
+    <li>Utilice los filtros de <strong>fecha</strong>, <strong>estado</strong> y <strong>cliente</strong> para localizar facturas específicas.</li>
+  </ol>
+
+  <h3 id="cap15-3">15.3 Descargar XML y PDF</h3>
+  <p>Para cada factura electrónica aprobada, el sistema almacena:</p>
+  <ul>
+    <li><strong>XML firmado:</strong> Documento original en formato UBL 2.1 con firma digital. Este es el documento fiscal válido.</li>
+    <li><strong>PDF de representación gráfica:</strong> Versión imprimible de la factura con el CUFE, código QR y datos completos.</li>
+  </ul>
+  <p>Para descargar, haga clic en el ícono de descarga junto a cada factura y seleccione <strong>"Descargar XML"</strong> o <strong>"Descargar PDF"</strong>.</p>
+
+  <h3 id="cap15-4">15.4 Notas crédito y débito</h3>
+
+  <h4>Nota Crédito</h4>
+  <p>Se utiliza para anular total o parcialmente una factura ya emitida (devoluciones, descuentos, correcciones de valor):</p>
+  <ol class="steps">
+    <li>Localice la factura original en la lista.</li>
+    <li>Haga clic en <strong>"Crear Nota Crédito"</strong>.</li>
+    <li>Seleccione el <strong>motivo</strong>: Devolución, Descuento, Corrección, Anulación.</li>
+    <li>Indique los <strong>ítems y valores</strong> a afectar.</li>
+    <li>Haga clic en <strong>"Emitir"</strong>. La nota crédito se enviará a la DIAN automáticamente.</li>
+  </ol>
+
+  <h4>Nota Débito</h4>
+  <p>Se utiliza para cobrar valores adicionales sobre una factura ya emitida (intereses por mora, ajustes de precio al alza):</p>
+  <ol class="steps">
+    <li>Localice la factura original.</li>
+    <li>Haga clic en <strong>"Crear Nota Débito"</strong>.</li>
+    <li>Indique el <strong>concepto</strong> y el <strong>valor adicional</strong>.</li>
+    <li>Haga clic en <strong>"Emitir"</strong>.</li>
+  </ol>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">Advertencia</div>
+    Las notas crédito y débito generan asientos contables automáticos que ajustan los saldos de ingresos, IVA y cuentas por cobrar. Verifique que los montos sean correctos antes de emitir.
+  </div>
+
+  <h3 id="cap15-5">15.5 Configuración de resolución y certificado</h3>
+  <p>Para que la facturación electrónica funcione correctamente, es necesario configurar:</p>
+
+  <h4>Resolución de facturación</h4>
+  <p>La resolución DIAN autoriza a la empresa a emitir facturas electrónicas dentro de un rango de numeración:</p>
+  <ul>
+    <li><strong>Número de resolución:</strong> Número asignado por la DIAN.</li>
+    <li><strong>Fecha de resolución:</strong> Fecha de expedición.</li>
+    <li><strong>Prefijo:</strong> Letras que anteceden el número de factura (ej. "FE", "SETT").</li>
+    <li><strong>Rango de numeración:</strong> Número inicial y final autorizado (ej. 1 a 10000).</li>
+    <li><strong>Fecha de vigencia:</strong> La resolución tiene un período de vigencia (generalmente 2 años).</li>
+  </ul>
+
+  <h4>Certificado digital</h4>
+  <p>El certificado digital se utiliza para firmar electrónicamente las facturas:</p>
+  <ul>
+    <li><strong>Archivo del certificado:</strong> Archivo .p12 o .pfx emitido por una autoridad de certificación aprobada.</li>
+    <li><strong>Contraseña:</strong> Clave de acceso al certificado digital.</li>
+  </ul>
+
+  <div class="callout callout-danger">
+    <div class="callout-title">Importante</div>
+    Monitoree la <strong>fecha de vencimiento</strong> de la resolución y del certificado digital. El sistema muestra alertas cuando están próximos a vencer. Si la resolución vence, la empresa no podrá emitir nuevas facturas electrónicas hasta obtener una nueva.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- APPENDIX A: PUC RESUMEN                                       -->
+<!-- ============================================================ -->
+<div class="chapter" id="apA">
+  <div class="chapter-header">
+    <div class="chapter-number">Apéndice A</div>
+    <h2 class="chapter-title">Plan Único de Cuentas (Resumen)</h2>
+  </div>
+
+  <p>A continuación se presenta un resumen de las cuentas PUC más utilizadas en el sistema Two Six:</p>
+
+  <h3>Clase 1 &mdash; Activos (Naturaleza Débito)</h3>
+  <table>
+    <thead>
+      <tr><th>Código</th><th>Nombre</th><th>Naturaleza</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1105</td><td>Caja</td><td>Débito</td></tr>
+      <tr><td>1110</td><td>Bancos</td><td>Débito</td></tr>
+      <tr><td>1305</td><td>Clientes</td><td>Débito</td></tr>
+      <tr><td>1355</td><td>Anticipo de Impuestos y Contribuciones</td><td>Débito</td></tr>
+      <tr><td>1435</td><td>Mercancías No Fabricadas por la Empresa</td><td>Débito</td></tr>
+      <tr><td>1524</td><td>Equipo de Oficina</td><td>Débito</td></tr>
+      <tr><td>1528</td><td>Equipo de Computación y Comunicación</td><td>Débito</td></tr>
+      <tr><td>1540</td><td>Flota y Equipo de Transporte</td><td>Débito</td></tr>
+      <tr><td>1592</td><td>Depreciación Acumulada</td><td>Crédito</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Clase 2 &mdash; Pasivos (Naturaleza Crédito)</h3>
+  <table>
+    <thead>
+      <tr><th>Código</th><th>Nombre</th><th>Naturaleza</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>2205</td><td>Proveedores Nacionales</td><td>Crédito</td></tr>
+      <tr><td>2335</td><td>Costos y Gastos por Pagar</td><td>Crédito</td></tr>
+      <tr><td>2365</td><td>Retención en la Fuente</td><td>Crédito</td></tr>
+      <tr><td>2367</td><td>Impuesto a las Ventas Retenido</td><td>Crédito</td></tr>
+      <tr><td>2368</td><td>Impuesto de Industria y Comercio Retenido</td><td>Crédito</td></tr>
+      <tr><td>2370</td><td>Retenciones y Aportes de Nómina</td><td>Crédito</td></tr>
+      <tr><td>2408</td><td>Impuesto sobre las Ventas por Pagar (IVA)</td><td>Crédito</td></tr>
+      <tr><td>2505</td><td>Salarios por Pagar</td><td>Crédito</td></tr>
+      <tr><td>2610</td><td>Para Obligaciones Laborales (Cesantías)</td><td>Crédito</td></tr>
+      <tr><td>2615</td><td>Para Obligaciones Laborales (Intereses Cesantías)</td><td>Crédito</td></tr>
+      <tr><td>2620</td><td>Para Obligaciones Laborales (Prima)</td><td>Crédito</td></tr>
+      <tr><td>2625</td><td>Para Obligaciones Laborales (Vacaciones)</td><td>Crédito</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Clase 3 &mdash; Patrimonio (Naturaleza Crédito)</h3>
+  <table>
+    <thead>
+      <tr><th>Código</th><th>Nombre</th><th>Naturaleza</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>3105</td><td>Capital Suscrito y Pagado</td><td>Crédito</td></tr>
+      <tr><td>3305</td><td>Reservas Obligatorias</td><td>Crédito</td></tr>
+      <tr><td>3605</td><td>Utilidad del Ejercicio</td><td>Crédito</td></tr>
+      <tr><td>3610</td><td>Pérdida del Ejercicio</td><td>Débito</td></tr>
+      <tr><td>3705</td><td>Utilidades Acumuladas (Ejercicios Anteriores)</td><td>Crédito</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Clase 4 &mdash; Ingresos (Naturaleza Crédito)</h3>
+  <table>
+    <thead>
+      <tr><th>Código</th><th>Nombre</th><th>Naturaleza</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>4135</td><td>Comercio al Por Mayor y al Por Menor</td><td>Crédito</td></tr>
+      <tr><td>4175</td><td>Devoluciones en Ventas (Débito)</td><td>Débito</td></tr>
+      <tr><td>4210</td><td>Financieros</td><td>Crédito</td></tr>
+      <tr><td>4295</td><td>Diversos (Ingresos No Operacionales)</td><td>Crédito</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Clase 5 &mdash; Gastos (Naturaleza Débito)</h3>
+  <table>
+    <thead>
+      <tr><th>Código</th><th>Nombre</th><th>Naturaleza</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>5105</td><td>Gastos de Personal</td><td>Débito</td></tr>
+      <tr><td>5110</td><td>Honorarios</td><td>Débito</td></tr>
+      <tr><td>5115</td><td>Impuestos</td><td>Débito</td></tr>
+      <tr><td>5120</td><td>Arrendamientos</td><td>Débito</td></tr>
+      <tr><td>5135</td><td>Servicios</td><td>Débito</td></tr>
+      <tr><td>5145</td><td>Mantenimiento y Reparaciones</td><td>Débito</td></tr>
+      <tr><td>5155</td><td>Gastos de Viaje</td><td>Débito</td></tr>
+      <tr><td>5160</td><td>Depreciaciones</td><td>Débito</td></tr>
+      <tr><td>5195</td><td>Diversos</td><td>Débito</td></tr>
+      <tr><td>5230</td><td>Publicidad y Propaganda</td><td>Débito</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Clase 6 &mdash; Costos (Naturaleza Débito)</h3>
+  <table>
+    <thead>
+      <tr><th>Código</th><th>Nombre</th><th>Naturaleza</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>6135</td><td>Comercio al Por Mayor y al Por Menor (Costo de Ventas)</td><td>Débito</td></tr>
+      <tr><td>6205</td><td>Compra de Mercancía</td><td>Débito</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!-- APPENDIX B: TARIFAS DE RETENCIÓN                              -->
+<!-- ============================================================ -->
+<div class="chapter" id="apB">
+  <div class="chapter-header">
+    <div class="chapter-number">Apéndice B</div>
+    <h2 class="chapter-title">Tarifas de Retención en Colombia</h2>
+  </div>
+
+  <h3>Retención en la Fuente (ReteFuente)</h3>
+  <table>
+    <thead>
+      <tr><th>Concepto</th><th>Base mínima</th><th>Tarifa Declarante</th><th>Tarifa No Declarante</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Compras generales (bienes)</td><td>27 UVT</td><td>2.5%</td><td>3.5%</td></tr>
+      <tr><td>Servicios generales</td><td>4 UVT</td><td>4%</td><td>6%</td></tr>
+      <tr><td>Servicios profesionales</td><td>4 UVT</td><td>6%</td><td>10%</td></tr>
+      <tr><td>Honorarios</td><td>0 UVT</td><td>10%</td><td>11%</td></tr>
+      <tr><td>Arrendamiento bienes inmuebles</td><td>27 UVT</td><td>3.5%</td><td>3.5%</td></tr>
+      <tr><td>Arrendamiento bienes muebles</td><td>0 UVT</td><td>4%</td><td>4%</td></tr>
+      <tr><td>Transporte de carga</td><td>4 UVT</td><td>1%</td><td>1%</td></tr>
+      <tr><td>Transporte de pasajeros</td><td>27 UVT</td><td>3.5%</td><td>3.5%</td></tr>
+      <tr><td>Comisiones</td><td>0 UVT</td><td>10%</td><td>11%</td></tr>
+      <tr><td>Consultoría</td><td>4 UVT</td><td>6%</td><td>10%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Nota</div>
+    El valor de la <strong>UVT (Unidad de Valor Tributario)</strong> se actualiza anualmente por la DIAN. Consulte el valor vigente para el año en curso al calcular las bases mínimas de retención.
+  </div>
+
+  <h3>Retención de ICA (ReteICA)</h3>
+  <p>La tarifa de retención del Impuesto de Industria y Comercio varía según el municipio y la actividad económica. Algunos ejemplos:</p>
+  <table>
+    <thead>
+      <tr><th>Municipio</th><th>Actividad Comercial</th><th>Actividad de Servicios</th><th>Actividad Industrial</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Bogotá</td><td>4.14 &ndash; 11.04 &permil;</td><td>4.14 &ndash; 13.8 &permil;</td><td>4.14 &ndash; 11.04 &permil;</td></tr>
+      <tr><td>Medellín</td><td>4.14 &ndash; 10 &permil;</td><td>4.14 &ndash; 10 &permil;</td><td>2 &ndash; 7 &permil;</td></tr>
+      <tr><td>Cali</td><td>5 &ndash; 10 &permil;</td><td>5 &ndash; 10 &permil;</td><td>3 &ndash; 8 &permil;</td></tr>
+      <tr><td>Barranquilla</td><td>5 &ndash; 10 &permil;</td><td>5 &ndash; 10 &permil;</td><td>3 &ndash; 7 &permil;</td></tr>
+    </tbody>
+  </table>
+  <p><em>Los valores anteriores son de referencia. Consulte siempre la normatividad vigente del municipio correspondiente.</em></p>
+
+  <h3>Retención de IVA (ReteIVA)</h3>
+  <table>
+    <thead>
+      <tr><th>Concepto</th><th>Tarifa</th><th>Base</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Retención general de IVA</td><td>15%</td><td>Valor del IVA facturado</td></tr>
+    </tbody>
+  </table>
+
+  <p>La retención de IVA se practica cuando:</p>
+  <ul>
+    <li>La empresa es catalogada como <strong>Gran Contribuyente</strong> por la DIAN, o</li>
+    <li>Es agente de retención de IVA según resolución de la DIAN.</li>
+  </ul>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">Advertencia</div>
+    Las tarifas de retención pueden cambiar con reformas tributarias. Este manual presenta las tarifas vigentes a marzo de 2026. Consulte siempre la normatividad actualizada en la página de la DIAN.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- APPENDIX C: GLOSARIO                                          -->
+<!-- ============================================================ -->
+<div class="chapter" id="apC">
+  <div class="chapter-header">
+    <div class="chapter-number">Apéndice C</div>
+    <h2 class="chapter-title">Glosario</h2>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Término</th><th>Definición</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Activo</strong></td><td>Bien o derecho de propiedad de la empresa que tiene valor económico. Se clasifica en corriente (convertible en efectivo en menos de un año) y no corriente.</td></tr>
+      <tr><td><strong>ARL</strong></td><td>Administradora de Riesgos Laborales. Entidad que cubre los riesgos de accidentes de trabajo y enfermedades profesionales.</td></tr>
+      <tr><td><strong>Asiento contable</strong></td><td>Registro formal de una transacción económica en el libro diario, siguiendo el principio de partida doble.</td></tr>
+      <tr><td><strong>Balance General</strong></td><td>Estado financiero que muestra la situación patrimonial de la empresa en una fecha determinada: Activos = Pasivos + Patrimonio.</td></tr>
+      <tr><td><strong>Base gravable</strong></td><td>Monto sobre el cual se calcula un impuesto o retención.</td></tr>
+      <tr><td><strong>Caja de Compensación</strong></td><td>Entidad que administra el subsidio familiar y otros beneficios para trabajadores y sus familias.</td></tr>
+      <tr><td><strong>Cesantías</strong></td><td>Prestación social equivalente a un mes de salario por cada año trabajado. Se consignan anualmente en un fondo de cesantías.</td></tr>
+      <tr><td><strong>Cierre contable</strong></td><td>Proceso de finalización de las cuentas de resultado de un período, trasladando el resultado neto a patrimonio.</td></tr>
+      <tr><td><strong>COD</strong></td><td>Cash On Delivery (Contra entrega). Método de pago donde el cliente paga al recibir la mercancía.</td></tr>
+      <tr><td><strong>Conciliación bancaria</strong></td><td>Proceso de comparar y emparejar los registros contables de una cuenta bancaria con el extracto emitido por el banco.</td></tr>
+      <tr><td><strong>Crédito</strong></td><td>Registro contable en el lado derecho de una cuenta. Aumenta pasivos, patrimonio e ingresos. Disminuye activos, gastos y costos.</td></tr>
+      <tr><td><strong>CUFE</strong></td><td>Código Único de Factura Electrónica. Código alfanumérico asignado por la DIAN que identifica de forma única cada factura electrónica.</td></tr>
+      <tr><td><strong>Débito</strong></td><td>Registro contable en el lado izquierdo de una cuenta. Aumenta activos, gastos y costos. Disminuye pasivos, patrimonio e ingresos.</td></tr>
+      <tr><td><strong>Depreciación</strong></td><td>Distribución del costo de un activo fijo a lo largo de su vida útil como gasto. Refleja el desgaste o pérdida de valor del activo.</td></tr>
+      <tr><td><strong>DIAN</strong></td><td>Dirección de Impuestos y Aduanas Nacionales de Colombia. Entidad responsable de la administración tributaria y aduanera.</td></tr>
+      <tr><td><strong>EPS</strong></td><td>Entidad Promotora de Salud. Administra la afiliación y presta los servicios de salud a los trabajadores.</td></tr>
+      <tr><td><strong>Estado de Resultados</strong></td><td>Estado financiero que muestra ingresos, costos y gastos de un período, determinando la utilidad o pérdida neta.</td></tr>
+      <tr><td><strong>Estatuto Tributario (E.T.)</strong></td><td>Compilación de normas jurídicas que regulan los impuestos nacionales en Colombia.</td></tr>
+      <tr><td><strong>Factura electrónica</strong></td><td>Documento fiscal emitido y recibido en formato electrónico, con validez legal ante la DIAN.</td></tr>
+      <tr><td><strong>Flujo de caja</strong></td><td>Estado financiero que muestra las entradas y salidas de efectivo durante un período, clasificadas por actividad.</td></tr>
+      <tr><td><strong>Gran Contribuyente</strong></td><td>Categorización de la DIAN para personas jurídicas o naturales con ingresos y patrimonio significativos, con obligaciones especiales.</td></tr>
+      <tr><td><strong>ICBF</strong></td><td>Instituto Colombiano de Bienestar Familiar. Entidad que recibe aportes parafiscales para la protección de la niñez y la familia.</td></tr>
+      <tr><td><strong>Información Exógena</strong></td><td>Reportes detallados de operaciones económicas que deben presentarse anualmente ante la DIAN (Medios Magnéticos).</td></tr>
+      <tr><td><strong>IVA</strong></td><td>Impuesto al Valor Agregado. Impuesto indirecto que grava la venta de bienes y prestación de servicios.</td></tr>
+      <tr><td><strong>Libro Auxiliar</strong></td><td>Reporte que muestra el detalle de movimientos de las sub-cuentas de una cuenta padre.</td></tr>
+      <tr><td><strong>Libro Mayor</strong></td><td>Reporte que muestra todos los movimientos de una cuenta específica con su saldo corrido.</td></tr>
+      <tr><td><strong>Línea recta</strong></td><td>Método de depreciación que distribuye el costo del activo de forma uniforme durante su vida útil.</td></tr>
+      <tr><td><strong>MUISCA</strong></td><td>Modelo Único de Ingresos, Servicio y Control Automatizado. Plataforma tecnológica de la DIAN para la gestión tributaria.</td></tr>
+      <tr><td><strong>NIIF</strong></td><td>Normas Internacionales de Información Financiera. Marco contable global adoptado por Colombia.</td></tr>
+      <tr><td><strong>NIT</strong></td><td>Número de Identificación Tributaria. Identificación asignada por la DIAN a personas naturales y jurídicas.</td></tr>
+      <tr><td><strong>Nómina</strong></td><td>Proceso de liquidación de salarios, prestaciones, deducciones y aportes correspondientes a los empleados.</td></tr>
+      <tr><td><strong>Partida doble</strong></td><td>Principio contable que establece que toda transacción afecta al menos dos cuentas: una al débito y otra al crédito, por igual monto.</td></tr>
+      <tr><td><strong>Pasivo</strong></td><td>Obligación o deuda de la empresa con terceros.</td></tr>
+      <tr><td><strong>Patrimonio</strong></td><td>Diferencia entre activos y pasivos. Representa el valor neto de la empresa para sus propietarios.</td></tr>
+      <tr><td><strong>Prima de servicios</strong></td><td>Prestación social equivalente a un mes de salario por año, pagada en dos cuotas: junio y diciembre.</td></tr>
+      <tr><td><strong>PUC</strong></td><td>Plan Único de Cuentas. Catálogo estandarizado de cuentas contables para empresas colombianas.</td></tr>
+      <tr><td><strong>Retención en la Fuente</strong></td><td>Mecanismo de recaudo anticipado de impuestos. Se practica al momento del pago o abono en cuenta.</td></tr>
+      <tr><td><strong>ReteICA</strong></td><td>Retención del Impuesto de Industria y Comercio. Recaudo anticipado del ICA municipal.</td></tr>
+      <tr><td><strong>ReteIVA</strong></td><td>Retención del IVA. Se practica sobre el valor del IVA facturado por agentes de retención de IVA.</td></tr>
+      <tr><td><strong>SENA</strong></td><td>Servicio Nacional de Aprendizaje. Entidad que recibe aportes parafiscales destinados a la formación profesional.</td></tr>
+      <tr><td><strong>SMLMV</strong></td><td>Salario Mínimo Legal Mensual Vigente. Valor mínimo de remuneración fijado anualmente por el gobierno.</td></tr>
+      <tr><td><strong>UBL 2.1</strong></td><td>Universal Business Language versión 2.1. Formato XML estándar para documentos comerciales electrónicos.</td></tr>
+      <tr><td><strong>Utilidad del ejercicio</strong></td><td>Resultado neto positivo de un período contable (ingresos mayores que gastos y costos).</td></tr>
+      <tr><td><strong>UVT</strong></td><td>Unidad de Valor Tributario. Unidad de medida utilizada para estandarizar los valores de bases y tarifas tributarias.</td></tr>
+      <tr><td><strong>Vacaciones</strong></td><td>Descanso remunerado de 15 días hábiles por cada año de servicio. Se provisiona mensualmente al 4.17% del salario.</td></tr>
+      <tr><td><strong>Valor de salvamento</strong></td><td>Valor residual estimado de un activo fijo al final de su vida útil.</td></tr>
+      <tr><td><strong>Vida útil</strong></td><td>Período durante el cual se espera que un activo fijo sea utilizado por la empresa.</td></tr>
+    </tbody>
+  </table>
+
+  <div style="text-align: center; padding: 4rem 0 2rem; color: var(--gray-500); font-size: 0.9rem;">
+    <div style="width: 60px; height: 2px; background: var(--gold); margin: 0 auto 1.5rem;"></div>
+    <strong style="color: var(--gold); letter-spacing: 0.2em;">TWO SIX S.A.S.</strong><br>
+    Manual del Módulo de Contabilidad &mdash; Versión 1.0<br>
+    Marzo 2026<br><br>
+    <em>Este documento es propiedad de Two Six S.A.S. y es de uso interno.<br>
+    Prohibida su reproducción total o parcial sin autorización expresa.</em>
+  </div>
+</div>
+
+</body>
+</html>

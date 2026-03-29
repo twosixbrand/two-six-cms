@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiHome, FiLayers, FiBarChart2, FiSettings, FiUsers, FiMap, FiTerminal } from 'react-icons/fi';
+import { FiHome, FiLayers, FiBarChart2, FiSettings, FiUsers, FiMap, FiTerminal, FiDollarSign } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
 import {
   FaTshirt, FaPaintBrush, FaPalette, FaImage, FaBoxOpen, FaWarehouse,
@@ -11,6 +11,7 @@ import {
   FaExclamationTriangle, FaRulerCombined, FaMapMarkerAlt
 } from 'react-icons/fa';
 import '../styles/HomePage.css';
+import AccountingDashboardWidget from './accounting/AccountingDashboardWidget';
 
 const homeSections = [
   {
@@ -90,6 +91,14 @@ const HomePage = () => {
   return (
     <div className="home-container page-container">
       <PageHeader title="Páginas Principales" icon={<FiHome />} />
+
+      <section className="home-section">
+        <h2 className="home-section-title">
+          <FiDollarSign />
+          Dashboard Financiero
+        </h2>
+        <AccountingDashboardWidget />
+      </section>
 
       {homeSections.map((section, idx) => (
         <section key={idx} className="home-section">

@@ -69,7 +69,7 @@
 }
 
 .submenu.active {
-  max-height: 500px; /* Ajusta según sea necesario */
+  max-height: 1200px; /* Expandido para soportar 16+ items de contabilidad */
   padding: 0.5rem 0;
 }
 

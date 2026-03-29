@@ -47,6 +47,31 @@ import DianDocumentationPage from './pages/DianDocumentationPage.tsx';
 import PickupDashboardPage from './pages/PickupDashboardPage.tsx';
 import CustomerPage from './pages/CustomerPage.tsx';
 
+// Accounting pages
+import PucAccountPage from './pages/accounting/PucAccountPage.tsx';
+import JournalEntryPage from './pages/accounting/JournalEntryPage.tsx';
+import JournalEntryFormPage from './pages/accounting/JournalEntryFormPage.tsx';
+import ExpensePage from './pages/accounting/ExpensePage.tsx';
+import ExpenseFormPage from './pages/accounting/ExpenseFormPage.tsx';
+import BalanceSheetPage from './pages/accounting/BalanceSheetPage.tsx';
+import IncomeStatementPage from './pages/accounting/IncomeStatementPage.tsx';
+import GeneralLedgerPage from './pages/accounting/GeneralLedgerPage.tsx';
+import SubsidiaryLedgerPage from './pages/accounting/SubsidiaryLedgerPage.tsx';
+import BankReconciliationPage from './pages/accounting/BankReconciliationPage.tsx';
+import WithholdingCertificatePage from './pages/accounting/WithholdingCertificatePage.tsx';
+import AuditLogPage from './pages/accounting/AuditLogPage.tsx';
+import PeriodClosingPage from './pages/accounting/PeriodClosingPage.tsx';
+import PayrollPage from './pages/accounting/PayrollPage.tsx';
+import IvaDeclarationPage from './pages/accounting/IvaDeclarationPage.tsx';
+import ReteFuentePage from './pages/accounting/ReteFuentePage.tsx';
+import CashFlowPage from './pages/accounting/CashFlowPage.tsx';
+import AgingReportPage from './pages/accounting/AgingReportPage.tsx';
+import ExogenaPage from './pages/accounting/ExogenaPage.tsx';
+import ManualContablePage from './pages/accounting/ManualContablePage.tsx';
+import BudgetPage from './pages/accounting/BudgetPage.tsx';
+import DepreciationPage from './pages/accounting/DepreciationPage.tsx';
+import FinancialIndicatorsPage from './pages/accounting/FinancialIndicatorsPage.tsx';
+
 /**
  * Componente que hace scroll al inicio de la página
  * cada vez que cambia la ruta.
@@ -125,6 +150,31 @@ const MainLayout = () => {
               <Route path="/size-guide" element={<SizeGuidePage />} />
               <Route path="/dian-invoices" element={<DianInvoicePage />} />
               <Route path="/customer" element={<CustomerPage />} />
+              {/* Accounting routes */}
+              <Route path="/accounting/puc" element={<PucAccountPage />} />
+              <Route path="/accounting/journal" element={<JournalEntryPage />} />
+              <Route path="/accounting/journal/new" element={<JournalEntryFormPage />} />
+              <Route path="/accounting/expenses" element={<ExpensePage />} />
+              <Route path="/accounting/expenses/new" element={<ExpenseFormPage />} />
+              <Route path="/accounting/expenses/:id" element={<ExpenseFormPage />} />
+              <Route path="/accounting/balance-sheet" element={<BalanceSheetPage />} />
+              <Route path="/accounting/income-statement" element={<IncomeStatementPage />} />
+              <Route path="/accounting/general-ledger" element={<GeneralLedgerPage />} />
+              <Route path="/accounting/subsidiary-ledger" element={<SubsidiaryLedgerPage />} />
+              <Route path="/accounting/bank-reconciliation" element={<BankReconciliationPage />} />
+              <Route path="/accounting/withholding-certificates" element={<WithholdingCertificatePage />} />
+              <Route path="/accounting/audit-log" element={<AuditLogPage />} />
+              <Route path="/accounting/closing" element={<PeriodClosingPage />} />
+              <Route path="/accounting/payroll" element={<PayrollPage />} />
+              <Route path="/accounting/tax/iva" element={<IvaDeclarationPage />} />
+              <Route path="/accounting/tax/retefuente" element={<ReteFuentePage />} />
+              <Route path="/accounting/reports/cash-flow" element={<CashFlowPage />} />
+              <Route path="/accounting/reports/aging" element={<AgingReportPage />} />
+              <Route path="/accounting/budget" element={<BudgetPage />} />
+              <Route path="/accounting/assets" element={<DepreciationPage />} />
+              <Route path="/accounting/reports/indicators" element={<FinancialIndicatorsPage />} />
+              <Route path="/accounting/exogena" element={<ExogenaPage />} />
+              <Route path="/manual-contabilidad" element={<ManualContablePage />} />
             </Routes>
           </main>
         </div>
