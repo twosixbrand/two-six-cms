@@ -9,130 +9,151 @@ const menuData = [
   {
     title: 'Admin Prendas',
     path: '#',
+    permission: 'inventory',
     subNav: [
-      { title: 'Clothing', path: '/clothing' },
-      { title: 'Design', path: '/master-design' },
-      { title: 'Clothing Color', path: '/clothing-color' },
-      { title: 'Image Clothing', path: '/image-clothing' },
-      { title: 'Product', path: '/product' },
-      { title: 'Stock', path: '/stock' },
-
-
-
-
-
+      { title: 'Clothing', path: '/clothing', permission: 'inventory.clothing.view' },
+      { title: 'Design', path: '/master-design', permission: 'inventory.design.view' },
+      { title: 'Clothing Color', path: '/clothing-color', permission: 'inventory.clothing-color.view' },
+      { title: 'Image Clothing', path: '/image-clothing', permission: 'inventory.image-clothing.view' },
+      { title: 'Product', path: '/product', permission: 'inventory.product.view' },
+      { title: 'Stock', path: '/stock', permission: 'inventory.stock.view' },
     ],
   },
   {
     title: 'Reports',
     path: '#',
+    permission: 'sales.reports.view',
     subNav: [
-      { title: 'Pedidos', path: '/order' },
-      { title: 'General Sales', path: '/reports/sales/general' },
-      { title: 'Facturación DIAN', path: '/dian-invoices' },
-      { title: 'Retiros en Tienda', path: '/reports/pickup-dashboard' },
+      { title: 'Pedidos', path: '/order', permission: 'sales.orders.view' },
+      { title: 'General Sales', path: '/reports/sales/general', permission: 'sales.reports.view' },
+      { title: 'Facturacion DIAN', path: '/dian-invoices', permission: 'sales.dian.view' },
+      { title: 'Retiros en Tienda', path: '/reports/pickup-dashboard', permission: 'sales.pickup.view' },
     ],
   },
   {
-    title: 'Atención Cliente',
+    title: 'Atencion Cliente',
     path: '#',
+    permission: 'sales.customers.view',
     subNav: [
-      { title: 'Gestión PQR', path: '/pqr' },
+      { title: 'Gestion PQR', path: '/pqr', permission: 'sales.customers.view' },
     ],
   },
   {
     title: 'Admin Maestros',
     path: '#',
+    permission: 'catalog',
     subNav: [
-      { title: 'Year Production', path: '/year-production' },
-      { title: 'Season', path: '/season' },
-      { title: 'Collection', path: '/collection' },
-      { title: 'Production type', path: '/production-type' },
-      { title: 'Type Clothing', path: '/type-clothing' },
-      { title: 'Category', path: '/category' },
-      { title: 'Color', path: '/color' },
-      { title: 'Guía de Tallas', path: '/size-guide' },
-      { title: 'Ubicaciones', path: '/locations' },
+      { title: 'Year Production', path: '/year-production', permission: 'catalog.year-production.view' },
+      { title: 'Season', path: '/season', permission: 'catalog.season.view' },
+      { title: 'Collection', path: '/collection', permission: 'catalog.collection.view' },
+      { title: 'Production type', path: '/production-type', permission: 'catalog.production-type.view' },
+      { title: 'Type Clothing', path: '/type-clothing', permission: 'catalog.type-clothing.view' },
+      { title: 'Category', path: '/category', permission: 'catalog.category.view' },
+      { title: 'Color', path: '/color', permission: 'catalog.color.view' },
+      { title: 'Guia de Tallas', path: '/size-guide', permission: 'catalog.size-guide.view' },
+      { title: 'Ubicaciones', path: '/locations', permission: 'catalog.locations.view' },
     ],
   },
   {
     title: 'Users / providers',
     path: '#',
+    permission: 'admin',
     subNav: [
-      { title: 'Provider', path: '/provider' },
-      { title: 'Clientes', path: '/customer' },
-      { title: 'User', path: '/user' },
-      { title: 'Role', path: '/role' },
-      { title: 'User Roles', path: '/user-role' },
-      { title: 'Suscriber', path: '/subscriber' },
+      { title: 'Provider', path: '/provider', permission: 'admin.provider.view' },
+      { title: 'Clientes', path: '/customer', permission: 'admin.customer.view' },
+      { title: 'User', path: '/user', permission: 'admin.user.view' },
+      { title: 'Role', path: '/role', permission: 'admin.role.view' },
+      { title: 'User Roles', path: '/user-role', permission: 'admin.user-role.view' },
+      { title: 'Gestion de Permisos', path: '/permissions', permission: 'admin.permissions.view' },
+      { title: 'Suscriber', path: '/subscriber', permission: 'admin.subscriber.view' },
     ],
   },
   {
     title: 'Plan Estrategico',
     path: '#',
+    permission: 'sales.orders.view',
     subNav: [
-      { title: 'Ver plan', path: '/plan-estrategico' },
-      { title: 'Documentación DIAN', path: '/dian-documentation' },
+      { title: 'Ver plan', path: '/plan-estrategico', permission: 'sales.orders.view' },
+      { title: 'Documentacion DIAN', path: '/dian-documentation', permission: 'sales.dian.view' },
     ],
   },
   {
     title: 'Contabilidad',
     path: '#',
+    permission: 'accounting',
     subNav: [
-      { title: 'PUC (Plan de Cuentas)', path: '/accounting/puc' },
-      { title: 'Asientos Contables', path: '/accounting/journal' },
-      { title: 'Gastos / Compras', path: '/accounting/expenses' },
-      { title: 'Balance General', path: '/accounting/balance-sheet' },
-      { title: 'Estado de Resultados', path: '/accounting/income-statement' },
-      { title: 'Libro Mayor', path: '/accounting/general-ledger' },
-      { title: 'Libro Auxiliar', path: '/accounting/subsidiary-ledger' },
-      { title: 'Conciliación Bancaria', path: '/accounting/bank-reconciliation' },
-      { title: 'Certificados Retención', path: '/accounting/withholding-certificates' },
-      { title: 'Auditoría', path: '/accounting/audit-log' },
-      { title: 'Cierre Contable', path: '/accounting/closing' },
-      { title: 'Nómina', path: '/accounting/payroll' },
-      { title: 'Declaración IVA', path: '/accounting/tax/iva' },
-      { title: 'Retención en la Fuente', path: '/accounting/tax/retefuente' },
-      { title: 'Flujo de Caja', path: '/accounting/reports/cash-flow' },
-      { title: 'Cartera por Edades', path: '/accounting/reports/aging' },
-      { title: 'Presupuesto', path: '/accounting/budget' },
-      { title: 'Activos Fijos', path: '/accounting/assets' },
-      { title: 'Indicadores Financieros', path: '/accounting/reports/indicators' },
-      { title: 'Información Exógena', path: '/accounting/exogena' },
-      { title: '📖 Manual Contable', path: '/manual-contabilidad' },
+      { title: 'PUC (Plan de Cuentas)', path: '/accounting/puc', permission: 'accounting.puc.view' },
+      { title: 'Asientos Contables', path: '/accounting/journal', permission: 'accounting.journal.view' },
+      { title: 'Gastos / Compras', path: '/accounting/expenses', permission: 'accounting.expenses.view' },
+      { title: 'Balance General', path: '/accounting/balance-sheet', permission: 'accounting.balance-sheet.view' },
+      { title: 'Estado de Resultados', path: '/accounting/income-statement', permission: 'accounting.income-statement.view' },
+      { title: 'Libro Mayor', path: '/accounting/general-ledger', permission: 'accounting.general-ledger.view' },
+      { title: 'Libro Auxiliar', path: '/accounting/subsidiary-ledger', permission: 'accounting.subsidiary-ledger.view' },
+      { title: 'Conciliacion Bancaria', path: '/accounting/bank-reconciliation', permission: 'accounting.bank-reconciliation.view' },
+      { title: 'Certificados Retencion', path: '/accounting/withholding-certificates', permission: 'accounting.withholding-certificates.view' },
+      { title: 'Auditoria', path: '/accounting/audit-log', permission: 'accounting.audit-log.view' },
+      { title: 'Cierre Contable', path: '/accounting/closing', permission: 'accounting.closing.view' },
+      { title: 'Nomina', path: '/accounting/payroll', permission: 'accounting.payroll.view' },
+      { title: 'Declaracion IVA', path: '/accounting/tax/iva', permission: 'accounting.tax.iva.view' },
+      { title: 'Retencion en la Fuente', path: '/accounting/tax/retefuente', permission: 'accounting.tax.retefuente.view' },
+      { title: 'Flujo de Caja', path: '/accounting/reports/cash-flow', permission: 'accounting.reports.cash-flow.view' },
+      { title: 'Cartera por Edades', path: '/accounting/reports/aging', permission: 'accounting.reports.aging.view' },
+      { title: 'Presupuesto', path: '/accounting/budget', permission: 'accounting.budget.view' },
+      { title: 'Activos Fijos', path: '/accounting/assets', permission: 'accounting.assets.view' },
+      { title: 'Indicadores Financieros', path: '/accounting/reports/indicators', permission: 'accounting.reports.indicators.view' },
+      { title: 'Informacion Exogena', path: '/accounting/exogena', permission: 'accounting.exogena.view' },
+      { title: 'Manual Contable', path: '/manual-contabilidad', permission: 'accounting.manual.view' },
     ],
   },
   {
     title: 'Logs App',
     path: '#',
+    permission: 'admin.logs.view',
     subNav: [
-      { title: 'Logs', path: '/logs' },
+      { title: 'Logs', path: '/logs', permission: 'admin.logs.view' },
     ],
   },
 ];
 
 const Menu = ({ isMenuOpen, toggleMenu }) => {
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { isAuthenticated, logout, hasPermission, hasGroupPermission, userPermissions } = useContext(AuthContext);
 
   const closeMenu = () => {
-    // Esta función ahora solo se usa para cerrar el menú en móvil al hacer clic en un enlace
+    // Esta funcion ahora solo se usa para cerrar el menu en movil al hacer clic en un enlace
     if (window.innerWidth < 960) {
       toggleMenu();
     }
   }
+
+  // Filtrar menu segun permisos del usuario
+  const filteredMenu = menuData
+    .filter((item) => {
+      if (!userPermissions || userPermissions.length === 0) return true; // sin restricciones (legacy)
+      if (!item.permission) return true;
+      return hasGroupPermission(item.permission);
+    })
+    .map((item) => ({
+      ...item,
+      subNav: item.subNav?.filter((sub) => {
+        if (!userPermissions || userPermissions.length === 0) return true;
+        if (!sub.permission) return true;
+        return hasPermission(sub.permission);
+      }),
+    }))
+    .filter((item) => !item.subNav || item.subNav.length > 0); // Ocultar padres sin hijos visibles
 
   return (
     <nav className={`navbar ${isMenuOpen ? '' : 'closed'}`}>
       <div className="navbar-container">
         {isAuthenticated && (
           <ul className="nav-menu">
-            {menuData.map((item, index) => (
+            {filteredMenu.map((item, index) => (
               <SubMenu item={item} key={index} closeMenu={closeMenu} isMenuOpen={isMenuOpen} />
             ))}
           </ul>
         )}
         <div className="menu-footer">
-          <button onClick={logout} className="nav-links-button">Cerrar Sesión</button>
+          <button onClick={logout} className="nav-links-button">Cerrar Sesion</button>
         </div>
       </div>
     </nav>

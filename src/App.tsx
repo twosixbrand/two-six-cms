@@ -46,6 +46,7 @@ import DianInvoicePage from './pages/DianInvoicePage';
 import DianDocumentationPage from './pages/DianDocumentationPage.tsx';
 import PickupDashboardPage from './pages/PickupDashboardPage.tsx';
 import CustomerPage from './pages/CustomerPage.tsx';
+import PermissionManagementPage from './pages/PermissionManagementPage.tsx';
 
 // Accounting pages
 import PucAccountPage from './pages/accounting/PucAccountPage.tsx';
@@ -150,6 +151,7 @@ const MainLayout = () => {
               <Route path="/size-guide" element={<SizeGuidePage />} />
               <Route path="/dian-invoices" element={<DianInvoicePage />} />
               <Route path="/customer" element={<CustomerPage />} />
+              <Route path="/permissions" element={<PermissionManagementPage />} />
               {/* Accounting routes */}
               <Route path="/accounting/puc" element={<PucAccountPage />} />
               <Route path="/accounting/journal" element={<JournalEntryPage />} />
