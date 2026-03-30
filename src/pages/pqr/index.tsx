@@ -166,7 +166,7 @@ const PqrManagementPage: React.FC = () => {
                             backdropFilter: 'blur(16px)',
                             WebkitBackdropFilter: 'blur(16px)',
                             border: '1px solid var(--border-color)',
-                            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+                            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
                             marginTop: '1.5rem'
                         }}>
                             <div className="card-body" style={{ padding: '1.5rem' }}>
@@ -188,28 +188,28 @@ const PqrManagementPage: React.FC = () => {
 
                                     <div>
                                         <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.3rem', display: 'block' }}>Radicado & Tipo</label>
-                                        <div style={{ background: 'rgba(255, 255, 255, 0.4)', padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid rgba(0, 0, 0, 0.08)', color: 'var(--text-primary)', fontWeight: 500 }}>
+                                        <div style={{ background: '#13131a', padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid #2a2a35', color: 'var(--text-primary)', fontWeight: 500 }}>
                                             {selectedPqr.radicado} <span style={{ color: 'var(--text-secondary)', fontWeight: 400 }}>({selectedPqr.type})</span>
                                         </div>
                                     </div>
 
                                     <div>
                                         <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.3rem', display: 'block' }}>Cliente</label>
-                                        <div style={{ background: 'rgba(255, 255, 255, 0.4)', padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid rgba(0, 0, 0, 0.08)', color: 'var(--text-primary)', fontWeight: 500 }}>
+                                        <div style={{ background: '#13131a', padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid #2a2a35', color: 'var(--text-primary)', fontWeight: 500 }}>
                                             {selectedPqr.customer_name} <span style={{ color: 'var(--text-secondary)', fontWeight: 400 }}>- {selectedPqr.customer_id}</span>
                                         </div>
                                     </div>
 
                                     <div>
                                         <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.3rem', display: 'block' }}>Correo Electrónico</label>
-                                        <div style={{ background: 'rgba(255, 255, 255, 0.4)', padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid rgba(0, 0, 0, 0.08)', color: 'var(--text-primary)', fontWeight: 500 }}>
+                                        <div style={{ background: '#13131a', padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid #2a2a35', color: 'var(--text-primary)', fontWeight: 500 }}>
                                             {selectedPqr.customer_email}
                                         </div>
                                     </div>
 
                                     <div>
                                         <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.3rem', display: 'block' }}>Descripción del Caso</label>
-                                        <div style={{ background: 'rgba(255, 255, 255, 0.6)', padding: '1rem', borderRadius: '12px', border: '1px solid rgba(0, 0, 0, 0.08)', color: 'var(--text-primary)', fontSize: '0.9rem', lineHeight: 1.6, maxHeight: '200px', overflowY: 'auto' }}>
+                                        <div style={{ background: '#13131a', padding: '1rem', borderRadius: '12px', border: '1px solid #2a2a35', color: 'var(--text-primary)', fontSize: '0.9rem', lineHeight: 1.6, maxHeight: '200px', overflowY: 'auto' }}>
                                             {selectedPqr.description}
                                         </div>
                                     </div>
@@ -220,7 +220,7 @@ const PqrManagementPage: React.FC = () => {
                                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(65px, 1fr))', gap: '8px' }}>
                                                 {selectedPqr.images.map(img => (
                                                     <a key={img.id} href={img.image_url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--border-color)', aspectRatio: '1/1', background: 'var(--surface-color)', position: 'relative' }}>
-                                                        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0)', zIndex: 1, transition: '0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.3)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(0,0,0,0)'} />
+                                                        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0)', zIndex: 1, transition: '0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(0,0,0,0)'} />
                                                         <img src={img.image_url} alt="Evidencia PQR" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                                     </a>
                                                 ))}
@@ -272,9 +272,9 @@ const PqrManagementPage: React.FC = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className="card shadow-sm border-0 h-100 d-flex justify-content-center align-items-center p-5 text-center bg-light" style={{ borderRadius: '20px' }}>
-                            <div className="text-muted">
-                                <FiClock className="fs-1 mb-3 d-block mx-auto opacity-50" size={48} />
+                        <div style={{ borderRadius: '20px', background: '#1a1a24', border: '1px solid #2a2a35', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '3rem', textAlign: 'center', height: '100%' }}>
+                            <div style={{ color: '#a0a0b0' }}>
+                                <FiClock style={{ display: 'block', margin: '0 auto 1rem', opacity: 0.5 }} size={48} />
                                 <p>Selecciona una PQR del listado para ver sus detalles de gestión y modificar su estado.</p>
                             </div>
                         </div>

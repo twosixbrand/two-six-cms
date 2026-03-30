@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FiTrendingUp, FiRefreshCcw, FiPrinter, FiDownload } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
+import Button from '../../components/ui/Button';
+import FormField from '../../components/ui/FormField';
+import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
 
@@ -38,29 +41,38 @@ const IncomeStatementPage = () => {
 
     const handlePrint = () => window.print();
 
-    const renderSection = (title: string, accounts: any[], total: number, color: string) => (
-        <div style={{ marginBottom: '24px' }}>
-            <h3 style={{ borderBottom: `3px solid ${color}`, paddingBottom: '8px', color }}>{title}</h3>
-            {accounts && accounts.length > 0 ? accounts.map((acc: any, i: number) => (
-                <div key={i} style={{
-                    display: 'flex', justifyContent: 'space-between', padding: '6px 0',
-                    borderBottom: '1px solid #f0f0f0', fontSize: '13px',
+    const sectionColors: Record<string, { border: string; text: string }> = {
+        INGRESOS: { border: '#34d399', text: '#34d399' },
+        GASTOS: { border: '#f87171', text: '#f87171' },
+        COSTOS: { border: '#fbbf24', text: '#fbbf24' },
+    };
+
+    const renderSection = (title: string, accounts: any[], total: number, colorKey: string) => {
+        const colors = sectionColors[colorKey] || { border: '#f0b429', text: '#f0b429' };
+        return (
+            <div style={{ marginBottom: '24px' }}>
+                <h3 style={{ borderBottom: `3px solid ${colors.border}`, paddingBottom: '8px', color: colors.text, fontFamily: 'Inter, sans-serif' }}>{title}</h3>
+                {accounts && accounts.length > 0 ? accounts.map((acc: any, i: number) => (
+                    <div key={i} style={{
+                        display: 'flex', justifyContent: 'space-between', padding: '6px 0',
+                        borderBottom: '1px solid #2a2a35', fontSize: '13px',
+                    }}>
+                        <span style={{ color: '#f1f1f3' }}>{acc.code} - {acc.name}</span>
+                        <span style={{ fontWeight: 600, color: '#f1f1f3' }}>{formatCurrency(acc.amount || acc.balance)}</span>
+                    </div>
+                )) : (
+                    <p style={{ color: '#6b6b7b', fontSize: '13px' }}>Sin datos</p>
+                )}
+                <div style={{
+                    display: 'flex', justifyContent: 'space-between', padding: '10px 0',
+                    borderTop: '2px solid #3a3a48', fontWeight: 700, fontSize: '15px', marginTop: '8px', color: '#f1f1f3',
                 }}>
-                    <span>{acc.code} - {acc.name}</span>
-                    <span style={{ fontWeight: 600 }}>{formatCurrency(acc.amount || acc.balance)}</span>
+                    <span>Total {title}</span>
+                    <span>{formatCurrency(total)}</span>
                 </div>
-            )) : (
-                <p style={{ color: '#999', fontSize: '13px' }}>Sin datos</p>
-            )}
-            <div style={{
-                display: 'flex', justifyContent: 'space-between', padding: '10px 0',
-                borderTop: '2px solid #333', fontWeight: 700, fontSize: '15px', marginTop: '8px',
-            }}>
-                <span>Total {title}</span>
-                <span>{formatCurrency(total)}</span>
             </div>
-        </div>
-    );
+        );
+    };
 
     const totalIncome = data?.total_income || data?.total_ingresos || 0;
     const totalExpenses = data?.total_expenses || data?.total_gastos || 0;
@@ -72,53 +84,48 @@ const IncomeStatementPage = () => {
             <PageHeader title="Estado de Resultados" icon={<FiTrendingUp />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
-                <div>
-                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Desde</label>
-                    <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)}
-                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }} />
+                <div style={{ minWidth: '160px' }}>
+                    <FormField label="Desde" name="startDate" type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
                 </div>
-                <div>
-                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Hasta</label>
-                    <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)}
-                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }} />
+                <div style={{ minWidth: '160px' }}>
+                    <FormField label="Hasta" name="endDate" type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
                 </div>
-                <button onClick={fetchReport} className="btn btn-primary">
-                    <FiRefreshCcw /> Generar
-                </button>
-                <button onClick={handlePrint} className="btn btn-secondary">
-                    <FiPrinter /> Imprimir
-                </button>
-                <button onClick={() => accountingApi.exportToExcel('income-statement', { startDate, endDate })} className="btn btn-secondary">
-                    <FiDownload /> Exportar Excel
-                </button>
+                <Button variant="primary" icon={<FiRefreshCcw />} onClick={fetchReport}>Generar</Button>
+                <Button variant="secondary" icon={<FiPrinter />} onClick={handlePrint}>Imprimir</Button>
+                <Button variant="secondary" icon={<FiDownload />} onClick={() => accountingApi.exportToExcel('income-statement', { startDate, endDate })}>Exportar Excel</Button>
             </div>
 
-            {error && <p className="error-message">{error}</p>}
+            {error && <p style={{ color: '#f87171', fontSize: '13px', fontWeight: 600 }}>{error}</p>}
 
             {loading ? (
-                <p>Generando estado de resultados...</p>
+                <LoadingSpinner size="md" text="Generando estado de resultados..." />
             ) : data ? (
-                <div className="list-card full-width" style={{ padding: '24px' }}>
-                    <h2 style={{ textAlign: 'center', marginBottom: '4px' }}>Estado de Resultados</h2>
-                    <p style={{ textAlign: 'center', color: '#666', marginBottom: '24px' }}>
+                <div style={{
+                    backgroundColor: '#1a1a24', border: '1px solid #2a2a35',
+                    borderRadius: 12, padding: '24px',
+                }}>
+                    <h2 style={{ textAlign: 'center', marginBottom: '4px', color: '#f1f1f3', fontFamily: 'Inter, sans-serif' }}>Estado de Resultados</h2>
+                    <p style={{ textAlign: 'center', color: '#a0a0b0', marginBottom: '24px', fontFamily: 'Inter, sans-serif' }}>
                         {new Date(startDate).toLocaleDateString('es-CO')} - {new Date(endDate).toLocaleDateString('es-CO')}
                     </p>
 
-                    {renderSection('INGRESOS (Clase 4)', data.income || data.ingresos || [], totalIncome, '#2e7d32')}
-                    {renderSection('GASTOS (Clase 5)', data.expenses || data.gastos || [], totalExpenses, '#c62828')}
-                    {renderSection('COSTOS (Clase 6)', data.costs || data.costos || [], totalCosts, '#e65100')}
+                    {renderSection('INGRESOS (Clase 4)', data.income || data.ingresos || [], totalIncome, 'INGRESOS')}
+                    {renderSection('GASTOS (Clase 5)', data.expenses || data.gastos || [], totalExpenses, 'GASTOS')}
+                    {renderSection('COSTOS (Clase 6)', data.costs || data.costos || [], totalCosts, 'COSTOS')}
 
                     <div style={{
-                        padding: '16px', background: netResult >= 0 ? '#e8f5e9' : '#ffebee',
+                        padding: '16px', background: netResult >= 0 ? 'rgba(52, 211, 153, 0.1)' : 'rgba(248, 113, 113, 0.1)',
                         borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                        borderLeft: `4px solid ${netResult >= 0 ? '#4caf50' : '#e53935'}`,
+                        borderLeft: `4px solid ${netResult >= 0 ? '#34d399' : '#f87171'}`,
+                        border: `1px solid ${netResult >= 0 ? 'rgba(52, 211, 153, 0.2)' : 'rgba(248, 113, 113, 0.2)'}`,
+                        borderLeftWidth: '4px',
                     }}>
-                        <span style={{ fontWeight: 700, fontSize: '16px' }}>
-                            {netResult >= 0 ? 'Utilidad del Periodo' : 'Pérdida del Periodo'}
+                        <span style={{ fontWeight: 700, fontSize: '16px', color: '#f1f1f3' }}>
+                            {netResult >= 0 ? 'Utilidad del Periodo' : 'Perdida del Periodo'}
                         </span>
                         <span style={{
                             fontWeight: 700, fontSize: '18px',
-                            color: netResult >= 0 ? '#2e7d32' : '#c62828',
+                            color: netResult >= 0 ? '#34d399' : '#f87171',
                         }}>
                             {formatCurrency(netResult)}
                         </span>

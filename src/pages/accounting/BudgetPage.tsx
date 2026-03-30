@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FiDollarSign, FiSave, FiBarChart2, FiArrowLeft } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
+import Button from '../../components/ui/Button';
+import FormField from '../../components/ui/FormField';
+import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
 
@@ -13,7 +16,29 @@ type BudgetRow = {
     id_puc_account: number;
     code: string;
     name: string;
-    months: number[]; // index 0=Jan..11=Dec
+    months: number[];
+};
+
+const thStyle: React.CSSProperties = {
+    padding: '0.6rem', fontSize: '0.7rem', fontWeight: 500,
+    textTransform: 'uppercase', letterSpacing: '0.5px', color: '#6b6b7b',
+    borderBottom: '1px solid #2a2a35', backgroundColor: '#1f1f2a',
+    whiteSpace: 'nowrap', fontFamily: 'Inter, sans-serif',
+};
+
+const cellInputStyle: React.CSSProperties = {
+    width: '100%', padding: '0.4rem', border: '1px solid #2a2a35',
+    borderRadius: '4px', textAlign: 'right', fontSize: '0.85rem',
+    backgroundColor: '#1a1a24', color: '#f1f1f3', outline: 'none',
+    fontFamily: 'Inter, sans-serif',
+};
+
+const darkSelectStyle: React.CSSProperties = {
+    padding: '0.55rem 0.75rem', borderRadius: 8,
+    border: '1px solid #2a2a35', fontSize: '0.875rem',
+    backgroundColor: '#1a1a24', color: '#f1f1f3',
+    outline: 'none', height: '40px',
+    fontFamily: 'Inter, sans-serif',
 };
 
 const BudgetPage: React.FC = () => {
@@ -42,10 +67,8 @@ const BudgetPage: React.FC = () => {
             const accountList = Array.isArray(accts) ? accts : (accts.data || []);
             setAccounts(accountList);
 
-            // Build rows from accounts that accept movements
             const movableAccounts = accountList.filter((a: any) => a.accepts_movements);
 
-            // Index existing budgets
             const budgetMap: Record<string, number> = {};
             const budgetArr = Array.isArray(budgets) ? budgets : [];
             for (const b of budgetArr) {
@@ -59,7 +82,6 @@ const BudgetPage: React.FC = () => {
                 months: Array.from({ length: 12 }, (_, i) => budgetMap[`${a.id}-${i + 1}`] || 0),
             }));
 
-            // Only show rows that have at least one non-zero budget, or if there are no budgets yet, show all
             const hasAnyBudget = newRows.some(r => r.months.some(m => m !== 0));
             setRows(hasAnyBudget ? newRows.filter(r => r.months.some(m => m !== 0)) : newRows.slice(0, 20));
         } catch (err: any) {
@@ -129,73 +151,66 @@ const BudgetPage: React.FC = () => {
         }]);
     };
 
-    // ── Comparison View ──
+    // Comparison View
     if (showComparison && comparison) {
         return (
-            <div>
+            <div className="page-container">
                 <PageHeader title="Comparativo Presupuesto vs Ejecucion" icon={<FiBarChart2 />} />
                 <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', alignItems: 'center' }}>
-                    <button
-                        onClick={() => setShowComparison(false)}
-                        style={{
-                            display: 'flex', alignItems: 'center', gap: '0.5rem',
-                            padding: '0.5rem 1rem', border: '1px solid #ccc', borderRadius: '8px',
-                            background: '#fff', cursor: 'pointer',
-                        }}
-                    >
-                        <FiArrowLeft /> Volver
-                    </button>
-                    <span style={{ fontWeight: 600 }}>
+                    <Button variant="secondary" icon={<FiArrowLeft />} onClick={() => setShowComparison(false)}>
+                        Volver
+                    </Button>
+                    <span style={{ fontWeight: 600, color: '#f1f1f3' }}>
                         {MONTHS[comparisonMonth - 1]} {year}
                     </span>
                 </div>
 
-                <div style={{ overflowX: 'auto' }}>
+                <div style={{ overflowX: 'auto', backgroundColor: '#1a1a24', border: '1px solid #2a2a35', borderRadius: 12 }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
                         <thead>
-                            <tr style={{ background: '#f8f9fa', borderBottom: '2px solid #dee2e6' }}>
-                                <th style={{ textAlign: 'left', padding: '0.75rem' }}>Cuenta</th>
-                                <th style={{ textAlign: 'right', padding: '0.75rem' }}>Presupuestado</th>
-                                <th style={{ textAlign: 'right', padding: '0.75rem' }}>Ejecutado</th>
-                                <th style={{ textAlign: 'right', padding: '0.75rem' }}>Variacion ($)</th>
-                                <th style={{ textAlign: 'right', padding: '0.75rem' }}>Variacion (%)</th>
-                                <th style={{ textAlign: 'center', padding: '0.75rem' }}>Estado</th>
+                            <tr>
+                                <th style={{ ...thStyle, textAlign: 'left' }}>Cuenta</th>
+                                <th style={{ ...thStyle, textAlign: 'right' }}>Presupuestado</th>
+                                <th style={{ ...thStyle, textAlign: 'right' }}>Ejecutado</th>
+                                <th style={{ ...thStyle, textAlign: 'right' }}>Variacion ($)</th>
+                                <th style={{ ...thStyle, textAlign: 'right' }}>Variacion (%)</th>
+                                <th style={{ ...thStyle, textAlign: 'center' }}>Estado</th>
                             </tr>
                         </thead>
                         <tbody>
                             {(comparison.items || []).map((item: any, idx: number) => (
-                                <tr key={idx} style={{ borderBottom: '1px solid #eee' }}>
-                                    <td style={{ padding: '0.75rem' }}>
-                                        <strong>{item.code}</strong> - {item.name}
+                                <tr key={idx} style={{ borderBottom: '1px solid #1f1f2a' }}>
+                                    <td style={{ padding: '0.75rem 1rem', color: '#f1f1f3' }}>
+                                        <strong style={{ color: '#f0b429' }}>{item.code}</strong> - {item.name}
                                     </td>
-                                    <td style={{ textAlign: 'right', padding: '0.75rem' }}>{formatCurrency(item.budgeted)}</td>
-                                    <td style={{ textAlign: 'right', padding: '0.75rem' }}>{formatCurrency(item.executed)}</td>
+                                    <td style={{ textAlign: 'right', padding: '0.75rem 1rem', color: '#f1f1f3' }}>{formatCurrency(item.budgeted)}</td>
+                                    <td style={{ textAlign: 'right', padding: '0.75rem 1rem', color: '#f1f1f3' }}>{formatCurrency(item.executed)}</td>
                                     <td style={{
-                                        textAlign: 'right', padding: '0.75rem',
-                                        color: item.variance > 0 ? '#c62828' : '#2e7d32',
+                                        textAlign: 'right', padding: '0.75rem 1rem',
+                                        color: item.variance > 0 ? '#f87171' : '#34d399',
                                     }}>
                                         {formatCurrency(item.variance)}
                                     </td>
                                     <td style={{
-                                        textAlign: 'right', padding: '0.75rem',
-                                        color: item.variancePercentage > 0 ? '#c62828' : '#2e7d32',
+                                        textAlign: 'right', padding: '0.75rem 1rem',
+                                        color: item.variancePercentage > 0 ? '#f87171' : '#34d399',
                                     }}>
                                         {item.variancePercentage}%
                                     </td>
-                                    <td style={{ textAlign: 'center', padding: '0.75rem' }}>
+                                    <td style={{ textAlign: 'center', padding: '0.75rem 1rem' }}>
                                         <div style={{
                                             width: '100%', height: '8px', borderRadius: '4px',
-                                            background: '#eee', overflow: 'hidden',
+                                            background: '#2a2a35', overflow: 'hidden',
                                         }}>
                                             <div style={{
                                                 width: `${Math.min(Math.abs(item.variancePercentage), 100)}%`,
                                                 height: '100%',
-                                                background: item.status === 'OVER' ? '#ef5350' : item.status === 'UNDER' ? '#66bb6a' : '#42a5f5',
+                                                background: item.status === 'OVER' ? '#f87171' : item.status === 'UNDER' ? '#34d399' : '#60a5fa',
                                                 borderRadius: '4px',
                                             }} />
                                         </div>
                                         <small style={{
-                                            color: item.status === 'OVER' ? '#c62828' : '#2e7d32',
+                                            color: item.status === 'OVER' ? '#f87171' : '#34d399',
                                             fontWeight: 600,
                                         }}>
                                             {item.status === 'OVER' ? 'Sobre presupuesto' : item.status === 'UNDER' ? 'Bajo presupuesto' : 'En meta'}
@@ -206,13 +221,13 @@ const BudgetPage: React.FC = () => {
                         </tbody>
                         {comparison.totals && (
                             <tfoot>
-                                <tr style={{ background: '#f8f9fa', fontWeight: 700, borderTop: '2px solid #dee2e6' }}>
-                                    <td style={{ padding: '0.75rem' }}>TOTALES</td>
-                                    <td style={{ textAlign: 'right', padding: '0.75rem' }}>{formatCurrency(comparison.totals.budgeted)}</td>
-                                    <td style={{ textAlign: 'right', padding: '0.75rem' }}>{formatCurrency(comparison.totals.executed)}</td>
+                                <tr style={{ background: '#1f1f2a', fontWeight: 700, borderTop: '2px solid #f0b429' }}>
+                                    <td style={{ padding: '0.75rem 1rem', color: '#f1f1f3' }}>TOTALES</td>
+                                    <td style={{ textAlign: 'right', padding: '0.75rem 1rem', color: '#f1f1f3' }}>{formatCurrency(comparison.totals.budgeted)}</td>
+                                    <td style={{ textAlign: 'right', padding: '0.75rem 1rem', color: '#f1f1f3' }}>{formatCurrency(comparison.totals.executed)}</td>
                                     <td style={{
-                                        textAlign: 'right', padding: '0.75rem',
-                                        color: comparison.totals.variance > 0 ? '#c62828' : '#2e7d32',
+                                        textAlign: 'right', padding: '0.75rem 1rem',
+                                        color: comparison.totals.variance > 0 ? '#f87171' : '#34d399',
                                     }}>{formatCurrency(comparison.totals.variance)}</td>
                                     <td colSpan={2}></td>
                                 </tr>
@@ -224,20 +239,20 @@ const BudgetPage: React.FC = () => {
         );
     }
 
-    // ── Main Budget View ──
+    // Main Budget View
     return (
-        <div>
+        <div className="page-container">
             <PageHeader title="Presupuesto" icon={<FiDollarSign />} />
 
             <div style={{
                 display: 'flex', gap: '1rem', marginBottom: '1.5rem', alignItems: 'center', flexWrap: 'wrap',
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <label style={{ fontWeight: 600 }}>Ano:</label>
+                    <label style={{ fontWeight: 600, color: '#a0a0b0', fontFamily: 'Inter, sans-serif' }}>Ano:</label>
                     <select
                         value={year}
                         onChange={(e) => setYear(parseInt(e.target.value))}
-                        style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid #ccc' }}
+                        style={darkSelectStyle}
                     >
                         {[currentYear - 1, currentYear, currentYear + 1].map(y => (
                             <option key={y} value={y}>{y}</option>
@@ -250,7 +265,7 @@ const BudgetPage: React.FC = () => {
                         if (e.target.value) addAccountRow(parseInt(e.target.value));
                         e.target.value = '';
                     }}
-                    style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid #ccc', minWidth: '250px' }}
+                    style={{ ...darkSelectStyle, minWidth: '250px', height: 'auto' }}
                 >
                     <option value="">+ Agregar cuenta...</option>
                     {accounts
@@ -260,67 +275,57 @@ const BudgetPage: React.FC = () => {
                         ))}
                 </select>
 
-                <button
+                <Button
+                    variant="primary"
+                    icon={<FiSave />}
                     onClick={handleSave}
                     disabled={saving}
-                    style={{
-                        display: 'flex', alignItems: 'center', gap: '0.5rem',
-                        padding: '0.5rem 1.2rem', border: 'none', borderRadius: '8px',
-                        background: 'var(--primary-color, #d4af37)', color: '#fff', cursor: 'pointer',
-                        fontWeight: 600, opacity: saving ? 0.6 : 1,
-                    }}
+                    loading={saving}
                 >
-                    <FiSave /> {saving ? 'Guardando...' : 'Guardar'}
-                </button>
+                    {saving ? 'Guardando...' : 'Guardar'}
+                </Button>
 
                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginLeft: 'auto' }}>
                     <select
                         value={comparisonMonth}
                         onChange={(e) => setComparisonMonth(parseInt(e.target.value))}
-                        style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid #ccc' }}
+                        style={darkSelectStyle}
                     >
                         {MONTHS.map((m, i) => (
                             <option key={i} value={i + 1}>{m}</option>
                         ))}
                     </select>
-                    <button
-                        onClick={loadComparison}
-                        style={{
-                            display: 'flex', alignItems: 'center', gap: '0.5rem',
-                            padding: '0.5rem 1rem', border: '1px solid var(--primary-color, #d4af37)',
-                            borderRadius: '8px', background: '#fff', cursor: 'pointer',
-                            color: 'var(--primary-color, #d4af37)', fontWeight: 600,
-                        }}
-                    >
-                        <FiBarChart2 /> Ver Comparativo
-                    </button>
+                    <Button variant="outline" icon={<FiBarChart2 />} onClick={loadComparison}>
+                        Ver Comparativo
+                    </Button>
                 </div>
             </div>
 
             {loading ? (
-                <p>Cargando...</p>
+                <LoadingSpinner size="md" text="Cargando..." />
             ) : (
-                <div style={{ overflowX: 'auto' }}>
+                <div style={{ overflowX: 'auto', backgroundColor: '#1a1a24', border: '1px solid #2a2a35', borderRadius: 12 }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                         <thead>
-                            <tr style={{ background: '#f8f9fa', borderBottom: '2px solid #dee2e6' }}>
-                                <th style={{ textAlign: 'left', padding: '0.6rem', position: 'sticky', left: 0, background: '#f8f9fa', minWidth: '200px' }}>
+                            <tr>
+                                <th style={{ ...thStyle, textAlign: 'left', position: 'sticky', left: 0, minWidth: '200px', zIndex: 1 }}>
                                     Cuenta PUC
                                 </th>
                                 {MONTHS.map(m => (
-                                    <th key={m} style={{ textAlign: 'center', padding: '0.6rem', minWidth: '100px' }}>{m}</th>
+                                    <th key={m} style={{ ...thStyle, textAlign: 'center', minWidth: '100px' }}>{m}</th>
                                 ))}
-                                <th style={{ textAlign: 'right', padding: '0.6rem', minWidth: '120px' }}>Total</th>
+                                <th style={{ ...thStyle, textAlign: 'right', minWidth: '120px' }}>Total</th>
                             </tr>
                         </thead>
                         <tbody>
                             {rows.map((row, ri) => (
-                                <tr key={row.id_puc_account} style={{ borderBottom: '1px solid #eee' }}>
+                                <tr key={row.id_puc_account} style={{ borderBottom: '1px solid #1f1f2a' }}>
                                     <td style={{
                                         padding: '0.5rem 0.6rem', position: 'sticky', left: 0,
-                                        background: '#fff', fontWeight: 500, whiteSpace: 'nowrap',
+                                        background: '#1a1a24', fontWeight: 500, whiteSpace: 'nowrap',
+                                        color: '#f1f1f3', fontFamily: 'Inter, sans-serif', zIndex: 1,
                                     }}>
-                                        <strong>{row.code}</strong> {row.name}
+                                        <strong style={{ color: '#f0b429' }}>{row.code}</strong> {row.name}
                                     </td>
                                     {row.months.map((val, mi) => (
                                         <td key={mi} style={{ padding: '0.3rem' }}>
@@ -329,14 +334,11 @@ const BudgetPage: React.FC = () => {
                                                 value={val || ''}
                                                 onChange={(e) => handleCellChange(ri, mi, e.target.value)}
                                                 placeholder="0"
-                                                style={{
-                                                    width: '100%', padding: '0.4rem', border: '1px solid #e0e0e0',
-                                                    borderRadius: '4px', textAlign: 'right', fontSize: '0.85rem',
-                                                }}
+                                                style={cellInputStyle}
                                             />
                                         </td>
                                     ))}
-                                    <td style={{ textAlign: 'right', padding: '0.6rem', fontWeight: 600 }}>
+                                    <td style={{ textAlign: 'right', padding: '0.6rem', fontWeight: 600, color: '#f1f1f3', fontFamily: 'Inter, sans-serif' }}>
                                         {formatCurrency(row.months.reduce((s, v) => s + v, 0))}
                                     </td>
                                 </tr>
@@ -344,7 +346,7 @@ const BudgetPage: React.FC = () => {
                         </tbody>
                     </table>
                     {rows.length === 0 && (
-                        <p style={{ textAlign: 'center', color: '#888', padding: '2rem' }}>
+                        <p style={{ textAlign: 'center', color: '#6b6b7b', padding: '2rem' }}>
                             No hay cuentas con presupuesto. Use el selector para agregar cuentas.
                         </p>
                     )}

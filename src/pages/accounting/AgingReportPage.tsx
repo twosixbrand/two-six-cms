@@ -1,8 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { FiClock, FiRefreshCcw, FiPrinter } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
+import Button from '../../components/ui/Button';
+import LoadingSpinner from '../../components/ui/LoadingSpinner';
+import StatusBadge from '../../components/ui/StatusBadge';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
+
+const thStyle: React.CSSProperties = {
+    padding: '0.65rem 1rem', fontSize: '0.7rem', fontWeight: 500,
+    textTransform: 'uppercase', letterSpacing: '0.5px', color: '#6b6b7b',
+    borderBottom: '1px solid #2a2a35', backgroundColor: '#1f1f2a',
+    whiteSpace: 'nowrap', fontFamily: 'Inter, sans-serif',
+};
+
+const tdStyle: React.CSSProperties = {
+    padding: '0.5rem 1rem', fontSize: '0.8125rem', color: '#f1f1f3',
+    borderBottom: '1px solid #1f1f2a', fontFamily: 'Inter, sans-serif',
+};
 
 const AgingReportPage = () => {
     const [data, setData] = useState<any>(null);
@@ -33,48 +48,45 @@ const AgingReportPage = () => {
     const handlePrint = () => window.print();
 
     const summaryCards = data?.summary ? [
-        { key: 'current', label: '0-30 Dias', color: '#2e7d32', bg: '#e8f5e9', border: '#a5d6a7' },
-        { key: 'days31_60', label: '31-60 Dias', color: '#e65100', bg: '#fff3e0', border: '#ffcc80' },
-        { key: 'days61_90', label: '61-90 Dias', color: '#c62828', bg: '#fce4ec', border: '#ef9a9a' },
-        { key: 'over90', label: 'Mas de 90 Dias', color: '#4a148c', bg: '#f3e5f5', border: '#ce93d8' },
+        { key: 'current', label: '0-30 Dias', color: '#34d399', borderColor: 'rgba(52, 211, 153, 0.3)' },
+        { key: 'days31_60', label: '31-60 Dias', color: '#fbbf24', borderColor: 'rgba(251, 191, 36, 0.3)' },
+        { key: 'days61_90', label: '61-90 Dias', color: '#f87171', borderColor: 'rgba(248, 113, 113, 0.3)' },
+        { key: 'over90', label: 'Mas de 90 Dias', color: '#a78bfa', borderColor: 'rgba(167, 139, 250, 0.3)' },
     ] : [];
 
     const renderOrderTable = (orders: any[], bucketLabel: string) => {
         if (!orders || orders.length === 0) return null;
         return (
             <div style={{ marginTop: '16px' }}>
-                <h4 style={{ marginBottom: '8px' }}>{bucketLabel}</h4>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
-                    <thead>
-                        <tr style={{ borderBottom: '2px solid #ddd', textAlign: 'left' }}>
-                            <th style={{ padding: '8px' }}>Referencia</th>
-                            <th style={{ padding: '8px' }}>Cliente</th>
-                            <th style={{ padding: '8px' }}>Fecha Pedido</th>
-                            <th style={{ padding: '8px' }}>Estado</th>
-                            <th style={{ padding: '8px', textAlign: 'center' }}>Dias</th>
-                            <th style={{ padding: '8px', textAlign: 'right' }}>Monto</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {orders.map((o: any, i: number) => (
-                            <tr key={i} style={{ borderBottom: '1px solid #f0f0f0' }}>
-                                <td style={{ padding: '6px 8px', fontWeight: 600 }}>{o.orderReference || `#${o.orderId}`}</td>
-                                <td style={{ padding: '6px 8px' }}>{o.customerName}</td>
-                                <td style={{ padding: '6px 8px' }}>{new Date(o.orderDate).toLocaleDateString('es-CO')}</td>
-                                <td style={{ padding: '6px 8px' }}>
-                                    <span style={{
-                                        padding: '2px 8px', borderRadius: '12px', fontSize: '11px',
-                                        background: '#e3f2fd', color: '#1565c0',
-                                    }}>
-                                        {o.status}
-                                    </span>
-                                </td>
-                                <td style={{ padding: '6px 8px', textAlign: 'center', fontWeight: 600 }}>{o.daysOutstanding}</td>
-                                <td style={{ padding: '6px 8px', textAlign: 'right', fontWeight: 600 }}>{formatCurrency(o.amount)}</td>
+                <h4 style={{ marginBottom: '8px', color: '#f1f1f3', fontFamily: 'Inter, sans-serif' }}>{bucketLabel}</h4>
+                <div style={{ overflowX: 'auto', backgroundColor: '#1a1a24', border: '1px solid #2a2a35', borderRadius: 8 }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 600 }}>
+                        <thead>
+                            <tr>
+                                <th style={thStyle}>Referencia</th>
+                                <th style={thStyle}>Cliente</th>
+                                <th style={thStyle}>Fecha Pedido</th>
+                                <th style={thStyle}>Estado</th>
+                                <th style={{ ...thStyle, textAlign: 'center' }}>Dias</th>
+                                <th style={{ ...thStyle, textAlign: 'right' }}>Monto</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {orders.map((o: any, i: number) => (
+                                <tr key={i}>
+                                    <td style={{ ...tdStyle, fontWeight: 600 }}>{o.orderReference || `#${o.orderId}`}</td>
+                                    <td style={tdStyle}>{o.customerName}</td>
+                                    <td style={tdStyle}>{new Date(o.orderDate).toLocaleDateString('es-CO')}</td>
+                                    <td style={tdStyle}>
+                                        <StatusBadge status={o.status} size="sm" />
+                                    </td>
+                                    <td style={{ ...tdStyle, textAlign: 'center', fontWeight: 600 }}>{o.daysOutstanding}</td>
+                                    <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 600 }}>{formatCurrency(o.amount)}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         );
     };
@@ -84,22 +96,21 @@ const AgingReportPage = () => {
             <PageHeader title="Cartera por Edades" icon={<FiClock />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
-                <button onClick={fetchReport} className="btn btn-primary">
-                    <FiRefreshCcw /> Actualizar
-                </button>
-                <button onClick={handlePrint} className="btn btn-secondary">
-                    <FiPrinter /> Imprimir
-                </button>
+                <Button variant="primary" icon={<FiRefreshCcw />} onClick={fetchReport}>Actualizar</Button>
+                <Button variant="secondary" icon={<FiPrinter />} onClick={handlePrint}>Imprimir</Button>
             </div>
 
-            {error && <p className="error-message">{error}</p>}
+            {error && <p style={{ color: '#f87171', fontSize: '13px', fontWeight: 600 }}>{error}</p>}
 
             {loading ? (
-                <p>Generando reporte de cartera...</p>
+                <LoadingSpinner size="md" text="Generando reporte de cartera..." />
             ) : data ? (
-                <div className="list-card full-width" style={{ padding: '24px' }}>
-                    <h2 style={{ textAlign: 'center', marginBottom: '4px' }}>Cartera por Edades (Cuentas por Cobrar)</h2>
-                    <p style={{ textAlign: 'center', color: '#666', marginBottom: '24px' }}>
+                <div style={{
+                    backgroundColor: '#1a1a24', border: '1px solid #2a2a35',
+                    borderRadius: 12, padding: '24px',
+                }}>
+                    <h2 style={{ textAlign: 'center', marginBottom: '4px', color: '#f1f1f3', fontFamily: 'Inter, sans-serif' }}>Cartera por Edades (Cuentas por Cobrar)</h2>
+                    <p style={{ textAlign: 'center', color: '#a0a0b0', marginBottom: '24px', fontFamily: 'Inter, sans-serif' }}>
                         Generado: {new Date(data.generatedAt).toLocaleString('es-CO')} | Total pedidos: {data.totalOrders}
                     </p>
 
@@ -109,14 +120,15 @@ const AgingReportPage = () => {
                             const bucket = data.summary[card.key];
                             return (
                                 <div key={card.key} style={{
-                                    flex: 1, minWidth: '180px', padding: '20px', borderRadius: '8px',
-                                    background: card.bg, border: `1px solid ${card.border}`, textAlign: 'center',
+                                    flex: 1, minWidth: '180px', padding: '20px', borderRadius: '12px',
+                                    background: '#1f1f2a', border: `1px solid ${card.borderColor}`,
+                                    borderTop: `3px solid ${card.color}`, textAlign: 'center',
                                 }}>
                                     <div style={{ fontSize: '12px', color: card.color, fontWeight: 600 }}>{card.label}</div>
                                     <div style={{ fontSize: '22px', fontWeight: 700, color: card.color }}>
                                         {formatCurrency(bucket?.total || 0)}
                                     </div>
-                                    <div style={{ fontSize: '11px', color: '#666', marginTop: '4px' }}>
+                                    <div style={{ fontSize: '11px', color: '#6b6b7b', marginTop: '4px' }}>
                                         {bucket?.count || 0} pedidos
                                     </div>
                                 </div>
@@ -126,11 +138,12 @@ const AgingReportPage = () => {
 
                     {/* Total Outstanding */}
                     <div style={{
-                        padding: '16px', borderRadius: '8px', background: '#263238', color: '#fff',
+                        padding: '16px', borderRadius: '12px',
+                        background: 'rgba(240, 180, 41, 0.08)', border: '1px solid rgba(240, 180, 41, 0.2)',
                         textAlign: 'center', marginBottom: '24px',
                     }}>
-                        <div style={{ fontSize: '12px', fontWeight: 600, opacity: 0.8 }}>Total Cartera Pendiente</div>
-                        <div style={{ fontSize: '28px', fontWeight: 700 }}>{formatCurrency(data.totalOutstanding)}</div>
+                        <div style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Total Cartera Pendiente</div>
+                        <div style={{ fontSize: '28px', fontWeight: 700, color: '#f0b429' }}>{formatCurrency(data.totalOutstanding)}</div>
                     </div>
 
                     {/* Detail Tables */}
@@ -140,7 +153,7 @@ const AgingReportPage = () => {
                     {renderOrderTable(data.detail?.over90, 'Mas de 90 Dias')}
 
                     {data.totalOrders === 0 && (
-                        <p style={{ color: '#999', textAlign: 'center', fontSize: '14px', marginTop: '24px' }}>
+                        <p style={{ color: '#6b6b7b', textAlign: 'center', fontSize: '14px', marginTop: '24px' }}>
                             No hay cuentas por cobrar pendientes
                         </p>
                     )}

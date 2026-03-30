@@ -213,15 +213,15 @@ const PickupDashboardPage = () => {
                                 <p><strong>Teléfono:</strong> {order.customer?.current_phone_number}</p>
                                 <p><strong>Fecha pedido:</strong> {new Date(order.order_date).toLocaleString()}</p>
                                 {order.pickup_pin && (
-                                    <div style={{ marginTop: '15px', display: 'inline-block', background: '#fef3c7', padding: '8px 15px', borderRadius: '6px', border: '2px dashed #f59e0b', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-                                        <p style={{ margin: '0 0 2px 0', fontSize: '11px', color: '#b45309', fontWeight: 'bold', textTransform: 'uppercase' }}>PIN de Seguridad</p>
-                                        <p style={{ margin: 0, fontSize: '22px', fontWeight: '900', letterSpacing: '3px', color: '#000' }}>{order.pickup_pin}</p>
+                                    <div style={{ marginTop: '15px', display: 'inline-block', background: 'rgba(240, 180, 41, 0.1)', padding: '8px 15px', borderRadius: '6px', border: '2px dashed #f0b429', boxShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
+                                        <p style={{ margin: '0 0 2px 0', fontSize: '11px', color: '#f0b429', fontWeight: 'bold', textTransform: 'uppercase' }}>PIN de Seguridad</p>
+                                        <p style={{ margin: 0, fontSize: '22px', fontWeight: '900', letterSpacing: '3px', color: '#f1f1f3' }}>{order.pickup_pin}</p>
                                     </div>
                                 )}
                             </div>
 
                             <div className="pickup-products-column">
-                                <strong style={{color: '#4b5563', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px'}}>Lista de Empaque:</strong>
+                                <strong style={{color: '#a0a0b0', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px'}}>Lista de Empaque:</strong>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '12px' }}>
                                     {order.orderItems?.map(item => {
                                         const imageUrl = item.product?.image_url ||
@@ -230,13 +230,13 @@ const PickupDashboardPage = () => {
                                                          'https://via.placeholder.com/60?text=No+Img';
 
                                         return (
-                                            <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '12px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                                                <img src={imageUrl} alt={item.product_name} style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '6px', backgroundColor: '#e2e8f0' }} />
+                                            <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '12px', background: '#13131a', borderRadius: '8px', border: '1px solid #2a2a35' }}>
+                                                <img src={imageUrl} alt={item.product_name} style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '6px', backgroundColor: '#2a2a35' }} />
                                                 <div style={{ flex: 1 }}>
-                                                    <p style={{ margin: '0 0 6px 0', fontWeight: 'bold', fontSize: '15px', color: '#1e293b' }}>{item.product_name}</p>
-                                                    <p style={{ margin: 0, fontSize: '13px', color: '#64748b' }}>
-                                                        <span style={{ display: 'inline-block', padding: '2px 8px', background: '#f1f5f9', borderRadius: '4px', marginRight: '8px' }}>Color: <strong style={{display: 'inline', color: '#0f172a'}}>{item.color}</strong></span>
-                                                        <span style={{ display: 'inline-block', padding: '2px 8px', background: '#f1f5f9', borderRadius: '4px' }}>Talla: <strong style={{display: 'inline', color: '#0f172a'}}>{item.size}</strong></span>
+                                                    <p style={{ margin: '0 0 6px 0', fontWeight: 'bold', fontSize: '15px', color: '#f1f1f3' }}>{item.product_name}</p>
+                                                    <p style={{ margin: 0, fontSize: '13px', color: '#a0a0b0' }}>
+                                                        <span style={{ display: 'inline-block', padding: '2px 8px', background: '#1f1f2a', borderRadius: '4px', marginRight: '8px' }}>Color: <strong style={{display: 'inline', color: '#f1f1f3'}}>{item.color}</strong></span>
+                                                        <span style={{ display: 'inline-block', padding: '2px 8px', background: '#1f1f2a', borderRadius: '4px' }}>Talla: <strong style={{display: 'inline', color: '#f1f1f3'}}>{item.size}</strong></span>
                                                     </p>
                                                 </div>
                                                 <div style={{ background: '#3b82f6', color: 'white', fontWeight: 'bold', fontSize: '16px', padding: '8px 16px', borderRadius: '6px', textAlign: 'center', minWidth: '40px' }}>

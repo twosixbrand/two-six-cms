@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiTrendingUp, FiActivity, FiDollarSign, FiPercent, FiShield, FiBox } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
+import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
 
@@ -24,9 +25,17 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
 };
 
 const STATUS_COLORS: Record<string, { bg: string; border: string; text: string }> = {
-    green: { bg: '#e8f5e9', border: '#66bb6a', text: '#2e7d32' },
-    yellow: { bg: '#fff8e1', border: '#ffa726', text: '#e65100' },
-    red: { bg: '#ffebee', border: '#ef5350', text: '#c62828' },
+    green: { bg: 'rgba(52, 211, 153, 0.08)', border: '#34d399', text: '#34d399' },
+    yellow: { bg: 'rgba(251, 191, 36, 0.08)', border: '#fbbf24', text: '#fbbf24' },
+    red: { bg: 'rgba(248, 113, 113, 0.08)', border: '#f87171', text: '#f87171' },
+};
+
+const darkSelectStyle: React.CSSProperties = {
+    padding: '0.55rem 0.75rem', borderRadius: 8,
+    border: '1px solid #2a2a35', fontSize: '0.875rem',
+    backgroundColor: '#1a1a24', color: '#f1f1f3',
+    outline: 'none', height: '40px',
+    fontFamily: 'Inter, sans-serif',
 };
 
 const FinancialIndicatorsPage: React.FC = () => {
@@ -69,7 +78,7 @@ const FinancialIndicatorsPage: React.FC = () => {
     }
 
     return (
-        <div>
+        <div className="page-container">
             <PageHeader title="Indicadores Financieros" icon={<FiTrendingUp />} />
 
             <div style={{
@@ -77,11 +86,11 @@ const FinancialIndicatorsPage: React.FC = () => {
                 alignItems: 'center', flexWrap: 'wrap',
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <label style={{ fontWeight: 600 }}>Ano:</label>
+                    <label style={{ fontWeight: 600, color: '#a0a0b0', fontFamily: 'Inter, sans-serif' }}>Ano:</label>
                     <select
                         value={year}
                         onChange={e => setYear(parseInt(e.target.value))}
-                        style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid #ccc' }}
+                        style={darkSelectStyle}
                     >
                         {[currentYear - 2, currentYear - 1, currentYear, currentYear + 1].map(y => (
                             <option key={y} value={y}>{y}</option>
@@ -89,11 +98,11 @@ const FinancialIndicatorsPage: React.FC = () => {
                     </select>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <label style={{ fontWeight: 600 }}>Mes:</label>
+                    <label style={{ fontWeight: 600, color: '#a0a0b0', fontFamily: 'Inter, sans-serif' }}>Mes:</label>
                     <select
                         value={month}
                         onChange={e => setMonth(parseInt(e.target.value))}
-                        style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid #ccc' }}
+                        style={darkSelectStyle}
                     >
                         {MONTHS.map((m, i) => (
                             <option key={i} value={i + 1}>{m}</option>
@@ -103,14 +112,14 @@ const FinancialIndicatorsPage: React.FC = () => {
             </div>
 
             {loading ? (
-                <p>Cargando indicadores...</p>
+                <LoadingSpinner size="md" text="Cargando indicadores..." />
             ) : data ? (
                 <div>
                     {Object.entries(grouped).map(([category, indicators]) => (
                         <div key={category} style={{ marginBottom: '2rem' }}>
                             <h3 style={{
                                 display: 'flex', alignItems: 'center', gap: '0.5rem',
-                                marginBottom: '1rem', color: '#333',
+                                marginBottom: '1rem', color: '#f1f1f3', fontFamily: 'Inter, sans-serif',
                             }}>
                                 {CATEGORY_ICONS[category]} {CATEGORY_LABELS[category] || category}
                             </h3>
@@ -134,7 +143,7 @@ const FinancialIndicatorsPage: React.FC = () => {
                                         >
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                                 <div>
-                                                    <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.3rem' }}>
+                                                    <div style={{ fontSize: '0.85rem', color: '#a0a0b0', marginBottom: '0.3rem' }}>
                                                         {ind.name}
                                                     </div>
                                                     <div style={{
@@ -146,7 +155,7 @@ const FinancialIndicatorsPage: React.FC = () => {
                                                 </div>
                                                 <div style={{
                                                     width: '40px', height: '40px', borderRadius: '10px',
-                                                    background: 'rgba(255,255,255,0.7)', display: 'flex',
+                                                    background: 'rgba(255,255,255,0.05)', display: 'flex',
                                                     alignItems: 'center', justifyContent: 'center',
                                                     fontSize: '1.2rem', color: colors.text,
                                                 }}>
@@ -155,7 +164,7 @@ const FinancialIndicatorsPage: React.FC = () => {
                                             </div>
                                             <div style={{
                                                 marginTop: '0.8rem', fontSize: '0.8rem',
-                                                color: '#555', lineHeight: 1.4,
+                                                color: '#a0a0b0', lineHeight: 1.4,
                                             }}>
                                                 {ind.interpretation}
                                             </div>
@@ -170,9 +179,9 @@ const FinancialIndicatorsPage: React.FC = () => {
                     {data.rawData && (
                         <div style={{
                             marginTop: '2rem', padding: '1.5rem', borderRadius: '12px',
-                            background: '#f8f9fa', border: '1px solid #eee',
+                            background: '#1a1a24', border: '1px solid #2a2a35',
                         }}>
-                            <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Datos Base</h3>
+                            <h3 style={{ marginTop: 0, marginBottom: '1rem', color: '#f1f1f3', fontFamily: 'Inter, sans-serif' }}>Datos Base</h3>
                             <div style={{
                                 display: 'grid',
                                 gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
@@ -190,9 +199,9 @@ const FinancialIndicatorsPage: React.FC = () => {
                                     { label: 'Costos', value: data.rawData.costos },
                                     { label: 'Utilidad Neta', value: data.rawData.utilidadNeta },
                                 ].map((item, i) => (
-                                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.4rem 0', borderBottom: '1px solid #e0e0e0' }}>
-                                        <span style={{ color: '#666', fontSize: '0.85rem' }}>{item.label}</span>
-                                        <span style={{ fontWeight: 600, fontSize: '0.85rem' }}>{formatCurrency(item.value)}</span>
+                                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.4rem 0', borderBottom: '1px solid #2a2a35' }}>
+                                        <span style={{ color: '#a0a0b0', fontSize: '0.85rem' }}>{item.label}</span>
+                                        <span style={{ fontWeight: 600, fontSize: '0.85rem', color: '#f1f1f3' }}>{formatCurrency(item.value)}</span>
                                     </div>
                                 ))}
                             </div>
@@ -200,7 +209,7 @@ const FinancialIndicatorsPage: React.FC = () => {
                     )}
                 </div>
             ) : (
-                <p style={{ textAlign: 'center', color: '#888', padding: '2rem' }}>
+                <p style={{ textAlign: 'center', color: '#6b6b7b', padding: '2rem' }}>
                     Seleccione ano y mes para ver los indicadores.
                 </p>
             )}

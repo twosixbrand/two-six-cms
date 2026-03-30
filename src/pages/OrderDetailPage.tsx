@@ -237,15 +237,15 @@ const OrderDetailPage = () => {
                     <p><strong>Total:</strong> ${order.total_payment.toLocaleString()}</p>
                     <p><strong>Pagado:</strong> {order.is_paid ? 'Sí' : 'No'}</p>
                     {order.payment_method === 'WOMPI_COD' && (
-                        <div style={{ marginTop: '10px', background: '#fef3c7', padding: '10px', borderRadius: '4px', borderLeft: '4px solid #f59e0b' }}>
-                            <p style={{ margin: 0, color: '#b45309', fontWeight: 'bold' }}>⚠️ PEDIDO PAGO CONTRA ENTREGA</p>
-                            <p style={{ margin: '5px 0 0 0', color: '#92400e' }}>Valor Recaudo: <strong>${order.cod_amount?.toLocaleString()}</strong></p>
+                        <div style={{ marginTop: '10px', background: 'rgba(245, 158, 11, 0.1)', padding: '10px', borderRadius: '4px', borderLeft: '4px solid #f0b429' }}>
+                            <p style={{ margin: 0, color: '#f0b429', fontWeight: 'bold' }}>⚠️ PEDIDO PAGO CONTRA ENTREGA</p>
+                            <p style={{ margin: '5px 0 0 0', color: '#a0a0b0' }}>Valor Recaudo: <strong>${order.cod_amount?.toLocaleString()}</strong></p>
                         </div>
                     )}
 
                     {order.payments && order.payments.length > 0 ? (
                         <>
-                            <h4 style={{ marginTop: '15px', marginBottom: '10px', borderBottom: '1px solid #eee' }}>Pagos</h4>
+                            <h4 style={{ marginTop: '15px', marginBottom: '10px', borderBottom: '1px solid #2a2a35' }}>Pagos</h4>
                             {order.payments.map((payment, index) => (
                                 <div key={payment.id || index} style={{ marginBottom: '10px', fontSize: '0.9em' }}>
                                     <p><strong>Método:</strong> {payment.paymentMethod?.name || 'N/A'}</p>
@@ -272,16 +272,16 @@ const OrderDetailPage = () => {
 
                 {/* Gestión de Recogida */}
                 {order.delivery_method === 'PICKUP' && (
-                    <div className="detail-card full-width" style={{ border: '2px solid #aecbfa', backgroundColor: '#f4f8ff' }}>
+                    <div className="detail-card full-width" style={{ border: '2px solid rgba(59, 130, 246, 0.3)', backgroundColor: '#13131a' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '15px' }}>
                             <div>
-                                <h3 style={{ color: '#1e3a8a', margin: '0 0 10px 0' }}>📍 Gestión de Recogida en Punto</h3>
+                                <h3 style={{ color: '#60a5fa', margin: '0 0 10px 0' }}>📍 Gestión de Recogida en Punto</h3>
                                 <p style={{ margin: 0 }}><strong>Estado de Recogida:</strong> {order.pickup_status === 'READY' ? '🟢 Listo para Recoger (Notificado)' : order.pickup_status === 'COLLECTED' ? '🔵 Cliente Recogió el Pedido' : '🟡 Pendiente de Empaque'}</p>
                             </div>
                             {order.pickup_pin && (
-                                <div style={{ background: '#fef3c7', border: '2px dashed #f59e0b', padding: '10px 20px', borderRadius: '8px', textAlign: 'center' }}>
-                                    <p style={{ margin: '0 0 5px 0', fontSize: '12px', color: '#b45309', fontWeight: 'bold', textTransform: 'uppercase' }}>PIN de Seguridad</p>
-                                    <div style={{ fontSize: '24px', fontWeight: '900', letterSpacing: '4px', color: '#000' }}>{order.pickup_pin}</div>
+                                <div style={{ background: 'rgba(240, 180, 41, 0.1)', border: '2px dashed #f0b429', padding: '10px 20px', borderRadius: '8px', textAlign: 'center' }}>
+                                    <p style={{ margin: '0 0 5px 0', fontSize: '12px', color: '#f0b429', fontWeight: 'bold', textTransform: 'uppercase' }}>PIN de Seguridad</p>
+                                    <div style={{ fontSize: '24px', fontWeight: '900', letterSpacing: '4px', color: '#f1f1f3' }}>{order.pickup_pin}</div>
                                 </div>
                             )}
                         </div>
@@ -334,8 +334,8 @@ const OrderDetailPage = () => {
                     </div>
 
                     {order.payment_method === 'WOMPI_COD' && order.status === 'Enviado' && (
-                        <div style={{ marginTop: '15px', paddingTop: '15px', borderTop: '1px solid #eee' }}>
-                            <p style={{ marginBottom: '10px', fontSize: '0.9rem', color: '#666' }}>
+                        <div style={{ marginTop: '15px', paddingTop: '15px', borderTop: '1px solid #2a2a35' }}>
+                            <p style={{ marginBottom: '10px', fontSize: '0.9rem', color: '#a0a0b0' }}>
                                 Si la transportadora ya entregó el dinero del recaudo, marca el pedido como Pagado.
                             </p>
                             <button
@@ -361,21 +361,21 @@ const OrderDetailPage = () => {
 
                     {order.dianEInvoicing ? (
                         <>
-                            <div style={{ background: '#f8fafc', padding: '15px', borderRadius: '6px', border: '1px solid #e2e8f0', marginBottom: '15px' }}>
+                            <div style={{ background: '#13131a', padding: '15px', borderRadius: '6px', border: '1px solid #2a2a35', marginBottom: '15px' }}>
                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px', marginBottom: '15px' }}>
                                     <div>
-                                        <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: '#64748b' }}>FACTURA ELECTRÓNICA</p>
-                                        <p style={{ margin: 0, fontWeight: 'bold', fontSize: '14px' }}>{order.dianEInvoicing.document_number}</p>
+                                        <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: '#a0a0b0' }}>FACTURA ELECTRÓNICA</p>
+                                        <p style={{ margin: 0, fontWeight: 'bold', fontSize: '14px', color: '#f1f1f3' }}>{order.dianEInvoicing.document_number}</p>
                                     </div>
                                     <div>
-                                        <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: '#64748b' }}>ESTADO</p>
-                                        <span style={{ background: '#dcfce7', color: '#166534', padding: '2px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: 'bold' }}>
+                                        <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: '#a0a0b0' }}>ESTADO</p>
+                                        <span style={{ background: '#0d3b2e', color: '#34d399', padding: '2px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: 'bold' }}>
                                             {order.dianEInvoicing.status}
                                         </span>
                                     </div>
                                     <div style={{ wordBreak: 'break-all', gridColumn: '1 / -1' }}>
-                                        <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: '#64748b' }}>CUFE</p>
-                                        <p style={{ margin: 0, fontSize: '11px', fontFamily: 'monospace' }}>{order.dianEInvoicing.cufe_code || 'No asignado'}</p>
+                                        <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: '#a0a0b0' }}>CUFE</p>
+                                        <p style={{ margin: 0, fontSize: '11px', fontFamily: 'monospace', color: '#f1f1f3' }}>{order.dianEInvoicing.cufe_code || 'No asignado'}</p>
                                     </div>
                                 </div>
                                 <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
@@ -442,8 +442,8 @@ const OrderDetailPage = () => {
 
                             {/* Historial de Envíos */}
                             {order.dianEInvoicings && order.dianEInvoicings.length > 1 && (
-                                <div style={{ background: '#f8fafc', padding: '15px', borderRadius: '6px', border: '1px solid #e2e8f0', marginBottom: '15px' }}>
-                                    <h4 style={{ margin: '0 0 10px 0', fontSize: '13px', color: '#475569' }}>Historial de Intentos de Envío</h4>
+                                <div style={{ background: '#13131a', padding: '15px', borderRadius: '6px', border: '1px solid #2a2a35', marginBottom: '15px' }}>
+                                    <h4 style={{ margin: '0 0 10px 0', fontSize: '13px', color: '#a0a0b0' }}>Historial de Intentos de Envío</h4>
                                     <table className="data-table" style={{ fontSize: '11px', marginBottom: 0 }}>
                                         <thead>
                                             <tr>
@@ -462,8 +462,8 @@ const OrderDetailPage = () => {
                                                     <td>
                                                         <span style={{ 
                                                             padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold',
-                                                            background: inv.status === 'AUTHORIZED' ? '#dcfce7' : (inv.status === 'REJECTED' || inv.status === 'ERROR' ? '#fee2e2' : '#f1f5f9'),
-                                                            color: inv.status === 'AUTHORIZED' ? '#166534' : (inv.status === 'REJECTED' || inv.status === 'ERROR' ? '#991b1b' : '#334155')
+                                                            background: inv.status === 'AUTHORIZED' ? '#0d3b2e' : (inv.status === 'REJECTED' || inv.status === 'ERROR' ? '#3b1515' : '#1f1f2a'),
+                                                            color: inv.status === 'AUTHORIZED' ? '#34d399' : (inv.status === 'REJECTED' || inv.status === 'ERROR' ? '#f87171' : '#a0a0b0')
                                                         }}>
                                                             {inv.status}
                                                             {inv.id === order.dianEInvoicing?.id && ' (Actual)'}
@@ -512,14 +512,14 @@ const OrderDetailPage = () => {
                             )}
 
                             {noteType && (
-                                <div style={{ background: '#fff', border: '1px solid #cbd5e1', padding: '15px', borderRadius: '6px', marginBottom: '15px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>
-                                    <h4 style={{ marginTop: 0, borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
+                                <div style={{ background: '#1a1a24', border: '1px solid #2a2a35', padding: '15px', borderRadius: '6px', marginBottom: '15px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.3)' }}>
+                                    <h4 style={{ marginTop: 0, borderBottom: '1px solid #2a2a35', paddingBottom: '10px', color: '#f1f1f3' }}>
                                         Generar Nota {noteType === 'CREDIT' ? 'Crédito' : 'Débito'} para {order.dianEInvoicing.document_number}
                                     </h4>
                                     <form onSubmit={handleCreateNote}>
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '10px', marginBottom: '15px' }}>
                                             <div>
-                                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '12px', fontWeight: 'bold' }}>Motivo DIAN:</label>
+                                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '12px', fontWeight: 'bold', color: '#a0a0b0' }}>Motivo DIAN:</label>
                                                 <select className="form-input" value={noteReasonCode} onChange={(e) => setNoteReasonCode(e.target.value)} required>
                                                     {noteType === 'CREDIT' ? (
                                                         <>
@@ -538,7 +538,7 @@ const OrderDetailPage = () => {
                                                 </select>
                                             </div>
                                             <div>
-                                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '12px', fontWeight: 'bold' }}>Descripción Justificativa:</label>
+                                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '12px', fontWeight: 'bold', color: '#a0a0b0' }}>Descripción Justificativa:</label>
                                                 <textarea 
                                                     className="form-input" 
                                                     rows={2} 
@@ -585,7 +585,7 @@ const OrderDetailPage = () => {
                                                         {note.status === 'REJECTED' && <span style={{color: '#dc2626', fontWeight: 'bold'}}>Rechazada</span>}
                                                         {note.status === 'ERROR' && <span style={{color: '#dc2626', fontWeight: 'bold'}}>Error</span>}
                                                         {note.status === 'PROCESSED' && <span style={{color: '#ca8a04', fontWeight: 'bold'}}>Procesado</span>}
-                                                        {note.status === 'PENDING' && <span style={{color: '#64748b'}}>Pendiente</span>}
+                                                        {note.status === 'PENDING' && <span style={{color: '#a0a0b0'}}>Pendiente</span>}
                                                         {note.status === 'SENT' && <span style={{color: '#2563eb', fontWeight: 'bold'}}>Enviado</span>}
                                                     </td>
                                                     <td>
@@ -618,8 +618,8 @@ const OrderDetailPage = () => {
                             )}
                         </>
                     ) : (
-                        <div style={{ textAlign: 'center', padding: '20px', background: '#f8fafc', border: '1px dashed #cbd5e1', borderRadius: '6px' }}>
-                            <p style={{ color: '#64748b', marginBottom: '15px' }}>Este pedido aún no cuenta con Factura Electrónica emitida en la DIAN.</p>
+                        <div style={{ textAlign: 'center', padding: '20px', background: '#13131a', border: '1px dashed #2a2a35', borderRadius: '6px' }}>
+                            <p style={{ color: '#a0a0b0', marginBottom: '15px' }}>Este pedido aún no cuenta con Factura Electrónica emitida en la DIAN.</p>
                             <button 
                                 className="action-btn" 
                                 style={{ background: '#10b981', color: 'white' }}
