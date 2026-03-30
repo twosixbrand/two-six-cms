@@ -199,17 +199,17 @@ const DianInvoicePage = () => {
                     <>
                         <div style={{
                             padding: '12px', borderRadius: '6px', marginBottom: '16px',
-                            background: statusModal.isValid === 'true' ? '#e8f5e9' : '#fff3e0',
-                            borderLeft: `4px solid ${statusModal.isValid === 'true' ? '#4caf50' : '#ff9800'}`
+                            background: statusModal.isValid === 'true' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)',
+                            borderLeft: `4px solid ${statusModal.isValid === 'true' ? '#34d399' : '#fbbf24'}`
                         }}>
-                            <p style={{ margin: '4px 0' }}>
+                            <p style={{ margin: '4px 0', color: '#f1f1f3' }}>
                                 <strong>Válido:</strong>{' '}
-                                <span style={{ color: statusModal.isValid === 'true' ? '#2e7d32' : '#e65100' }}>
+                                <span style={{ color: statusModal.isValid === 'true' ? '#34d399' : '#fbbf24' }}>
                                     {statusModal.isValid === 'true' ? 'Sí' : 'No / En proceso'}
                                 </span>
                             </p>
-                            <p style={{ margin: '4px 0' }}><strong>Código:</strong> {statusModal.statusCode}</p>
-                            <p style={{ margin: '4px 0' }}><strong>Descripción:</strong> {statusModal.statusDescription}</p>
+                            <p style={{ margin: '4px 0', color: '#f1f1f3' }}><strong>Código:</strong> {statusModal.statusCode}</p>
+                            <p style={{ margin: '4px 0', color: '#f1f1f3' }}><strong>Descripción:</strong> {statusModal.statusDescription}</p>
                         </div>
 
                         {statusModal.validationMessages && statusModal.validationMessages.length > 0 && (
@@ -218,8 +218,8 @@ const DianInvoicePage = () => {
                                 <ul style={{ paddingLeft: '20px', fontSize: '13px' }}>
                                     {statusModal.validationMessages.map((msg: string, i: number) => (
                                         <li key={i} style={{
-                                            marginBottom: '6px', padding: '6px', background: '#f5f5f5', borderRadius: '4px',
-                                            listStyle: 'none', borderLeft: '3px solid #ff9800'
+                                            marginBottom: '6px', padding: '6px', background: 'rgba(245, 158, 11, 0.08)', borderRadius: '4px',
+                                            listStyle: 'none', borderLeft: '3px solid #fbbf24', color: '#f1f1f3'
                                         }}>
                                             {msg}
                                         </li>
@@ -229,7 +229,7 @@ const DianInvoicePage = () => {
                         )}
 
                         {statusModal.statusDescription?.includes('proceso') && (
-                            <p style={{ fontSize: '12px', color: '#888', marginTop: '16px' }}>
+                            <p style={{ fontSize: '12px', color: '#6b6b7b', marginTop: '16px' }}>
                                 La DIAN puede tardar varios minutos en procesar documentos en el ambiente de habilitación.
                             </p>
                         )}

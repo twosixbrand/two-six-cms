@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { FiDroplet, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../components/common/PageHeader';
 import { DataTable, Modal, FormField, Button, SearchInput, ConfirmDialog, LoadingSpinner } from '../components/ui';
 import * as clothingColorApi from '../services/clothingColorApi';
@@ -163,8 +164,17 @@ const ClothingColorPage = () => {
       closeCreateModal();
       fetchData();
       if (result && result.clothingColor && result.clothingColor.id) {
-        const proceed = window.confirm('Color de prenda creado. ¿Desea subir imagenes ahora?');
-        if (proceed) {
+        const swalResult = await Swal.fire({
+          title: '¡Color creado!',
+          text: 'Color de prenda creado. ¿Desea subir imágenes ahora?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#f0b429',
+          cancelButtonColor: '#2a2a35',
+          confirmButtonText: 'Sí, subir imágenes',
+          cancelButtonText: 'No, después',
+        });
+        if (swalResult.isConfirmed) {
           window.location.href = `/image-clothing/${result.clothingColor.id}`;
         }
       }

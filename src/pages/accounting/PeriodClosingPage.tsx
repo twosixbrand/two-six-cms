@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiLock, FiCalendar, FiCheckCircle, FiXCircle } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
 import FormField from '../../components/ui/FormField';
@@ -55,7 +56,17 @@ const PeriodClosingPage = () => {
     useEffect(() => { fetchClosings(); }, []);
 
     const handleClosePeriod = async () => {
-        if (!window.confirm(`Confirmar cierre contable de ${monthNames[closeMonth]} ${closeYear}. Esta accion no se puede deshacer.`)) {
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: `Confirmar cierre contable de ${monthNames[closeMonth]} ${closeYear}. Esta acción no se puede deshacer.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Sí, cerrar periodo',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!result.isConfirmed) {
             return;
         }
         setProcessing(true);
@@ -74,7 +85,17 @@ const PeriodClosingPage = () => {
     };
 
     const handleAnnualClose = async () => {
-        if (!window.confirm(`Confirmar cierre contable ANUAL de ${annualYear}. Se cerraran todos los meses pendientes y se trasladara la utilidad/perdida. Esta accion no se puede deshacer.`)) {
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: `Confirmar cierre contable ANUAL de ${annualYear}. Se cerrarán todos los meses pendientes y se trasladará la utilidad/pérdida. Esta acción no se puede deshacer.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Sí, cierre anual',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!result.isConfirmed) {
             return;
         }
         setProcessing(true);

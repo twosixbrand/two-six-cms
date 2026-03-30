@@ -10,8 +10,8 @@ interface ModalProps {
 }
 
 const sizeMap: Record<string, number> = {
-  sm: 400,
-  md: 600,
+  sm: 480,
+  md: 640,
   lg: 800,
   xl: 1000,
 };

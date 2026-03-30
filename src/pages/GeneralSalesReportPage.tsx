@@ -10,7 +10,7 @@ import { getGeneralSalesReport } from '../services/reportApi';
 import { Button, DataTable, StatusBadge, LoadingSpinner } from '../components/ui';
 import './GeneralSalesReportPage.css';
 
-const COLORS = ['#d4af37', '#e8c468', '#f2d890', '#c29b2b', '#9b781a', '#fff'];
+const COLORS = ['#f0b429', '#e8c468', '#c29b2b', '#9b781a', '#7a6215', '#a0a0b0'];
 
 const GeneralSalesReportPage = () => {
     const [reportData, setReportData] = useState([]);
@@ -186,24 +186,32 @@ const GeneralSalesReportPage = () => {
         <div className="report-page-container">
             <PageHeader title="Reporte General de Ventas" icon={<FiTrendingUp />} />
 
-            <form onSubmit={handleSearch} className="report-filters glass-panel">
-                <div className="filter-group">
-                    <label>Fecha Inicio:</label>
-                    <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-end', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
+                <div style={{ minWidth: '180px' }}>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: '#a0a0b0', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Fecha Inicio</label>
+                    <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required
+                        style={{ padding: '8px 12px', borderRadius: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', fontSize: '0.875rem', height: 40 }} />
                 </div>
-                <div className="filter-group">
-                    <label>Fecha Fin:</label>
-                    <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required max={new Date().toISOString().split('T')[0]} />
+                <div style={{ minWidth: '180px' }}>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: '#a0a0b0', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Fecha Fin</label>
+                    <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required max={new Date().toISOString().split('T')[0]}
+                        style={{ padding: '8px 12px', borderRadius: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', fontSize: '0.875rem', height: 40 }} />
                 </div>
-                <Button type="submit" variant="primary" loading={loading}>
-                    {loading ? 'Cargando...' : 'Actualizar'}
+                <Button onClick={(e) => { e.preventDefault(); handleSearch(e); }} variant="primary" loading={loading}>
+                    Consultar
                 </Button>
-            </form>
+            </div>
 
             {error && <div className="error-message">{error}</div>}
 
+            {loading && (
+                <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem 0' }}>
+                    <LoadingSpinner text="Cargando reporte de ventas..." />
+                </div>
+            )}
+
             {/* KPI Cards */}
-            <div className="kpi-grid">
+            <div className="kpi-grid" style={{ display: loading ? 'none' : undefined }}>
                 <div className="kpi-card glass-panel">
                     <div className="kpi-icon"><FiDollarSign /></div>
                     <div className="kpi-info">
@@ -288,7 +296,7 @@ const GeneralSalesReportPage = () => {
                                         ))}
                                     </Pie>
                                     <RechartsTooltip content={<CustomTooltip />} />
-                                    <Legend verticalAlign="bottom" height={36} iconType="circle" />
+                                    <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ color: '#a0a0b0', fontSize: '0.8rem' }} />
                                 </PieChart>
                             </ResponsiveContainer>
                         ) : <div className="no-data-msg">Sin datos para graficar</div>}

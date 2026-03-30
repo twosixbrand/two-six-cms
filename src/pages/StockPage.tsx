@@ -203,7 +203,7 @@ const StockPage = () => {
                 isOpen={currentItem !== null}
                 onClose={handleCancel}
                 title="Editar Inventario"
-                size="sm"
+                size="md"
                 footer={
                     <div style={{ display: 'flex', gap: '0.5rem', width: '100%' }}>
                         <Button variant="primary" onClick={handleSave} type="submit">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiBook, FiPlus, FiChevronRight, FiChevronDown, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import { Button, StatusBadge, LoadingSpinner, SearchInput, Modal, ConfirmDialog, FormField } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
@@ -83,7 +84,7 @@ const PucAccountPage = () => {
             setShowModal(false);
             fetchAccounts();
         } catch (err: any) {
-            alert('Error: ' + (err.message || err));
+            await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Ocurrió un error', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setSaving(false);
         }
@@ -95,7 +96,7 @@ const PucAccountPage = () => {
             await accountingApi.deleteAccount(deleteConfirm.id);
             fetchAccounts();
         } catch (err: any) {
-            alert('Error al eliminar: ' + (err.message || err));
+            await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Error al eliminar', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setDeleteConfirm(null);
         }

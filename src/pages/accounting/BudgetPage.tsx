@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiDollarSign, FiSave, FiBarChart2, FiArrowLeft } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
 import FormField from '../../components/ui/FormField';
@@ -121,10 +122,10 @@ const BudgetPage: React.FC = () => {
                 }
             }
             await Promise.all(promises);
-            alert('Presupuesto guardado exitosamente');
+            await Swal.fire({ title: '¡Éxito!', text: 'Presupuesto guardado exitosamente', icon: 'success', confirmButtonColor: '#f0b429' });
         } catch (err: any) {
             logError({ message: err.message, page: 'BudgetPage' });
-            alert('Error al guardar: ' + err.message);
+            await Swal.fire({ title: 'Error', text: err.message || 'Error al guardar', icon: 'error', confirmButtonColor: '#f0b429' });
         }
         setSaving(false);
     };

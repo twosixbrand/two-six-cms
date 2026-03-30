@@ -467,3 +467,52 @@ button:active {
   scrollbar-color: rgba(240, 180, 41, 0.3) #13131a;
   scrollbar-width: thin;
 }
+
+/* SweetAlert2 Dark Theme Override */
+.swal2-popup {
+  background: #1a1a24 !important;
+  color: #f1f1f3 !important;
+  border: 1px solid #2a2a35 !important;
+  border-radius: 16px !important;
+}
+.swal2-title {
+  color: #f1f1f3 !important;
+}
+.swal2-html-container {
+  color: #a0a0b0 !important;
+}
+.swal2-icon {
+  border-color: #2a2a35 !important;
+}
+.swal2-icon.swal2-question {
+  border-color: #3b82f6 !important;
+  color: #60a5fa !important;
+}
+.swal2-icon.swal2-warning {
+  border-color: #f59e0b !important;
+  color: #fbbf24 !important;
+}
+.swal2-icon.swal2-success {
+  border-color: #10b981 !important;
+}
+.swal2-icon.swal2-success .swal2-success-line-long,
+.swal2-icon.swal2-success .swal2-success-line-tip {
+  background-color: #34d399 !important;
+}
+.swal2-icon.swal2-success .swal2-success-ring {
+  border-color: rgba(52, 211, 153, 0.3) !important;
+}
+.swal2-icon.swal2-error {
+  border-color: #ef4444 !important;
+}
+.swal2-icon.swal2-error .swal2-x-mark-line-left,
+.swal2-icon.swal2-error .swal2-x-mark-line-right {
+  background-color: #f87171 !important;
+}
+.swal2-actions .swal2-cancel {
+  background-color: #2a2a35 !important;
+  color: #a0a0b0 !important;
+}
+div.swal2-popup .swal2-styled:focus {
+  box-shadow: none !important;
+}

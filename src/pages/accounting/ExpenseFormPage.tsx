@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiDollarSign, FiSave } from 'react-icons/fi';
 import { useNavigate, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
 import FormField from '../../components/ui/FormField';
@@ -96,10 +97,10 @@ const ExpenseFormPage = () => {
             } else {
                 await accountingApi.createExpense(form);
             }
-            alert(isEdit ? 'Gasto actualizado.' : 'Gasto registrado exitosamente.');
+            await Swal.fire({ title: '¡Éxito!', text: isEdit ? 'Gasto actualizado.' : 'Gasto registrado exitosamente.', icon: 'success', confirmButtonColor: '#f0b429' });
             navigate('/accounting/expenses');
         } catch (err: any) {
-            alert('Error: ' + (err.message || err));
+            await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Ocurrió un error', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setSaving(false);
         }

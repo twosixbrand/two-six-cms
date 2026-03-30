@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiFileText, FiPlus, FiTrash2, FiSave } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
 import FormField from '../../components/ui/FormField';
@@ -85,10 +86,10 @@ const JournalEntryFormPage = () => {
                     credit: Number(l.credit) || 0,
                 })),
             });
-            alert('Asiento contable creado exitosamente.');
+            await Swal.fire({ title: '¡Éxito!', text: 'Asiento contable creado exitosamente.', icon: 'success', confirmButtonColor: '#f0b429' });
             navigate('/accounting/journal');
         } catch (err: any) {
-            alert('Error: ' + (err.message || err));
+            await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Ocurrió un error', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setSaving(false);
         }

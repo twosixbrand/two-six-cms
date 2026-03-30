@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiDollarSign, FiRefreshCcw, FiPlus, FiEdit2, FiTrash2, FiCheck, FiDownload } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import { DataTable, Button, StatusBadge, LoadingSpinner, ConfirmDialog } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
@@ -45,7 +46,7 @@ const ExpensePage = () => {
             await accountingApi.markExpensePaid(confirmAction.id);
             fetchData();
         } catch (err: any) {
-            alert('Error: ' + (err.message || err));
+            await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Ocurrió un error', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setConfirmAction(null);
         }
@@ -57,7 +58,7 @@ const ExpensePage = () => {
             await accountingApi.deleteExpense(confirmAction.id);
             fetchData();
         } catch (err: any) {
-            alert('Error al eliminar: ' + (err.message || err));
+            await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Error al eliminar', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setConfirmAction(null);
         }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiFileText, FiRefreshCcw, FiDownload, FiTrash2, FiZap } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import { DataTable, Button, StatusBadge, LoadingSpinner, ConfirmDialog } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
@@ -59,7 +60,7 @@ const WithholdingCertificatePage = () => {
 
     const handleGenerate = async () => {
         if (!year) {
-            alert('Seleccione un a\u00f1o para generar los certificados.');
+            await Swal.fire({ title: 'Atención', text: 'Seleccione un año para generar los certificados.', icon: 'warning', confirmButtonColor: '#f0b429' });
             return;
         }
         try {
@@ -89,7 +90,7 @@ const WithholdingCertificatePage = () => {
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
         } catch (err: any) {
-            alert('Error descargando PDF: ' + (err.message || err));
+            await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Error descargando PDF', icon: 'error', confirmButtonColor: '#f0b429' });
         }
     };
 
@@ -99,7 +100,7 @@ const WithholdingCertificatePage = () => {
             await accountingApi.deleteWithholdingCertificate(confirmDelete);
             fetchData();
         } catch (err: any) {
-            alert('Error al eliminar: ' + (err.message || err));
+            await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Error al eliminar', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setConfirmDelete(null);
         }

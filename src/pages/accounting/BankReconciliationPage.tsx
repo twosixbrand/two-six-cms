@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiDollarSign, FiRefreshCcw, FiUpload, FiCheck, FiX, FiLink } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import { Button, StatusBadge, LoadingSpinner, DataTable } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
@@ -100,7 +101,7 @@ const BankReconciliationPage = () => {
             setAccountForm({ name: '', bank_name: '', account_number: '', account_type: 'AHORROS', id_puc_account: 0 });
             fetchBankAccounts();
         } catch (err: any) {
-            alert('Error: ' + (err.message || err));
+            await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Ocurrió un error', icon: 'error', confirmButtonColor: '#f0b429' });
         }
     };
 
@@ -121,7 +122,7 @@ const BankReconciliationPage = () => {
     const handleUploadStatement = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!uploadForm.csvContent) {
-            alert('Por favor seleccione un archivo CSV');
+            await Swal.fire({ title: 'Atención', text: 'Por favor seleccione un archivo CSV', icon: 'warning', confirmButtonColor: '#f0b429' });
             return;
         }
         try {
@@ -130,7 +131,7 @@ const BankReconciliationPage = () => {
             setUploadForm({ bankAccountId: 0, periodStart: '', periodEnd: '', fileName: '', csvContent: '' });
             fetchStatements();
         } catch (err: any) {
-            alert('Error: ' + (err.message || err));
+            await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Ocurrió un error', icon: 'error', confirmButtonColor: '#f0b429' });
         }
     };
 
@@ -139,11 +140,11 @@ const BankReconciliationPage = () => {
         try {
             setReconciliationLoading(true);
             const result = await accountingApi.autoMatchStatement(selectedStatementId);
-            alert(`Auto-conciliacion completada: ${result.newlyMatched} transacciones conciliadas de ${result.totalTransactions} totales.`);
+            await Swal.fire({ title: '¡Éxito!', text: `Auto-conciliación completada: ${result.newlyMatched} transacciones conciliadas de ${result.totalTransactions} totales.`, icon: 'success', confirmButtonColor: '#f0b429' });
             fetchStatementDetail(selectedStatementId);
             fetchStatements();
         } catch (err: any) {
-            alert('Error: ' + (err.message || err));
+            await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Ocurrió un error', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setReconciliationLoading(false);
         }
@@ -151,7 +152,7 @@ const BankReconciliationPage = () => {
 
     const handleManualMatch = async () => {
         if (!matchForm.txnId || !matchForm.sourceId) {
-            alert('Complete todos los campos de conciliacion manual');
+            await Swal.fire({ title: 'Atención', text: 'Complete todos los campos de conciliación manual', icon: 'warning', confirmButtonColor: '#f0b429' });
             return;
         }
         try {
@@ -166,7 +167,7 @@ const BankReconciliationPage = () => {
                 fetchStatements();
             }
         } catch (err: any) {
-            alert('Error: ' + (err.message || err));
+            await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Ocurrió un error', icon: 'error', confirmButtonColor: '#f0b429' });
         }
     };
 

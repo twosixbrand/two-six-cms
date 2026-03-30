@@ -48,7 +48,8 @@ const SearchInput: React.FC<SearchInputProps> = ({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    width: '100%',
+    flex: 1,
+    minWidth: '200px',
   };
 
   const inputStyle: React.CSSProperties = {

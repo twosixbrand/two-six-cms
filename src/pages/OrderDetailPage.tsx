@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import * as orderApi from '../services/orderApi';
 import * as dianApi from '../services/dianApi';
 import { logError } from '../services/errorApi';
@@ -26,28 +27,48 @@ const OrderDetailPage = () => {
     const [isPickupActionLoading, setIsPickupActionLoading] = useState(false);
 
     const handleMarkAsReadyForPickup = async () => {
-        if (!window.confirm('¿Seguro de enviar el correo "Listo para recoger" al cliente?')) return;
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Seguro de enviar el correo "Listo para recoger" al cliente?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Sí, enviar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!result.isConfirmed) return;
         try {
             setIsPickupActionLoading(true);
             await orderApi.markAsReadyForPickup(id);
-            alert('Correo enviado exitosamente.');
+            await Swal.fire({ title: '¡Éxito!', text: 'Correo enviado exitosamente.', icon: 'success', confirmButtonColor: '#f0b429' });
             fetchOrder();
         } catch (err) {
-            alert('Error al marcar como listo para recoger.');
+            await Swal.fire({ title: 'Error', text: 'Error al marcar como listo para recoger.', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setIsPickupActionLoading(false);
         }
     };
 
     const handleMarkAsCollected = async () => {
-        if (!window.confirm('¿Seguro de marcar este pedido como entregado en el punto físico?')) return;
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Seguro de marcar este pedido como entregado en el punto físico?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Sí, confirmar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!result.isConfirmed) return;
         try {
             setIsPickupActionLoading(true);
             await orderApi.markAsCollected(id);
-            alert('Pedido marcado como entregado (Recogido).');
+            await Swal.fire({ title: '¡Éxito!', text: 'Pedido marcado como entregado (Recogido).', icon: 'success', confirmButtonColor: '#f0b429' });
             fetchOrder();
         } catch (err) {
-            alert('Error al actualizar a recogido.');
+            await Swal.fire({ title: 'Error', text: 'Error al actualizar a recogido.', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setIsPickupActionLoading(false);
         }
@@ -82,17 +103,27 @@ const OrderDetailPage = () => {
             const updatedOrder = await orderApi.getOrder(id);
             setOrder(updatedOrder);
             setStatus(updatedOrder.status);
-            alert(`Estado actualizado exitosamente a ${finalStatus}`);
+            await Swal.fire({ title: '¡Éxito!', text: `Estado actualizado exitosamente a ${finalStatus}`, icon: 'success', confirmButtonColor: '#f0b429' });
         } catch (err) {
             console.error('Error updating order status:', err);
-            alert('Error al actualizar el estado del pedido.');
+            await Swal.fire({ title: 'Error', text: 'Error al actualizar el estado del pedido.', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setSaving(false);
         }
     };
 
     const handleCreateInvoice = async () => {
-        if (!window.confirm('¿Seguro de generar la Factura Electrónica en la DIAN para este pedido?')) return;
+        const confirmResult = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Seguro de generar la Factura Electrónica en la DIAN para este pedido?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Sí, generar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!confirmResult.isConfirmed) return;
         try {
             setIsDianGenerating(true);
             const res = await dianApi.createDianInvoice({
@@ -103,10 +134,10 @@ const OrderDetailPage = () => {
                 customerDoc: '222222222222',
                 customerDocType: '13',
             });
-            alert('Factura enviada a DIAN exitosamente');
+            await Swal.fire({ title: '¡Éxito!', text: 'Factura enviada a DIAN exitosamente', icon: 'success', confirmButtonColor: '#f0b429' });
             fetchOrder();
         } catch (err: any) {
-            alert(`Error al generar factura DIAN: ${err?.message || 'Error desconocido'}`);
+            await Swal.fire({ title: 'Error', text: err?.message || 'Error al generar factura DIAN', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setIsDianGenerating(false);
         }
@@ -115,7 +146,17 @@ const OrderDetailPage = () => {
     const handleCreateNote = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!order.dianEInvoicing?.id) return;
-        if (!window.confirm(`¿Seguro de generar Nota ${noteType === 'CREDIT' ? 'Crédito' : 'Débito'} en la DIAN?`)) return;
+        const noteConfirm = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: `¿Seguro de generar Nota ${noteType === 'CREDIT' ? 'Crédito' : 'Débito'} en la DIAN?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Sí, generar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!noteConfirm.isConfirmed) return;
 
         try {
             setIsDianGenerating(true);
@@ -128,15 +169,15 @@ const OrderDetailPage = () => {
 
             if (noteType === 'CREDIT') {
                 await dianApi.createCreditNote(order.dianEInvoicing.id, payload);
-                alert('Nota Crédito enviada exitosamente a la DIAN');
+                await Swal.fire({ title: '¡Éxito!', text: 'Nota Crédito enviada exitosamente a la DIAN', icon: 'success', confirmButtonColor: '#f0b429' });
             } else {
                 await dianApi.createDebitNote(order.dianEInvoicing.id, payload);
-                alert('Nota Débito enviada exitosamente a la DIAN');
+                await Swal.fire({ title: '¡Éxito!', text: 'Nota Débito enviada exitosamente a la DIAN', icon: 'success', confirmButtonColor: '#f0b429' });
             }
             setNoteType(null);
             fetchOrder();
         } catch (err: any) {
-            alert(`Error al generar Nota DIAN: ${err?.message || 'Error desconocido'}`);
+            await Swal.fire({ title: 'Error', text: err?.message || 'Error al generar Nota DIAN', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setIsDianGenerating(false);
         }
@@ -147,17 +188,17 @@ const OrderDetailPage = () => {
             setIsDianGenerating(true);
             const res = await dianApi.syncNoteStatus(noteId);
             if (res.isValid && res.statusCode === '00') {
-                alert('¡Éxito! La Nota ha sido Autorizada por la DIAN.');
+                await Swal.fire({ title: '¡Éxito!', text: 'La Nota ha sido Autorizada por la DIAN.', icon: 'success', confirmButtonColor: '#f0b429' });
             } else if (!res.isValid && res.statusCode === '2') {
-                alert(`¡SET DE PRUEBAS FINALIZADO!\nLa DIAN indica: "${res.statusDescription}"\nEsto significa que Two Six ya pasó las pruebas de habilitación en Sandbox y el set de pruebas se cerró. Para seguir enviando, deben pasar a Producción o generar un nuevo Test Set.`);
+                await Swal.fire({ title: 'SET DE PRUEBAS FINALIZADO', text: `La DIAN indica: "${res.statusDescription}". Esto significa que Two Six ya pasó las pruebas de habilitación en Sandbox y el set de pruebas se cerró. Para seguir enviando, deben pasar a Producción o generar un nuevo Test Set.`, icon: 'info', confirmButtonColor: '#f0b429' });
             } else if (!res.isValid) {
-                alert(`Nota Rechazada o con Errores: ${res.statusCode} - ${res.statusDescription}`);
+                await Swal.fire({ title: 'Nota Rechazada', text: `${res.statusCode} - ${res.statusDescription}`, icon: 'error', confirmButtonColor: '#f0b429' });
             } else {
-                alert(`Estado: ${res.statusCode} - ${res.statusDescription}`);
+                await Swal.fire({ title: 'Estado', text: `${res.statusCode} - ${res.statusDescription}`, icon: 'info', confirmButtonColor: '#f0b429' });
             }
             fetchOrder();
         } catch (err: any) {
-            alert(`Error sincronizando estado: ${err?.message || 'Error desconocido'}`);
+            await Swal.fire({ title: 'Error', text: err?.message || 'Error sincronizando estado', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setIsDianGenerating(false);
         }
@@ -165,8 +206,18 @@ const OrderDetailPage = () => {
 
     const handleRetryInvoice = async () => {
         if (!order) return;
-        if (!window.confirm('¿Estás seguro de que deseas generar un NUEVO consecutivo y reintentar el envío a la DIAN para este pedido?')) return;
-        
+        const retryConfirm = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Deseas generar un NUEVO consecutivo y reintentar el envío a la DIAN para este pedido?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Sí, reintentar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!retryConfirm.isConfirmed) return;
+
         setIsDianGenerating(true);
         try {
             const res = await dianApi.retryInvoice(order.id, {
@@ -174,14 +225,14 @@ const OrderDetailPage = () => {
                 time: '12:00:00-05:00',
             });
             if (res.success) {
-                alert('¡Factura Reintentada Exitosamente!');
+                await Swal.fire({ title: '¡Éxito!', text: 'Factura Reintentada Exitosamente!', icon: 'success', confirmButtonColor: '#f0b429' });
                 fetchOrder();
             } else {
-                alert(`Error al reintentar: ${res.error || 'Desconocido'}`);
+                await Swal.fire({ title: 'Error', text: res.error || 'Error al reintentar', icon: 'error', confirmButtonColor: '#f0b429' });
             }
         } catch (error: any) {
             console.error('Error reintentando factura DIAN:', error);
-            alert(`Error interno: ${error.message || 'Error en comunicación con DIAN'}`);
+            await Swal.fire({ title: 'Error', text: error.message || 'Error en comunicación con DIAN', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setIsDianGenerating(false);
         }
@@ -191,24 +242,24 @@ const OrderDetailPage = () => {
         if (!order || !order.dianEInvoicing || !order.dianEInvoicing.dian_response) return;
         const zipKeyMatch = order.dianEInvoicing.dian_response.match(/<b:ZipKey>(.*?)<\/b:ZipKey>/);
         if (!zipKeyMatch) {
-            alert('No se encontró ZipKey válido para esta factura, no se puede consultar estado.');
+            await Swal.fire({ title: 'Error', text: 'No se encontró ZipKey válido para esta factura, no se puede consultar estado.', icon: 'error', confirmButtonColor: '#f0b429' });
             return;
         }
         setIsDianGenerating(true);
         try {
             const res = await dianApi.checkInvoiceStatus(zipKeyMatch[1]);
             if (res.isValid === 'true' && res.statusCode === '00') {
-                alert('¡Éxito! La Factura ha sido Autorizada por la DIAN.');
+                await Swal.fire({ title: '¡Éxito!', text: 'La Factura ha sido Autorizada por la DIAN.', icon: 'success', confirmButtonColor: '#f0b429' });
             } else if (res.isValid === 'false' && res.statusCode === '2') {
-                alert(`¡SET DE PRUEBAS FINALIZADO!\nLa DIAN indica: "${res.statusDescription}"`);
+                await Swal.fire({ title: 'SET DE PRUEBAS FINALIZADO', text: `La DIAN indica: "${res.statusDescription}"`, icon: 'info', confirmButtonColor: '#f0b429' });
             } else if (res.isValid === 'false') {
-                alert(`Factura Rechazada o con Errores: ${res.statusCode} - ${res.statusDescription}`);
+                await Swal.fire({ title: 'Factura Rechazada', text: `${res.statusCode} - ${res.statusDescription}`, icon: 'error', confirmButtonColor: '#f0b429' });
             } else {
-                alert(`Estado DIAN: ${res.statusCode} - ${res.statusDescription}`);
+                await Swal.fire({ title: 'Estado DIAN', text: `${res.statusCode} - ${res.statusDescription}`, icon: 'info', confirmButtonColor: '#f0b429' });
             }
             fetchOrder();
         } catch (err: any) {
-            alert(`Error sincronizando estado: ${err?.message || 'Error desconocido'}`);
+            await Swal.fire({ title: 'Error', text: err?.message || 'Error sincronizando estado', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setIsDianGenerating(false);
         }
@@ -480,7 +531,7 @@ const OrderDetailPage = () => {
                                                                     setIsDianGenerating(true);
                                                                     try {
                                                                         const res = await dianApi.checkInvoiceStatus(zipKeyMatch[1]);
-                                                                        alert(`Estado Histórico (${inv.document_number}):\n${res.statusCode} - ${res.statusDescription}`);
+                                                                        await Swal.fire({ title: `Estado Histórico (${inv.document_number})`, text: `${res.statusCode} - ${res.statusDescription}`, icon: 'info', confirmButtonColor: '#f0b429' });
                                                                     } finally { setIsDianGenerating(false); }
                                                                 }}
                                                             >Verificar</button>

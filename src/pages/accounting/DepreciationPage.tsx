@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiPackage, FiPlus, FiPlay, FiX, FiChevronRight } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
 import FormField from '../../components/ui/FormField';
@@ -175,7 +176,7 @@ const DepreciationPage: React.FC = () => {
             loadAssets();
         } catch (err: any) {
             logError({ message: err.message, page: 'DepreciationPage' });
-            alert('Error: ' + err.message);
+            await Swal.fire({ title: 'Error', text: err.message || 'Ocurrió un error', icon: 'error', confirmButtonColor: '#f0b429' });
         }
     };
 
@@ -187,7 +188,7 @@ const DepreciationPage: React.FC = () => {
             loadAssets();
         } catch (err: any) {
             logError({ message: err.message, page: 'DepreciationPage' });
-            alert('Error: ' + err.message);
+            await Swal.fire({ title: 'Error', text: err.message || 'Ocurrió un error', icon: 'error', confirmButtonColor: '#f0b429' });
         }
         setRunning(false);
     };

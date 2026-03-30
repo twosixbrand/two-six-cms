@@ -244,66 +244,103 @@ const MasterDesignPage = () => {
       )}
 
       {/* Create/Edit Modal */}
-      <Modal isOpen={showModal} onClose={closeModal} title={editing ? 'Editar Master Design' : 'Crear Master Design'} size="md">
+      <Modal isOpen={showModal} onClose={closeModal} title={editing ? 'Editar Master Design' : 'Crear Master Design'} size="xl">
         <form onSubmit={handleSubmit}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {editing && (
-              <FormField label="Referencia" name="reference" value={form.reference || ''} onChange={handleChange} disabled />
-            )}
-            <FormField
-              label="Prenda"
-              name="id_clothing"
-              type="select"
-              value={form.id_clothing}
-              onChange={handleChange}
-              required
-              placeholder="Seleccione una prenda"
-              options={clothingOptions}
-            />
-            <FormField
-              label="Coleccion"
-              name="id_collection"
-              type="select"
-              value={form.id_collection}
-              onChange={handleChange}
-              required
-              placeholder="Seleccione una coleccion"
-              options={collectionOptions}
-            />
-            <FormField
-              label="Costo de Fabricacion"
-              name="manufactured_cost"
-              type="number"
-              value={form.manufactured_cost}
-              onChange={handleChange}
-              required
-            />
-            <FormField
-              label="Descripcion"
-              name="description"
-              type="textarea"
-              value={form.description}
-              onChange={handleChange}
-              rows={3}
-            />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-              <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#a0a0b0', fontFamily: 'Inter, sans-serif' }}>
-                Imagen Representativa
-              </label>
-              <input
-                type="file"
-                name="file"
-                accept="image/*"
+          <div style={{ display: 'grid', gridTemplateColumns: editing ? '1fr 320px' : '1fr', gap: '1.5rem' }}>
+            {/* Left: Form Fields */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {editing && (
+                <FormField label="Referencia" name="reference" value={form.reference || ''} onChange={handleChange} disabled />
+              )}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <FormField
+                  label="Prenda"
+                  name="id_clothing"
+                  type="select"
+                  value={form.id_clothing}
+                  onChange={handleChange}
+                  required
+                  placeholder="Seleccione una prenda"
+                  options={clothingOptions}
+                />
+                <FormField
+                  label="Coleccion"
+                  name="id_collection"
+                  type="select"
+                  value={form.id_collection}
+                  onChange={handleChange}
+                  required
+                  placeholder="Seleccione una coleccion"
+                  options={collectionOptions}
+                />
+              </div>
+              <FormField
+                label="Costo de Fabricacion"
+                name="manufactured_cost"
+                type="number"
+                value={form.manufactured_cost}
                 onChange={handleChange}
-                style={{
-                  padding: '0.7rem', borderRadius: 12,
-                  border: '1px solid #2a2a35', backgroundColor: '#2a2a35',
-                  fontSize: '0.9rem', fontFamily: 'Inter, sans-serif',
-                }}
+                required
               />
+              <FormField
+                label="Descripcion"
+                name="description"
+                type="textarea"
+                value={form.description}
+                onChange={handleChange}
+                rows={4}
+              />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#a0a0b0', fontFamily: 'Inter, sans-serif' }}>
+                  {editing ? 'Cambiar Imagen' : 'Imagen Representativa'}
+                </label>
+                <input
+                  type="file"
+                  name="file"
+                  accept="image/*"
+                  onChange={handleChange}
+                  style={{
+                    padding: '0.7rem', borderRadius: 12,
+                    border: '1px solid #2a2a35', backgroundColor: '#2a2a35',
+                    fontSize: '0.9rem', fontFamily: 'Inter, sans-serif', color: '#f1f1f3',
+                  }}
+                />
+              </div>
             </div>
+
+            {/* Right: Image Preview (only when editing) */}
+            {editing && (
+              <div style={{
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                backgroundColor: '#13131a', borderRadius: 12, border: '1px solid #2a2a35', padding: '1.5rem',
+              }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#a0a0b0', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '1rem' }}>
+                  Imagen Actual
+                </label>
+                {editing.image_url ? (
+                  <img
+                    src={`${editing.image_url}?t=${Date.now()}`}
+                    alt={editing.reference || 'Preview'}
+                    style={{
+                      width: '100%', maxHeight: 300, objectFit: 'contain', borderRadius: 8,
+                      border: '1px solid #2a2a35', backgroundColor: '#0a0a0f',
+                    }}
+                  />
+                ) : (
+                  <div style={{
+                    width: '100%', height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    borderRadius: 8, border: '2px dashed #2a2a35', color: '#6b6b7b', fontSize: '0.85rem',
+                  }}>
+                    Sin imagen
+                  </div>
+                )}
+                <p style={{ fontSize: '0.75rem', color: '#6b6b7b', marginTop: '0.75rem', textAlign: 'center' }}>
+                  Sube un archivo a la izquierda para reemplazar esta imagen
+                </p>
+              </div>
+            )}
           </div>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem', borderTop: '1px solid #2a2a35', paddingTop: '1rem' }}>
             <Button variant="ghost" onClick={closeModal}>Cancelar</Button>
             <Button variant="primary" type="submit" loading={saving}>{editing ? 'Actualizar' : 'Crear'}</Button>
           </div>
