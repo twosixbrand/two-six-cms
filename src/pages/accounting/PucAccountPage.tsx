@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiBook, FiPlus, FiChevronRight, FiChevronDown, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
-import { Button, StatusBadge, LoadingSpinner, SearchInput, Modal, ConfirmDialog } from '../../components/ui';
+import { Button, StatusBadge, LoadingSpinner, SearchInput, Modal, ConfirmDialog, FormField } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
 
@@ -101,6 +101,11 @@ const PucAccountPage = () => {
         }
     };
 
+    const handleChange = (e: any) => {
+        const { name, value } = e.target;
+        setForm(prev => ({ ...prev, [name]: value }));
+    };
+
     const filterAccounts = (nodes: Account[], term: string): Account[] => {
         if (!term) return nodes;
         const lower = term.toLowerCase();
@@ -114,18 +119,25 @@ const PucAccountPage = () => {
         }, []);
     };
 
+    const cellStyle: React.CSSProperties = {
+        padding: '0.65rem 1rem',
+        fontSize: '0.8125rem',
+        color: '#f1f1f3',
+        borderBottom: '1px solid #1f1f2a',
+    };
+
     const renderTree = (nodes: Account[], depth: number = 0) => {
         return nodes.map(node => {
             const hasChildren = node.children && node.children.length > 0;
             const isExpanded = expandedNodes.has(node.code);
             return (
                 <React.Fragment key={node.code}>
-                    <tr style={{ background: depth === 0 ? '#f8f9fa' : 'transparent' }}>
-                        <td style={{ paddingLeft: `${depth * 24 + 8}px`, whiteSpace: 'nowrap' }}>
+                    <tr style={{ background: depth === 0 ? '#1f1f2a' : 'transparent' }}>
+                        <td style={{ ...cellStyle, paddingLeft: `${depth * 24 + 8}px`, whiteSpace: 'nowrap' }}>
                             {hasChildren ? (
                                 <span
                                     onClick={() => toggleNode(node.code)}
-                                    style={{ cursor: 'pointer', marginRight: '6px', display: 'inline-flex', alignItems: 'center' }}
+                                    style={{ cursor: 'pointer', marginRight: '6px', display: 'inline-flex', alignItems: 'center', color: '#a0a0b0' }}
                                 >
                                     {isExpanded ? <FiChevronDown /> : <FiChevronRight />}
                                 </span>
@@ -134,22 +146,22 @@ const PucAccountPage = () => {
                             )}
                             <strong>{node.code}</strong>
                         </td>
-                        <td>{node.name}</td>
-                        <td>
+                        <td style={cellStyle}>{node.name}</td>
+                        <td style={cellStyle}>
                             <StatusBadge
-                                status={node.nature === 'D' ? 'Débito' : 'Crédito'}
+                                status={node.nature === 'D' ? 'Debito' : 'Credito'}
                                 variant={node.nature === 'D' ? 'success' : 'warning'}
                                 size="sm"
                             />
                         </td>
-                        <td>
+                        <td style={cellStyle}>
                             <StatusBadge
                                 status={`Nivel ${node.level}`}
                                 variant="info"
                                 size="sm"
                             />
                         </td>
-                        <td style={{ whiteSpace: 'nowrap' }}>
+                        <td style={{ ...cellStyle, whiteSpace: 'nowrap' }}>
                             <Button
                                 variant="ghost"
                                 size="sm"
@@ -178,14 +190,14 @@ const PucAccountPage = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title="PUC - Plan Único de Cuentas" icon={<FiBook />} />
+            <PageHeader title="PUC - Plan Unico de Cuentas" icon={<FiBook />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
                 <div style={{ flex: '1', maxWidth: '400px' }}>
                     <SearchInput
                         value={search}
                         onChange={setSearch}
-                        placeholder="Buscar por código o nombre..."
+                        placeholder="Buscar por codigo o nombre..."
                     />
                 </div>
                 <Button variant="primary" icon={<FiPlus />} onClick={openCreateModal}>
@@ -198,20 +210,38 @@ const PucAccountPage = () => {
             {loading ? (
                 <LoadingSpinner text="Cargando plan de cuentas..." />
             ) : (
-                <div className="list-card full-width">
-                    <table className="data-table">
+                <div style={{
+                    overflowX: 'auto',
+                    borderRadius: 8,
+                    backgroundColor: '#1a1a24',
+                    border: '1px solid #2a2a35',
+                }}>
+                    <table style={{
+                        width: '100%',
+                        borderCollapse: 'collapse',
+                        minWidth: 600,
+                    }}>
                         <thead>
                             <tr>
-                                <th>Código</th>
-                                <th>Nombre</th>
-                                <th>Naturaleza</th>
-                                <th>Nivel</th>
-                                <th>Acciones</th>
+                                {['Codigo', 'Nombre', 'Naturaleza', 'Nivel', 'Acciones'].map((h) => (
+                                    <th key={h} style={{
+                                        padding: '0.65rem 1rem',
+                                        textAlign: 'left',
+                                        fontSize: '0.7rem',
+                                        fontWeight: 500,
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.5px',
+                                        color: '#6b6b7b',
+                                        borderBottom: '1px solid #2a2a35',
+                                        backgroundColor: '#1f1f2a',
+                                        whiteSpace: 'nowrap',
+                                    }}>{h}</th>
+                                ))}
                             </tr>
                         </thead>
                         <tbody>
                             {displayed.length === 0 ? (
-                                <tr><td colSpan={5} style={{ textAlign: 'center' }}>No se encontraron cuentas</td></tr>
+                                <tr><td colSpan={5} style={{ textAlign: 'center', padding: '2rem', color: '#a0a0b0' }}>No se encontraron cuentas</td></tr>
                             ) : (
                                 renderTree(displayed)
                             )}
@@ -238,57 +268,50 @@ const PucAccountPage = () => {
                 }
             >
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    <div>
-                        <label style={{ display: 'block', fontWeight: 600, marginBottom: '4px', fontSize: '13px' }}>Código</label>
-                        <input
-                            type="text"
-                            value={form.code}
-                            onChange={e => setForm({ ...form, code: e.target.value })}
-                            disabled={!!editingAccount}
-                            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}
-                            placeholder="Ej: 110505"
-                        />
-                    </div>
-                    <div>
-                        <label style={{ display: 'block', fontWeight: 600, marginBottom: '4px', fontSize: '13px' }}>Nombre</label>
-                        <input
-                            type="text"
-                            value={form.name}
-                            onChange={e => setForm({ ...form, name: e.target.value })}
-                            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}
-                            placeholder="Ej: Caja General"
-                        />
-                    </div>
-                    <div>
-                        <label style={{ display: 'block', fontWeight: 600, marginBottom: '4px', fontSize: '13px' }}>Código Padre (opcional)</label>
-                        <input
-                            type="text"
-                            value={form.parent_code}
-                            onChange={e => setForm({ ...form, parent_code: e.target.value })}
-                            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}
-                            placeholder="Ej: 1105"
-                        />
-                    </div>
-                    <div>
-                        <label style={{ display: 'block', fontWeight: 600, marginBottom: '4px', fontSize: '13px' }}>Naturaleza</label>
-                        <select
-                            value={form.nature}
-                            onChange={e => setForm({ ...form, nature: e.target.value })}
-                            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}
-                        >
-                            <option value="D">Débito</option>
-                            <option value="C">Crédito</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style={{ display: 'block', fontWeight: 600, marginBottom: '4px', fontSize: '13px' }}>Descripción</label>
-                        <textarea
-                            value={form.description}
-                            onChange={e => setForm({ ...form, description: e.target.value })}
-                            rows={3}
-                            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd', resize: 'vertical' }}
-                        />
-                    </div>
+                    <FormField
+                        label="Codigo"
+                        name="code"
+                        type="text"
+                        value={form.code}
+                        onChange={handleChange}
+                        disabled={!!editingAccount}
+                        placeholder="Ej: 110505"
+                    />
+                    <FormField
+                        label="Nombre"
+                        name="name"
+                        type="text"
+                        value={form.name}
+                        onChange={handleChange}
+                        placeholder="Ej: Caja General"
+                    />
+                    <FormField
+                        label="Codigo Padre (opcional)"
+                        name="parent_code"
+                        type="text"
+                        value={form.parent_code}
+                        onChange={handleChange}
+                        placeholder="Ej: 1105"
+                    />
+                    <FormField
+                        label="Naturaleza"
+                        name="nature"
+                        type="select"
+                        value={form.nature}
+                        onChange={handleChange}
+                        options={[
+                            { value: 'D', label: 'Debito' },
+                            { value: 'C', label: 'Credito' },
+                        ]}
+                    />
+                    <FormField
+                        label="Descripcion"
+                        name="description"
+                        type="textarea"
+                        value={form.description}
+                        onChange={handleChange}
+                        rows={3}
+                    />
                 </div>
             </Modal>
 
@@ -298,7 +321,7 @@ const PucAccountPage = () => {
                 onConfirm={handleDelete}
                 onCancel={() => setDeleteConfirm(null)}
                 title="Eliminar cuenta"
-                message={deleteConfirm ? `¿Eliminar la cuenta ${deleteConfirm.code} - ${deleteConfirm.name}?` : ''}
+                message={deleteConfirm ? `Eliminar la cuenta ${deleteConfirm.code} - ${deleteConfirm.name}?` : ''}
                 confirmText="Eliminar"
                 cancelText="Cancelar"
                 variant="danger"

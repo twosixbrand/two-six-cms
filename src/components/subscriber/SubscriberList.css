@@ -1,8 +1,8 @@
 .list-container {
     padding: 20px;
-    background-color: var(--card-bg-color);
-    border-radius: var(--border-radius);
-    box-shadow: 0 4px 6px var(--shadow-color);
+    background-color: #1a1a24;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .table-responsive {
@@ -19,17 +19,20 @@
 .data-table td {
     padding: 12px 15px;
     text-align: left;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid #2a2a35;
 }
 
 .data-table th {
-    background-color: var(--primary-color);
-    color: white;
+    background-color: #1f1f2a;
+    color: #6b6b7b;
     font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .data-table tbody tr:hover {
-    background-color: rgba(0, 0, 0, 0.02);
+    background-color: rgba(255, 255, 255, 0.03);
 }
 
 .status-btn {
@@ -43,36 +46,35 @@
 }
 
 .status-btn.active {
-    background-color: #28a745;
-    color: white;
+    background-color: rgba(52, 211, 153, 0.15);
+    color: #34d399;
 }
 
 .status-btn.inactive {
-    background-color: #dc3545;
-    color: white;
+    background-color: rgba(248, 113, 113, 0.15);
+    color: #f87171;
 }
 
 /* Expandable Row Styles */
 .expanded-parent-row {
-    background-color: rgba(var(--primary-color-rgb), 0.05);
-    /* Optional slight highlight for parent */
+    background-color: rgba(240, 180, 41, 0.05);
 }
 
 .expanded-content-row td {
     padding: 0;
-    border-bottom: 2px solid var(--primary-color);
+    border-bottom: 2px solid #f0b429;
 }
 
 .expanded-content-wrapper {
     padding: 20px 30px;
-    background-color: #fcfcfc;
-    box-shadow: inset 0 3px 6px -3px rgba(0, 0, 0, 0.1);
+    background-color: #13131a;
+    box-shadow: inset 0 3px 6px -3px rgba(0, 0, 0, 0.3);
 }
 
 .expanded-title {
     margin-top: 0;
     margin-bottom: 15px;
-    color: var(--primary-color);
+    color: #f0b429;
     font-size: 1.1rem;
     font-weight: 600;
 }
@@ -85,9 +87,9 @@
 
 .code-card-grid {
     padding: 12px 16px;
-    border: 1px dashed #ccc;
+    border: 1px dashed #2a2a35;
     border-radius: 6px;
-    background: #ffffff;
+    background: #1a1a24;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -102,12 +104,12 @@
     font-family: monospace;
     font-size: 1.1rem;
     font-weight: bold;
-    color: #333;
+    color: #f1f1f3;
 }
 
 .code-subtitle {
     font-size: 0.8rem;
-    color: #777;
+    color: #a0a0b0;
     margin-top: 2px;
 }
 
@@ -119,13 +121,13 @@
 }
 
 .code-status.used {
-    background-color: #ffeaea;
-    color: #dc3545;
+    background-color: rgba(248, 113, 113, 0.15);
+    color: #f87171;
 }
 
 .code-status.available {
-    background-color: #eafbee;
-    color: #28a745;
+    background-color: rgba(52, 211, 153, 0.15);
+    color: #34d399;
 }
 
 .action-btn {
@@ -133,8 +135,8 @@
     border-radius: 4px;
     font-size: 0.85rem;
     font-weight: 600;
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
+    border: 1px solid #f0b429;
+    color: #f0b429;
     background: transparent;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
@@ -142,6 +144,6 @@
 
 .action-btn:hover,
 .action-btn.active-expansion {
-    background: var(--primary-color);
-    color: white;
+    background: #f0b429;
+    color: #0a0a0f;
 }

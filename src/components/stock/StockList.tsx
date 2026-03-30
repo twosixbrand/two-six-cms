@@ -26,7 +26,7 @@ const StockList = ({ items, onEdit, onDelete }) => {
                         return (
                             <React.Fragment key={item.id}>
                                 {showHeader && (
-                                    <tr className="reference-header-row" style={{ backgroundColor: '#f0f0f0' }}>
+                                    <tr className="reference-header-row" style={{ backgroundColor: '#13131a' }}>
                                         <td colSpan={8} style={{ fontWeight: 'bold', padding: '10px' }}>
                                             Reference: {currentRef}
                                         </td>

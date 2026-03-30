@@ -45,7 +45,7 @@ const StockForm = ({ onSave, currentItem, onCancel }) => {
 
     if (!currentItem) {
         return (
-            <div className="stock-form" style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+            <div className="stock-form" style={{ textAlign: 'center', padding: '20px', color: '#a0a0b0' }}>
                 <p>Please select an item from the list to edit its inventory.</p>
                 <div style={{ fontSize: '0.9em', marginTop: '10px' }}>
                     To create new items, go to the <strong>Clothing Color</strong> page and add sizes there.
@@ -60,7 +60,7 @@ const StockForm = ({ onSave, currentItem, onCancel }) => {
                 Editar Inventario
             </h3>
 
-            <div className="form-info" style={{ marginBottom: '1.5rem', padding: '1rem', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+            <div className="form-info" style={{ marginBottom: '1.5rem', padding: '1rem', background: 'rgba(255,255,255,0.04)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
                 <strong style={{ color: 'var(--primary-color)' }}>Variante: </strong>
                 <span>{currentItem.clothingColor?.design?.reference} ({currentItem.clothingColor?.color?.name} - {currentItem.size?.name})</span>
             </div>

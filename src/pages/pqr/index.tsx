@@ -159,13 +159,13 @@ const PqrManagementPage: React.FC = () => {
                 {/* Panel Lateral del PQR Seleccionado */}
                 <div className="col-lg-4 offset-lg-1 mt-4 mt-lg-0">
                     {selectedPqr ? (
-                        <div className="card border-0 form-card" style={{
+                        <div style={{
                             borderRadius: '16px',
                             overflow: 'hidden',
-                            background: 'var(--surface-color)',
+                            background: '#1a1a24',
                             backdropFilter: 'blur(16px)',
                             WebkitBackdropFilter: 'blur(16px)',
-                            border: '1px solid var(--border-color)',
+                            border: '1px solid #2a2a35',
                             boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
                             marginTop: '1.5rem'
                         }}>

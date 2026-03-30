@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FiFileText, FiRefreshCcw, FiPlus, FiChevronDown, FiChevronRight, FiDownload } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import PageHeader from '../../components/common/PageHeader';
-import { DataTable, Button, StatusBadge, LoadingSpinner } from '../../components/ui';
+import { DataTable, Button, StatusBadge, LoadingSpinner, FormField } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
 
@@ -49,8 +49,24 @@ const JournalEntryPage = () => {
         }
     };
 
-    // Since JournalEntryPage has expandable rows, we keep using a manual table
-    // but replace buttons and status badges with UI components
+    const inputStyle: React.CSSProperties = {
+        padding: '8px',
+        borderRadius: '6px',
+        border: '1px solid #2a2a35',
+        backgroundColor: '#1a1a24',
+        color: '#f1f1f3',
+        fontFamily: 'Inter, sans-serif',
+        fontSize: '0.875rem',
+        height: '40px',
+    };
+
+    const labelStyle: React.CSSProperties = {
+        display: 'block',
+        fontSize: '12px',
+        fontWeight: 600,
+        marginBottom: '4px',
+        color: '#a0a0b0',
+    };
 
     return (
         <div className="page-container">
@@ -58,19 +74,19 @@ const JournalEntryPage = () => {
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
                 <div>
-                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Desde</label>
+                    <label style={labelStyle}>Desde</label>
                     <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)}
-                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }} />
+                        style={inputStyle} />
                 </div>
                 <div>
-                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Hasta</label>
+                    <label style={labelStyle}>Hasta</label>
                     <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)}
-                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }} />
+                        style={inputStyle} />
                 </div>
                 <div>
-                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Origen</label>
+                    <label style={labelStyle}>Origen</label>
                     <select value={sourceType} onChange={e => setSourceType(e.target.value)}
-                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}>
+                        style={inputStyle}>
                         <option value="ALL">Todos</option>
                         <option value="SALE">Venta</option>
                         <option value="EXPENSE">Gasto</option>
@@ -95,41 +111,66 @@ const JournalEntryPage = () => {
             {loading ? (
                 <LoadingSpinner text="Cargando asientos contables..." />
             ) : (
-                <div className="list-card full-width">
-                    <table className="data-table">
+                <div style={{
+                    overflowX: 'auto',
+                    borderRadius: 8,
+                    backgroundColor: '#1a1a24',
+                    border: '1px solid #2a2a35',
+                }}>
+                    <table style={{
+                        width: '100%',
+                        borderCollapse: 'collapse',
+                        minWidth: 800,
+                    }}>
                         <thead>
                             <tr>
-                                <th></th>
-                                <th># Asiento</th>
-                                <th>Fecha</th>
-                                <th>Descripción</th>
-                                <th>Origen</th>
-                                <th>Total Débito</th>
-                                <th>Total Crédito</th>
-                                <th>Estado</th>
+                                {['', '# Asiento', 'Fecha', 'Descripcion', 'Origen', 'Total Debito', 'Total Credito', 'Estado'].map((h, i) => (
+                                    <th key={i} style={{
+                                        padding: '0.65rem 1rem',
+                                        textAlign: i >= 5 && i <= 6 ? 'right' : 'left',
+                                        fontSize: '0.7rem',
+                                        fontWeight: 500,
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.5px',
+                                        color: '#6b6b7b',
+                                        borderBottom: '1px solid #2a2a35',
+                                        backgroundColor: '#1f1f2a',
+                                        whiteSpace: 'nowrap',
+                                    }}>{h}</th>
+                                ))}
                             </tr>
                         </thead>
                         <tbody>
                             {entries.length === 0 ? (
-                                <tr><td colSpan={8} style={{ textAlign: 'center' }}>No hay asientos contables</td></tr>
+                                <tr><td colSpan={8} style={{ textAlign: 'center', padding: '2rem', color: '#a0a0b0' }}>No hay asientos contables</td></tr>
                             ) : entries.map((entry: any) => (
                                 <React.Fragment key={entry.id}>
                                     <tr
                                         style={{ cursor: 'pointer' }}
                                         onClick={() => toggleExpand(entry.id)}
                                     >
-                                        <td style={{ width: '30px' }}>
+                                        <td style={{ width: '30px', padding: '0.65rem 1rem', borderBottom: '1px solid #1f1f2a', color: '#a0a0b0' }}>
                                             {expandedEntry === entry.id ? <FiChevronDown /> : <FiChevronRight />}
                                         </td>
-                                        <td><strong>{entry.entry_number}</strong></td>
-                                        <td>{new Date(entry.date).toLocaleDateString('es-CO')}</td>
-                                        <td>{entry.description}</td>
-                                        <td>
+                                        <td style={{ padding: '0.65rem 1rem', borderBottom: '1px solid #1f1f2a', color: '#f1f1f3' }}>
+                                            <strong>{entry.entry_number}</strong>
+                                        </td>
+                                        <td style={{ padding: '0.65rem 1rem', borderBottom: '1px solid #1f1f2a', color: '#f1f1f3' }}>
+                                            {new Date(entry.date).toLocaleDateString('es-CO')}
+                                        </td>
+                                        <td style={{ padding: '0.65rem 1rem', borderBottom: '1px solid #1f1f2a', color: '#f1f1f3' }}>
+                                            {entry.description}
+                                        </td>
+                                        <td style={{ padding: '0.65rem 1rem', borderBottom: '1px solid #1f1f2a' }}>
                                             <StatusBadge status={entry.source_type} variant="info" size="sm" />
                                         </td>
-                                        <td style={{ textAlign: 'right' }}>{formatCurrency(entry.total_debit)}</td>
-                                        <td style={{ textAlign: 'right' }}>{formatCurrency(entry.total_credit)}</td>
-                                        <td>
+                                        <td style={{ textAlign: 'right', padding: '0.65rem 1rem', borderBottom: '1px solid #1f1f2a', color: '#f1f1f3' }}>
+                                            {formatCurrency(entry.total_debit)}
+                                        </td>
+                                        <td style={{ textAlign: 'right', padding: '0.65rem 1rem', borderBottom: '1px solid #1f1f2a', color: '#f1f1f3' }}>
+                                            {formatCurrency(entry.total_credit)}
+                                        </td>
+                                        <td style={{ padding: '0.65rem 1rem', borderBottom: '1px solid #1f1f2a' }}>
                                             <StatusBadge
                                                 status={entry.status}
                                                 variant={getStatusVariant(entry.status)}
@@ -139,25 +180,25 @@ const JournalEntryPage = () => {
                                     </tr>
                                     {expandedEntry === entry.id && entry.lines && (
                                         <tr>
-                                            <td colSpan={8} style={{ padding: '0 16px 12px 48px', background: '#fafafa' }}>
+                                            <td colSpan={8} style={{ padding: '0 16px 12px 48px', background: '#13131a', borderBottom: '1px solid #2a2a35' }}>
                                                 <table style={{ width: '100%', fontSize: '13px', borderCollapse: 'collapse' }}>
                                                     <thead>
-                                                        <tr style={{ borderBottom: '1px solid #e0e0e0' }}>
-                                                            <th style={{ textAlign: 'left', padding: '6px 8px' }}>Cuenta</th>
-                                                            <th style={{ textAlign: 'left', padding: '6px 8px' }}>Nombre</th>
-                                                            <th style={{ textAlign: 'right', padding: '6px 8px' }}>Débito</th>
-                                                            <th style={{ textAlign: 'right', padding: '6px 8px' }}>Crédito</th>
+                                                        <tr style={{ borderBottom: '1px solid #2a2a35' }}>
+                                                            <th style={{ textAlign: 'left', padding: '6px 8px', color: '#6b6b7b', fontSize: '0.7rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Cuenta</th>
+                                                            <th style={{ textAlign: 'left', padding: '6px 8px', color: '#6b6b7b', fontSize: '0.7rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Nombre</th>
+                                                            <th style={{ textAlign: 'right', padding: '6px 8px', color: '#6b6b7b', fontSize: '0.7rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Debito</th>
+                                                            <th style={{ textAlign: 'right', padding: '6px 8px', color: '#6b6b7b', fontSize: '0.7rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Credito</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {entry.lines.map((line: any, i: number) => (
-                                                            <tr key={i} style={{ borderBottom: '1px solid #f0f0f0' }}>
-                                                                <td style={{ padding: '6px 8px' }}>{line.account_code}</td>
-                                                                <td style={{ padding: '6px 8px' }}>{line.account_name}</td>
-                                                                <td style={{ padding: '6px 8px', textAlign: 'right' }}>
+                                                            <tr key={i} style={{ borderBottom: '1px solid #1f1f2a' }}>
+                                                                <td style={{ padding: '6px 8px', color: '#f1f1f3' }}>{line.account_code}</td>
+                                                                <td style={{ padding: '6px 8px', color: '#f1f1f3' }}>{line.account_name}</td>
+                                                                <td style={{ padding: '6px 8px', textAlign: 'right', color: '#f1f1f3' }}>
                                                                     {line.debit ? formatCurrency(line.debit) : '-'}
                                                                 </td>
-                                                                <td style={{ padding: '6px 8px', textAlign: 'right' }}>
+                                                                <td style={{ padding: '6px 8px', textAlign: 'right', color: '#f1f1f3' }}>
                                                                     {line.credit ? formatCurrency(line.credit) : '-'}
                                                                 </td>
                                                             </tr>
