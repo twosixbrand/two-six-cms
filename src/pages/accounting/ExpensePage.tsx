@@ -3,7 +3,7 @@ import { FiDollarSign, FiRefreshCcw, FiPlus, FiEdit2, FiTrash2, FiCheck, FiDownl
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
-import { DataTable, Button, StatusBadge, LoadingSpinner, ConfirmDialog } from '../../components/ui';
+import { DataTable, Button, StatusBadge, LoadingSpinner } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
 
@@ -17,7 +17,6 @@ const ExpensePage = () => {
     const [endDate, setEndDate] = useState('');
     const [category, setCategory] = useState('');
     const [status, setStatus] = useState('ALL');
-    const [confirmAction, setConfirmAction] = useState<{ type: 'paid' | 'delete'; id: number } | null>(null);
 
     const fetchData = async () => {
         try {
@@ -40,27 +39,43 @@ const ExpensePage = () => {
         fetchData();
     }, []);
 
-    const handleMarkPaid = async () => {
-        if (!confirmAction || confirmAction.type !== 'paid') return;
+    const handleMarkPaid = async (id: number) => {
+        const result = await Swal.fire({
+            title: 'Marcar como pagado',
+            text: '¿Marcar este gasto como pagado?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Sí, pagado',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!result.isConfirmed) return;
         try {
-            await accountingApi.markExpensePaid(confirmAction.id);
+            await accountingApi.markExpensePaid(id);
             fetchData();
         } catch (err: any) {
             await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Ocurrió un error', icon: 'error', confirmButtonColor: '#f0b429' });
-        } finally {
-            setConfirmAction(null);
         }
     };
 
-    const handleDelete = async () => {
-        if (!confirmAction || confirmAction.type !== 'delete') return;
+    const handleDelete = async (id: number) => {
+        const result = await Swal.fire({
+            title: 'Eliminar gasto',
+            text: '¿Eliminar este gasto?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!result.isConfirmed) return;
         try {
-            await accountingApi.deleteExpense(confirmAction.id);
+            await accountingApi.deleteExpense(id);
             fetchData();
         } catch (err: any) {
             await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Error al eliminar', icon: 'error', confirmButtonColor: '#f0b429' });
-        } finally {
-            setConfirmAction(null);
         }
     };
 
@@ -177,7 +192,7 @@ const ExpensePage = () => {
                                 variant="ghost"
                                 size="sm"
                                 icon={<FiCheck />}
-                                onClick={() => setConfirmAction({ type: 'paid', id: exp.id })}
+                                onClick={() => handleMarkPaid(exp.id)}
                             >
                                 {''}
                             </Button>
@@ -186,34 +201,12 @@ const ExpensePage = () => {
                             variant="destructive"
                             size="sm"
                             icon={<FiTrash2 />}
-                            onClick={() => setConfirmAction({ type: 'delete', id: exp.id })}
+                            onClick={() => handleDelete(exp.id)}
                         >
                             {''}
                         </Button>
                     </>
                 )}
-            />
-
-            <ConfirmDialog
-                isOpen={confirmAction?.type === 'paid'}
-                onConfirm={handleMarkPaid}
-                onCancel={() => setConfirmAction(null)}
-                title="Marcar como pagado"
-                message="¿Marcar este gasto como pagado?"
-                confirmText="Sí, pagado"
-                cancelText="Cancelar"
-                variant="warning"
-            />
-
-            <ConfirmDialog
-                isOpen={confirmAction?.type === 'delete'}
-                onConfirm={handleDelete}
-                onCancel={() => setConfirmAction(null)}
-                title="Eliminar gasto"
-                message="¿Eliminar este gasto?"
-                confirmText="Eliminar"
-                cancelText="Cancelar"
-                variant="danger"
             />
         </div>
     );

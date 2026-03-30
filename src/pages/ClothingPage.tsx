@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FiLayers, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../components/common/PageHeader';
-import { DataTable, Modal, FormField, Button, SearchInput, ConfirmDialog, LoadingSpinner } from '../components/ui';
+import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner } from '../components/ui';
 import * as clothingApi from '../services/clothingApi';
 import * as typeClothingApi from '../services/typeClothingApi';
 import * as categoryApi from '../services/categoryApi';
@@ -27,10 +28,6 @@ const ClothingPage = () => {
     id_type_clothing: '',
     id_category: '',
   });
-
-  // Delete confirm state
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState<any>(null);
 
   const fetchData = async () => {
     try {
@@ -119,22 +116,24 @@ const ClothingPage = () => {
     }
   };
 
-  const confirmDelete = (row: any) => {
-    setDeleteTarget(row);
-    setShowDeleteConfirm(true);
-  };
-
-  const handleDelete = async () => {
-    if (!deleteTarget) return;
+  const handleDelete = async (row: any) => {
+    const result = await Swal.fire({
+      title: 'Eliminar Prenda',
+      text: `¿Estás seguro de que deseas eliminar la prenda "${row.name}"? Esta acción no se puede deshacer.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#f0b429',
+      cancelButtonColor: '#2a2a35',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    });
+    if (!result.isConfirmed) return;
     try {
-      await clothingApi.deleteClothing(deleteTarget.id);
-      setShowDeleteConfirm(false);
-      setDeleteTarget(null);
+      await clothingApi.deleteClothing(row.id);
       fetchData();
     } catch (err: any) {
       logError(err, '/clothing');
-      setError('Error al eliminar la prenda.');
-      setShowDeleteConfirm(false);
+      await Swal.fire({ title: 'Error', text: 'Error al eliminar la prenda.', icon: 'error', confirmButtonColor: '#f0b429' });
     }
   };
 
@@ -174,7 +173,7 @@ const ClothingPage = () => {
           actions={(row) => (
             <>
               <Button variant="ghost" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)}>Editar</Button>
-              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => confirmDelete(row)}>Eliminar</Button>
+              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)}>Eliminar</Button>
             </>
           )}
         />
@@ -221,15 +220,6 @@ const ClothingPage = () => {
           </div>
         </form>
       </Modal>
-
-      <ConfirmDialog
-        isOpen={showDeleteConfirm}
-        title="Eliminar Prenda"
-        message={`¿Estás seguro de que deseas eliminar la prenda "${deleteTarget?.name}"? Esta acción no se puede deshacer.`}
-        variant="danger"
-        onConfirm={handleDelete}
-        onCancel={() => setShowDeleteConfirm(false)}
-      />
     </div>
   );
 };

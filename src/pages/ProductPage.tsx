@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { FiPackage, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../components/common/PageHeader';
-import { DataTable, Modal, FormField, Button, SearchInput, ConfirmDialog, LoadingSpinner, StatusBadge } from '../components/ui';
+import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner, StatusBadge } from '../components/ui';
 import * as productApi from '../services/productApi';
 import * as clothingSizeApi from '../services/clothingSizeApi';
 import { logError } from '../services/errorApi';
@@ -30,10 +31,6 @@ const ProductPage = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [sharedData, setSharedData] = useState({ price: 0, active: true, is_outlet: false, discount_percentage: 0, discount_price: 0 });
   const [variants, setVariants] = useState<{ id_clothing_size: string }[]>([{ id_clothing_size: '' }]);
-
-  // Delete confirm state
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState<any>(null);
 
   const fetchData = useCallback(async () => {
     try {
@@ -177,23 +174,25 @@ const ProductPage = () => {
   };
 
   // Delete
-  const confirmDelete = (row: any) => {
-    setDeleteTarget(row);
-    setShowDeleteConfirm(true);
-  };
-
-  const handleDelete = async () => {
-    if (!deleteTarget) return;
+  const handleDelete = async (row: any) => {
+    const result = await Swal.fire({
+      title: 'Eliminar Producto',
+      text: `¿Estas seguro de que deseas eliminar el producto "${row.sku}"? Esta accion no se puede deshacer.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#f0b429',
+      cancelButtonColor: '#2a2a35',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    });
+    if (!result.isConfirmed) return;
     try {
       setError('');
-      await productApi.deleteProduct(deleteTarget.id);
-      setShowDeleteConfirm(false);
-      setDeleteTarget(null);
+      await productApi.deleteProduct(row.id);
       fetchData();
     } catch (err: any) {
       setError('Error al eliminar producto: ' + err.message);
       logError(err, '/product-delete');
-      setShowDeleteConfirm(false);
     }
   };
 
@@ -265,7 +264,7 @@ const ProductPage = () => {
           actions={(row) => (
             <>
               <Button variant="ghost" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)}>Editar</Button>
-              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => confirmDelete(row)}>Eliminar</Button>
+              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)}>Eliminar</Button>
             </>
           )}
         />
@@ -371,15 +370,6 @@ const ProductPage = () => {
           </div>
         </form>
       </Modal>
-
-      <ConfirmDialog
-        isOpen={showDeleteConfirm}
-        title="Eliminar Producto"
-        message={`¿Estas seguro de que deseas eliminar el producto "${deleteTarget?.sku}"? Esta accion no se puede deshacer.`}
-        variant="danger"
-        onConfirm={handleDelete}
-        onCancel={() => setShowDeleteConfirm(false)}
-      />
     </div>
   );
 };

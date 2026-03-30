@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FiImage, FiUploadCloud, FiTrash2, FiArrowLeft, FiMove, FiChevronRight } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../components/common/PageHeader';
-import { DataTable, Button, SearchInput, ConfirmDialog, LoadingSpinner } from '../components/ui';
+import { DataTable, Button, SearchInput, LoadingSpinner } from '../components/ui';
 import * as clothingColorApi from '../services/clothingColorApi';
 import * as imageClothingApi from '../services/imageClothingApi';
 import { logError } from '../services/errorApi';
@@ -19,10 +20,6 @@ const ImageClothingPage = () => {
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
   const [loadingList, setLoadingList] = useState(true);
-
-  // Delete confirm
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleteImageId, setDeleteImageId] = useState<number | null>(null);
 
   const fetchDetails = useCallback(async () => {
     try {
@@ -116,21 +113,23 @@ const ImageClothingPage = () => {
     }
   };
 
-  const confirmDeleteImage = (imageId: number) => {
-    setDeleteImageId(imageId);
-    setShowDeleteConfirm(true);
-  };
-
-  const handleDeleteImage = async () => {
-    if (!deleteImageId) return;
+  const handleDeleteImage = async (imageId: number) => {
+    const result = await Swal.fire({
+      title: 'Eliminar Imagen',
+      text: '¿Eliminar esta imagen permanentemente? Esta accion no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#f0b429',
+      cancelButtonColor: '#2a2a35',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    });
+    if (!result.isConfirmed) return;
     try {
-      await imageClothingApi.deleteImage(deleteImageId);
-      setShowDeleteConfirm(false);
-      setDeleteImageId(null);
+      await imageClothingApi.deleteImage(imageId);
       fetchImages();
     } catch {
       setError('Error al eliminar imagen.');
-      setShowDeleteConfirm(false);
     }
   };
 
@@ -378,7 +377,7 @@ const ImageClothingPage = () => {
                       {img.image_url.split('/').pop() || `Recurso ${img.id_image_clothing}`}
                     </div>
                   </div>
-                  <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => confirmDeleteImage(img.id_image_clothing)}>
+                  <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDeleteImage(img.id_image_clothing)}>
                     Eliminar
                   </Button>
                 </div>
@@ -387,15 +386,6 @@ const ImageClothingPage = () => {
           )}
         </div>
       </div>
-
-      <ConfirmDialog
-        isOpen={showDeleteConfirm}
-        title="Eliminar Imagen"
-        message="¿Eliminar esta imagen permanentemente? Esta accion no se puede deshacer."
-        variant="danger"
-        onConfirm={handleDeleteImage}
-        onCancel={() => setShowDeleteConfirm(false)}
-      />
     </div>
   );
 };

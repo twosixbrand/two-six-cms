@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FiCloud, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../components/common/PageHeader';
-import { DataTable, Modal, FormField, Button, SearchInput, ConfirmDialog, LoadingSpinner } from '../components/ui';
+import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner } from '../components/ui';
 import * as seasonApi from '../services/seasonApi';
 import { logError } from '../services/errorApi';
 
@@ -16,10 +17,6 @@ const SeasonPage = () => {
   const [editing, setEditing] = useState<any>(null);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ name: '', description: '' });
-
-  // Delete confirm state
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState<any>(null);
 
   const fetchItems = async () => {
     try {
@@ -90,22 +87,24 @@ const SeasonPage = () => {
     }
   };
 
-  const confirmDelete = (row: any) => {
-    setDeleteTarget(row);
-    setShowDeleteConfirm(true);
-  };
-
-  const handleDelete = async () => {
-    if (!deleteTarget) return;
+  const handleDelete = async (row: any) => {
+    const result = await Swal.fire({
+      title: 'Eliminar Temporada',
+      text: `¿Estás seguro de que deseas eliminar la temporada "${row.name}"? Esta acción no se puede deshacer.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#f0b429',
+      cancelButtonColor: '#2a2a35',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    });
+    if (!result.isConfirmed) return;
     try {
-      await seasonApi.deleteSeason(deleteTarget.id);
-      setShowDeleteConfirm(false);
-      setDeleteTarget(null);
+      await seasonApi.deleteSeason(row.id);
       fetchItems();
     } catch (err: any) {
       logError(err, '/season');
-      setError('Error al eliminar la temporada.');
-      setShowDeleteConfirm(false);
+      await Swal.fire({ title: 'Error', text: 'Error al eliminar la temporada.', icon: 'error', confirmButtonColor: '#f0b429' });
     }
   };
 
@@ -136,7 +135,7 @@ const SeasonPage = () => {
           actions={(row) => (
             <>
               <Button variant="ghost" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)}>Editar</Button>
-              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => confirmDelete(row)}>Eliminar</Button>
+              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)}>Eliminar</Button>
             </>
           )}
         />
@@ -154,15 +153,6 @@ const SeasonPage = () => {
           </div>
         </form>
       </Modal>
-
-      <ConfirmDialog
-        isOpen={showDeleteConfirm}
-        title="Eliminar Temporada"
-        message={`¿Estás seguro de que deseas eliminar la temporada "${deleteTarget?.name}"? Esta acción no se puede deshacer.`}
-        variant="danger"
-        onConfirm={handleDelete}
-        onCancel={() => setShowDeleteConfirm(false)}
-      />
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FiPenTool, FiPlus, FiEdit2, FiTrash2, FiEye } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../components/common/PageHeader';
-import { DataTable, Modal, FormField, Button, SearchInput, ConfirmDialog, LoadingSpinner } from '../components/ui';
+import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner } from '../components/ui';
 import * as masterDesignApi from '../services/masterDesignApi';
 import * as clothingApi from '../services/clothingApi';
 import * as collectionApi from '../services/collectionApi';
@@ -26,10 +27,6 @@ const MasterDesignPage = () => {
     id_collection: '',
     file: null,
   });
-
-  // Delete confirm state
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState<any>(null);
 
   // Providers detail modal
   const [showProvidersModal, setShowProvidersModal] = useState(false);
@@ -145,23 +142,25 @@ const MasterDesignPage = () => {
     }
   };
 
-  const confirmDelete = (row: any) => {
-    setDeleteTarget(row);
-    setShowDeleteConfirm(true);
-  };
-
-  const handleDelete = async () => {
-    if (!deleteTarget) return;
+  const handleDelete = async (row: any) => {
+    const result = await Swal.fire({
+      title: 'Eliminar Diseño',
+      text: `¿Estas seguro de que deseas eliminar el diseño "${row.reference}"? Esta accion no se puede deshacer.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#f0b429',
+      cancelButtonColor: '#2a2a35',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    });
+    if (!result.isConfirmed) return;
     try {
       setError('');
-      await masterDesignApi.deleteMasterDesign(deleteTarget.id);
-      setShowDeleteConfirm(false);
-      setDeleteTarget(null);
+      await masterDesignApi.deleteMasterDesign(row.id);
       fetchData();
     } catch (err: any) {
       setError('Error al eliminar el diseno: ' + err.message);
       logError(err, '/master-design-delete');
-      setShowDeleteConfirm(false);
     }
   };
 
@@ -223,21 +222,21 @@ const MasterDesignPage = () => {
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
         <SearchInput value={search} onChange={setSearch} placeholder="Buscar por referencia, prenda o coleccion..." />
-        <Button variant="primary" icon={<FiPlus />} onClick={openCreateModal}>Crear Diseno</Button>
+        <Button variant="primary" icon={<FiPlus />} onClick={openCreateModal}>Crear Diseño</Button>
       </div>
 
       {loading ? (
-        <LoadingSpinner text="Cargando disenos..." />
+        <LoadingSpinner text="Cargando diseños..." />
       ) : (
         <DataTable
           columns={columns}
           data={filteredDesigns}
-          emptyMessage="No hay disenos maestros registrados"
+          emptyMessage="No hay diseños maestros registrados"
           actions={(row) => (
             <>
               <Button variant="ghost" size="sm" icon={<FiEye />} onClick={() => openProvidersModal(row)}>Proveedores</Button>
               <Button variant="ghost" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)}>Editar</Button>
-              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => confirmDelete(row)}>Eliminar</Button>
+              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)}>Eliminar</Button>
             </>
           )}
         />
@@ -348,10 +347,10 @@ const MasterDesignPage = () => {
       </Modal>
 
       {/* Providers Detail Modal */}
-      <Modal isOpen={showProvidersModal} onClose={() => setShowProvidersModal(false)} title="Proveedores del Diseno" size="md">
+      <Modal isOpen={showProvidersModal} onClose={() => setShowProvidersModal(false)} title="Proveedores del Diseño" size="md">
         {selectedProviders.length === 0 ? (
           <p style={{ color: '#a0a0b0', textAlign: 'center', padding: '1.5rem 0' }}>
-            No hay proveedores asignados a este diseno.
+            No hay proveedores asignados a este diseño.
           </p>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -374,15 +373,6 @@ const MasterDesignPage = () => {
           <Button variant="ghost" onClick={() => setShowProvidersModal(false)}>Cerrar</Button>
         </div>
       </Modal>
-
-      <ConfirmDialog
-        isOpen={showDeleteConfirm}
-        title="Eliminar Diseno"
-        message={`¿Estas seguro de que deseas eliminar el diseno "${deleteTarget?.reference}"? Esta accion no se puede deshacer.`}
-        variant="danger"
-        onConfirm={handleDelete}
-        onCancel={() => setShowDeleteConfirm(false)}
-      />
     </div>
   );
 };

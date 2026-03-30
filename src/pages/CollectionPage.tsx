@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FiArchive, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../components/common/PageHeader';
-import { DataTable, Modal, FormField, Button, SearchInput, ConfirmDialog, LoadingSpinner } from '../components/ui';
+import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner } from '../components/ui';
 import * as collectionApi from '../services/collectionApi';
 import * as seasonApi from '../services/seasonApi';
 import * as yearProductionApi from '../services/yearProductionApi';
@@ -20,10 +21,6 @@ const CollectionPage = () => {
   const [editing, setEditing] = useState<any>(null);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ name: '', description: '', seasonId: '', yearProductionId: '' });
-
-  // Delete confirm state
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState<any>(null);
 
   const fetchData = async () => {
     try {
@@ -112,22 +109,24 @@ const CollectionPage = () => {
     }
   };
 
-  const confirmDelete = (row: any) => {
-    setDeleteTarget(row);
-    setShowDeleteConfirm(true);
-  };
-
-  const handleDelete = async () => {
-    if (!deleteTarget) return;
+  const handleDelete = async (row: any) => {
+    const result = await Swal.fire({
+      title: 'Eliminar Colección',
+      text: `¿Estás seguro de que deseas eliminar la colección "${row.name}"? Esta acción no se puede deshacer.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#f0b429',
+      cancelButtonColor: '#2a2a35',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    });
+    if (!result.isConfirmed) return;
     try {
-      await collectionApi.deleteCollection(deleteTarget.id);
-      setShowDeleteConfirm(false);
-      setDeleteTarget(null);
+      await collectionApi.deleteCollection(row.id);
       fetchData();
     } catch (err: any) {
       logError(err, '/collection');
-      setError('Error al eliminar la colección.');
-      setShowDeleteConfirm(false);
+      await Swal.fire({ title: 'Error', text: 'Error al eliminar la colección.', icon: 'error', confirmButtonColor: '#f0b429' });
     }
   };
 
@@ -167,7 +166,7 @@ const CollectionPage = () => {
           actions={(row) => (
             <>
               <Button variant="ghost" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)}>Editar</Button>
-              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => confirmDelete(row)}>Eliminar</Button>
+              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)}>Eliminar</Button>
             </>
           )}
         />
@@ -205,15 +204,6 @@ const CollectionPage = () => {
           </div>
         </form>
       </Modal>
-
-      <ConfirmDialog
-        isOpen={showDeleteConfirm}
-        title="Eliminar Colección"
-        message={`¿Estás seguro de que deseas eliminar la colección "${deleteTarget?.name}"? Esta acción no se puede deshacer.`}
-        variant="danger"
-        onConfirm={handleDelete}
-        onCancel={() => setShowDeleteConfirm(false)}
-      />
     </div>
   );
 };

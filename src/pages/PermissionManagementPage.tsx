@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { FiShield, FiChevronDown, FiChevronRight, FiCheck, FiX } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../components/common/PageHeader';
-import { Button, LoadingSpinner, ConfirmDialog } from '../components/ui';
+import { Button, LoadingSpinner } from '../components/ui';
 import * as permissionApi from '../services/permissionApi';
 import * as roleApi from '../services/roleApi';
 import { logError } from '../services/errorApi';
@@ -52,7 +53,6 @@ const PermissionManagementPage = () => {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [showSaveConfirm, setShowSaveConfirm] = useState(false);
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -173,6 +173,18 @@ const PermissionManagementPage = () => {
   };
 
   const handleSave = async () => {
+    const swalResult = await Swal.fire({
+      title: 'Guardar permisos',
+      text: '¿Estás seguro de guardar los permisos para este rol?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#f0b429',
+      cancelButtonColor: '#2a2a35',
+      confirmButtonText: 'Guardar',
+      cancelButtonText: 'Cancelar',
+    });
+    if (!swalResult.isConfirmed) return;
+
     if (!selectedRoleId) return;
 
     try {
@@ -190,7 +202,6 @@ const PermissionManagementPage = () => {
       setError('Error al guardar los permisos.');
     } finally {
       setSaving(false);
-      setShowSaveConfirm(false);
     }
   };
 
@@ -339,7 +350,7 @@ const PermissionManagementPage = () => {
                 <div style={styles.saveContainer}>
                   <Button
                     variant="primary"
-                    onClick={() => setShowSaveConfirm(true)}
+                    onClick={handleSave}
                     loading={saving}
                     disabled={saving}
                   >
@@ -351,17 +362,6 @@ const PermissionManagementPage = () => {
           )}
         </div>
       </div>
-
-      <ConfirmDialog
-        isOpen={showSaveConfirm}
-        onConfirm={handleSave}
-        onCancel={() => setShowSaveConfirm(false)}
-        title="Guardar permisos"
-        message="¿Estás seguro de guardar los permisos para este rol?"
-        confirmText="Guardar"
-        cancelText="Cancelar"
-        variant="warning"
-      />
     </div>
   );
 };

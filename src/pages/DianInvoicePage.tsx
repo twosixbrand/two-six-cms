@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FiFileText, FiRefreshCcw, FiSend, FiDownload, FiEye, FiSearch } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../components/common/PageHeader';
-import { DataTable, Button, StatusBadge, LoadingSpinner, Modal, ConfirmDialog } from '../components/ui';
+import { DataTable, Button, StatusBadge, LoadingSpinner, Modal } from '../components/ui';
 import * as dianApi from '../services/dianApi';
 import { logError } from '../services/errorApi';
 
@@ -12,7 +13,6 @@ const DianInvoicePage = () => {
     const [statusModal, setStatusModal] = useState<any>(null);
     const [statusLoading, setStatusLoading] = useState(false);
     const [downloadingPdfId, setDownloadingPdfId] = useState<number | null>(null);
-    const [confirmTestInvoice, setConfirmTestInvoice] = useState(false);
 
     const fetchInvoices = async () => {
         try {
@@ -28,14 +28,23 @@ const DianInvoicePage = () => {
     };
 
     const handleTestInvoice = async () => {
+        const result = await Swal.fire({
+            title: 'Factura de Prueba',
+            text: '¿Seguro que deseas enviar una factura de prueba a la DIAN?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Sí, enviar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!result.isConfirmed) return;
         try {
             await dianApi.createDianInvoice({});
-            alert("Factura generada y enviada al Motor DIAN con éxito.");
+            await Swal.fire({ title: '¡Éxito!', text: 'Factura generada y enviada al Motor DIAN.', icon: 'success', confirmButtonColor: '#f0b429' });
             fetchInvoices();
         } catch (err: any) {
-            alert('Error generando factura: ' + (err.error || err.message || err));
-        } finally {
-            setConfirmTestInvoice(false);
+            await Swal.fire({ title: 'Error', text: err.error || err.message || 'Error generando factura', icon: 'error', confirmButtonColor: '#f0b429' });
         }
     };
 
@@ -136,7 +145,7 @@ const DianInvoicePage = () => {
                 <Button variant="primary" icon={<FiRefreshCcw />} onClick={fetchInvoices}>
                     Actualizar
                 </Button>
-                <Button variant="secondary" icon={<FiSend />} onClick={() => setConfirmTestInvoice(true)}>
+                <Button variant="secondary" icon={<FiSend />} onClick={handleTestInvoice}>
                     Generar Factura de Prueba
                 </Button>
             </div>
@@ -236,18 +245,6 @@ const DianInvoicePage = () => {
                     </>
                 )}
             </Modal>
-
-            {/* Confirm Test Invoice Dialog */}
-            <ConfirmDialog
-                isOpen={confirmTestInvoice}
-                onConfirm={handleTestInvoice}
-                onCancel={() => setConfirmTestInvoice(false)}
-                title="Factura de Prueba"
-                message="¿Seguro que deseas enviar una factura de prueba a la DIAN?"
-                confirmText="Sí, enviar"
-                cancelText="Cancelar"
-                variant="warning"
-            />
         </div>
     );
 };

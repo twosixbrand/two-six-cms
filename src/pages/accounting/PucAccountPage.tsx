@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FiBook, FiPlus, FiChevronRight, FiChevronDown, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
-import { Button, StatusBadge, LoadingSpinner, SearchInput, Modal, ConfirmDialog, FormField } from '../../components/ui';
+import { Button, StatusBadge, LoadingSpinner, SearchInput, Modal, FormField } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
 
@@ -27,7 +27,6 @@ const PucAccountPage = () => {
     const [editingAccount, setEditingAccount] = useState<Account | null>(null);
     const [form, setForm] = useState({ code: '', name: '', nature: 'D', parent_code: '', description: '' });
     const [saving, setSaving] = useState(false);
-    const [deleteConfirm, setDeleteConfirm] = useState<Account | null>(null);
 
     const fetchAccounts = async () => {
         try {
@@ -90,15 +89,23 @@ const PucAccountPage = () => {
         }
     };
 
-    const handleDelete = async () => {
-        if (!deleteConfirm) return;
+    const handleDelete = async (account: Account) => {
+        const result = await Swal.fire({
+            title: 'Eliminar cuenta',
+            text: `Eliminar la cuenta ${account.code} - ${account.name}?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!result.isConfirmed) return;
         try {
-            await accountingApi.deleteAccount(deleteConfirm.id);
+            await accountingApi.deleteAccount(account.id);
             fetchAccounts();
         } catch (err: any) {
             await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Error al eliminar', icon: 'error', confirmButtonColor: '#f0b429' });
-        } finally {
-            setDeleteConfirm(null);
         }
     };
 
@@ -175,7 +182,7 @@ const PucAccountPage = () => {
                                 variant="destructive"
                                 size="sm"
                                 icon={<FiTrash2 />}
-                                onClick={() => setDeleteConfirm(node)}
+                                onClick={() => handleDelete(node)}
                             >
                                 {''}
                             </Button>
@@ -315,18 +322,6 @@ const PucAccountPage = () => {
                     />
                 </div>
             </Modal>
-
-            {/* Delete confirm */}
-            <ConfirmDialog
-                isOpen={deleteConfirm !== null}
-                onConfirm={handleDelete}
-                onCancel={() => setDeleteConfirm(null)}
-                title="Eliminar cuenta"
-                message={deleteConfirm ? `Eliminar la cuenta ${deleteConfirm.code} - ${deleteConfirm.name}?` : ''}
-                confirmText="Eliminar"
-                cancelText="Cancelar"
-                variant="danger"
-            />
         </div>
     );
 };

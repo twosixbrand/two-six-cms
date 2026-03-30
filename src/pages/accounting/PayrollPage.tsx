@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FiUsers, FiCalendar, FiFileText, FiPlus, FiEdit2, FiPlay, FiCheckCircle, FiRefreshCcw, FiDownload } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
-import { DataTable, Button, StatusBadge, LoadingSpinner, Modal, ConfirmDialog } from '../../components/ui';
+import { DataTable, Button, StatusBadge, LoadingSpinner, Modal } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
 
@@ -318,10 +319,6 @@ const PayrollPage = () => {
     const [editingEmployee, setEditingEmployee] = useState<any>(null);
     const [showPeriodModal, setShowPeriodModal] = useState(false);
 
-    // Confirm dialogs
-    const [confirmCalc, setConfirmCalc] = useState<number | null>(null);
-    const [confirmApprove, setConfirmApprove] = useState<number | null>(null);
-
     const fetchEmployees = async () => {
         try {
             setLoading(true);
@@ -388,35 +385,53 @@ const PayrollPage = () => {
         }
     };
 
-    const handleCalculate = async () => {
-        if (!confirmCalc) return;
+    const handleCalculate = async (periodId: number) => {
+        const swalResult = await Swal.fire({
+            title: 'Calcular Nomina',
+            text: 'Se calculara la nomina para todos los empleados activos. Continuar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Calcular',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!swalResult.isConfirmed) return;
         try {
             setLoading(true);
             setError('');
-            const result = await accountingApi.calculatePayroll(confirmCalc);
+            const result = await accountingApi.calculatePayroll(periodId);
             setSuccess(`Nomina calculada: ${result.employee_count} empleados procesados.`);
             fetchPeriods();
         } catch (err: any) {
             setError(err.message || 'Error al calcular nomina.');
         } finally {
             setLoading(false);
-            setConfirmCalc(null);
         }
     };
 
-    const handleApprove = async () => {
-        if (!confirmApprove) return;
+    const handleApprove = async (periodId: number) => {
+        const swalResult = await Swal.fire({
+            title: 'Aprobar Nomina',
+            text: 'Aprobar la nomina generara asientos contables automaticos. Continuar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Aprobar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!swalResult.isConfirmed) return;
         try {
             setLoading(true);
             setError('');
-            await accountingApi.approvePayroll(confirmApprove);
+            await accountingApi.approvePayroll(periodId);
             setSuccess('Nomina aprobada y asientos contables generados.');
             fetchPeriods();
         } catch (err: any) {
             setError(err.message || 'Error al aprobar nomina.');
         } finally {
             setLoading(false);
-            setConfirmApprove(null);
         }
     };
 
@@ -635,12 +650,12 @@ const PayrollPage = () => {
                                     {''}
                                 </Button>
                                 {(p.status === 'DRAFT' || p.status === 'CALCULATED') && (
-                                    <Button variant="ghost" size="sm" icon={<FiPlay />} onClick={() => setConfirmCalc(p.id)} disabled={loading}>
+                                    <Button variant="ghost" size="sm" icon={<FiPlay />} onClick={() => handleCalculate(p.id)} disabled={loading}>
                                         Calcular
                                     </Button>
                                 )}
                                 {p.status === 'CALCULATED' && (
-                                    <Button variant="primary" size="sm" icon={<FiCheckCircle />} onClick={() => setConfirmApprove(p.id)} disabled={loading}>
+                                    <Button variant="primary" size="sm" icon={<FiCheckCircle />} onClick={() => handleApprove(p.id)} disabled={loading}>
                                         Aprobar
                                     </Button>
                                 )}
@@ -721,28 +736,6 @@ const PayrollPage = () => {
                 show={showPeriodModal}
                 onClose={() => setShowPeriodModal(false)}
                 onSave={handleSavePeriod}
-            />
-
-            {/* Confirm Dialogs */}
-            <ConfirmDialog
-                isOpen={confirmCalc !== null}
-                onConfirm={handleCalculate}
-                onCancel={() => setConfirmCalc(null)}
-                title="Calcular Nomina"
-                message="Se calculara la nomina para todos los empleados activos. Continuar?"
-                confirmText="Calcular"
-                cancelText="Cancelar"
-                variant="warning"
-            />
-            <ConfirmDialog
-                isOpen={confirmApprove !== null}
-                onConfirm={handleApprove}
-                onCancel={() => setConfirmApprove(null)}
-                title="Aprobar Nomina"
-                message="Aprobar la nomina generara asientos contables automaticos. Continuar?"
-                confirmText="Aprobar"
-                cancelText="Cancelar"
-                variant="warning"
             />
         </div>
     );

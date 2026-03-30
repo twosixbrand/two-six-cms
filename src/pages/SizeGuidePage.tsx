@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FiGrid, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../components/common/PageHeader';
-import { DataTable, Modal, FormField, Button, LoadingSpinner, ConfirmDialog } from '../components/ui';
+import { DataTable, Modal, FormField, Button, LoadingSpinner } from '../components/ui';
 import {
     getSizeGuides,
     createSizeGuide,
@@ -17,7 +18,6 @@ const SizeGuidePage = () => {
     const [showModal, setShowModal] = useState(false);
     const [editingItem, setEditingItem] = useState<any>(null);
     const [form, setForm] = useState({ size: '', width: '', length: '' });
-    const [deleteConfirm, setDeleteConfirm] = useState<{ open: boolean; id: number | null }>({ open: false, id: null });
 
     const fetchItems = async () => {
         try {
@@ -68,20 +68,24 @@ const SizeGuidePage = () => {
         }
     };
 
-    const handleDelete = (id: number) => {
-        setDeleteConfirm({ open: true, id });
-    };
-
-    const confirmDelete = async () => {
-        if (deleteConfirm.id === null) return;
+    const handleDelete = async (id: number) => {
+        const result = await Swal.fire({
+            title: 'Eliminar medida',
+            text: 'Estas seguro de eliminar esta medida?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!result.isConfirmed) return;
         try {
-            await deleteSizeGuide(deleteConfirm.id);
+            await deleteSizeGuide(id);
             fetchItems();
         } catch (err) {
             logError(err, '/size-guide');
             setError('No se pudo eliminar la medida.');
-        } finally {
-            setDeleteConfirm({ open: false, id: null });
         }
     };
 
@@ -147,17 +151,6 @@ const SizeGuidePage = () => {
                     <FormField label="Largo Total (cm)" name="length" type="text" value={form.length} onChange={handleChange} placeholder="Ej: 72" required />
                 </div>
             </Modal>
-
-            <ConfirmDialog
-                isOpen={deleteConfirm.open}
-                onConfirm={confirmDelete}
-                onCancel={() => setDeleteConfirm({ open: false, id: null })}
-                title="Eliminar medida"
-                message="Estas seguro de eliminar esta medida?"
-                confirmText="Eliminar"
-                cancelText="Cancelar"
-                variant="danger"
-            />
         </div>
     );
 };

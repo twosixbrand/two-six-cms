@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { FiTruck, FiPlus, FiEdit2, FiTrash2, FiPaperclip, FiUpload, FiEye, FiCheckCircle, FiCircle } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../components/common/PageHeader';
-import { DataTable, Modal, FormField, Button, SearchInput, ConfirmDialog, LoadingSpinner, StatusBadge } from '../components/ui';
+import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner, StatusBadge } from '../components/ui';
 import * as providerApi from '../services/providerApi';
 import { logError } from '../services/errorApi';
 
@@ -32,10 +33,6 @@ const ProviderPage = () => {
   const [editing, setEditing] = useState<any>(null);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ id: '', company_name: '', email: '', phone: '', account_number: '', account_type: '', bank_name: '' });
-
-  // Delete confirm state
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState<any>(null);
 
   // Document modal state
   const [showDocModal, setShowDocModal] = useState(false);
@@ -126,23 +123,25 @@ const ProviderPage = () => {
     }
   };
 
-  const confirmDelete = (row: any) => {
-    setDeleteTarget(row);
-    setShowDeleteConfirm(true);
-  };
-
-  const handleDelete = async () => {
-    if (!deleteTarget) return;
+  const handleDelete = async (row: any) => {
+    const result = await Swal.fire({
+      title: 'Eliminar Proveedor',
+      text: `¿Estas seguro de que deseas eliminar al proveedor "${row.company_name}"? Esta accion no se puede deshacer.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#f0b429',
+      cancelButtonColor: '#2a2a35',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    });
+    if (!result.isConfirmed) return;
     try {
       setError('');
-      await providerApi.deleteProvider(deleteTarget.id);
-      setShowDeleteConfirm(false);
-      setDeleteTarget(null);
+      await providerApi.deleteProvider(row.id);
       fetchItems();
     } catch (err: any) {
       setError('Error al eliminar el proveedor: ' + err.message);
       logError(err, '/provider-delete');
-      setShowDeleteConfirm(false);
     }
   };
 
@@ -243,7 +242,7 @@ const ProviderPage = () => {
             <>
               <Button variant="ghost" size="sm" icon={<FiPaperclip />} onClick={() => openDocModal(row)}>Docs</Button>
               <Button variant="ghost" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)}>Editar</Button>
-              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => confirmDelete(row)}>Eliminar</Button>
+              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)}>Eliminar</Button>
             </>
           )}
         />
@@ -344,15 +343,6 @@ const ProviderPage = () => {
           </div>
         )}
       </Modal>
-
-      <ConfirmDialog
-        isOpen={showDeleteConfirm}
-        title="Eliminar Proveedor"
-        message={`¿Estas seguro de que deseas eliminar al proveedor "${deleteTarget?.company_name}"? Esta accion no se puede deshacer.`}
-        variant="danger"
-        onConfirm={handleDelete}
-        onCancel={() => setShowDeleteConfirm(false)}
-      />
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { FiLink, FiPlus, FiTrash2 } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../components/common/PageHeader';
-import { DataTable, Modal, FormField, Button, SearchInput, ConfirmDialog, LoadingSpinner } from '../components/ui';
+import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner } from '../components/ui';
 import * as userRoleApi from '../services/userRoleApi';
 import * as userApi from '../services/userApi';
 import * as roleApi from '../services/roleApi';
@@ -19,10 +20,6 @@ const UserRolePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ id_user_app: '', id_role: '' });
-
-  // Delete confirm state
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState<any>(null);
 
   const fetchData = useCallback(async () => {
     try {
@@ -94,23 +91,25 @@ const UserRolePage = () => {
     }
   };
 
-  const confirmDelete = (row: any) => {
-    setDeleteTarget(row);
-    setShowDeleteConfirm(true);
-  };
-
-  const handleDelete = async () => {
-    if (!deleteTarget) return;
+  const handleDelete = async (row: any) => {
+    const result = await Swal.fire({
+      title: 'Eliminar Asignacion',
+      text: `¿Estas seguro de que deseas eliminar la asignacion del rol "${row.role?.name}" al usuario "${row.user?.name}"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#f0b429',
+      cancelButtonColor: '#2a2a35',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    });
+    if (!result.isConfirmed) return;
     try {
       setError('');
-      await userRoleApi.deleteUserRole(deleteTarget.id);
-      setShowDeleteConfirm(false);
-      setDeleteTarget(null);
+      await userRoleApi.deleteUserRole(row.id);
       fetchData();
     } catch (err: any) {
       setError('Error al eliminar la asignacion: ' + err.message);
       logError(err, '/user-role-delete');
-      setShowDeleteConfirm(false);
     }
   };
 
@@ -160,7 +159,7 @@ const UserRolePage = () => {
           data={filteredAssignments}
           emptyMessage="No hay asignaciones de roles registradas"
           actions={(row) => (
-            <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => confirmDelete(row)}>Eliminar</Button>
+            <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)}>Eliminar</Button>
           )}
         />
       )}
@@ -195,15 +194,6 @@ const UserRolePage = () => {
           </div>
         </form>
       </Modal>
-
-      <ConfirmDialog
-        isOpen={showDeleteConfirm}
-        title="Eliminar Asignacion"
-        message={`¿Estas seguro de que deseas eliminar la asignacion del rol "${deleteTarget?.role?.name}" al usuario "${deleteTarget?.user?.name}"?`}
-        variant="danger"
-        onConfirm={handleDelete}
-        onCancel={() => setShowDeleteConfirm(false)}
-      />
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { FiBriefcase, FiPlus, FiTrash2 } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../components/common/PageHeader';
-import { DataTable, Modal, FormField, Button, SearchInput, ConfirmDialog, LoadingSpinner } from '../components/ui';
+import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner } from '../components/ui';
 import * as designProviderApi from '../services/designProviderApi';
 import * as masterDesignApi from '../services/masterDesignApi';
 import * as providerApi from '../services/providerApi';
@@ -19,10 +20,6 @@ const DesignProviderPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ id_master_design: '', id_provider: '' });
-
-  // Delete confirm state
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState<any>(null);
 
   const fetchData = useCallback(async () => {
     try {
@@ -89,23 +86,25 @@ const DesignProviderPage = () => {
     }
   };
 
-  const confirmDelete = (row: any) => {
-    setDeleteTarget(row);
-    setShowDeleteConfirm(true);
-  };
-
-  const handleDelete = async () => {
-    if (!deleteTarget) return;
+  const handleDelete = async (row: any) => {
+    const result = await Swal.fire({
+      title: 'Eliminar Asignacion',
+      text: `¿Estas seguro de que deseas eliminar la asignacion del proveedor "${row.provider?.company_name}" al  "${row.masterDesign?.reference}"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#f0b429',
+      cancelButtonColor: '#2a2a35',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    });
+    if (!result.isConfirmed) return;
     try {
       setError('');
-      await designProviderApi.deleteDesignProvider(deleteTarget.id);
-      setShowDeleteConfirm(false);
-      setDeleteTarget(null);
+      await designProviderApi.deleteDesignProvider(row.id);
       fetchData();
     } catch (err: any) {
       setError('Error al eliminar asignacion: ' + err.message);
       logError(err, '/design-provider-delete');
-      setShowDeleteConfirm(false);
     }
   };
 
@@ -113,7 +112,7 @@ const DesignProviderPage = () => {
     { key: 'id', header: 'ID', width: '70px' },
     {
       key: 'masterDesign',
-      header: 'Diseno (Referencia)',
+      header: 'Diseño (Referencia)',
       render: (_: any, row: any) => row.masterDesign?.reference || 'N/A',
     },
     {
@@ -128,7 +127,7 @@ const DesignProviderPage = () => {
 
   return (
     <div className="page-container">
-      <PageHeader title="Asignacion Diseno-Proveedor" icon={<FiBriefcase />} />
+      <PageHeader title="Asignacion Diseño-Proveedor" icon={<FiBriefcase />} />
 
       {error && <p className="error-message">{error}</p>}
 
@@ -145,12 +144,12 @@ const DesignProviderPage = () => {
           data={filteredAssignments}
           emptyMessage="No hay asignaciones registradas"
           actions={(row) => (
-            <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => confirmDelete(row)}>Eliminar</Button>
+            <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)}>Eliminar</Button>
           )}
         />
       )}
 
-      <Modal isOpen={showModal} onClose={closeModal} title="Asignar Proveedor a Diseno" size="md">
+      <Modal isOpen={showModal} onClose={closeModal} title="Asignar Proveedor a Diseño" size="md">
         <form onSubmit={handleSubmit}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <FormField
@@ -180,15 +179,6 @@ const DesignProviderPage = () => {
           </div>
         </form>
       </Modal>
-
-      <ConfirmDialog
-        isOpen={showDeleteConfirm}
-        title="Eliminar Asignacion"
-        message={`¿Estas seguro de que deseas eliminar la asignacion del proveedor "${deleteTarget?.provider?.company_name}" al diseno "${deleteTarget?.masterDesign?.reference}"?`}
-        variant="danger"
-        onConfirm={handleDelete}
-        onCancel={() => setShowDeleteConfirm(false)}
-      />
     </div>
   );
 };

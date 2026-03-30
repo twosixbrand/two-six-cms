@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FiFileText, FiRefreshCcw, FiDownload, FiTrash2, FiZap } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
-import { DataTable, Button, StatusBadge, LoadingSpinner, ConfirmDialog } from '../../components/ui';
+import { DataTable, Button, StatusBadge, LoadingSpinner } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
 import { getProviders } from '../../services/providerApi';
 import { logError } from '../../services/errorApi';
@@ -21,10 +21,6 @@ const WithholdingCertificatePage = () => {
     const [concept, setConcept] = useState('');
 
     const yearOptions = Array.from({ length: 7 }, (_, i) => currentYear - i);
-
-    // Confirm dialogs
-    const [confirmGenerate, setConfirmGenerate] = useState(false);
-    const [confirmDelete, setConfirmDelete] = useState<number | null>(null);
 
     const fetchData = async () => {
         try {
@@ -63,6 +59,17 @@ const WithholdingCertificatePage = () => {
             await Swal.fire({ title: 'Atención', text: 'Seleccione un año para generar los certificados.', icon: 'warning', confirmButtonColor: '#f0b429' });
             return;
         }
+        const swalResult = await Swal.fire({
+            title: 'Generar certificados',
+            text: `¿Generar certificados de retención para el año ${year}? Esto reemplazará los certificados existentes de ese año.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Generar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!swalResult.isConfirmed) return;
         try {
             setGenerating(true);
             setError('');
@@ -74,7 +81,6 @@ const WithholdingCertificatePage = () => {
             setError('Error al generar certificados: ' + (err.message || err));
         } finally {
             setGenerating(false);
-            setConfirmGenerate(false);
         }
     };
 
@@ -94,15 +100,23 @@ const WithholdingCertificatePage = () => {
         }
     };
 
-    const handleDelete = async () => {
-        if (confirmDelete === null) return;
+    const handleDelete = async (id: number) => {
+        const result = await Swal.fire({
+            title: 'Eliminar certificado',
+            text: '¿Eliminar este certificado?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!result.isConfirmed) return;
         try {
-            await accountingApi.deleteWithholdingCertificate(confirmDelete);
+            await accountingApi.deleteWithholdingCertificate(id);
             fetchData();
         } catch (err: any) {
             await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Error al eliminar', icon: 'error', confirmButtonColor: '#f0b429' });
-        } finally {
-            setConfirmDelete(null);
         }
     };
 
@@ -211,7 +225,7 @@ const WithholdingCertificatePage = () => {
                 <Button
                     variant="secondary"
                     icon={<FiZap />}
-                    onClick={() => setConfirmGenerate(true)}
+                    onClick={handleGenerate}
                     loading={generating}
                     disabled={generating}
                 >
@@ -245,34 +259,12 @@ const WithholdingCertificatePage = () => {
                             variant="destructive"
                             size="sm"
                             icon={<FiTrash2 />}
-                            onClick={() => setConfirmDelete(cert.id)}
+                            onClick={() => handleDelete(cert.id)}
                         >
                             {''}
                         </Button>
                     </>
                 )}
-            />
-
-            <ConfirmDialog
-                isOpen={confirmGenerate}
-                onConfirm={handleGenerate}
-                onCancel={() => setConfirmGenerate(false)}
-                title="Generar certificados"
-                message={`¿Generar certificados de retención para el año ${year}? Esto reemplazará los certificados existentes de ese año.`}
-                confirmText="Generar"
-                cancelText="Cancelar"
-                variant="warning"
-            />
-
-            <ConfirmDialog
-                isOpen={confirmDelete !== null}
-                onConfirm={handleDelete}
-                onCancel={() => setConfirmDelete(null)}
-                title="Eliminar certificado"
-                message="¿Eliminar este certificado?"
-                confirmText="Eliminar"
-                cancelText="Cancelar"
-                variant="danger"
             />
         </div>
     );
