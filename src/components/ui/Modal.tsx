@@ -73,7 +73,8 @@ const Modal: React.FC<ModalProps> = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: 'rgba(0, 0, 0, 0.4)',
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          backdropFilter: 'blur(4px)',
           animation: 'ts-modal-overlay-in 0.15s ease',
           padding: '1rem',
         }}
@@ -86,10 +87,10 @@ const Modal: React.FC<ModalProps> = ({
             maxHeight: '90vh',
             display: 'flex',
             flexDirection: 'column',
-            backgroundColor: '#ffffff',
+            backgroundColor: '#1a1a24',
             borderRadius: 16,
-            border: '1px solid #e5e7eb',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.12)',
+            border: '1px solid #2a2a35',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(240, 180, 41, 0.03)',
             animation: 'ts-modal-slide-in 0.2s ease',
             overflow: 'hidden',
           }}
@@ -101,7 +102,7 @@ const Modal: React.FC<ModalProps> = ({
               alignItems: 'center',
               justifyContent: 'space-between',
               padding: '1rem 1.5rem',
-              borderBottom: '1px solid #e5e7eb',
+              borderBottom: '1px solid #2a2a35',
             }}
           >
             <h2
@@ -109,7 +110,7 @@ const Modal: React.FC<ModalProps> = ({
                 margin: 0,
                 fontSize: '1.05rem',
                 fontWeight: 600,
-                color: '#111827',
+                color: '#f1f1f3',
                 fontFamily: 'Inter, sans-serif',
               }}
             >
@@ -126,7 +127,7 @@ const Modal: React.FC<ModalProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#9ca3af',
+                color: '#6b6b7b',
                 borderRadius: 6,
                 width: 30,
                 height: 30,
@@ -134,12 +135,12 @@ const Modal: React.FC<ModalProps> = ({
                 transition: 'background 0.15s ease, color 0.15s ease',
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = '#f3f4f6';
-                (e.currentTarget as HTMLElement).style.color = '#111827';
+                (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.06)';
+                (e.currentTarget as HTMLElement).style.color = '#f1f1f3';
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.background = 'none';
-                (e.currentTarget as HTMLElement).style.color = '#9ca3af';
+                (e.currentTarget as HTMLElement).style.color = '#6b6b7b';
               }}
               aria-label="Cerrar"
             >
@@ -167,7 +168,7 @@ const Modal: React.FC<ModalProps> = ({
                 justifyContent: 'flex-end',
                 gap: '0.5rem',
                 padding: '0.75rem 1.5rem',
-                borderTop: '1px solid #e5e7eb',
+                borderTop: '1px solid #2a2a35',
               }}
             >
               {footer}

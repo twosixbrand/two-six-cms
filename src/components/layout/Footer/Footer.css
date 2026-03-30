@@ -1,8 +1,8 @@
-/* Footer — Minimal one-line */
+/* Footer — Dark Premium (V2) */
 
 .footer {
-  background-color: #f9fafb;
-  border-top: 1px solid #e5e7eb;
+  background-color: #0a0a0f;
+  border-top: 1px solid #2a2a35;
   padding: 0.75rem 2rem;
   margin-top: auto;
   position: relative;
@@ -19,12 +19,12 @@
 
 .footer-copyright {
   font-size: 0.75rem;
-  color: #9ca3af;
+  color: #6b6b7b;
   font-weight: 400;
 }
 
 .footer-version {
   font-size: 0.7rem;
-  color: #d1d5db;
+  color: #3a3a48;
   font-weight: 500;
 }

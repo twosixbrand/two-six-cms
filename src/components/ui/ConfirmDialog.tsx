@@ -14,9 +14,9 @@ interface ConfirmDialogProps {
 }
 
 const variantConfig: Record<string, { color: string; bg: string; icon: string }> = {
-  danger: { color: '#ef4444', bg: 'rgba(239, 68, 68, 0.08)', icon: '!' },
-  warning: { color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.08)', icon: '!' },
-  info: { color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.08)', icon: 'i' },
+  danger: { color: '#f87171', bg: 'rgba(248, 113, 113, 0.1)', icon: '!' },
+  warning: { color: '#fbbf24', bg: 'rgba(251, 191, 36, 0.1)', icon: '!' },
+  info: { color: '#60a5fa', bg: 'rgba(96, 165, 250, 0.1)', icon: 'i' },
 };
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
@@ -71,7 +71,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             margin: 0,
             fontSize: '0.875rem',
             lineHeight: 1.6,
-            color: '#6b7280',
+            color: '#a0a0b0',
             fontFamily: 'Inter, sans-serif',
           }}
         >

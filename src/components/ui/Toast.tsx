@@ -24,20 +24,23 @@ export function useToast(): ToastContextValue {
   return ctx;
 }
 
-const typeStyles: Record<ToastType, { bg: string; color: string; icon: string }> = {
+const typeStyles: Record<ToastType, { bg: string; border: string; color: string; icon: string }> = {
   success: {
-    bg: '#f0fdf4',
-    color: '#059669',
+    bg: '#1a1a24',
+    border: '#34d399',
+    color: '#34d399',
     icon: '\u2713',
   },
   error: {
-    bg: '#fef2f2',
-    color: '#dc2626',
+    bg: '#1a1a24',
+    border: '#f87171',
+    color: '#f87171',
     icon: '\u2715',
   },
   info: {
-    bg: '#eff6ff',
-    color: '#2563eb',
+    bg: '#1a1a24',
+    border: '#60a5fa',
+    color: '#60a5fa',
     icon: 'i',
   },
 };
@@ -76,10 +79,13 @@ const ToastItemComponent: React.FC<{ toast: ToastItem; onRemove: (id: number) =>
         alignItems: 'center',
         gap: '0.6rem',
         padding: '0.65rem 1rem',
-        backgroundColor: '#ffffff',
-        border: '1px solid #e5e7eb',
+        backgroundColor: style.bg,
+        borderLeft: `3px solid ${style.border}`,
+        border: '1px solid #2a2a35',
+        borderLeftColor: style.border,
+        borderLeftWidth: 3,
         borderRadius: 10,
-        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
+        boxShadow: '0 4px 24px rgba(0, 0, 0, 0.4)',
         fontFamily: 'Inter, sans-serif',
         animation: exiting ? 'ts-toast-out 0.3s ease forwards' : 'ts-toast-in 0.25s ease',
         minWidth: 260,
@@ -92,7 +98,7 @@ const ToastItemComponent: React.FC<{ toast: ToastItem; onRemove: (id: number) =>
           height: 24,
           minWidth: 24,
           borderRadius: '50%',
-          backgroundColor: style.bg,
+          backgroundColor: `${style.border}15`,
           color: style.color,
           display: 'flex',
           alignItems: 'center',
@@ -103,7 +109,7 @@ const ToastItemComponent: React.FC<{ toast: ToastItem; onRemove: (id: number) =>
       >
         {style.icon}
       </div>
-      <span style={{ flex: 1, fontSize: '0.8125rem', color: '#111827', lineHeight: 1.4 }}>
+      <span style={{ flex: 1, fontSize: '0.8125rem', color: '#f1f1f3', lineHeight: 1.4 }}>
         {toast.message}
       </span>
       <button
@@ -117,7 +123,7 @@ const ToastItemComponent: React.FC<{ toast: ToastItem; onRemove: (id: number) =>
           border: 'none',
           cursor: 'pointer',
           padding: 2,
-          color: '#9ca3af',
+          color: '#6b6b7b',
           fontSize: '0.75rem',
           lineHeight: 1,
           display: 'flex',

@@ -19,29 +19,29 @@ const sizeStyles: Record<string, React.CSSProperties> = {
 
 const variantBaseStyles: Record<string, React.CSSProperties> = {
   primary: {
-    background: '#d4af37',
-    color: '#ffffff',
-    border: '1px solid #d4af37',
+    background: '#f0b429',
+    color: '#0a0a0f',
+    border: '1px solid #f0b429',
   },
   secondary: {
-    background: '#ffffff',
-    color: '#111827',
-    border: '1px solid #e5e7eb',
+    background: 'transparent',
+    color: '#f1f1f3',
+    border: '1px solid #2a2a35',
   },
   destructive: {
-    background: 'transparent',
-    color: '#ef4444',
-    border: '1px solid rgba(239, 68, 68, 0.3)',
+    background: 'rgba(248, 113, 113, 0.1)',
+    color: '#f87171',
+    border: '1px solid rgba(248, 113, 113, 0.2)',
   },
   ghost: {
     background: 'transparent',
-    color: '#6b7280',
+    color: '#a0a0b0',
     border: '1px solid transparent',
   },
   outline: {
     background: 'transparent',
-    color: '#d4af37',
-    border: '1px solid #e5e7eb',
+    color: '#f0b429',
+    border: '1px solid #2a2a35',
   },
 };
 
@@ -83,21 +83,23 @@ const Button: React.FC<ButtonProps> = ({
 
   if (hovered && !disabled && !loading) {
     if (variant === 'primary') {
-      base.background = '#b8960f';
-      base.borderColor = '#b8960f';
+      base.background = '#d99e1e';
+      base.borderColor = '#d99e1e';
+      base.boxShadow = '0 0 16px rgba(240, 180, 41, 0.25)';
     } else if (variant === 'secondary') {
-      base.background = '#f9fafb';
-      base.borderColor = '#d1d5db';
+      base.background = 'rgba(255, 255, 255, 0.05)';
+      base.borderColor = '#3a3a48';
     } else if (variant === 'destructive') {
-      base.background = '#ef4444';
+      base.background = '#f87171';
       base.color = '#ffffff';
-      base.borderColor = '#ef4444';
+      base.borderColor = '#f87171';
+      base.boxShadow = '0 0 12px rgba(248, 113, 113, 0.3)';
     } else if (variant === 'ghost') {
-      base.background = '#f3f4f6';
-      base.color = '#111827';
+      base.background = 'rgba(255, 255, 255, 0.06)';
+      base.color = '#f1f1f3';
     } else if (variant === 'outline') {
-      base.background = '#f9fafb';
-      base.borderColor = '#d1d5db';
+      base.background = 'rgba(240, 180, 41, 0.08)';
+      base.borderColor = 'rgba(240, 180, 41, 0.3)';
     }
   }
 

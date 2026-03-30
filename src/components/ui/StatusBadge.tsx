@@ -7,12 +7,12 @@ interface StatusBadgeProps {
 }
 
 const variantStyles: Record<string, { bg: string; color: string }> = {
-  success: { bg: 'rgba(16, 185, 129, 0.1)', color: '#059669' },
-  warning: { bg: 'rgba(245, 158, 11, 0.1)', color: '#d97706' },
-  error: { bg: 'rgba(239, 68, 68, 0.1)', color: '#dc2626' },
-  info: { bg: 'rgba(59, 130, 246, 0.1)', color: '#2563eb' },
-  neutral: { bg: '#f3f4f6', color: '#6b7280' },
-  gold: { bg: 'rgba(212, 175, 55, 0.1)', color: '#b8960f' },
+  success: { bg: '#0d3b2e', color: '#34d399' },
+  warning: { bg: '#3b2f0a', color: '#fbbf24' },
+  error: { bg: '#3b1515', color: '#f87171' },
+  info: { bg: '#1a2744', color: '#60a5fa' },
+  neutral: { bg: '#1f1f2a', color: '#a0a0b0' },
+  gold: { bg: 'rgba(240, 180, 41, 0.12)', color: '#f0b429' },
 };
 
 const statusVariantMap: Record<string, string> = {

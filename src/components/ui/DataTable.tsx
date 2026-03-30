@@ -52,11 +52,11 @@ const DataTable: React.FC<DataTableProps> = ({
     fontWeight: 500,
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
-    color: '#6b7280',
-    borderBottom: '1px solid #e5e7eb',
+    color: '#6b6b7b',
+    borderBottom: '1px solid #2a2a35',
     fontFamily: 'Inter, sans-serif',
     whiteSpace: 'nowrap',
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#1f1f2a',
     width: (col as Column).width || undefined,
   });
 
@@ -64,10 +64,10 @@ const DataTable: React.FC<DataTableProps> = ({
     padding: '0.65rem 1rem',
     textAlign: (col.align as any) || 'left',
     fontSize: '0.8125rem',
-    color: '#111827',
+    color: '#f1f1f3',
     fontFamily: 'Inter, sans-serif',
-    borderBottom: '1px solid #f3f4f6',
-    backgroundColor: hoveredRow === rowIdx ? '#f9fafb' : '#ffffff',
+    borderBottom: '1px solid #1f1f2a',
+    backgroundColor: hoveredRow === rowIdx ? 'rgba(255, 255, 255, 0.03)' : '#1a1a24',
     transition: 'background-color 0.1s ease',
   });
 
@@ -76,8 +76,8 @@ const DataTable: React.FC<DataTableProps> = ({
       style={{
         overflowX: 'auto',
         borderRadius: 8,
-        backgroundColor: '#ffffff',
-        border: '1px solid #e5e7eb',
+        backgroundColor: '#1a1a24',
+        border: '1px solid #2a2a35',
       }}
     >
       <table

@@ -35,14 +35,14 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 'md', text }) =>
         style={{
           width: dim,
           height: dim,
-          border: `${bw}px solid #e5e7eb`,
-          borderTopColor: '#d4af37',
+          border: `${bw}px solid #2a2a35`,
+          borderTopColor: '#f0b429',
           borderRadius: '50%',
           animation: 'ts-spinner-rotate 0.7s linear infinite',
         }}
       />
       {text && (
-        <span style={{ fontSize: size === 'sm' ? '0.72rem' : '0.8125rem', color: '#6b7280', fontFamily: 'Inter, sans-serif' }}>
+        <span style={{ fontSize: size === 'sm' ? '0.72rem' : '0.8125rem', color: '#a0a0b0', fontFamily: 'Inter, sans-serif' }}>
           {text}
         </span>
       )}

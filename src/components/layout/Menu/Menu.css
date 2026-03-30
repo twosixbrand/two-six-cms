@@ -1,18 +1,18 @@
-/* Sidebar — Modern Dark */
+/* Sidebar — Dark Premium (V2) */
 
 .navbar {
   position: fixed;
   top: 56px;
   left: 0;
   height: calc(100vh - 56px);
-  background: #111827;
+  background: #08080d;
   display: flex;
   flex-direction: column;
   z-index: 1000;
   transition: transform 0.25s ease;
   width: 260px;
   transform: translateX(0);
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .navbar.closed {
@@ -29,7 +29,7 @@
 /* Sidebar Brand */
 .sidebar-brand {
   padding: 1.25rem 1.5rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   flex-shrink: 0;
 }
 
@@ -57,21 +57,21 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.6rem 1.5rem;
-  color: #9ca3af;
+  color: #f0b429;
   cursor: pointer;
   transition: color 0.15s ease, background-color 0.15s ease;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 1px;
   white-space: nowrap;
   gap: 0.5rem;
   margin-top: 0.5rem;
 }
 
 .menu-title:hover {
-  color: #e5e7eb;
-  background-color: rgba(255, 255, 255, 0.04);
+  color: #fbbf24;
+  background-color: rgba(240, 180, 41, 0.04);
 }
 
 .menu-title-text {
@@ -97,9 +97,9 @@
   display: flex;
   align-items: center;
   padding: 0.5rem 1.5rem 0.5rem 2rem;
-  color: #9ca3af;
+  color: #a0a0b0;
   text-decoration: none;
-  transition: color 0.15s ease, background-color 0.15s ease;
+  transition: color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
   font-size: 0.8125rem;
   font-weight: 400;
   white-space: nowrap;
@@ -107,22 +107,24 @@
 }
 
 .dropdown-link:hover {
-  color: #e5e7eb;
+  color: #f1f1f3;
   background-color: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.01);
 }
 
 .dropdown-link.active {
-  color: #d4af37;
+  color: #f0b429;
   font-weight: 500;
-  border-left-color: #d4af37;
-  background-color: rgba(212, 175, 55, 0.06);
+  border-left-color: #f0b429;
+  background-color: rgba(240, 180, 41, 0.06);
+  box-shadow: inset 0 0 30px rgba(240, 180, 41, 0.03);
 }
 
 /* Arrow */
 .subnav-arrow {
   transition: transform 0.2s ease;
   font-size: 0.65rem;
-  color: #6b7280;
+  color: #6b6b7b;
   flex-shrink: 0;
 }
 
@@ -133,7 +135,7 @@
 /* Footer */
 .menu-footer {
   padding: 0.75rem 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
   flex-shrink: 0;
 }
 
@@ -145,7 +147,7 @@
   width: 100%;
   padding: 0.6rem;
   background-color: transparent;
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(248, 113, 113, 0.15);
   color: #f87171;
   text-align: center;
   border-radius: 8px;
@@ -157,9 +159,10 @@
 }
 
 .nav-links-button:hover {
-  background-color: rgba(239, 68, 68, 0.1);
-  border-color: rgba(239, 68, 68, 0.4);
+  background-color: rgba(248, 113, 113, 0.08);
+  border-color: rgba(248, 113, 113, 0.3);
   color: #fca5a5;
+  box-shadow: 0 0 12px rgba(248, 113, 113, 0.08);
 }
 
 .nav-links-button:active {

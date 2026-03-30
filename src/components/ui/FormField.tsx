@@ -32,7 +32,7 @@ const FormField: React.FC<FormFieldProps> = ({
   const labelStyle: React.CSSProperties = {
     fontSize: '0.8rem',
     fontWeight: 500,
-    color: '#6b7280',
+    color: '#a0a0b0',
     marginBottom: '0.3rem',
     display: 'block',
     fontFamily: 'Inter, sans-serif',
@@ -41,22 +41,22 @@ const FormField: React.FC<FormFieldProps> = ({
   const inputBase: React.CSSProperties = {
     width: '100%',
     padding: '0.55rem 0.75rem',
-    backgroundColor: disabled ? '#f9fafb' : '#ffffff',
+    backgroundColor: disabled ? '#12121a' : '#1a1a24',
     border: error
-      ? '1px solid #ef4444'
+      ? '1px solid #f87171'
       : focused
-        ? '1px solid #d4af37'
-        : '1px solid #e5e7eb',
+        ? '1px solid #f0b429'
+        : '1px solid #2a2a35',
     borderRadius: 8,
-    color: disabled ? '#9ca3af' : '#111827',
+    color: disabled ? '#6b6b7b' : '#f1f1f3',
     fontFamily: 'Inter, sans-serif',
     fontSize: '0.875rem',
     transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
     outline: 'none',
     boxShadow: focused
       ? error
-        ? '0 0 0 2px rgba(239, 68, 68, 0.12)'
-        : '0 0 0 2px rgba(212, 175, 55, 0.12)'
+        ? '0 0 0 2px rgba(248, 113, 113, 0.15)'
+        : '0 0 0 2px rgba(240, 180, 41, 0.15), 0 0 12px rgba(240, 180, 41, 0.08)'
       : 'none',
     cursor: disabled ? 'not-allowed' : undefined,
     boxSizing: 'border-box' as const,
@@ -65,7 +65,7 @@ const FormField: React.FC<FormFieldProps> = ({
 
   const errorStyle: React.CSSProperties = {
     fontSize: '0.75rem',
-    color: '#ef4444',
+    color: '#f87171',
     marginTop: '0.25rem',
     fontFamily: 'Inter, sans-serif',
   };
@@ -131,7 +131,7 @@ const FormField: React.FC<FormFieldProps> = ({
     <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
       <label htmlFor={name} style={labelStyle}>
         {label}
-        {required && <span style={{ color: '#ef4444', marginLeft: 2 }}>*</span>}
+        {required && <span style={{ color: '#f87171', marginLeft: 2 }}>*</span>}
       </label>
       {input}
       {error && <span style={errorStyle}>{error}</span>}
