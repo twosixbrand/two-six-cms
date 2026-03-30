@@ -18,64 +18,64 @@ const homeSections = [
     title: 'Admin Prendas',
     icon: <FiLayers />,
     items: [
-      { path: '/clothing', icon: <FaTshirt />, title: 'Clothing', desc: 'Gestión de inventario de prendas, tallas y stock.' },
-      { path: '/master-design', icon: <FaPaintBrush />, title: 'Design', desc: 'Creación y gestión de diseños maestros.' },
-      { path: '/clothing-color', icon: <FaPalette />, title: 'Clothing Color', desc: 'Gestión de variaciones específicas (color/talla).' },
-      { path: '/image-clothing', icon: <FaImage />, title: 'Image Clothing', desc: 'Gestión de imágenes para variantes de prendas.' },
-      { path: '/product', icon: <FaBoxOpen />, title: 'Product', desc: 'Gestión de productos finales para la venta.' },
-      { path: '/stock', icon: <FaWarehouse />, title: 'Stock', desc: 'Gestión de niveles de inventario.' },
+      { path: '/clothing', icon: <FaTshirt />, title: 'Clothing', desc: 'Gestion de inventario de prendas, tallas y stock.' },
+      { path: '/master-design', icon: <FaPaintBrush />, title: 'Design', desc: 'Creacion y gestion de disenos maestros.' },
+      { path: '/clothing-color', icon: <FaPalette />, title: 'Clothing Color', desc: 'Gestion de variaciones especificas (color/talla).' },
+      { path: '/image-clothing', icon: <FaImage />, title: 'Image Clothing', desc: 'Gestion de imagenes para variantes de prendas.' },
+      { path: '/product', icon: <FaBoxOpen />, title: 'Product', desc: 'Gestion de productos finales para la venta.' },
+      { path: '/stock', icon: <FaWarehouse />, title: 'Stock', desc: 'Gestion de niveles de inventario.' },
     ]
   },
   {
     title: 'Reports',
     icon: <FiBarChart2 />,
     items: [
-      { path: '/order', icon: <FaShoppingCart />, title: 'Pedidos', desc: 'Visualización y seguimiento de pedidos cliente.' },
+      { path: '/order', icon: <FaShoppingCart />, title: 'Pedidos', desc: 'Visualizacion y seguimiento de pedidos cliente.' },
       { path: '/reports/sales/general', icon: <FaChartLine />, title: 'General Sales', desc: 'Reporte general de ventas del sistema.' },
-      { path: '/dian-invoices', icon: <FaFileInvoiceDollar />, title: 'Facturación DIAN', desc: 'Gestión y emisión de facturas electrónicas.' },
-      { path: '/reports/pickup-dashboard', icon: <FaBoxOpen />, title: 'Retiros en Tienda', desc: 'Tablero para gestión de pedidos a entregar en punto físico.' },
+      { path: '/dian-invoices', icon: <FaFileInvoiceDollar />, title: 'Facturacion DIAN', desc: 'Gestion y emision de facturas electronicas.' },
+      { path: '/reports/pickup-dashboard', icon: <FaBoxOpen />, title: 'Retiros en Tienda', desc: 'Tablero para gestion de pedidos a entregar en punto fisico.' },
     ]
   },
   {
-    title: 'Atención Cliente',
+    title: 'Atencion Cliente',
     icon: <FiUsers />,
     items: [
-      { path: '/pqr', icon: <FaEnvelope />, title: 'Gestión PQR', desc: 'Administración de Peticiones, Quejas y Reclamos.' },
+      { path: '/pqr', icon: <FaEnvelope />, title: 'Gestion PQR', desc: 'Administracion de Peticiones, Quejas y Reclamos.' },
     ]
   },
   {
     title: 'Admin Maestros',
     icon: <FiSettings />,
     items: [
-      { path: '/year-production', icon: <FaCalendarAlt />, title: 'Year Production', desc: 'Definición de años productivos.' },
-      { path: '/season', icon: <FaCloud />, title: 'Season', desc: 'Gestión de temporadas.' },
-      { path: '/collection', icon: <FaArchive />, title: 'Collection', desc: 'Gestión de colecciones de diseño.' },
-      { path: '/production-type', icon: <FaIndustry />, title: 'Production type', desc: 'Tipos de producción disponibles.' },
-      { path: '/type-clothing', icon: <FaTags />, title: 'Type Clothing', desc: 'Tipologías de prendas registradas.' },
-      { path: '/category', icon: <FaFolder />, title: 'Category', desc: 'Categorías principales del sistema.' },
-      { path: '/color', icon: <FaEyeDropper />, title: 'Color', desc: 'Gestión de colores disponibles en producción.' },
-      { path: '/size-guide', icon: <FaRulerCombined />, title: 'Guía de Tallas', desc: 'Gestión de guías de tallas para el sitio web.' },
-      { path: '/locations', icon: <FaMapMarkerAlt />, title: 'Ubicaciones', desc: 'Departamentos, ciudades y costos de envío.' },
+      { path: '/year-production', icon: <FaCalendarAlt />, title: 'Year Production', desc: 'Definicion de anos productivos.' },
+      { path: '/season', icon: <FaCloud />, title: 'Season', desc: 'Gestion de temporadas.' },
+      { path: '/collection', icon: <FaArchive />, title: 'Collection', desc: 'Gestion de colecciones de diseno.' },
+      { path: '/production-type', icon: <FaIndustry />, title: 'Production type', desc: 'Tipos de produccion disponibles.' },
+      { path: '/type-clothing', icon: <FaTags />, title: 'Type Clothing', desc: 'Tipologias de prendas registradas.' },
+      { path: '/category', icon: <FaFolder />, title: 'Category', desc: 'Categorias principales del sistema.' },
+      { path: '/color', icon: <FaEyeDropper />, title: 'Color', desc: 'Gestion de colores disponibles en produccion.' },
+      { path: '/size-guide', icon: <FaRulerCombined />, title: 'Guia de Tallas', desc: 'Gestion de guias de tallas para el sitio web.' },
+      { path: '/locations', icon: <FaMapMarkerAlt />, title: 'Ubicaciones', desc: 'Departamentos, ciudades y costos de envio.' },
     ]
   },
   {
     title: 'Users / providers',
     icon: <FiUsers />,
     items: [
-      { path: '/provider', icon: <FaTruck />, title: 'Provider', desc: 'Gestión de proveedores externos.' },
-      { path: '/customer', icon: <FaAddressBook />, title: 'Clientes', desc: 'Consulta y edición de información de clientes.' },
-      { path: '/user', icon: <FaUsersIcon />, title: 'User', desc: 'Administración de usuarios del sistema.' },
-      { path: '/role', icon: <FaShieldAlt />, title: 'Role', desc: 'Gestión de roles de seguridad.' },
-      { path: '/user-role', icon: <FaUserTag />, title: 'User Roles', desc: 'Asignación de roles a los usuarios.' },
-      { path: '/subscriber', icon: <FaEnvelope />, title: 'Suscriber', desc: 'Gestión de suscriptores del newsletter.' },
+      { path: '/provider', icon: <FaTruck />, title: 'Provider', desc: 'Gestion de proveedores externos.' },
+      { path: '/customer', icon: <FaAddressBook />, title: 'Clientes', desc: 'Consulta y edicion de informacion de clientes.' },
+      { path: '/user', icon: <FaUsersIcon />, title: 'User', desc: 'Administracion de usuarios del sistema.' },
+      { path: '/role', icon: <FaShieldAlt />, title: 'Role', desc: 'Gestion de roles de seguridad.' },
+      { path: '/user-role', icon: <FaUserTag />, title: 'User Roles', desc: 'Asignacion de roles a los usuarios.' },
+      { path: '/subscriber', icon: <FaEnvelope />, title: 'Suscriber', desc: 'Gestion de suscriptores del newsletter.' },
     ]
   },
   {
     title: 'Plan Estrategico',
     icon: <FiMap />,
     items: [
-      { path: '/plan-estrategico', icon: <FaMapSigns />, title: 'Ver plan', desc: 'Visualización del plan estratégico anual.' },
-      { path: '/dian-documentation', icon: <FaFileInvoiceDollar />, title: 'Documentación DIAN', desc: 'Arquitectura y flujos de Facturación Electrónica DIAN.' },
+      { path: '/plan-estrategico', icon: <FaMapSigns />, title: 'Ver plan', desc: 'Visualizacion del plan estrategico anual.' },
+      { path: '/dian-documentation', icon: <FaFileInvoiceDollar />, title: 'Documentacion DIAN', desc: 'Arquitectura y flujos de Facturacion Electronica DIAN.' },
     ]
   },
   {
@@ -90,7 +90,7 @@ const homeSections = [
 const HomePage = () => {
   return (
     <div className="home-container page-container">
-      <PageHeader title="Páginas Principales" icon={<FiHome />} />
+      <PageHeader title="Dashboard" icon={<FiHome />} />
 
       <section className="home-section">
         <h2 className="home-section-title">

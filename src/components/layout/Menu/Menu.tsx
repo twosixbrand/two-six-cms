@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
+import { FiLogOut } from 'react-icons/fi';
 
 import './Menu.css';
 import SubMenu from './SubMenu';
@@ -119,16 +120,14 @@ const Menu = ({ isMenuOpen, toggleMenu }) => {
   const { isAuthenticated, logout, hasPermission, hasGroupPermission, userPermissions } = useContext(AuthContext);
 
   const closeMenu = () => {
-    // Esta funcion ahora solo se usa para cerrar el menu en movil al hacer clic en un enlace
     if (window.innerWidth < 960) {
       toggleMenu();
     }
   }
 
-  // Filtrar menu segun permisos del usuario
   const filteredMenu = menuData
     .filter((item) => {
-      if (!userPermissions || userPermissions.length === 0) return true; // sin restricciones (legacy)
+      if (!userPermissions || userPermissions.length === 0) return true;
       if (!item.permission) return true;
       return hasGroupPermission(item.permission);
     })
@@ -140,11 +139,16 @@ const Menu = ({ isMenuOpen, toggleMenu }) => {
         return hasPermission(sub.permission);
       }),
     }))
-    .filter((item) => !item.subNav || item.subNav.length > 0); // Ocultar padres sin hijos visibles
+    .filter((item) => !item.subNav || item.subNav.length > 0);
 
   return (
     <nav className={`navbar ${isMenuOpen ? '' : 'closed'}`}>
       <div className="navbar-container">
+        {/* Sidebar brand */}
+        <div className="sidebar-brand">
+          <span className="sidebar-brand-accent">Two Six</span>
+        </div>
+
         {isAuthenticated && (
           <ul className="nav-menu">
             {filteredMenu.map((item, index) => (
@@ -153,7 +157,10 @@ const Menu = ({ isMenuOpen, toggleMenu }) => {
           </ul>
         )}
         <div className="menu-footer">
-          <button onClick={logout} className="nav-links-button">Cerrar Sesion</button>
+          <button onClick={logout} className="nav-links-button">
+            <FiLogOut size={16} />
+            Cerrar Sesion
+          </button>
         </div>
       </div>
     </nav>

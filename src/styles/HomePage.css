@@ -1,126 +1,95 @@
+/* HomePage — Modern Dashboard Cards */
+
 .home-container {
   display: flex;
   flex-direction: column;
-  padding: 1rem 3rem 3rem;
-  /* Reducido top padding de 3rem a 1rem */
+  padding: 0;
   max-width: 1400px;
   margin: 0 auto;
 }
 
-.home-subtitle {
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  /* Reducido de 2rem a 1rem */
-  letter-spacing: 0.5px;
-}
-
 .home-section {
-  margin-top: 1.5rem;
-  margin-bottom: 2.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
 }
 
 .home-section-title {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 1.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 0.75rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-  /* Dorado sutil */
+  border-bottom: 1px solid #e5e7eb;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .home-section-title svg {
-  color: var(--primary-color);
-  font-size: 1.2rem;
+  color: #9ca3af;
+  font-size: 1rem;
 }
 
 .home-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  grid-auto-rows: 160px;
-  /* Reducido de 200px a 160px para mayor visibilidad */
-  gap: 1rem;
-  /* Reducido de 1.5rem a 1rem */
-  margin-top: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.25rem;
 }
 
 .home-card {
   position: relative;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.4) 100%);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  padding: 1.25rem;
-  padding-top: 3.25rem;
-  /* Espacio para el icono sin solapamiento */
-  border-radius: 20px;
+  background: #ffffff;
+  padding: 1rem 1rem 1rem 3.25rem;
+  border-radius: 8px;
   text-decoration: none;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-  border: 1.5px solid rgba(212, 175, 55, 0.25);
-  /* Borde dorado más definido */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  justify-content: center;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  border: 1px solid #e5e7eb;
   overflow: hidden;
-  align-items: flex-start;
+  min-height: 80px;
 }
 
 .card-icon-container {
   position: absolute;
-  top: 1rem;
-  left: 1.25rem;
-  font-size: 1.4rem;
-  color: var(--primary-color);
-  background: rgba(212, 175, 55, 0.1);
-  width: 40px;
-  height: 40px;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  color: #d4af37;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  transition: all 0.4s ease;
+  border-radius: 8px;
+  background: rgba(212, 175, 55, 0.08);
   z-index: 2;
-  border: 1px solid rgba(212, 175, 55, 0.1);
 }
 
-/* Marca de agua de fondo elegante */
 .card-watermark {
-  position: absolute;
-  bottom: -15px;
-  right: -10px;
-  font-size: 8rem;
-  color: var(--primary-color);
-  opacity: 0.04;
-  transform: rotate(-15deg);
-  pointer-events: none;
-  transition: all 0.5s ease;
-  z-index: 0;
+  display: none;
 }
 
 .home-card h2 {
-  font-size: 1.1rem;
-  margin-top: 0;
-  margin-bottom: 0.4rem;
-  color: var(--text-primary);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  font-size: 0.875rem;
+  margin: 0 0 0.15rem;
+  color: #111827;
+  font-weight: 600;
+  line-height: 1.3;
   z-index: 2;
-  transition: all 0.3s ease;
 }
 
 .home-card p {
-  color: var(--text-secondary);
-  font-size: 0.85rem;
+  color: #9ca3af;
+  font-size: 0.75rem;
   line-height: 1.4;
   margin: 0;
   z-index: 2;
-  opacity: 0.8;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -128,37 +97,16 @@
 }
 
 .home-card:hover {
-  transform: translateY(-5px) scale(1.01);
-  background: rgba(255, 255, 255, 0.9);
-  border-color: var(--primary-color);
-  box-shadow: 0 20px 40px rgba(212, 175, 55, 0.12), 0 0 20px rgba(212, 175, 55, 0.05);
-}
-
-.home-card:hover .card-icon-container {
-  background: var(--primary-color);
-  color: white;
-  transform: rotate(-10deg) scale(1.1);
-  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
-}
-
-.home-card:hover .card-watermark {
-  opacity: 0.12;
-  transform: rotate(0deg) scale(1.1);
+  border-color: #d1d5db;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .home-card:hover h2 {
-  color: var(--primary-color);
-  transform: translateX(2px);
+  color: #d4af37;
 }
 
-.home-card:hover p {
-  color: var(--text-primary);
-  opacity: 1;
-}
-
-@media (max-width: 1024px) {
+@media (max-width: 640px) {
   .home-cards {
-    grid-auto-rows: auto;
-    min-height: 180px;
+    grid-template-columns: 1fr;
   }
 }

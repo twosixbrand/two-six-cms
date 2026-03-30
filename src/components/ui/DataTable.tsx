@@ -46,47 +46,38 @@ const DataTable: React.FC<DataTableProps> = ({
     : columns;
 
   const thStyle = (col: Column | { key: string; header: string; align?: string }): React.CSSProperties => ({
-    padding: '0.85rem 1rem',
+    padding: '0.65rem 1rem',
     textAlign: (col.align as any) || 'left',
-    fontSize: '0.75rem',
-    fontWeight: 700,
+    fontSize: '0.7rem',
+    fontWeight: 500,
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
-    color: 'var(--text-secondary, #475569)',
-    borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
+    color: '#6b7280',
+    borderBottom: '1px solid #e5e7eb',
     fontFamily: 'Inter, sans-serif',
     whiteSpace: 'nowrap',
+    backgroundColor: '#f9fafb',
     width: (col as Column).width || undefined,
   });
 
   const tdStyle = (col: Column | { key: string; header: string; align?: string }, rowIdx: number): React.CSSProperties => ({
-    padding: '0.85rem 1rem',
+    padding: '0.65rem 1rem',
     textAlign: (col.align as any) || 'left',
-    fontSize: '0.875rem',
-    color: 'var(--text-primary, #1e293b)',
+    fontSize: '0.8125rem',
+    color: '#111827',
     fontFamily: 'Inter, sans-serif',
-    borderBottom: '1px solid rgba(0, 0, 0, 0.03)',
-    backgroundColor:
-      hoveredRow === rowIdx
-        ? 'rgba(212, 175, 55, 0.06)'
-        : rowIdx % 2 === 1
-          ? 'rgba(0, 0, 0, 0.015)'
-          : 'transparent',
-    transition: 'background-color 0.15s ease',
+    borderBottom: '1px solid #f3f4f6',
+    backgroundColor: hoveredRow === rowIdx ? '#f9fafb' : '#ffffff',
+    transition: 'background-color 0.1s ease',
   });
 
   return (
     <div
       style={{
         overflowX: 'auto',
-        borderRadius: 12,
-        backgroundColor: 'rgba(255, 255, 255, 0.6)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255, 255, 255, 0.4)',
-        borderTop: '1px solid rgba(255, 255, 255, 0.8)',
-        borderLeft: '1px solid rgba(255, 255, 255, 0.6)',
-        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+        borderRadius: 8,
+        backgroundColor: '#ffffff',
+        border: '1px solid #e5e7eb',
       }}
     >
       <table
@@ -114,7 +105,6 @@ const DataTable: React.FC<DataTableProps> = ({
               onMouseLeave={() => setHoveredRow(null)}
               style={{
                 cursor: onRowClick ? 'pointer' : 'default',
-                transition: 'background-color 0.15s ease',
               }}
             >
               {columns.map((col) => (

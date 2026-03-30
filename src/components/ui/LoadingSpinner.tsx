@@ -6,15 +6,15 @@ interface LoadingSpinnerProps {
 }
 
 const sizeMap = {
-  sm: 24,
-  md: 40,
-  lg: 64,
+  sm: 20,
+  md: 32,
+  lg: 48,
 };
 
 const borderWidthMap = {
   sm: 2,
-  md: 3,
-  lg: 4,
+  md: 2.5,
+  lg: 3,
 };
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 'md', text }) => {
@@ -29,20 +29,20 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 'md', text }) =>
   `;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', padding: '1rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', padding: '1rem' }}>
       <style>{keyframes}</style>
       <div
         style={{
           width: dim,
           height: dim,
-          border: `${bw}px solid rgba(212, 175, 55, 0.15)`,
+          border: `${bw}px solid #e5e7eb`,
           borderTopColor: '#d4af37',
           borderRadius: '50%',
-          animation: 'ts-spinner-rotate 0.8s linear infinite',
+          animation: 'ts-spinner-rotate 0.7s linear infinite',
         }}
       />
       {text && (
-        <span style={{ fontSize: size === 'sm' ? '0.75rem' : '0.875rem', color: 'var(--text-secondary, #475569)', fontFamily: 'Inter, sans-serif' }}>
+        <span style={{ fontSize: size === 'sm' ? '0.72rem' : '0.8125rem', color: '#6b7280', fontFamily: 'Inter, sans-serif' }}>
           {text}
         </span>
       )}

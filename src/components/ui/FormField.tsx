@@ -30,9 +30,9 @@ const FormField: React.FC<FormFieldProps> = ({
   const [focused, setFocused] = React.useState(false);
 
   const labelStyle: React.CSSProperties = {
-    fontSize: '0.85rem',
-    fontWeight: 600,
-    color: 'var(--text-secondary, #475569)',
+    fontSize: '0.8rem',
+    fontWeight: 500,
+    color: '#6b7280',
     marginBottom: '0.3rem',
     display: 'block',
     fontFamily: 'Inter, sans-serif',
@@ -40,34 +40,33 @@ const FormField: React.FC<FormFieldProps> = ({
 
   const inputBase: React.CSSProperties = {
     width: '100%',
-    padding: '0.85rem 1rem',
-    backgroundColor: focused ? 'rgba(255,255,255,0.8)' : disabled ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.4)',
-    backdropFilter: 'blur(10px)',
-    WebkitBackdropFilter: 'blur(10px)',
+    padding: '0.55rem 0.75rem',
+    backgroundColor: disabled ? '#f9fafb' : '#ffffff',
     border: error
       ? '1px solid #ef4444'
       : focused
         ? '1px solid #d4af37'
-        : '1px solid rgba(0,0,0,0.08)',
-    borderRadius: 12,
-    color: disabled ? 'var(--text-secondary, #475569)' : 'var(--text-primary, #1e293b)',
+        : '1px solid #e5e7eb',
+    borderRadius: 8,
+    color: disabled ? '#9ca3af' : '#111827',
     fontFamily: 'Inter, sans-serif',
-    fontSize: '0.95rem',
-    transition: 'all 0.2s ease',
+    fontSize: '0.875rem',
+    transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
     outline: 'none',
     boxShadow: focused
       ? error
-        ? '0 0 0 3px rgba(239,68,68,0.15)'
-        : '0 0 0 3px rgba(212,175,55,0.15), inset 0 2px 4px rgba(0,0,0,0.01)'
-      : 'inset 0 2px 4px rgba(0,0,0,0.02)',
+        ? '0 0 0 2px rgba(239, 68, 68, 0.12)'
+        : '0 0 0 2px rgba(212, 175, 55, 0.12)'
+      : 'none',
     cursor: disabled ? 'not-allowed' : undefined,
     boxSizing: 'border-box' as const,
+    height: type !== 'textarea' ? '40px' : undefined,
   };
 
   const errorStyle: React.CSSProperties = {
     fontSize: '0.75rem',
     color: '#ef4444',
-    marginTop: '0.3rem',
+    marginTop: '0.25rem',
     fontFamily: 'Inter, sans-serif',
   };
 
@@ -109,7 +108,7 @@ const FormField: React.FC<FormFieldProps> = ({
         disabled={disabled}
         placeholder={placeholder}
         rows={rows}
-        style={{ ...inputBase, resize: 'vertical' }}
+        style={{ ...inputBase, resize: 'vertical', minHeight: '80px' }}
         {...focusProps}
       />
     );

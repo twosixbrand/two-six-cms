@@ -14,9 +14,9 @@ interface ConfirmDialogProps {
 }
 
 const variantConfig: Record<string, { color: string; bg: string; icon: string }> = {
-  danger: { color: '#ef4444', bg: 'rgba(239, 68, 68, 0.1)', icon: '!' },
-  warning: { color: '#d97706', bg: 'rgba(245, 158, 11, 0.1)', icon: '!' },
-  info: { color: '#2563eb', bg: 'rgba(59, 130, 246, 0.1)', icon: 'i' },
+  danger: { color: '#ef4444', bg: 'rgba(239, 68, 68, 0.08)', icon: '!' },
+  warning: { color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.08)', icon: '!' },
+  info: { color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.08)', icon: 'i' },
 };
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
@@ -47,20 +47,20 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onCancel} title={title} size="sm" footer={footer}>
-      <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+      <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
         <div
           style={{
-            width: 40,
-            height: 40,
-            minWidth: 40,
+            width: 36,
+            height: 36,
+            minWidth: 36,
             borderRadius: '50%',
             backgroundColor: config.bg,
             color: config.color,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontWeight: 800,
-            fontSize: '1.1rem',
+            fontWeight: 700,
+            fontSize: '1rem',
             fontFamily: 'Inter, sans-serif',
           }}
         >
@@ -69,9 +69,9 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         <p
           style={{
             margin: 0,
-            fontSize: '0.925rem',
+            fontSize: '0.875rem',
             lineHeight: 1.6,
-            color: 'var(--text-secondary, #475569)',
+            color: '#6b7280',
             fontFamily: 'Inter, sans-serif',
           }}
         >

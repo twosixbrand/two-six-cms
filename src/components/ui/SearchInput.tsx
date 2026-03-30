@@ -15,7 +15,6 @@ const SearchInput: React.FC<SearchInputProps> = ({
   const [focused, setFocused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Sync external value changes
   useEffect(() => {
     setInternal(value);
   }, [value]);
@@ -54,20 +53,17 @@ const SearchInput: React.FC<SearchInputProps> = ({
 
   const inputStyle: React.CSSProperties = {
     width: '100%',
-    padding: '0.7rem 2.5rem 0.7rem 2.5rem',
-    backgroundColor: focused ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.4)',
-    backdropFilter: 'blur(10px)',
-    WebkitBackdropFilter: 'blur(10px)',
-    border: focused ? '1px solid #d4af37' : '1px solid rgba(0,0,0,0.08)',
-    borderRadius: 12,
-    color: 'var(--text-primary, #1e293b)',
+    padding: '0.55rem 2.25rem 0.55rem 2.25rem',
+    backgroundColor: '#ffffff',
+    border: focused ? '1px solid #d4af37' : '1px solid #e5e7eb',
+    borderRadius: 8,
+    color: '#111827',
     fontFamily: 'Inter, sans-serif',
-    fontSize: '0.9rem',
-    transition: 'all 0.2s ease',
+    fontSize: '0.8125rem',
+    transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
     outline: 'none',
-    boxShadow: focused
-      ? '0 0 0 3px rgba(212,175,55,0.15), inset 0 2px 4px rgba(0,0,0,0.01)'
-      : 'inset 0 2px 4px rgba(0,0,0,0.02)',
+    boxShadow: focused ? '0 0 0 2px rgba(212, 175, 55, 0.12)' : 'none',
+    height: '40px',
   };
 
   const iconStyle: React.CSSProperties = {
@@ -75,7 +71,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
     left: 10,
     top: '50%',
     transform: 'translateY(-50%)',
-    color: 'var(--text-secondary, #475569)',
+    color: '#9ca3af',
     pointerEvents: 'none',
     display: 'flex',
     alignItems: 'center',
@@ -93,20 +89,20 @@ const SearchInput: React.FC<SearchInputProps> = ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: 'var(--text-secondary, #475569)',
+    color: '#9ca3af',
     borderRadius: '50%',
-    transition: 'color 0.2s ease',
-    fontSize: '0.85rem',
-    fontWeight: 700,
+    transition: 'color 0.15s ease',
+    fontSize: '0.8rem',
+    fontWeight: 500,
     lineHeight: 1,
-    width: 24,
-    height: 24,
+    width: 22,
+    height: 22,
   };
 
   return (
     <div style={containerStyle}>
       <div style={iconStyle}>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="11" cy="11" r="8" />
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>

@@ -24,22 +24,19 @@ export function useToast(): ToastContextValue {
   return ctx;
 }
 
-const typeStyles: Record<ToastType, { bg: string; border: string; color: string; icon: string }> = {
+const typeStyles: Record<ToastType, { bg: string; color: string; icon: string }> = {
   success: {
-    bg: 'rgba(34, 197, 94, 0.12)',
-    border: 'rgba(34, 197, 94, 0.3)',
-    color: '#16a34a',
+    bg: '#f0fdf4',
+    color: '#059669',
     icon: '\u2713',
   },
   error: {
-    bg: 'rgba(239, 68, 68, 0.12)',
-    border: 'rgba(239, 68, 68, 0.3)',
+    bg: '#fef2f2',
     color: '#dc2626',
     icon: '\u2715',
   },
   info: {
-    bg: 'rgba(59, 130, 246, 0.12)',
-    border: 'rgba(59, 130, 246, 0.3)',
+    bg: '#eff6ff',
     color: '#2563eb',
     icon: 'i',
   },
@@ -77,38 +74,36 @@ const ToastItemComponent: React.FC<{ toast: ToastItem; onRemove: (id: number) =>
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '0.75rem',
-        padding: '0.85rem 1.25rem',
-        backgroundColor: 'rgba(255, 255, 255, 0.9)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        border: `1px solid ${style.border}`,
-        borderRadius: 12,
-        boxShadow: '0 8px 30px rgba(0, 0, 0, 0.1)',
+        gap: '0.6rem',
+        padding: '0.65rem 1rem',
+        backgroundColor: '#ffffff',
+        border: '1px solid #e5e7eb',
+        borderRadius: 10,
+        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
         fontFamily: 'Inter, sans-serif',
-        animation: exiting ? 'ts-toast-out 0.3s ease forwards' : 'ts-toast-in 0.3s ease',
-        minWidth: 280,
-        maxWidth: 420,
+        animation: exiting ? 'ts-toast-out 0.3s ease forwards' : 'ts-toast-in 0.25s ease',
+        minWidth: 260,
+        maxWidth: 380,
       }}
     >
       <div
         style={{
-          width: 26,
-          height: 26,
-          minWidth: 26,
+          width: 24,
+          height: 24,
+          minWidth: 24,
           borderRadius: '50%',
           backgroundColor: style.bg,
           color: style.color,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontWeight: 800,
-          fontSize: '0.75rem',
+          fontWeight: 700,
+          fontSize: '0.7rem',
         }}
       >
         {style.icon}
       </div>
-      <span style={{ flex: 1, fontSize: '0.875rem', color: 'var(--text-primary, #1e293b)', lineHeight: 1.4 }}>
+      <span style={{ flex: 1, fontSize: '0.8125rem', color: '#111827', lineHeight: 1.4 }}>
         {toast.message}
       </span>
       <button
@@ -122,8 +117,8 @@ const ToastItemComponent: React.FC<{ toast: ToastItem; onRemove: (id: number) =>
           border: 'none',
           cursor: 'pointer',
           padding: 2,
-          color: 'var(--text-secondary, #475569)',
-          fontSize: '0.8rem',
+          color: '#9ca3af',
+          fontSize: '0.75rem',
           lineHeight: 1,
           display: 'flex',
         }}
@@ -171,12 +166,12 @@ const ToastContainer: React.FC<{ toasts: ToastItem[]; onRemove: (id: number) => 
       <div
         style={{
           position: 'fixed',
-          top: 20,
-          right: 20,
+          top: 16,
+          right: 16,
           zIndex: 10000,
           display: 'flex',
           flexDirection: 'column',
-          gap: '0.5rem',
+          gap: '0.4rem',
           pointerEvents: 'none',
         }}
       >

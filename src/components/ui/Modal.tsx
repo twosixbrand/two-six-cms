@@ -22,7 +22,7 @@ const keyframes = `
     to { opacity: 1; }
   }
   @keyframes ts-modal-slide-in {
-    from { opacity: 0; transform: translateY(20px) scale(0.97); }
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
     to { opacity: 1; transform: translateY(0) scale(1); }
   }
 `;
@@ -43,7 +43,6 @@ const Modal: React.FC<ModalProps> = ({
       if (e.key === 'Escape') onClose();
     };
     document.addEventListener('keydown', handler);
-    // Prevent body scroll
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => {
@@ -74,10 +73,8 @@ const Modal: React.FC<ModalProps> = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          backdropFilter: 'blur(4px)',
-          WebkitBackdropFilter: 'blur(4px)',
-          animation: 'ts-modal-overlay-in 0.2s ease',
+          backgroundColor: 'rgba(0, 0, 0, 0.4)',
+          animation: 'ts-modal-overlay-in 0.15s ease',
           padding: '1rem',
         }}
       >
@@ -89,13 +86,11 @@ const Modal: React.FC<ModalProps> = ({
             maxHeight: '90vh',
             display: 'flex',
             flexDirection: 'column',
-            backgroundColor: 'rgba(255, 255, 255, 0.85)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            borderRadius: 12,
-            border: '1px solid rgba(255, 255, 255, 0.5)',
-            boxShadow: '0 25px 60px rgba(0, 0, 0, 0.15), 0 0 30px rgba(212, 175, 55, 0.08)',
-            animation: 'ts-modal-slide-in 0.25s ease',
+            backgroundColor: '#ffffff',
+            borderRadius: 16,
+            border: '1px solid #e5e7eb',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.12)',
+            animation: 'ts-modal-slide-in 0.2s ease',
             overflow: 'hidden',
           }}
         >
@@ -105,16 +100,16 @@ const Modal: React.FC<ModalProps> = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              padding: '1.25rem 1.5rem',
-              borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
+              padding: '1rem 1.5rem',
+              borderBottom: '1px solid #e5e7eb',
             }}
           >
             <h2
               style={{
                 margin: 0,
-                fontSize: '1.2rem',
-                fontWeight: 700,
-                color: 'var(--text-primary, #1e293b)',
+                fontSize: '1.05rem',
+                fontWeight: 600,
+                color: '#111827',
                 fontFamily: 'Inter, sans-serif',
               }}
             >
@@ -131,20 +126,20 @@ const Modal: React.FC<ModalProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'var(--text-secondary, #475569)',
-                borderRadius: 8,
-                width: 32,
-                height: 32,
-                fontSize: '1.1rem',
-                transition: 'background 0.2s ease, color 0.2s ease',
+                color: '#9ca3af',
+                borderRadius: 6,
+                width: 30,
+                height: 30,
+                fontSize: '1rem',
+                transition: 'background 0.15s ease, color 0.15s ease',
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.05)';
-                (e.currentTarget as HTMLElement).style.color = 'var(--text-primary, #1e293b)';
+                (e.currentTarget as HTMLElement).style.background = '#f3f4f6';
+                (e.currentTarget as HTMLElement).style.color = '#111827';
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.background = 'none';
-                (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary, #475569)';
+                (e.currentTarget as HTMLElement).style.color = '#9ca3af';
               }}
               aria-label="Cerrar"
             >
@@ -170,9 +165,9 @@ const Modal: React.FC<ModalProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'flex-end',
-                gap: '0.75rem',
-                padding: '1rem 1.5rem',
-                borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+                gap: '0.5rem',
+                padding: '0.75rem 1.5rem',
+                borderTop: '1px solid #e5e7eb',
               }}
             >
               {footer}
