@@ -213,7 +213,7 @@ const ProductPage = () => {
         value ? (
           <img src={value} alt={row.clothing_name} style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 8 }} />
         ) : (
-          <div style={{ width: 40, height: 40, borderRadius: 8, background: 'rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: 40, height: 40, borderRadius: 8, background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <FiPackage size={16} opacity={0.3} />
           </div>
         ),
@@ -314,8 +314,8 @@ const ProductPage = () => {
         <form onSubmit={handleCreateSubmit}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {/* Shared fields */}
-            <div style={{ border: '1px solid rgba(0,0,0,0.06)', padding: '1.25rem', borderRadius: 12, background: 'rgba(255,255,255,0.3)' }}>
-              <h4 style={{ margin: '0 0 1rem', color: 'var(--primary-color, #d4af37)', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem' }}>Datos Comunes</h4>
+            <div style={{ border: '1px solid #2a2a35', padding: '1.25rem', borderRadius: 12, background: 'rgba(255,255,255,0.04)' }}>
+              <h4 style={{ margin: '0 0 1rem', color: '#f0b429', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem' }}>Datos Comunes</h4>
               <FormField label="Precio BASE" name="price" type="number" value={sharedData.price} onChange={handleSharedChange} required />
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
                 <div style={{ flex: 1 }}>
@@ -336,11 +336,11 @@ const ProductPage = () => {
             </div>
 
             {/* Variants */}
-            <h4 style={{ margin: '0.5rem 0 0', color: 'var(--primary-color, #d4af37)', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem' }}>Variantes a Crear</h4>
+            <h4 style={{ margin: '0.5rem 0 0', color: '#f0b429', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem' }}>Variantes a Crear</h4>
             {variants.map((variant, index) => {
               const currentSelectedIds = variants.map((v) => parseInt(v.id_clothing_size, 10)).filter((id) => !isNaN(id));
               return (
-                <div key={index} style={{ border: '1px solid rgba(0,0,0,0.06)', padding: '1rem', borderRadius: 12, background: 'rgba(255,255,255,0.4)', position: 'relative' }}>
+                <div key={index} style={{ border: '1px solid #2a2a35', padding: '1rem', borderRadius: 12, background: '#2a2a35', position: 'relative' }}>
                   <FormField
                     label={`Variante ${index + 1}`}
                     name="id_clothing_size"

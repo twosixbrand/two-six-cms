@@ -158,17 +158,17 @@ const SubscriberPage = () => {
         {selectedSub && (
           <div>
             {!selectedSub.discount_code ? (
-              <p style={{ color: 'var(--text-secondary, #475569)', fontSize: '0.9rem', textAlign: 'center', padding: '1.5rem 0' }}>
+              <p style={{ color: '#a0a0b0', fontSize: '0.9rem', textAlign: 'center', padding: '1.5rem 0' }}>
                 Este usuario no tiene codigos de descuento registrados.
               </p>
             ) : (
               <div style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                padding: '1rem', borderRadius: 12, border: '1px solid rgba(0,0,0,0.06)', background: 'rgba(255,255,255,0.4)',
+                padding: '1rem', borderRadius: 12, border: '1px solid #2a2a35', background: '#2a2a35',
               }}>
                 <div>
                   <div style={{ fontWeight: 700, fontSize: '1rem', fontFamily: 'monospace' }}>{selectedSub.discount_code}</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary, #475569)', marginTop: '0.25rem' }}>Cupon de Bienvenida (10%)</div>
+                  <div style={{ fontSize: '0.75rem', color: '#a0a0b0', marginTop: '0.25rem' }}>Cupon de Bienvenida (10%)</div>
                 </div>
                 <StatusBadge
                   status={selectedSub.is_discount_used ? 'CONSUMIDO' : 'DISPONIBLE'}

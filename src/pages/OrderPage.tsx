@@ -146,9 +146,9 @@ const OrderPage = () => {
   const tabStyle = (active: boolean): React.CSSProperties => ({
     padding: '0.5rem 1rem',
     borderRadius: 8,
-    border: active ? '2px solid var(--primary-color, #d4af37)' : '1px solid rgba(0,0,0,0.1)',
+    border: active ? '2px solid #f0b429' : '1px solid rgba(0,0,0,0.1)',
     backgroundColor: active ? 'rgba(212,175,55,0.1)' : 'transparent',
-    color: active ? 'var(--primary-color, #d4af37)' : 'var(--text-secondary, #475569)',
+    color: active ? '#f0b429' : '#a0a0b0',
     cursor: 'pointer',
     fontWeight: 700,
     fontSize: '0.8rem',

@@ -690,7 +690,7 @@ const PayrollPage = () => {
                                     ].map((card, i) => (
                                         <div key={i} style={{
                                             background: '#fff', borderRadius: '10px', padding: '16px',
-                                            boxShadow: '0 1px 4px rgba(0,0,0,0.08)', borderLeft: `4px solid ${card.color}`,
+                                            boxShadow: '0 1px 4px #2a2a35', borderLeft: `4px solid ${card.color}`,
                                         }}>
                                             <div style={{ fontSize: '11px', color: '#888', fontWeight: 600, marginBottom: '4px' }}>{card.label}</div>
                                             <div style={{ fontSize: '18px', fontWeight: 700, color: card.color }}>{formatCurrency(card.value)}</div>

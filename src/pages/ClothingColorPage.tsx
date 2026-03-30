@@ -320,7 +320,7 @@ const ClothingColorPage = () => {
             />
 
             <div>
-              <h4 style={{ margin: '0.5rem 0 1rem', fontSize: '0.9rem', fontWeight: 700, fontFamily: 'Inter, sans-serif', color: 'var(--text-primary, #1e293b)' }}>
+              <h4 style={{ margin: '0.5rem 0 1rem', fontSize: '0.9rem', fontWeight: 700, fontFamily: 'Inter, sans-serif', color: '#f1f1f3' }}>
                 Seleccionar Tallas
               </h4>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '0.75rem' }}>
@@ -330,7 +330,7 @@ const ClothingColorPage = () => {
                     <div
                       key={size.id}
                       style={{
-                        border: isSelected ? '2px solid var(--primary-color, #d4af37)' : '1px solid rgba(0,0,0,0.08)',
+                        border: isSelected ? '2px solid #f0b429' : '1px solid #2a2a35',
                         padding: '0.75rem',
                         borderRadius: 12,
                         background: isSelected ? 'rgba(212,175,55,0.05)' : 'transparent',

@@ -243,25 +243,25 @@ const ImageClothingPage = () => {
       <div style={{
         display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem',
         padding: '1rem 1.5rem', borderRadius: 12,
-        backgroundColor: 'rgba(255,255,255,0.6)', backdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255,255,255,0.4)', boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+        backgroundColor: '#1a1a24',
+        border: '1px solid #2a2a35', boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <Button variant="ghost" size="sm" icon={<FiArrowLeft />} onClick={() => navigate('/image-clothing')}>Volver</Button>
           <div>
-            <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary, #475569)', textTransform: 'uppercase', letterSpacing: '1px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{ fontSize: '0.7rem', color: '#a0a0b0', textTransform: 'uppercase', letterSpacing: '1px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <span>Inventario</span>
               <FiChevronRight size={10} />
-              <span style={{ color: 'var(--primary-color, #d4af37)' }}>Media Studio</span>
+              <span style={{ color: '#f0b429' }}>Media Studio</span>
             </div>
-            <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, fontFamily: 'Inter, sans-serif', color: 'var(--text-primary, #1e293b)' }}>
+            <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, fontFamily: 'Inter, sans-serif', color: '#f1f1f3' }}>
               {clothingColor.design?.reference}
             </h2>
           </div>
         </div>
         <div style={{ textAlign: 'right' }}>
           <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{clothingColor.color?.name}</div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary, #475569)' }}>{clothingColor.design?.clothing?.name}</div>
+          <div style={{ fontSize: '0.75rem', color: '#a0a0b0' }}>{clothingColor.design?.clothing?.name}</div>
         </div>
       </div>
 
@@ -271,8 +271,8 @@ const ImageClothingPage = () => {
         {/* Upload Panel */}
         <div style={{
           padding: '1.5rem', borderRadius: 12,
-          backgroundColor: 'rgba(255,255,255,0.6)', backdropFilter: 'blur(16px)',
-          border: '1px solid rgba(255,255,255,0.4)', boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+          backgroundColor: '#1a1a24', backdropFilter: 'blur(16px)',
+          border: '1px solid #2a2a35', boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
         }}>
           <h3 style={{ margin: '0 0 1rem', fontSize: '1rem', fontWeight: 700, fontFamily: 'Inter, sans-serif' }}>Carga de Activos</h3>
           <form onSubmit={handleUpload}>
@@ -282,17 +282,17 @@ const ImageClothingPage = () => {
               onDragLeave={handleDrag}
               onDrop={handleDrop}
               style={{
-                border: dragActive ? '2px dashed var(--primary-color, #d4af37)' : '2px dashed rgba(0,0,0,0.1)',
+                border: dragActive ? '2px dashed #f0b429' : '2px dashed #2a2a35',
                 borderRadius: 12, padding: '2rem', textAlign: 'center', cursor: 'pointer',
                 background: dragActive ? 'rgba(212,175,55,0.05)' : 'transparent',
                 transition: 'all 0.2s ease', position: 'relative',
               }}
             >
-              <FiUploadCloud size={32} style={{ color: 'var(--text-secondary, #475569)', marginBottom: '0.5rem' }} />
+              <FiUploadCloud size={32} style={{ color: '#a0a0b0', marginBottom: '0.5rem' }} />
               <p style={{ margin: '0.5rem 0 0.25rem', fontWeight: 600, fontSize: '0.9rem' }}>
                 {selectedFiles.length > 0 ? `${selectedFiles.length} Listos` : 'Arrastrar Imagenes'}
               </p>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary, #475569)' }}>O clic para explorar</span>
+              <span style={{ fontSize: '0.75rem', color: '#a0a0b0' }}>O clic para explorar</span>
               <input
                 type="file"
                 multiple
@@ -313,13 +313,13 @@ const ImageClothingPage = () => {
           <div style={{ marginTop: '1.5rem' }}>
             <h4 style={{ margin: '0 0 0.75rem', fontSize: '0.9rem', fontWeight: 700, fontFamily: 'Inter, sans-serif' }}>Detalles Variante</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(0,0,0,0.06)', paddingBottom: '0.5rem' }}>
-                <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary, #475569)' }}>Referencia</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #2a2a35', paddingBottom: '0.5rem' }}>
+                <span style={{ fontSize: '0.8rem', color: '#a0a0b0' }}>Referencia</span>
                 <span style={{ fontWeight: 600, fontSize: '0.85rem' }}>{clothingColor.design?.reference}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary, #475569)' }}>Color</span>
-                <span style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--primary-color, #d4af37)' }}>{clothingColor.color?.name}</span>
+                <span style={{ fontSize: '0.8rem', color: '#a0a0b0' }}>Color</span>
+                <span style={{ fontWeight: 600, fontSize: '0.85rem', color: '#f0b429' }}>{clothingColor.color?.name}</span>
               </div>
             </div>
           </div>
@@ -328,22 +328,22 @@ const ImageClothingPage = () => {
         {/* Gallery Panel */}
         <div style={{
           padding: '1.5rem', borderRadius: 12, minHeight: 400,
-          backgroundColor: 'rgba(255,255,255,0.6)', backdropFilter: 'blur(16px)',
-          border: '1px solid rgba(255,255,255,0.4)', boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+          backgroundColor: '#1a1a24', backdropFilter: 'blur(16px)',
+          border: '1px solid #2a2a35', boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
             <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, fontFamily: 'Inter, sans-serif' }}>
               Biblioteca ({images.length} Archivos)
             </h3>
             {images.length > 1 && (
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary, #475569)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ fontSize: '0.75rem', color: '#a0a0b0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <FiMove size={14} /> Arrastra para ordenar
               </span>
             )}
           </div>
 
           {images.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary, #475569)' }}>
+            <div style={{ textAlign: 'center', padding: '3rem', color: '#a0a0b0' }}>
               <FiImage size={48} style={{ opacity: 0.3, marginBottom: '1rem' }} />
               <p style={{ fontWeight: 600 }}>Sin Imagenes</p>
               <p style={{ fontSize: '0.8rem' }}>Sube nuevas imagenes usando el panel de la izquierda</p>
@@ -360,11 +360,11 @@ const ImageClothingPage = () => {
                   style={{
                     display: 'flex', alignItems: 'center', gap: '1rem',
                     padding: '0.75rem', borderRadius: 10,
-                    border: '1px solid rgba(0,0,0,0.06)', background: 'rgba(255,255,255,0.4)',
+                    border: '1px solid #2a2a35', background: '#13131a',
                     cursor: 'grab', transition: 'all 0.15s ease',
                   }}
                 >
-                  <FiMove size={16} style={{ color: 'var(--text-secondary, #475569)', flexShrink: 0 }} />
+                  <FiMove size={16} style={{ color: '#a0a0b0', flexShrink: 0 }} />
                   <img
                     src={img.image_url}
                     alt={`Asset ${img.position}`}
@@ -374,7 +374,7 @@ const ImageClothingPage = () => {
                     <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>
                       Pos {String(img.position).padStart(2, '0')}
                     </div>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary, #475569)' }}>
+                    <div style={{ fontSize: '0.7rem', color: '#a0a0b0' }}>
                       {img.image_url.split('/').pop() || `Recurso ${img.id_image_clothing}`}
                     </div>
                   </div>

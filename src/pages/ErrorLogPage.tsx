@@ -117,30 +117,30 @@ const ErrorLogPage = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <div style={{ flex: 1 }}>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary, #475569)', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600 }}>App</span>
+                <span style={{ fontSize: '0.75rem', color: '#a0a0b0', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600 }}>App</span>
                 <p style={{ margin: '0.25rem 0 0', fontWeight: 600 }}>{selectedLog.app || 'N/A'}</p>
               </div>
               <div style={{ flex: 1 }}>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary, #475569)', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600 }}>Page</span>
+                <span style={{ fontSize: '0.75rem', color: '#a0a0b0', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600 }}>Page</span>
                 <p style={{ margin: '0.25rem 0 0', fontWeight: 600 }}>{selectedLog.page || 'N/A'}</p>
               </div>
               <div style={{ flex: 1 }}>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary, #475569)', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600 }}>Fecha</span>
+                <span style={{ fontSize: '0.75rem', color: '#a0a0b0', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600 }}>Fecha</span>
                 <p style={{ margin: '0.25rem 0 0', fontWeight: 600 }}>{new Date(selectedLog.createdAt).toLocaleString()}</p>
               </div>
             </div>
             <div>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary, #475569)', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600 }}>Mensaje</span>
+              <span style={{ fontSize: '0.75rem', color: '#a0a0b0', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600 }}>Mensaje</span>
               <p style={{ margin: '0.25rem 0 0', fontSize: '0.9rem', lineHeight: 1.5 }}>{selectedLog.message}</p>
             </div>
             {selectedLog.stack && (
               <div>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary, #475569)', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600 }}>Stack Trace</span>
+                <span style={{ fontSize: '0.75rem', color: '#a0a0b0', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600 }}>Stack Trace</span>
                 <pre style={{
                   margin: '0.25rem 0 0', padding: '1rem', borderRadius: 8,
                   background: 'rgba(0,0,0,0.03)', fontSize: '0.75rem', overflow: 'auto',
                   maxHeight: 300, fontFamily: 'monospace', lineHeight: 1.6,
-                  border: '1px solid rgba(0,0,0,0.06)',
+                  border: '1px solid #2a2a35',
                 }}>
                   {selectedLog.stack}
                 </pre>

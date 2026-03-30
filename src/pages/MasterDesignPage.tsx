@@ -183,7 +183,7 @@ const MasterDesignPage = () => {
             style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 8 }}
           />
         ) : (
-          <div style={{ width: 40, height: 40, borderRadius: 8, background: 'rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: 40, height: 40, borderRadius: 8, background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <FiPenTool size={16} opacity={0.3} />
           </div>
         ),
@@ -287,7 +287,7 @@ const MasterDesignPage = () => {
               rows={3}
             />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-              <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary, #475569)', fontFamily: 'Inter, sans-serif' }}>
+              <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#a0a0b0', fontFamily: 'Inter, sans-serif' }}>
                 Imagen Representativa
               </label>
               <input
@@ -297,7 +297,7 @@ const MasterDesignPage = () => {
                 onChange={handleChange}
                 style={{
                   padding: '0.7rem', borderRadius: 12,
-                  border: '1px solid rgba(0,0,0,0.08)', backgroundColor: 'rgba(255,255,255,0.4)',
+                  border: '1px solid #2a2a35', backgroundColor: '#2a2a35',
                   fontSize: '0.9rem', fontFamily: 'Inter, sans-serif',
                 }}
               />
@@ -313,7 +313,7 @@ const MasterDesignPage = () => {
       {/* Providers Detail Modal */}
       <Modal isOpen={showProvidersModal} onClose={() => setShowProvidersModal(false)} title="Proveedores del Diseno" size="md">
         {selectedProviders.length === 0 ? (
-          <p style={{ color: 'var(--text-secondary, #475569)', textAlign: 'center', padding: '1.5rem 0' }}>
+          <p style={{ color: '#a0a0b0', textAlign: 'center', padding: '1.5rem 0' }}>
             No hay proveedores asignados a este diseno.
           </p>
         ) : (
@@ -324,11 +324,11 @@ const MasterDesignPage = () => {
                 style={{
                   display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                   padding: '0.75rem 1rem', borderRadius: 8,
-                  border: '1px solid rgba(0,0,0,0.06)', background: 'rgba(255,255,255,0.4)',
+                  border: '1px solid #2a2a35', background: '#2a2a35',
                 }}
               >
                 <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>{dp.provider?.company_name || 'N/A'}</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary, #475569)' }}>ID: {dp.provider?.id}</span>
+                <span style={{ fontSize: '0.75rem', color: '#a0a0b0' }}>ID: {dp.provider?.id}</span>
               </div>
             ))}
           </div>

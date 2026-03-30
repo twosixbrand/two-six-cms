@@ -195,7 +195,7 @@ const CustomerPage = () => {
         <form onSubmit={handleSubmit}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {editing?.document_number && (
-              <div style={{ padding: '0.6rem 1rem', background: 'rgba(212,175,55,0.08)', borderRadius: 10, fontSize: '0.8rem', color: 'var(--text-secondary, #475569)' }}>
+              <div style={{ padding: '0.6rem 1rem', background: 'rgba(212,175,55,0.08)', borderRadius: 10, fontSize: '0.8rem', color: '#a0a0b0' }}>
                 <strong>Documento:</strong> {editing.document_number}
               </div>
             )}

@@ -285,7 +285,7 @@ const ProviderPage = () => {
                 status={getRegistrationStatus(documents) === 'COMPLETO' ? 'Registro Completo' : 'Registro Incompleto'}
                 variant={getRegistrationStatus(documents) === 'COMPLETO' ? 'success' : 'warning'}
               />
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary, #475569)' }}>
+              <span style={{ fontSize: '0.8rem', color: '#a0a0b0' }}>
                 {REQUIRED_TYPES.filter((t) => documents.some((d: any) => d.document_type === t)).length}/{REQUIRED_TYPES.length} requeridos
               </span>
             </div>
@@ -302,7 +302,7 @@ const ProviderPage = () => {
                     padding: '0.75rem 1rem',
                     borderRadius: 8,
                     backgroundColor: existingDoc ? 'rgba(34, 197, 94, 0.05)' : 'rgba(0,0,0,0.02)',
-                    border: existingDoc ? '1px solid rgba(34, 197, 94, 0.15)' : '1px solid rgba(0,0,0,0.06)',
+                    border: existingDoc ? '1px solid rgba(34, 197, 94, 0.15)' : '1px solid #2a2a35',
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
