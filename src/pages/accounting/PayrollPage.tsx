@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiUsers, FiCalendar, FiFileText, FiPlus, FiEdit2, FiPlay, FiCheckCircle, FiRefreshCcw, FiDownload } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
+import { DataTable, Button, StatusBadge, LoadingSpinner, Modal, ConfirmDialog } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
 
@@ -8,13 +9,6 @@ const periodTypeLabels: Record<string, string> = {
     QUINCENAL_1: 'Quincenal 1ra',
     QUINCENAL_2: 'Quincenal 2da',
     MENSUAL: 'Mensual',
-};
-
-const statusColors: Record<string, { bg: string; color: string }> = {
-    DRAFT: { bg: '#fff8e1', color: '#f9a825' },
-    CALCULATED: { bg: '#e3f2fd', color: '#1565c0' },
-    APPROVED: { bg: '#e8f5e9', color: '#2e7d32' },
-    PAID: { bg: '#f3e5f5', color: '#7b1fa2' },
 };
 
 const formatCurrency = (value: number) =>
@@ -88,8 +82,6 @@ const EmployeeFormModal = ({
         }
     }, [initial, show]);
 
-    if (!show) return null;
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onSave({
@@ -110,110 +102,102 @@ const EmployeeFormModal = ({
     };
 
     return (
-        <div style={{
-            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-            background: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000,
-        }}>
-            <div style={{
-                background: '#fff', borderRadius: '12px', padding: '24px', width: '600px', maxHeight: '85vh',
-                overflow: 'auto', boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-            }}>
-                <h3 style={{ margin: '0 0 20px' }}>{initial ? 'Editar Empleado' : 'Nuevo Empleado'}</h3>
-                <form onSubmit={handleSubmit}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                        <div>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Documento *</label>
-                            <input style={inputStyle} required value={form.document_number}
-                                onChange={(e) => setForm({ ...form, document_number: e.target.value })} />
-                        </div>
-                        <div>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Tipo Doc</label>
-                            <select style={inputStyle} value={form.id_identification_type}
-                                onChange={(e) => setForm({ ...form, id_identification_type: Number(e.target.value) })}>
-                                <option value={1}>CC</option>
-                                <option value={2}>CE</option>
-                                <option value={3}>NIT</option>
-                                <option value={4}>Pasaporte</option>
-                            </select>
-                        </div>
-                        <div style={{ gridColumn: '1 / -1' }}>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Nombre Completo *</label>
-                            <input style={inputStyle} required value={form.name}
-                                onChange={(e) => setForm({ ...form, name: e.target.value })} />
-                        </div>
-                        <div>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Cargo *</label>
-                            <input style={inputStyle} required value={form.position}
-                                onChange={(e) => setForm({ ...form, position: e.target.value })} />
-                        </div>
-                        <div>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Departamento</label>
-                            <input style={inputStyle} value={form.department}
-                                onChange={(e) => setForm({ ...form, department: e.target.value })} />
-                        </div>
-                        <div>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Fecha Ingreso *</label>
-                            <input style={inputStyle} type="date" required value={form.hire_date}
-                                onChange={(e) => setForm({ ...form, hire_date: e.target.value })} />
-                        </div>
-                        <div>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Salario Base *</label>
-                            <input style={inputStyle} type="number" required value={form.base_salary}
-                                onChange={(e) => setForm({ ...form, base_salary: Number(e.target.value) })} />
-                        </div>
-                        <div>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Auxilio Transporte</label>
-                            <input style={inputStyle} type="number" value={form.transport_allowance}
-                                onChange={(e) => setForm({ ...form, transport_allowance: Number(e.target.value) })} />
-                        </div>
-                        <div>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Nivel ARL (1-5)</label>
-                            <select style={inputStyle} value={form.arl_risk_level}
-                                onChange={(e) => setForm({ ...form, arl_risk_level: Number(e.target.value) })}>
-                                {[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>Nivel {n}</option>)}
-                            </select>
-                        </div>
-                        <div>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>EPS</label>
-                            <input style={inputStyle} value={form.eps_entity}
-                                onChange={(e) => setForm({ ...form, eps_entity: e.target.value })} />
-                        </div>
-                        <div>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Fondo Pensiones</label>
-                            <input style={inputStyle} value={form.pension_fund}
-                                onChange={(e) => setForm({ ...form, pension_fund: e.target.value })} />
-                        </div>
-                        <div>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Banco</label>
-                            <input style={inputStyle} value={form.bank_name}
-                                onChange={(e) => setForm({ ...form, bank_name: e.target.value })} />
-                        </div>
-                        <div>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Cuenta Bancaria</label>
-                            <input style={inputStyle} value={form.bank_account}
-                                onChange={(e) => setForm({ ...form, bank_account: e.target.value })} />
-                        </div>
-                        {initial && (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <input type="checkbox" checked={form.is_active}
-                                    onChange={(e) => setForm({ ...form, is_active: e.target.checked })} />
-                                <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Activo</label>
-                            </div>
-                        )}
+        <Modal
+            isOpen={show}
+            onClose={onClose}
+            title={initial ? 'Editar Empleado' : 'Nuevo Empleado'}
+            size="lg"
+            footer={
+                <>
+                    <Button variant="ghost" onClick={onClose}>Cancelar</Button>
+                    <Button variant="primary" onClick={handleSubmit}>{initial ? 'Actualizar' : 'Crear'}</Button>
+                </>
+            }
+        >
+            <form onSubmit={handleSubmit}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <div>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Documento *</label>
+                        <input style={inputStyle} required value={form.document_number}
+                            onChange={(e) => setForm({ ...form, document_number: e.target.value })} />
                     </div>
-                    <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '20px' }}>
-                        <button type="button" onClick={onClose}
-                            style={{ padding: '8px 20px', border: '1px solid #ddd', borderRadius: '6px', background: '#fff', cursor: 'pointer' }}>
-                            Cancelar
-                        </button>
-                        <button type="submit"
-                            style={{ padding: '8px 20px', border: 'none', borderRadius: '6px', background: '#1a73e8', color: '#fff', cursor: 'pointer' }}>
-                            {initial ? 'Actualizar' : 'Crear'}
-                        </button>
+                    <div>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Tipo Doc</label>
+                        <select style={inputStyle} value={form.id_identification_type}
+                            onChange={(e) => setForm({ ...form, id_identification_type: Number(e.target.value) })}>
+                            <option value={1}>CC</option>
+                            <option value={2}>CE</option>
+                            <option value={3}>NIT</option>
+                            <option value={4}>Pasaporte</option>
+                        </select>
                     </div>
-                </form>
-            </div>
-        </div>
+                    <div style={{ gridColumn: '1 / -1' }}>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Nombre Completo *</label>
+                        <input style={inputStyle} required value={form.name}
+                            onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                    </div>
+                    <div>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Cargo *</label>
+                        <input style={inputStyle} required value={form.position}
+                            onChange={(e) => setForm({ ...form, position: e.target.value })} />
+                    </div>
+                    <div>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Departamento</label>
+                        <input style={inputStyle} value={form.department}
+                            onChange={(e) => setForm({ ...form, department: e.target.value })} />
+                    </div>
+                    <div>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Fecha Ingreso *</label>
+                        <input style={inputStyle} type="date" required value={form.hire_date}
+                            onChange={(e) => setForm({ ...form, hire_date: e.target.value })} />
+                    </div>
+                    <div>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Salario Base *</label>
+                        <input style={inputStyle} type="number" required value={form.base_salary}
+                            onChange={(e) => setForm({ ...form, base_salary: Number(e.target.value) })} />
+                    </div>
+                    <div>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Auxilio Transporte</label>
+                        <input style={inputStyle} type="number" value={form.transport_allowance}
+                            onChange={(e) => setForm({ ...form, transport_allowance: Number(e.target.value) })} />
+                    </div>
+                    <div>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Nivel ARL (1-5)</label>
+                        <select style={inputStyle} value={form.arl_risk_level}
+                            onChange={(e) => setForm({ ...form, arl_risk_level: Number(e.target.value) })}>
+                            {[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>Nivel {n}</option>)}
+                        </select>
+                    </div>
+                    <div>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>EPS</label>
+                        <input style={inputStyle} value={form.eps_entity}
+                            onChange={(e) => setForm({ ...form, eps_entity: e.target.value })} />
+                    </div>
+                    <div>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Fondo Pensiones</label>
+                        <input style={inputStyle} value={form.pension_fund}
+                            onChange={(e) => setForm({ ...form, pension_fund: e.target.value })} />
+                    </div>
+                    <div>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Banco</label>
+                        <input style={inputStyle} value={form.bank_name}
+                            onChange={(e) => setForm({ ...form, bank_name: e.target.value })} />
+                    </div>
+                    <div>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Cuenta Bancaria</label>
+                        <input style={inputStyle} value={form.bank_account}
+                            onChange={(e) => setForm({ ...form, bank_account: e.target.value })} />
+                    </div>
+                    {initial && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <input type="checkbox" checked={form.is_active}
+                                onChange={(e) => setForm({ ...form, is_active: e.target.checked })} />
+                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Activo</label>
+                        </div>
+                    )}
+                </div>
+            </form>
+        </Modal>
     );
 };
 
@@ -252,8 +236,6 @@ const PeriodFormModal = ({
         }
     }, [show]);
 
-    if (!show) return null;
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onSave({
@@ -272,60 +254,52 @@ const PeriodFormModal = ({
     };
 
     return (
-        <div style={{
-            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-            background: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000,
-        }}>
-            <div style={{
-                background: '#fff', borderRadius: '12px', padding: '24px', width: '450px',
-                boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-            }}>
-                <h3 style={{ margin: '0 0 20px' }}>Nuevo Periodo de Nomina</h3>
-                <form onSubmit={handleSubmit}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                        <div>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Anio</label>
-                            <input style={inputStyle} type="number" value={form.year}
-                                onChange={(e) => setForm({ ...form, year: Number(e.target.value) })} />
-                        </div>
-                        <div>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Mes</label>
-                            <input style={inputStyle} type="number" min={1} max={12} value={form.month}
-                                onChange={(e) => setForm({ ...form, month: Number(e.target.value) })} />
-                        </div>
-                        <div style={{ gridColumn: '1 / -1' }}>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Tipo de Periodo</label>
-                            <select style={inputStyle} value={form.period_type}
-                                onChange={(e) => setForm({ ...form, period_type: e.target.value })}>
-                                <option value="MENSUAL">Mensual</option>
-                                <option value="QUINCENAL_1">Quincenal 1ra</option>
-                                <option value="QUINCENAL_2">Quincenal 2da</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Fecha Inicio</label>
-                            <input style={inputStyle} type="date" value={form.start_date}
-                                onChange={(e) => setForm({ ...form, start_date: e.target.value })} />
-                        </div>
-                        <div>
-                            <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Fecha Fin</label>
-                            <input style={inputStyle} type="date" value={form.end_date}
-                                onChange={(e) => setForm({ ...form, end_date: e.target.value })} />
-                        </div>
+        <Modal
+            isOpen={show}
+            onClose={onClose}
+            title="Nuevo Periodo de Nomina"
+            size="sm"
+            footer={
+                <>
+                    <Button variant="ghost" onClick={onClose}>Cancelar</Button>
+                    <Button variant="primary" onClick={handleSubmit}>Crear Periodo</Button>
+                </>
+            }
+        >
+            <form onSubmit={handleSubmit}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <div>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Anio</label>
+                        <input style={inputStyle} type="number" value={form.year}
+                            onChange={(e) => setForm({ ...form, year: Number(e.target.value) })} />
                     </div>
-                    <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '20px' }}>
-                        <button type="button" onClick={onClose}
-                            style={{ padding: '8px 20px', border: '1px solid #ddd', borderRadius: '6px', background: '#fff', cursor: 'pointer' }}>
-                            Cancelar
-                        </button>
-                        <button type="submit"
-                            style={{ padding: '8px 20px', border: 'none', borderRadius: '6px', background: '#1a73e8', color: '#fff', cursor: 'pointer' }}>
-                            Crear Periodo
-                        </button>
+                    <div>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Mes</label>
+                        <input style={inputStyle} type="number" min={1} max={12} value={form.month}
+                            onChange={(e) => setForm({ ...form, month: Number(e.target.value) })} />
                     </div>
-                </form>
-            </div>
-        </div>
+                    <div style={{ gridColumn: '1 / -1' }}>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Tipo de Periodo</label>
+                        <select style={inputStyle} value={form.period_type}
+                            onChange={(e) => setForm({ ...form, period_type: e.target.value })}>
+                            <option value="MENSUAL">Mensual</option>
+                            <option value="QUINCENAL_1">Quincenal 1ra</option>
+                            <option value="QUINCENAL_2">Quincenal 2da</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Fecha Inicio</label>
+                        <input style={inputStyle} type="date" value={form.start_date}
+                            onChange={(e) => setForm({ ...form, start_date: e.target.value })} />
+                    </div>
+                    <div>
+                        <label style={{ fontSize: '12px', fontWeight: 600, color: '#555' }}>Fecha Fin</label>
+                        <input style={inputStyle} type="date" value={form.end_date}
+                            onChange={(e) => setForm({ ...form, end_date: e.target.value })} />
+                    </div>
+                </div>
+            </form>
+        </Modal>
     );
 };
 
@@ -340,12 +314,13 @@ const PayrollPage = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
-    // Employee modal
     const [showEmployeeModal, setShowEmployeeModal] = useState(false);
     const [editingEmployee, setEditingEmployee] = useState<any>(null);
-
-    // Period modal
     const [showPeriodModal, setShowPeriodModal] = useState(false);
+
+    // Confirm dialogs
+    const [confirmCalc, setConfirmCalc] = useState<number | null>(null);
+    const [confirmApprove, setConfirmApprove] = useState<number | null>(null);
 
     const fetchEmployees = async () => {
         try {
@@ -413,33 +388,35 @@ const PayrollPage = () => {
         }
     };
 
-    const handleCalculate = async (periodId: number) => {
-        if (!window.confirm('Se calculara la nomina para todos los empleados activos. Continuar?')) return;
+    const handleCalculate = async () => {
+        if (!confirmCalc) return;
         try {
             setLoading(true);
             setError('');
-            const result = await accountingApi.calculatePayroll(periodId);
+            const result = await accountingApi.calculatePayroll(confirmCalc);
             setSuccess(`Nomina calculada: ${result.employee_count} empleados procesados.`);
             fetchPeriods();
         } catch (err: any) {
             setError(err.message || 'Error al calcular nomina.');
         } finally {
             setLoading(false);
+            setConfirmCalc(null);
         }
     };
 
-    const handleApprove = async (periodId: number) => {
-        if (!window.confirm('Aprobar la nomina generara asientos contables automaticos. Continuar?')) return;
+    const handleApprove = async () => {
+        if (!confirmApprove) return;
         try {
             setLoading(true);
             setError('');
-            await accountingApi.approvePayroll(periodId);
+            await accountingApi.approvePayroll(confirmApprove);
             setSuccess('Nomina aprobada y asientos contables generados.');
             fetchPeriods();
         } catch (err: any) {
             setError(err.message || 'Error al aprobar nomina.');
         } finally {
             setLoading(false);
+            setConfirmApprove(null);
         }
     };
 
@@ -467,37 +444,80 @@ const PayrollPage = () => {
         cursor: 'pointer',
     });
 
-    const btnStyle = (bg: string): React.CSSProperties => ({
-        padding: '6px 14px',
-        border: 'none',
-        borderRadius: '6px',
-        background: bg,
-        color: '#fff',
-        fontSize: '13px',
-        cursor: 'pointer',
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '4px',
-    });
-
-    const thStyle: React.CSSProperties = {
-        padding: '10px 12px',
-        textAlign: 'left',
-        fontSize: '12px',
-        fontWeight: 600,
-        color: '#555',
-        borderBottom: '2px solid #e0e0e0',
-        whiteSpace: 'nowrap',
+    const getStatusVariant = (status: string) => {
+        switch (status) {
+            case 'APPROVED':
+            case 'PAID': return 'success';
+            case 'CALCULATED': return 'info';
+            case 'DRAFT': return 'warning';
+            default: return 'neutral';
+        }
     };
 
-    const tdStyle: React.CSSProperties = {
-        padding: '10px 12px',
-        fontSize: '13px',
-        borderBottom: '1px solid #f0f0f0',
-        whiteSpace: 'nowrap',
-    };
+    // Employee columns
+    const employeeColumns = [
+        { key: 'document_number', header: 'Documento' },
+        { key: 'name', header: 'Nombre', render: (val: any) => <strong>{val}</strong> },
+        { key: 'position', header: 'Cargo' },
+        { key: 'department', header: 'Departamento', render: (val: any) => val || '-' },
+        { key: 'base_salary', header: 'Salario Base', render: (val: any) => formatCurrency(val) },
+        { key: 'transport_allowance', header: 'Aux. Transporte', render: (val: any) => formatCurrency(val) },
+        { key: 'arl_risk_level', header: 'ARL', render: (val: any) => `Nivel ${val}` },
+        {
+            key: 'is_active',
+            header: 'Estado',
+            render: (val: any) => (
+                <StatusBadge
+                    status={val ? 'Activo' : 'Inactivo'}
+                    variant={val ? 'success' : 'error'}
+                    size="sm"
+                />
+            ),
+        },
+    ];
 
-    // ── Compute summary totals for detail view
+    // Period columns
+    const periodColumns = [
+        { key: 'id', header: 'ID' },
+        { key: 'year', header: 'Anio' },
+        { key: 'month', header: 'Mes' },
+        { key: 'period_type', header: 'Tipo', render: (val: any) => periodTypeLabels[val] || val },
+        { key: 'start_date', header: 'Inicio', render: (val: any) => new Date(val).toLocaleDateString('es-CO') },
+        { key: 'end_date', header: 'Fin', render: (val: any) => new Date(val).toLocaleDateString('es-CO') },
+        { key: '_count', header: 'Empleados', render: (_val: any, row: any) => row._count?.entries || 0 },
+        {
+            key: 'status',
+            header: 'Estado',
+            render: (val: any) => <StatusBadge status={val} variant={getStatusVariant(val)} size="sm" />,
+        },
+    ];
+
+    // Detail columns
+    const detailColumns = [
+        { key: 'employee', header: 'Empleado', render: (_val: any, row: any) => <strong>{row.employee?.name || `Emp #${row.id_employee}`}</strong> },
+        { key: 'base_salary', header: 'Salario Base', render: (val: any) => formatCurrency(val) },
+        { key: 'transport_allowance', header: 'Aux. Trans.', render: (val: any) => formatCurrency(val) },
+        { key: 'gross_salary', header: 'Bruto', render: (val: any) => <strong>{formatCurrency(val)}</strong> },
+        { key: 'health_employee', header: 'EPS (4%)', render: (val: any) => <span style={{ color: '#d32f2f' }}>-{formatCurrency(val)}</span> },
+        { key: 'pension_employee', header: 'Pension (4%)', render: (val: any) => <span style={{ color: '#d32f2f' }}>-{formatCurrency(val)}</span> },
+        { key: 'net_salary', header: 'Neto', render: (val: any) => <strong style={{ color: '#2e7d32' }}>{formatCurrency(val)}</strong> },
+        { key: 'health_employer', header: 'EPS Empl.', render: (val: any) => formatCurrency(val) },
+        { key: 'pension_employer', header: 'Pension Empl.', render: (val: any) => formatCurrency(val) },
+        { key: 'arl_employer', header: 'ARL', render: (val: any) => formatCurrency(val) },
+        {
+            key: 'sena_employer',
+            header: 'Parafiscales',
+            render: (_val: any, row: any) => formatCurrency(row.sena_employer + row.icbf_employer + row.caja_employer),
+        },
+        {
+            key: 'prima_provision',
+            header: 'Provisiones',
+            render: (_val: any, row: any) => formatCurrency(row.prima_provision + row.cesantias_provision + row.int_cesantias_provision + row.vacaciones_provision),
+        },
+        { key: 'total_employer_cost', header: 'Costo Total', render: (val: any) => <strong style={{ color: '#d32f2f' }}>{formatCurrency(val)}</strong> },
+    ];
+
+    // Summary totals for detail view
     const detailTotals = selectedPeriod?.entries?.reduce(
         (acc: any, e: any) => {
             acc.gross_salary += e.gross_salary;
@@ -555,163 +575,82 @@ const PayrollPage = () => {
                 </button>
             </div>
 
-            {/* ── TAB: Employees ─────────────────────────────────── */}
+            {/* TAB: Employees */}
             {activeTab === 'employees' && (
                 <div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                         <h3 style={{ margin: 0, fontSize: '16px', color: '#333' }}>Empleados ({employees.length})</h3>
                         <div style={{ display: 'flex', gap: '8px' }}>
-                            <button style={btnStyle('#666')} onClick={fetchEmployees}>
-                                <FiRefreshCcw size={14} /> Refrescar
-                            </button>
-                            <button style={btnStyle('#1a73e8')} onClick={() => { setEditingEmployee(null); setShowEmployeeModal(true); }}>
-                                <FiPlus size={14} /> Nuevo Empleado
-                            </button>
+                            <Button variant="ghost" size="sm" icon={<FiRefreshCcw />} onClick={fetchEmployees}>
+                                Refrescar
+                            </Button>
+                            <Button variant="primary" size="sm" icon={<FiPlus />} onClick={() => { setEditingEmployee(null); setShowEmployeeModal(true); }}>
+                                Nuevo Empleado
+                            </Button>
                         </div>
                     </div>
 
-                    <div style={{ overflowX: 'auto', background: '#fff', borderRadius: '10px', boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
-                        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                            <thead>
-                                <tr>
-                                    <th style={thStyle}>Documento</th>
-                                    <th style={thStyle}>Nombre</th>
-                                    <th style={thStyle}>Cargo</th>
-                                    <th style={thStyle}>Departamento</th>
-                                    <th style={thStyle}>Salario Base</th>
-                                    <th style={thStyle}>Aux. Transporte</th>
-                                    <th style={thStyle}>ARL</th>
-                                    <th style={thStyle}>Estado</th>
-                                    <th style={thStyle}>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {loading && !employees.length ? (
-                                    <tr><td colSpan={9} style={{ ...tdStyle, textAlign: 'center', padding: '40px' }}>Cargando...</td></tr>
-                                ) : employees.length === 0 ? (
-                                    <tr><td colSpan={9} style={{ ...tdStyle, textAlign: 'center', padding: '40px', color: '#999' }}>No hay empleados registrados</td></tr>
-                                ) : (
-                                    employees.map((emp) => (
-                                        <tr key={emp.id}>
-                                            <td style={tdStyle}>{emp.document_number}</td>
-                                            <td style={{ ...tdStyle, fontWeight: 500 }}>{emp.name}</td>
-                                            <td style={tdStyle}>{emp.position}</td>
-                                            <td style={tdStyle}>{emp.department || '-'}</td>
-                                            <td style={tdStyle}>{formatCurrency(emp.base_salary)}</td>
-                                            <td style={tdStyle}>{formatCurrency(emp.transport_allowance)}</td>
-                                            <td style={tdStyle}>Nivel {emp.arl_risk_level}</td>
-                                            <td style={tdStyle}>
-                                                <span style={{
-                                                    padding: '3px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 600,
-                                                    background: emp.is_active ? '#e8f5e9' : '#fdecea',
-                                                    color: emp.is_active ? '#2e7d32' : '#d32f2f',
-                                                }}>
-                                                    {emp.is_active ? 'Activo' : 'Inactivo'}
-                                                </span>
-                                            </td>
-                                            <td style={tdStyle}>
-                                                <button style={{ ...btnStyle('#ff9800'), padding: '4px 10px' }}
-                                                    onClick={() => { setEditingEmployee(emp); setShowEmployeeModal(true); }}>
-                                                    <FiEdit2 size={12} />
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
+                    <DataTable
+                        columns={employeeColumns}
+                        data={employees}
+                        loading={loading && !employees.length}
+                        emptyMessage="No hay empleados registrados"
+                        actions={(emp: any) => (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                icon={<FiEdit2 />}
+                                onClick={() => { setEditingEmployee(emp); setShowEmployeeModal(true); }}
+                            >
+                                {''}
+                            </Button>
+                        )}
+                    />
                 </div>
             )}
 
-            {/* ── TAB: Periods ───────────────────────────────────── */}
+            {/* TAB: Periods */}
             {activeTab === 'periods' && (
                 <div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                         <h3 style={{ margin: 0, fontSize: '16px', color: '#333' }}>Periodos de Nomina ({periods.length})</h3>
                         <div style={{ display: 'flex', gap: '8px' }}>
-                            <button style={btnStyle('#666')} onClick={fetchPeriods}>
-                                <FiRefreshCcw size={14} /> Refrescar
-                            </button>
-                            <button style={btnStyle('#1a73e8')} onClick={() => setShowPeriodModal(true)}>
-                                <FiPlus size={14} /> Nuevo Periodo
-                            </button>
+                            <Button variant="ghost" size="sm" icon={<FiRefreshCcw />} onClick={fetchPeriods}>
+                                Refrescar
+                            </Button>
+                            <Button variant="primary" size="sm" icon={<FiPlus />} onClick={() => setShowPeriodModal(true)}>
+                                Nuevo Periodo
+                            </Button>
                         </div>
                     </div>
 
-                    <div style={{ overflowX: 'auto', background: '#fff', borderRadius: '10px', boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
-                        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                            <thead>
-                                <tr>
-                                    <th style={thStyle}>ID</th>
-                                    <th style={thStyle}>Anio</th>
-                                    <th style={thStyle}>Mes</th>
-                                    <th style={thStyle}>Tipo</th>
-                                    <th style={thStyle}>Inicio</th>
-                                    <th style={thStyle}>Fin</th>
-                                    <th style={thStyle}>Empleados</th>
-                                    <th style={thStyle}>Estado</th>
-                                    <th style={thStyle}>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {loading && !periods.length ? (
-                                    <tr><td colSpan={9} style={{ ...tdStyle, textAlign: 'center', padding: '40px' }}>Cargando...</td></tr>
-                                ) : periods.length === 0 ? (
-                                    <tr><td colSpan={9} style={{ ...tdStyle, textAlign: 'center', padding: '40px', color: '#999' }}>No hay periodos creados</td></tr>
-                                ) : (
-                                    periods.map((p) => {
-                                        const sc = statusColors[p.status] || { bg: '#f5f5f5', color: '#333' };
-                                        return (
-                                            <tr key={p.id}>
-                                                <td style={tdStyle}>{p.id}</td>
-                                                <td style={tdStyle}>{p.year}</td>
-                                                <td style={tdStyle}>{p.month}</td>
-                                                <td style={tdStyle}>{periodTypeLabels[p.period_type] || p.period_type}</td>
-                                                <td style={tdStyle}>{new Date(p.start_date).toLocaleDateString('es-CO')}</td>
-                                                <td style={tdStyle}>{new Date(p.end_date).toLocaleDateString('es-CO')}</td>
-                                                <td style={tdStyle}>{p._count?.entries || 0}</td>
-                                                <td style={tdStyle}>
-                                                    <span style={{
-                                                        padding: '3px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 600,
-                                                        background: sc.bg, color: sc.color,
-                                                    }}>
-                                                        {p.status}
-                                                    </span>
-                                                </td>
-                                                <td style={tdStyle}>
-                                                    <div style={{ display: 'flex', gap: '4px' }}>
-                                                        <button style={{ ...btnStyle('#1565c0'), padding: '4px 10px' }}
-                                                            onClick={() => handleViewDetail(p.id)} title="Ver detalle">
-                                                            <FiFileText size={12} />
-                                                        </button>
-                                                        {(p.status === 'DRAFT' || p.status === 'CALCULATED') && (
-                                                            <button style={{ ...btnStyle('#ff9800'), padding: '4px 10px' }}
-                                                                onClick={() => handleCalculate(p.id)} title="Calcular nomina"
-                                                                disabled={loading}>
-                                                                <FiPlay size={12} /> Calcular
-                                                            </button>
-                                                        )}
-                                                        {p.status === 'CALCULATED' && (
-                                                            <button style={{ ...btnStyle('#2e7d32'), padding: '4px 10px' }}
-                                                                onClick={() => handleApprove(p.id)} title="Aprobar nomina"
-                                                                disabled={loading}>
-                                                                <FiCheckCircle size={12} /> Aprobar
-                                                            </button>
-                                                        )}
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        );
-                                    })
+                    <DataTable
+                        columns={periodColumns}
+                        data={periods}
+                        loading={loading && !periods.length}
+                        emptyMessage="No hay periodos creados"
+                        actions={(p: any) => (
+                            <div style={{ display: 'flex', gap: '4px' }}>
+                                <Button variant="ghost" size="sm" icon={<FiFileText />} onClick={() => handleViewDetail(p.id)}>
+                                    {''}
+                                </Button>
+                                {(p.status === 'DRAFT' || p.status === 'CALCULATED') && (
+                                    <Button variant="ghost" size="sm" icon={<FiPlay />} onClick={() => setConfirmCalc(p.id)} disabled={loading}>
+                                        Calcular
+                                    </Button>
                                 )}
-                            </tbody>
-                        </table>
-                    </div>
+                                {p.status === 'CALCULATED' && (
+                                    <Button variant="primary" size="sm" icon={<FiCheckCircle />} onClick={() => setConfirmApprove(p.id)} disabled={loading}>
+                                        Aprobar
+                                    </Button>
+                                )}
+                            </div>
+                        )}
+                    />
                 </div>
             )}
 
-            {/* ── TAB: Period Detail ─────────────────────────────── */}
+            {/* TAB: Period Detail */}
             {activeTab === 'detail' && (
                 <div>
                     {!selectedPeriod ? (
@@ -721,23 +660,21 @@ const PayrollPage = () => {
                         </div>
                     ) : (
                         <>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
                                 <h3 style={{ margin: 0, fontSize: '16px', color: '#333' }}>
                                     Detalle: {selectedPeriod.year}-{String(selectedPeriod.month).padStart(2, '0')} ({periodTypeLabels[selectedPeriod.period_type] || selectedPeriod.period_type})
-                                    <span style={{
-                                        marginLeft: '12px', padding: '3px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 600,
-                                        background: (statusColors[selectedPeriod.status] || { bg: '#f5f5f5' }).bg,
-                                        color: (statusColors[selectedPeriod.status] || { color: '#333' }).color,
-                                    }}>
-                                        {selectedPeriod.status}
+                                    <span style={{ marginLeft: '12px' }}>
+                                        <StatusBadge status={selectedPeriod.status} variant={getStatusVariant(selectedPeriod.status)} size="sm" />
                                     </span>
                                 </h3>
-                                <button style={btnStyle('#666')} onClick={() => handleViewDetail(selectedPeriod.id)}>
-                                    <FiRefreshCcw size={14} /> Refrescar
-                                </button>
-                                <button style={btnStyle('#2e7d32')} onClick={() => accountingApi.exportToExcel('payroll', { periodId: String(selectedPeriod.id) })}>
-                                    <FiDownload size={14} /> Exportar Excel
-                                </button>
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <Button variant="ghost" size="sm" icon={<FiRefreshCcw />} onClick={() => handleViewDetail(selectedPeriod.id)}>
+                                        Refrescar
+                                    </Button>
+                                    <Button variant="primary" size="sm" icon={<FiDownload />} onClick={() => accountingApi.exportToExcel('payroll', { periodId: String(selectedPeriod.id) })}>
+                                        Exportar Excel
+                                    </Button>
+                                </div>
                             </div>
 
                             {/* Summary Cards */}
@@ -763,50 +700,11 @@ const PayrollPage = () => {
                             )}
 
                             {/* Entries Table */}
-                            <div style={{ overflowX: 'auto', background: '#fff', borderRadius: '10px', boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
-                                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                                    <thead>
-                                        <tr>
-                                            <th style={thStyle}>Empleado</th>
-                                            <th style={thStyle}>Salario Base</th>
-                                            <th style={thStyle}>Aux. Trans.</th>
-                                            <th style={thStyle}>Bruto</th>
-                                            <th style={thStyle}>EPS (4%)</th>
-                                            <th style={thStyle}>Pension (4%)</th>
-                                            <th style={thStyle}>Neto</th>
-                                            <th style={thStyle}>EPS Empl.</th>
-                                            <th style={thStyle}>Pension Empl.</th>
-                                            <th style={thStyle}>ARL</th>
-                                            <th style={thStyle}>Parafiscales</th>
-                                            <th style={thStyle}>Provisiones</th>
-                                            <th style={thStyle}>Costo Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {(!selectedPeriod.entries || selectedPeriod.entries.length === 0) ? (
-                                            <tr><td colSpan={13} style={{ ...tdStyle, textAlign: 'center', padding: '40px', color: '#999' }}>No hay entradas calculadas</td></tr>
-                                        ) : (
-                                            selectedPeriod.entries.map((entry: any) => (
-                                                <tr key={entry.id}>
-                                                    <td style={{ ...tdStyle, fontWeight: 500 }}>{entry.employee?.name || `Emp #${entry.id_employee}`}</td>
-                                                    <td style={tdStyle}>{formatCurrency(entry.base_salary)}</td>
-                                                    <td style={tdStyle}>{formatCurrency(entry.transport_allowance)}</td>
-                                                    <td style={{ ...tdStyle, fontWeight: 600 }}>{formatCurrency(entry.gross_salary)}</td>
-                                                    <td style={{ ...tdStyle, color: '#d32f2f' }}>-{formatCurrency(entry.health_employee)}</td>
-                                                    <td style={{ ...tdStyle, color: '#d32f2f' }}>-{formatCurrency(entry.pension_employee)}</td>
-                                                    <td style={{ ...tdStyle, fontWeight: 700, color: '#2e7d32' }}>{formatCurrency(entry.net_salary)}</td>
-                                                    <td style={tdStyle}>{formatCurrency(entry.health_employer)}</td>
-                                                    <td style={tdStyle}>{formatCurrency(entry.pension_employer)}</td>
-                                                    <td style={tdStyle}>{formatCurrency(entry.arl_employer)}</td>
-                                                    <td style={tdStyle}>{formatCurrency(entry.sena_employer + entry.icbf_employer + entry.caja_employer)}</td>
-                                                    <td style={tdStyle}>{formatCurrency(entry.prima_provision + entry.cesantias_provision + entry.int_cesantias_provision + entry.vacaciones_provision)}</td>
-                                                    <td style={{ ...tdStyle, fontWeight: 700, color: '#d32f2f' }}>{formatCurrency(entry.total_employer_cost)}</td>
-                                                </tr>
-                                            ))
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
+                            <DataTable
+                                columns={detailColumns}
+                                data={selectedPeriod.entries || []}
+                                emptyMessage="No hay entradas calculadas"
+                            />
                         </>
                     )}
                 </div>
@@ -823,6 +721,28 @@ const PayrollPage = () => {
                 show={showPeriodModal}
                 onClose={() => setShowPeriodModal(false)}
                 onSave={handleSavePeriod}
+            />
+
+            {/* Confirm Dialogs */}
+            <ConfirmDialog
+                isOpen={confirmCalc !== null}
+                onConfirm={handleCalculate}
+                onCancel={() => setConfirmCalc(null)}
+                title="Calcular Nomina"
+                message="Se calculara la nomina para todos los empleados activos. Continuar?"
+                confirmText="Calcular"
+                cancelText="Cancelar"
+                variant="warning"
+            />
+            <ConfirmDialog
+                isOpen={confirmApprove !== null}
+                onConfirm={handleApprove}
+                onCancel={() => setConfirmApprove(null)}
+                title="Aprobar Nomina"
+                message="Aprobar la nomina generara asientos contables automaticos. Continuar?"
+                confirmText="Aprobar"
+                cancelText="Cancelar"
+                variant="warning"
             />
         </div>
     );

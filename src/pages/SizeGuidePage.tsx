@@ -3,6 +3,7 @@ import { FiGrid } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
 import SizeGuideForm from '../components/size-guide/SizeGuideForm';
 import SizeGuideList from '../components/size-guide/SizeGuideList';
+import { LoadingSpinner, ConfirmDialog } from '../components/ui';
 import {
     getSizeGuides,
     createSizeGuide,
@@ -16,6 +17,7 @@ const SizeGuidePage = () => {
     const [currentItem, setCurrentItem] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [deleteConfirm, setDeleteConfirm] = useState<{ open: boolean; id: number | null }>({ open: false, id: null });
 
     const fetchItems = async () => {
         try {
@@ -58,15 +60,20 @@ const SizeGuidePage = () => {
         setCurrentItem(null);
     };
 
-    const handleDelete = async (id) => {
-        if (window.confirm('¿Estás seguro de eliminar esta medida?')) {
-            try {
-                await deleteSizeGuide(id);
-                fetchItems();
-            } catch (err) {
-                logError(err, '/size-guide');
-                setError('No se pudo eliminar la medida.');
-            }
+    const handleDelete = (id) => {
+        setDeleteConfirm({ open: true, id });
+    };
+
+    const confirmDelete = async () => {
+        if (deleteConfirm.id === null) return;
+        try {
+            await deleteSizeGuide(deleteConfirm.id);
+            fetchItems();
+        } catch (err) {
+            logError(err, '/size-guide');
+            setError('No se pudo eliminar la medida.');
+        } finally {
+            setDeleteConfirm({ open: false, id: null });
         }
     };
 
@@ -84,7 +91,7 @@ const SizeGuidePage = () => {
                 </div>
                 <div className="list-card">
                     {loading ? (
-                        <p>Cargando medidas...</p>
+                        <LoadingSpinner text="Cargando medidas..." />
                     ) : (
                         <SizeGuideList
                             items={items}
@@ -94,6 +101,17 @@ const SizeGuidePage = () => {
                     )}
                 </div>
             </div>
+
+            <ConfirmDialog
+                isOpen={deleteConfirm.open}
+                onConfirm={confirmDelete}
+                onCancel={() => setDeleteConfirm({ open: false, id: null })}
+                title="Eliminar medida"
+                message="¿Estás seguro de eliminar esta medida?"
+                confirmText="Eliminar"
+                cancelText="Cancelar"
+                variant="danger"
+            />
         </div>
     );
 };

@@ -3,7 +3,8 @@ import { PqrService } from '../../services/pqr/pqr.service';
 import Swal from 'sweetalert2';
 import { FiClock, FiAlertCircle, FiCheckCircle } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
-import '../../styles/ImageClothingPage.css'; // Reusing generic grid styles
+import { Button, StatusBadge, LoadingSpinner, FormField } from '../../components/ui';
+import '../../styles/ImageClothingPage.css';
 
 interface PqrImage {
     id: number;
@@ -77,15 +78,15 @@ const PqrManagementPage: React.FC = () => {
 
     const getSlaColors = (slaStatus: string | undefined, status: string) => {
         if (status === 'Resuelto' || status === 'Cerrado') {
-            return { bg: '#10b981', color: '#fff', border: 'rgba(16, 185, 129, 0.4)', icon: <FiCheckCircle /> }; // Green
+            return { bg: '#10b981', color: '#fff', border: 'rgba(16, 185, 129, 0.4)', icon: <FiCheckCircle /> };
         }
         if (slaStatus === 'VENCIDO') {
-            return { bg: '#ef4444', color: '#fff', border: 'rgba(239, 68, 68, 0.4)', icon: <FiAlertCircle /> }; // Red
+            return { bg: '#ef4444', color: '#fff', border: 'rgba(239, 68, 68, 0.4)', icon: <FiAlertCircle /> };
         }
         if (slaStatus === 'EN RIESGO') {
-            return { bg: '#f59e0b', color: '#fff', border: 'rgba(245, 158, 11, 0.4)', icon: <FiClock /> }; // Yellow
+            return { bg: '#f59e0b', color: '#fff', border: 'rgba(245, 158, 11, 0.4)', icon: <FiClock /> };
         }
-        return { bg: '#3b82f6', color: '#fff', border: 'rgba(59, 130, 246, 0.4)', icon: <FiCheckCircle /> }; // Blue for OK
+        return { bg: '#3b82f6', color: '#fff', border: 'rgba(59, 130, 246, 0.4)', icon: <FiCheckCircle /> };
     };
 
     return (
@@ -96,7 +97,7 @@ const PqrManagementPage: React.FC = () => {
                 {/* Grid de Cards PQR */}
                 <div className="col-lg-7 pe-lg-4">
                     {loading ? (
-                        <div className="text-center py-5">Cargando Casos...</div>
+                        <LoadingSpinner text="Cargando Casos..." />
                     ) : pqrs.length === 0 ? (
                         <div className="empty-search">
                             <FiCheckCircle className="empty-icon" />
@@ -138,8 +139,8 @@ const PqrManagementPage: React.FC = () => {
                                                 <h3 style={{ fontSize: '0.95rem', marginBottom: '0.1rem', lineHeight: 1.2 }}>{pqr.radicado}</h3>
                                                 <p style={{ margin: '0', fontSize: '0.78rem' }}>{pqr.customer_name}</p>
                                                 <div style={{ marginTop: '0.3rem', display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                                                    <span className="ref-category" style={{ fontSize: '0.6rem', padding: '0.15rem 0.4rem' }}>{pqr.type}</span>
-                                                    <span className="ref-category" style={{ fontSize: '0.6rem', padding: '0.15rem 0.4rem', background: 'rgba(0,0,0,0.05)', color: 'var(--text-secondary)', borderColor: 'transparent' }}>{pqr.status}</span>
+                                                    <StatusBadge status={pqr.type} variant="info" size="sm" />
+                                                    <StatusBadge status={pqr.status} variant="neutral" size="sm" />
                                                 </div>
                                             </div>
                                         </div>
@@ -174,9 +175,15 @@ const PqrManagementPage: React.FC = () => {
                                         <h3 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.3rem', fontWeight: 700 }}>
                                             Detalle del Requerimiento
                                         </h3>
-                                        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: getSlaColors(selectedPqr.slaStatus, selectedPqr.status).color, backgroundColor: getSlaColors(selectedPqr.slaStatus, selectedPqr.status).bg, padding: '4px 12px', borderRadius: '30px' }}>
-                                            {selectedPqr.slaStatus || 'A TIEMPO'}
-                                        </span>
+                                        <StatusBadge
+                                            status={selectedPqr.slaStatus || 'A TIEMPO'}
+                                            variant={
+                                                (selectedPqr.status === 'Resuelto' || selectedPqr.status === 'Cerrado') ? 'success' :
+                                                selectedPqr.slaStatus === 'VENCIDO' ? 'error' :
+                                                selectedPqr.slaStatus === 'EN RIESGO' ? 'warning' : 'info'
+                                            }
+                                            size="sm"
+                                        />
                                     </div>
 
                                     <div>
@@ -222,95 +229,44 @@ const PqrManagementPage: React.FC = () => {
                                     )}
 
                                     <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1.2rem', marginTop: '0.5rem' }}>
-                                        <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.4rem', display: 'block' }}>Actualizar Estado Operativo</label>
-                                        <select
+                                        <FormField
+                                            label="Actualizar Estado Operativo"
+                                            name="editStatus"
+                                            type="select"
                                             value={editStatus}
                                             onChange={(e) => setEditStatus(e.target.value)}
-                                            style={{
-                                                backgroundColor: 'rgba(255, 255, 255, 0.4)',
-                                                color: 'var(--text-primary)',
-                                                border: '1px solid rgba(0, 0, 0, 0.08)',
-                                                padding: '0.85rem 1rem',
-                                                borderRadius: '12px',
-                                                width: '100%',
-                                                fontSize: '0.95rem',
-                                                outline: 'none',
-                                                cursor: 'pointer',
-                                                boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.02)',
-                                                marginBottom: '1rem'
-                                            }}
-                                            onFocus={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.8)'; e.currentTarget.style.borderColor = '#d4af37' }}
-                                            onBlur={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.4)'; e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.08)' }}
-                                        >
-                                            <option value="Abierto">Abierto</option>
-                                            <option value="En Revisión">En Revisión</option>
-                                            <option value="Resuelto">Resuelto</option>
-                                            <option value="Cerrado">Cerrado</option>
-                                        </select>
-
-                                        <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.4rem', display: 'block' }}>Observaciones de Gestión / Resolución</label>
-                                        <textarea
-                                            value={editObservation}
-                                            onChange={(e) => setEditObservation(e.target.value)}
-                                            rows={3}
-                                            placeholder="Detalla aquí las acciones tomadas o la resolución final otorgada al cliente..."
-                                            style={{
-                                                backgroundColor: 'rgba(255, 255, 255, 0.6)',
-                                                color: 'var(--text-primary)',
-                                                border: '1px solid rgba(0, 0, 0, 0.08)',
-                                                padding: '0.85rem 1rem',
-                                                borderRadius: '12px',
-                                                width: '100%',
-                                                fontSize: '0.9rem',
-                                                outline: 'none',
-                                                resize: 'vertical',
-                                                boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.02)',
-                                            }}
-                                            onFocus={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.9)'; e.currentTarget.style.borderColor = '#d4af37' }}
-                                            onBlur={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.6)'; e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.08)' }}
+                                            options={[
+                                                { value: 'Abierto', label: 'Abierto' },
+                                                { value: 'En Revisión', label: 'En Revisión' },
+                                                { value: 'Resuelto', label: 'Resuelto' },
+                                                { value: 'Cerrado', label: 'Cerrado' },
+                                            ]}
                                         />
+
+                                        <div style={{ marginTop: '1rem' }}>
+                                            <FormField
+                                                label="Observaciones de Gestión / Resolución"
+                                                name="editObservation"
+                                                type="textarea"
+                                                value={editObservation}
+                                                onChange={(e) => setEditObservation(e.target.value)}
+                                                placeholder="Detalla aquí las acciones tomadas o la resolución final otorgada al cliente..."
+                                                rows={3}
+                                            />
+                                        </div>
                                     </div>
 
                                     <div style={{ display: 'flex', gap: '0.8rem', marginTop: '0.5rem' }}>
-                                        <button
-                                            type="button"
-                                            onClick={handleStatusChange}
-                                            style={{
-                                                flex: 2,
-                                                padding: '0.85rem',
-                                                borderRadius: '12px',
-                                                background: 'linear-gradient(135deg, #d4af37 0%, #f5d76e 50%, #d4af37 100%)',
-                                                border: 'none',
-                                                color: '#0f172a',
-                                                fontWeight: 700,
-                                                cursor: 'pointer',
-                                                transition: 'all 0.2s',
-                                                boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3)'
-                                            }}
-                                            onMouseOver={e => e.currentTarget.style.transform = 'translateY(-2px)'}
-                                            onMouseOut={e => e.currentTarget.style.transform = 'none'}
-                                        >
-                                            Guardar Gestión
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={() => setSelectedPqr(null)}
-                                            style={{
-                                                flex: 1,
-                                                padding: '0.85rem',
-                                                borderRadius: '12px',
-                                                background: 'rgba(255, 255, 255, 0.05)',
-                                                border: '1.5px solid rgba(212, 175, 55, 0.25)',
-                                                color: 'var(--text-primary)',
-                                                fontWeight: 600,
-                                                cursor: 'pointer',
-                                                transition: 'all 0.2s'
-                                            }}
-                                            onMouseOver={e => { e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)'; e.currentTarget.style.borderColor = '#d4af37' }}
-                                            onMouseOut={e => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'; e.currentTarget.style.borderColor = 'rgba(212, 175, 55, 0.25)' }}
-                                        >
-                                            Cerrar
-                                        </button>
+                                        <div style={{ flex: 2 }}>
+                                            <Button variant="primary" onClick={handleStatusChange}>
+                                                Guardar Gestión
+                                            </Button>
+                                        </div>
+                                        <div style={{ flex: 1 }}>
+                                            <Button variant="outline" onClick={() => setSelectedPqr(null)}>
+                                                Cerrar
+                                            </Button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>

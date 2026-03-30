@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { FiDollarSign, FiRefreshCcw, FiPlus, FiEdit2, FiTrash2, FiCheck, FiEye, FiDownload } from 'react-icons/fi';
+import { FiDollarSign, FiRefreshCcw, FiPlus, FiEdit2, FiTrash2, FiCheck, FiDownload } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import PageHeader from '../../components/common/PageHeader';
+import { DataTable, Button, StatusBadge, LoadingSpinner, ConfirmDialog } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
-
-const paymentStatusColors: Record<string, { className: string; bg: string }> = {
-    PENDING: { className: 'status-pending', bg: '#fff8e1' },
-    PAID: { className: 'status-active', bg: '#e8f5e9' },
-    PARTIAL: { className: 'status-active', bg: '#e3f2fd' },
-};
 
 const ExpensePage = () => {
     const navigate = useNavigate();
@@ -21,6 +16,7 @@ const ExpensePage = () => {
     const [endDate, setEndDate] = useState('');
     const [category, setCategory] = useState('');
     const [status, setStatus] = useState('ALL');
+    const [confirmAction, setConfirmAction] = useState<{ type: 'paid' | 'delete'; id: number } | null>(null);
 
     const fetchData = async () => {
         try {
@@ -43,28 +39,72 @@ const ExpensePage = () => {
         fetchData();
     }, []);
 
-    const handleMarkPaid = async (id: number) => {
-        if (!window.confirm('¿Marcar este gasto como pagado?')) return;
+    const handleMarkPaid = async () => {
+        if (!confirmAction || confirmAction.type !== 'paid') return;
         try {
-            await accountingApi.markExpensePaid(id);
+            await accountingApi.markExpensePaid(confirmAction.id);
             fetchData();
         } catch (err: any) {
             alert('Error: ' + (err.message || err));
+        } finally {
+            setConfirmAction(null);
         }
     };
 
-    const handleDelete = async (id: number) => {
-        if (!window.confirm('¿Eliminar este gasto?')) return;
+    const handleDelete = async () => {
+        if (!confirmAction || confirmAction.type !== 'delete') return;
         try {
-            await accountingApi.deleteExpense(id);
+            await accountingApi.deleteExpense(confirmAction.id);
             fetchData();
         } catch (err: any) {
             alert('Error al eliminar: ' + (err.message || err));
+        } finally {
+            setConfirmAction(null);
         }
     };
 
     const formatCurrency = (val: number) =>
         new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(val || 0);
+
+    const getStatusVariant = (paymentStatus: string) => {
+        switch (paymentStatus) {
+            case 'PAID': return 'success';
+            case 'PENDING': return 'warning';
+            case 'PARTIAL': return 'info';
+            default: return 'neutral';
+        }
+    };
+
+    const columns = [
+        {
+            key: 'expense_number',
+            header: '# Gasto',
+            render: (val: any) => <strong>{val}</strong>,
+        },
+        {
+            key: 'expense_date',
+            header: 'Fecha',
+            render: (_val: any, row: any) => new Date(row.expense_date || row.date).toLocaleDateString('es-CO'),
+        },
+        { key: 'category', header: 'Categoría' },
+        {
+            key: 'provider',
+            header: 'Proveedor',
+            render: (val: any) => val || '-',
+        },
+        { key: 'description', header: 'Descripción' },
+        {
+            key: 'total',
+            header: 'Total',
+            align: 'right' as const,
+            render: (val: any) => formatCurrency(val),
+        },
+        {
+            key: 'payment_status',
+            header: 'Estado Pago',
+            render: (val: any) => <StatusBadge status={val} variant={getStatusVariant(val)} size="sm" />,
+        },
+    ];
 
     return (
         <div className="page-container">
@@ -101,91 +141,79 @@ const ExpensePage = () => {
                         <option value="PARTIAL">Parcial</option>
                     </select>
                 </div>
-                <button onClick={fetchData} className="btn btn-primary">
-                    <FiRefreshCcw /> Buscar
-                </button>
-                <button onClick={() => navigate('/accounting/expenses/new')} className="btn btn-secondary">
-                    <FiPlus /> Registrar Gasto
-                </button>
+                <Button variant="primary" icon={<FiRefreshCcw />} onClick={fetchData}>
+                    Buscar
+                </Button>
+                <Button variant="secondary" icon={<FiPlus />} onClick={() => navigate('/accounting/expenses/new')}>
+                    Registrar Gasto
+                </Button>
                 {startDate && endDate && (
-                    <button onClick={() => accountingApi.exportToExcel('expenses', { startDate, endDate })} className="btn btn-secondary">
-                        <FiDownload /> Exportar Excel
-                    </button>
+                    <Button variant="secondary" icon={<FiDownload />} onClick={() => accountingApi.exportToExcel('expenses', { startDate, endDate })}>
+                        Exportar Excel
+                    </Button>
                 )}
             </div>
 
             {error && <p className="error-message">{error}</p>}
 
-            {loading ? (
-                <p>Cargando gastos...</p>
-            ) : (
-                <div className="list-card full-width">
-                    <table className="data-table">
-                        <thead>
-                            <tr>
-                                <th># Gasto</th>
-                                <th>Fecha</th>
-                                <th>Categoría</th>
-                                <th>Proveedor</th>
-                                <th>Descripción</th>
-                                <th>Total</th>
-                                <th>Estado Pago</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {expenses.length === 0 ? (
-                                <tr><td colSpan={8} style={{ textAlign: 'center' }}>No hay gastos registrados</td></tr>
-                            ) : expenses.map((exp: any) => {
-                                const statusStyle = paymentStatusColors[exp.payment_status] || paymentStatusColors.PENDING;
-                                return (
-                                    <tr key={exp.id}>
-                                        <td><strong>{exp.expense_number}</strong></td>
-                                        <td>{new Date(exp.expense_date || exp.date).toLocaleDateString('es-CO')}</td>
-                                        <td>{exp.category}</td>
-                                        <td>{exp.provider || '-'}</td>
-                                        <td>{exp.description}</td>
-                                        <td style={{ textAlign: 'right' }}>{formatCurrency(exp.total)}</td>
-                                        <td>
-                                            <span className={`status-badge ${statusStyle.className}`} style={{ background: statusStyle.bg }}>
-                                                {exp.payment_status}
-                                            </span>
-                                        </td>
-                                        <td style={{ whiteSpace: 'nowrap' }}>
-                                            <button
-                                                className="btn btn-sm"
-                                                onClick={() => navigate(`/accounting/expenses/${exp.id}`)}
-                                                style={{ marginRight: '4px', padding: '4px 8px', fontSize: '12px' }}
-                                                title="Editar"
-                                            >
-                                                <FiEdit2 />
-                                            </button>
-                                            {exp.payment_status !== 'PAID' && (
-                                                <button
-                                                    className="btn btn-sm"
-                                                    onClick={() => handleMarkPaid(exp.id)}
-                                                    style={{ marginRight: '4px', padding: '4px 8px', fontSize: '12px', color: '#2e7d32' }}
-                                                    title="Marcar como pagado"
-                                                >
-                                                    <FiCheck />
-                                                </button>
-                                            )}
-                                            <button
-                                                className="btn btn-sm"
-                                                onClick={() => handleDelete(exp.id)}
-                                                style={{ padding: '4px 8px', fontSize: '12px', color: '#e53935' }}
-                                                title="Eliminar"
-                                            >
-                                                <FiTrash2 />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-                </div>
-            )}
+            <DataTable
+                columns={columns}
+                data={expenses}
+                loading={loading}
+                emptyMessage="No hay gastos registrados"
+                actions={(exp: any) => (
+                    <>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            icon={<FiEdit2 />}
+                            onClick={() => navigate(`/accounting/expenses/${exp.id}`)}
+                        >
+                            {''}
+                        </Button>
+                        {exp.payment_status !== 'PAID' && (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                icon={<FiCheck />}
+                                onClick={() => setConfirmAction({ type: 'paid', id: exp.id })}
+                            >
+                                {''}
+                            </Button>
+                        )}
+                        <Button
+                            variant="destructive"
+                            size="sm"
+                            icon={<FiTrash2 />}
+                            onClick={() => setConfirmAction({ type: 'delete', id: exp.id })}
+                        >
+                            {''}
+                        </Button>
+                    </>
+                )}
+            />
+
+            <ConfirmDialog
+                isOpen={confirmAction?.type === 'paid'}
+                onConfirm={handleMarkPaid}
+                onCancel={() => setConfirmAction(null)}
+                title="Marcar como pagado"
+                message="¿Marcar este gasto como pagado?"
+                confirmText="Sí, pagado"
+                cancelText="Cancelar"
+                variant="warning"
+            />
+
+            <ConfirmDialog
+                isOpen={confirmAction?.type === 'delete'}
+                onConfirm={handleDelete}
+                onCancel={() => setConfirmAction(null)}
+                title="Eliminar gasto"
+                message="¿Eliminar este gasto?"
+                confirmText="Eliminar"
+                cancelText="Cancelar"
+                variant="danger"
+            />
         </div>
     );
 };

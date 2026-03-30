@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { FiShield, FiChevronDown, FiChevronRight, FiCheck, FiX } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
+import { Button, LoadingSpinner, ConfirmDialog } from '../components/ui';
 import * as permissionApi from '../services/permissionApi';
 import * as roleApi from '../services/roleApi';
 import { logError } from '../services/errorApi';
@@ -51,8 +52,8 @@ const PermissionManagementPage = () => {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [showSaveConfirm, setShowSaveConfirm] = useState(false);
 
-  // Cargar roles al montar
   useEffect(() => {
     const fetchRoles = async () => {
       try {
@@ -69,7 +70,6 @@ const PermissionManagementPage = () => {
     fetchRoles();
   }, []);
 
-  // Cargar permisos disponibles y permisos del rol seleccionado
   const loadRolePermissions = useCallback(async (roleId: number) => {
     try {
       setLoadingPermissions(true);
@@ -81,9 +81,7 @@ const PermissionManagementPage = () => {
         permissionApi.getRolePermissions(roleId),
       ]);
 
-      // allPermissions puede venir como objeto agrupado { grupo: [...] } o como array
       if (allPermissions && typeof allPermissions === 'object' && !Array.isArray(allPermissions)) {
-        // Objeto agrupado: { "Contabilidad": [...], "Inventario": [...] }
         setPermissionGroups(
           Object.entries(allPermissions).map(([group, permissions]) => ({
             group,
@@ -111,7 +109,6 @@ const PermissionManagementPage = () => {
         setPermissionGroups([]);
       }
 
-      // rolePermissions puede ser array de ids o array de objetos
       const ids = new Set<number>(
         Array.isArray(rolePermissions)
           ? rolePermissions.map((rp: any) => (typeof rp === 'number' ? rp : rp.id || rp.permissionId))
@@ -119,7 +116,6 @@ const PermissionManagementPage = () => {
       );
       setSelectedPermissionIds(ids);
 
-      // Expandir todos los grupos por defecto
       if (Array.isArray(allPermissions)) {
         const groups = allPermissions.map((g: any) => g.group || g.group);
         setExpandedGroups(new Set(groups.filter(Boolean)));
@@ -179,11 +175,6 @@ const PermissionManagementPage = () => {
   const handleSave = async () => {
     if (!selectedRoleId) return;
 
-    const confirmed = window.confirm(
-      '¿Estás seguro de guardar los permisos para este rol?'
-    );
-    if (!confirmed) return;
-
     try {
       setSaving(true);
       setError('');
@@ -199,6 +190,7 @@ const PermissionManagementPage = () => {
       setError('Error al guardar los permisos.');
     } finally {
       setSaving(false);
+      setShowSaveConfirm(false);
     }
   };
 
@@ -229,7 +221,7 @@ const PermissionManagementPage = () => {
           </div>
           <div style={styles.roleList}>
             {loading ? (
-              <p style={styles.loadingText}>Cargando roles...</p>
+              <LoadingSpinner size="sm" text="Cargando roles..." />
             ) : roles.length === 0 ? (
               <p style={styles.emptyText}>No hay roles disponibles.</p>
             ) : (
@@ -261,7 +253,7 @@ const PermissionManagementPage = () => {
             </div>
           ) : loadingPermissions ? (
             <div style={styles.emptyState}>
-              <p style={styles.loadingText}>Cargando permisos...</p>
+              <LoadingSpinner text="Cargando permisos..." />
             </div>
           ) : (
             <>
@@ -345,22 +337,31 @@ const PermissionManagementPage = () => {
 
               {permissionGroups.length > 0 && (
                 <div style={styles.saveContainer}>
-                  <button
-                    onClick={handleSave}
+                  <Button
+                    variant="primary"
+                    onClick={() => setShowSaveConfirm(true)}
+                    loading={saving}
                     disabled={saving}
-                    style={{
-                      ...styles.saveButton,
-                      ...(saving ? styles.saveButtonDisabled : {}),
-                    }}
                   >
                     {saving ? 'Guardando...' : 'Guardar Permisos'}
-                  </button>
+                  </Button>
                 </div>
               )}
             </>
           )}
         </div>
       </div>
+
+      <ConfirmDialog
+        isOpen={showSaveConfirm}
+        onConfirm={handleSave}
+        onCancel={() => setShowSaveConfirm(false)}
+        title="Guardar permisos"
+        message="¿Estás seguro de guardar los permisos para este rol?"
+        confirmText="Guardar"
+        cancelText="Cancelar"
+        variant="warning"
+      />
     </div>
   );
 };
@@ -433,11 +434,6 @@ const styles: Record<string, React.CSSProperties> = {
   emptyStateText: {
     color: 'var(--text-secondary)',
     fontSize: '1.1rem',
-  },
-  loadingText: {
-    color: 'var(--text-secondary)',
-    padding: '1rem',
-    textAlign: 'center' as const,
   },
   emptyText: {
     color: 'var(--text-secondary)',
@@ -536,21 +532,6 @@ const styles: Record<string, React.CSSProperties> = {
     borderTop: '1px solid var(--border-color)',
     display: 'flex',
     justifyContent: 'flex-end',
-  },
-  saveButton: {
-    padding: '0.75rem 2rem',
-    borderRadius: '8px',
-    border: 'none',
-    background: 'var(--primary-color)',
-    color: '#000',
-    fontWeight: 600,
-    fontSize: '0.95rem',
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
-  },
-  saveButtonDisabled: {
-    opacity: 0.6,
-    cursor: 'not-allowed',
   },
   errorBanner: {
     display: 'flex',

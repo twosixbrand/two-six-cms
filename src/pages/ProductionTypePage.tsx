@@ -1,93 +1,170 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { FiTool } from 'react-icons/fi';
+import React, { useState, useEffect, useMemo } from 'react';
+import { FiTool, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
-import ProductionTypeList from '../components/production-type/ProductionTypeList.jsx';
-import ProductionTypeForm from '../components/production-type/ProductionTypeForm.jsx';
-import * as productionTypeApi from '../services/productionTypeApi.js';
-import { logError } from '../services/errorApi.js';
+import { DataTable, Modal, FormField, Button, SearchInput, ConfirmDialog, LoadingSpinner } from '../components/ui';
+import * as productionTypeApi from '../services/productionTypeApi';
+import { logError } from '../services/errorApi';
 
 const ProductionTypePage = () => {
-  const [items, setItems] = useState([]);
-  const [currentItem, setCurrentItem] = useState(null);
+  const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [search, setSearch] = useState('');
 
-  const fetchItems = useCallback(async () => {
+  // Modal state
+  const [showModal, setShowModal] = useState(false);
+  const [editing, setEditing] = useState<any>(null);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({ name: '', description: '' });
+
+  // Delete confirm state
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<any>(null);
+
+  const fetchItems = async () => {
     try {
+      setLoading(true);
       setError('');
       const data = await productionTypeApi.getProductionTypes();
       setItems(data);
-    } catch (err) {
-      setError('Failed to fetch production types.');
+    } catch (err: any) {
+      setError('Error al cargar los tipos de producción.');
       logError(err, '/production-type');
+    } finally {
+      setLoading(false);
     }
-  }, []);
+  };
 
   useEffect(() => {
     fetchItems();
-  }, [fetchItems]);
+  }, []);
 
-  const handleSave = async (itemData) => {
+  const filteredItems = useMemo(() => {
+    if (!search) return items;
+    const term = search.toLowerCase();
+    return items.filter(
+      (item) =>
+        item.name?.toLowerCase().includes(term) ||
+        item.description?.toLowerCase().includes(term)
+    );
+  }, [items, search]);
+
+  const openCreateModal = () => {
+    setEditing(null);
+    setForm({ name: '', description: '' });
+    setShowModal(true);
+  };
+
+  const openEditModal = (row: any) => {
+    setEditing(row);
+    setForm({ name: row.name || '', description: row.description || '' });
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setEditing(null);
+  };
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setSaving(true);
+      setError('');
+      if (editing) {
+        await productionTypeApi.updateProductionType(editing.id, form);
+      } else {
+        await productionTypeApi.createProductionType(form);
+      }
+      closeModal();
+      fetchItems();
+    } catch (err: any) {
+      setError(`Error al guardar el tipo de producción: ${err.message}`);
+      logError(err, '/production-type-save');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const confirmDelete = (row: any) => {
+    setDeleteTarget(row);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
     try {
       setError('');
-      if (currentItem) {
-        await productionTypeApi.updateProductionType(currentItem.id, itemData);
-      } else {
-        await productionTypeApi.createProductionType(itemData);
-      }
+      await productionTypeApi.deleteProductionType(deleteTarget.id);
+      setShowDeleteConfirm(false);
+      setDeleteTarget(null);
       fetchItems();
-      setCurrentItem(null);
-    } catch (err) {
-      setError(`Failed to save production type: ${err.message}`);
-      logError(err, '/production-type-save');
+    } catch (err: any) {
+      setError('Error al eliminar el tipo de producción.');
+      logError(err, '/production-type-delete');
+      setShowDeleteConfirm(false);
     }
   };
 
-  const handleEdit = (item) => {
-    setCurrentItem(item);
-  };
-
-  const handleCancel = () => {
-    setCurrentItem(null);
-  };
-
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this item?')) {
-      try {
-        setError('');
-        await productionTypeApi.deleteProductionType(id);
-        fetchItems();
-      } catch (err) {
-        setError('Failed to delete production type.');
-        logError(err, '/production-type-delete');
-      }
-    }
-  };
+  const columns = [
+    { key: 'id', header: 'ID', width: '80px' },
+    { key: 'name', header: 'Nombre' },
+    { key: 'description', header: 'Descripción', render: (value: any) => value || '—' },
+  ];
 
   return (
     <div className="page-container">
-      <PageHeader title="Production Type Management" icon={<FiTool />} />
+      <PageHeader title="Gestión de Tipos de Producción" icon={<FiTool />} />
+
       {error && <p className="error-message">{error}</p>}
-      <div className="grid-container">
-        <div className="form-card">
-          <ProductionTypeForm
-            onSave={handleSave}
-            currentItem={currentItem}
-            onCancel={handleCancel}
-          />
-        </div>
-        <div className="list-card">
-          <h2>Production Types</h2>
-          {items.length > 0 ? (
-            <ProductionTypeList
-              items={items}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
-          ) : (
-            <p>No production types found.</p>
-          )}
-        </div>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+        <SearchInput value={search} onChange={setSearch} placeholder="Buscar por nombre o descripción..." />
+        <Button variant="primary" icon={<FiPlus />} onClick={openCreateModal}>Crear Tipo</Button>
       </div>
+
+      {loading ? (
+        <LoadingSpinner text="Cargando tipos de producción..." />
+      ) : (
+        <DataTable
+          columns={columns}
+          data={filteredItems}
+          emptyMessage="No hay tipos de producción registrados"
+          actions={(row) => (
+            <>
+              <Button variant="ghost" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)}>Editar</Button>
+              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => confirmDelete(row)}>Eliminar</Button>
+            </>
+          )}
+        />
+      )}
+
+      <Modal isOpen={showModal} onClose={closeModal} title={editing ? 'Editar Tipo de Producción' : 'Crear Tipo de Producción'} size="md">
+        <form onSubmit={handleSubmit}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <FormField label="Nombre" name="name" value={form.name} onChange={handleChange} required />
+            <FormField label="Descripción" name="description" type="textarea" value={form.description} onChange={handleChange} />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
+            <Button variant="ghost" onClick={closeModal}>Cancelar</Button>
+            <Button variant="primary" type="submit" loading={saving}>{editing ? 'Actualizar' : 'Crear'}</Button>
+          </div>
+        </form>
+      </Modal>
+
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        title="Eliminar Tipo de Producción"
+        message={`¿Estás seguro de que deseas eliminar el tipo "${deleteTarget?.name}"? Esta acción no se puede deshacer.`}
+        variant="danger"
+        onConfirm={handleDelete}
+        onCancel={() => setShowDeleteConfirm(false)}
+      />
     </div>
   );
 };

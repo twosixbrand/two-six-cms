@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { FiBox, FiSearch } from 'react-icons/fi';
+import { FiBox } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
 import StockList from '../components/stock/StockList';
 import StockForm from '../components/stock/StockForm';
+import { SearchInput, LoadingSpinner } from '../components/ui';
 import * as clothingSizeApi from '../services/clothingSizeApi';
 import { logError } from '../services/errorApi';
 
 const StockPage = () => {
-    // We are now managing clothingSizes directly as "Inventory"
     const [inventoryItems, setInventoryItems] = useState([]);
     const [currentItem, setCurrentItem] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -70,7 +70,6 @@ const StockPage = () => {
     const handleSave = async (itemData) => {
         try {
             setError('');
-            // We only "Update" sizes here. Creation happens in ClothingColor contextual flow.
             if (currentItem) {
                 await clothingSizeApi.updateClothingSize(currentItem.id, itemData);
             }
@@ -93,34 +92,11 @@ const StockPage = () => {
     return (
         <div className="page-container">
             <PageHeader title="Inventory Management" icon={<FiBox />}>
-                <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
-                    <FiSearch style={{ position: 'absolute', left: '1.2rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)', fontSize: '1.2rem', zIndex: 2 }} />
-                    <input
-                        type="text"
-                        placeholder="Search by ref, color, size..."
+                <div style={{ width: '100%', maxWidth: '400px' }}>
+                    <SearchInput
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        style={{
-                            width: '100%',
-                            padding: '0.8rem 1rem 0.8rem 3.2rem',
-                            borderRadius: '50px',
-                            background: 'var(--surface-color)',
-                            backdropFilter: 'blur(10px)',
-                            border: '1px solid var(--border-color)',
-                            boxShadow: '0 4px 15px rgba(0,0,0,0.02)',
-                            color: 'var(--text-primary)',
-                            transition: 'all 0.3s ease',
-                            fontSize: '0.95rem'
-                        }}
-                        onFocus={(e) => {
-                            e.target.style.borderColor = 'var(--primary-color)';
-                            e.target.style.boxShadow = '0 4px 20px rgba(212,175,55,0.15)';
-                            e.target.style.outline = 'none';
-                        }}
-                        onBlur={(e) => {
-                            e.target.style.borderColor = 'var(--border-color)';
-                            e.target.style.boxShadow = '0 4px 15px rgba(0,0,0,0.02)';
-                        }}
+                        onChange={setSearchTerm}
+                        placeholder="Search by ref, color, size..."
                     />
                 </div>
             </PageHeader>
@@ -132,7 +108,6 @@ const StockPage = () => {
                         onSave={handleSave}
                         currentItem={currentItem}
                         onCancel={handleCancel}
-                    // We no longer pass explicit lists of "available" sizes because we just list/edit existing ones
                     />
                 </div>
 
@@ -141,14 +116,12 @@ const StockPage = () => {
                         <h2>Inventory List</h2>
                     </div>
                     {loading ? (
-                        <p>Loading...</p>
+                        <LoadingSpinner text="Loading..." />
                     ) : (
                         <StockList
                             items={filteredInventory}
                             onEdit={handleEdit}
                             onDelete={() => { }}
-                        // Delete removed because deleting the 'Size' deletes the product link. 
-                        // User should delete from ClothingColor page if they want to remove the variant entirely.
                         />
                     )}
                 </div>

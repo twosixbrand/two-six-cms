@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { FiBook, FiSearch, FiPlus, FiChevronRight, FiChevronDown, FiEdit2, FiTrash2, FiX } from 'react-icons/fi';
+import { FiBook, FiPlus, FiChevronRight, FiChevronDown, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
+import { Button, StatusBadge, LoadingSpinner, SearchInput, Modal, ConfirmDialog } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
 
@@ -25,6 +26,7 @@ const PucAccountPage = () => {
     const [editingAccount, setEditingAccount] = useState<Account | null>(null);
     const [form, setForm] = useState({ code: '', name: '', nature: 'D', parent_code: '', description: '' });
     const [saving, setSaving] = useState(false);
+    const [deleteConfirm, setDeleteConfirm] = useState<Account | null>(null);
 
     const fetchAccounts = async () => {
         try {
@@ -87,13 +89,15 @@ const PucAccountPage = () => {
         }
     };
 
-    const handleDelete = async (account: Account) => {
-        if (!window.confirm(`¿Eliminar la cuenta ${account.code} - ${account.name}?`)) return;
+    const handleDelete = async () => {
+        if (!deleteConfirm) return;
         try {
-            await accountingApi.deleteAccount(account.id);
+            await accountingApi.deleteAccount(deleteConfirm.id);
             fetchAccounts();
         } catch (err: any) {
             alert('Error al eliminar: ' + (err.message || err));
+        } finally {
+            setDeleteConfirm(null);
         }
     };
 
@@ -132,42 +136,36 @@ const PucAccountPage = () => {
                         </td>
                         <td>{node.name}</td>
                         <td>
-                            <span
-                                className={`status-badge ${node.nature === 'D' ? 'status-active' : 'status-pending'}`}
-                                style={{ fontSize: '11px' }}
-                            >
-                                {node.nature === 'D' ? 'Débito' : 'Crédito'}
-                            </span>
+                            <StatusBadge
+                                status={node.nature === 'D' ? 'Débito' : 'Crédito'}
+                                variant={node.nature === 'D' ? 'success' : 'warning'}
+                                size="sm"
+                            />
                         </td>
                         <td>
-                            <span style={{
-                                display: 'inline-block',
-                                padding: '2px 8px',
-                                borderRadius: '10px',
-                                background: '#e8eaf6',
-                                fontSize: '11px',
-                                fontWeight: 600,
-                            }}>
-                                Nivel {node.level}
-                            </span>
+                            <StatusBadge
+                                status={`Nivel ${node.level}`}
+                                variant="info"
+                                size="sm"
+                            />
                         </td>
                         <td style={{ whiteSpace: 'nowrap' }}>
-                            <button
-                                className="btn btn-sm"
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                icon={<FiEdit2 />}
                                 onClick={() => openEditModal(node)}
-                                style={{ marginRight: '4px', padding: '4px 8px', fontSize: '12px' }}
-                                title="Editar"
                             >
-                                <FiEdit2 />
-                            </button>
-                            <button
-                                className="btn btn-sm"
-                                onClick={() => handleDelete(node)}
-                                style={{ padding: '4px 8px', fontSize: '12px', color: '#e53935' }}
-                                title="Eliminar"
+                                {''}
+                            </Button>
+                            <Button
+                                variant="destructive"
+                                size="sm"
+                                icon={<FiTrash2 />}
+                                onClick={() => setDeleteConfirm(node)}
                             >
-                                <FiTrash2 />
-                            </button>
+                                {''}
+                            </Button>
                         </td>
                     </tr>
                     {hasChildren && isExpanded && renderTree(node.children!, depth + 1)}
@@ -183,31 +181,22 @@ const PucAccountPage = () => {
             <PageHeader title="PUC - Plan Único de Cuentas" icon={<FiBook />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
-                <div style={{ position: 'relative', flex: '1', maxWidth: '400px' }}>
-                    <FiSearch style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#999' }} />
-                    <input
-                        type="text"
-                        placeholder="Buscar por código o nombre..."
+                <div style={{ flex: '1', maxWidth: '400px' }}>
+                    <SearchInput
                         value={search}
-                        onChange={e => setSearch(e.target.value)}
-                        style={{
-                            width: '100%',
-                            padding: '8px 8px 8px 32px',
-                            borderRadius: '6px',
-                            border: '1px solid #ddd',
-                            fontSize: '14px',
-                        }}
+                        onChange={setSearch}
+                        placeholder="Buscar por código o nombre..."
                     />
                 </div>
-                <button onClick={openCreateModal} className="btn btn-primary">
-                    <FiPlus /> Nueva Cuenta
-                </button>
+                <Button variant="primary" icon={<FiPlus />} onClick={openCreateModal}>
+                    Nueva Cuenta
+                </Button>
             </div>
 
             {error && <p className="error-message">{error}</p>}
 
             {loading ? (
-                <p>Cargando plan de cuentas...</p>
+                <LoadingSpinner text="Cargando plan de cuentas..." />
             ) : (
                 <div className="list-card full-width">
                     <table className="data-table">
@@ -232,87 +221,88 @@ const PucAccountPage = () => {
             )}
 
             {/* Modal crear / editar cuenta */}
-            {showModal && (
-                <div style={{
-                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-                    background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
-                }}>
-                    <div style={{
-                        background: '#fff', borderRadius: '8px', padding: '24px', maxWidth: '500px', width: '90%',
-                        position: 'relative',
-                    }}>
-                        <button onClick={() => setShowModal(false)} style={{
-                            position: 'absolute', top: '12px', right: '12px',
-                            background: 'none', border: 'none', cursor: 'pointer', fontSize: '20px',
-                        }}>
-                            <FiX />
-                        </button>
-                        <h3 style={{ marginTop: 0 }}>{editingAccount ? 'Editar Cuenta' : 'Nueva Cuenta PUC'}</h3>
-
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                            <div>
-                                <label style={{ display: 'block', fontWeight: 600, marginBottom: '4px', fontSize: '13px' }}>Código</label>
-                                <input
-                                    type="text"
-                                    value={form.code}
-                                    onChange={e => setForm({ ...form, code: e.target.value })}
-                                    disabled={!!editingAccount}
-                                    style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}
-                                    placeholder="Ej: 110505"
-                                />
-                            </div>
-                            <div>
-                                <label style={{ display: 'block', fontWeight: 600, marginBottom: '4px', fontSize: '13px' }}>Nombre</label>
-                                <input
-                                    type="text"
-                                    value={form.name}
-                                    onChange={e => setForm({ ...form, name: e.target.value })}
-                                    style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}
-                                    placeholder="Ej: Caja General"
-                                />
-                            </div>
-                            <div>
-                                <label style={{ display: 'block', fontWeight: 600, marginBottom: '4px', fontSize: '13px' }}>Código Padre (opcional)</label>
-                                <input
-                                    type="text"
-                                    value={form.parent_code}
-                                    onChange={e => setForm({ ...form, parent_code: e.target.value })}
-                                    style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}
-                                    placeholder="Ej: 1105"
-                                />
-                            </div>
-                            <div>
-                                <label style={{ display: 'block', fontWeight: 600, marginBottom: '4px', fontSize: '13px' }}>Naturaleza</label>
-                                <select
-                                    value={form.nature}
-                                    onChange={e => setForm({ ...form, nature: e.target.value })}
-                                    style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}
-                                >
-                                    <option value="D">Débito</option>
-                                    <option value="C">Crédito</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label style={{ display: 'block', fontWeight: 600, marginBottom: '4px', fontSize: '13px' }}>Descripción</label>
-                                <textarea
-                                    value={form.description}
-                                    onChange={e => setForm({ ...form, description: e.target.value })}
-                                    rows={3}
-                                    style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd', resize: 'vertical' }}
-                                />
-                            </div>
-                            <button
-                                className="btn btn-primary"
-                                onClick={handleSave}
-                                disabled={saving || !form.code || !form.name}
-                                style={{ marginTop: '8px' }}
-                            >
-                                {saving ? 'Guardando...' : editingAccount ? 'Actualizar' : 'Crear Cuenta'}
-                            </button>
-                        </div>
+            <Modal
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                title={editingAccount ? 'Editar Cuenta' : 'Nueva Cuenta PUC'}
+                size="sm"
+                footer={
+                    <Button
+                        variant="primary"
+                        onClick={handleSave}
+                        loading={saving}
+                        disabled={saving || !form.code || !form.name}
+                    >
+                        {saving ? 'Guardando...' : editingAccount ? 'Actualizar' : 'Crear Cuenta'}
+                    </Button>
+                }
+            >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <div>
+                        <label style={{ display: 'block', fontWeight: 600, marginBottom: '4px', fontSize: '13px' }}>Código</label>
+                        <input
+                            type="text"
+                            value={form.code}
+                            onChange={e => setForm({ ...form, code: e.target.value })}
+                            disabled={!!editingAccount}
+                            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}
+                            placeholder="Ej: 110505"
+                        />
+                    </div>
+                    <div>
+                        <label style={{ display: 'block', fontWeight: 600, marginBottom: '4px', fontSize: '13px' }}>Nombre</label>
+                        <input
+                            type="text"
+                            value={form.name}
+                            onChange={e => setForm({ ...form, name: e.target.value })}
+                            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}
+                            placeholder="Ej: Caja General"
+                        />
+                    </div>
+                    <div>
+                        <label style={{ display: 'block', fontWeight: 600, marginBottom: '4px', fontSize: '13px' }}>Código Padre (opcional)</label>
+                        <input
+                            type="text"
+                            value={form.parent_code}
+                            onChange={e => setForm({ ...form, parent_code: e.target.value })}
+                            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}
+                            placeholder="Ej: 1105"
+                        />
+                    </div>
+                    <div>
+                        <label style={{ display: 'block', fontWeight: 600, marginBottom: '4px', fontSize: '13px' }}>Naturaleza</label>
+                        <select
+                            value={form.nature}
+                            onChange={e => setForm({ ...form, nature: e.target.value })}
+                            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}
+                        >
+                            <option value="D">Débito</option>
+                            <option value="C">Crédito</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style={{ display: 'block', fontWeight: 600, marginBottom: '4px', fontSize: '13px' }}>Descripción</label>
+                        <textarea
+                            value={form.description}
+                            onChange={e => setForm({ ...form, description: e.target.value })}
+                            rows={3}
+                            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd', resize: 'vertical' }}
+                        />
                     </div>
                 </div>
-            )}
+            </Modal>
+
+            {/* Delete confirm */}
+            <ConfirmDialog
+                isOpen={deleteConfirm !== null}
+                onConfirm={handleDelete}
+                onCancel={() => setDeleteConfirm(null)}
+                title="Eliminar cuenta"
+                message={deleteConfirm ? `¿Eliminar la cuenta ${deleteConfirm.code} - ${deleteConfirm.name}?` : ''}
+                confirmText="Eliminar"
+                cancelText="Cancelar"
+                variant="danger"
+            />
         </div>
     );
 };

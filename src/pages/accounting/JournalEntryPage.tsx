@@ -2,20 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { FiFileText, FiRefreshCcw, FiPlus, FiChevronDown, FiChevronRight, FiDownload } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import PageHeader from '../../components/common/PageHeader';
+import { DataTable, Button, StatusBadge, LoadingSpinner } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
-
-const statusColors: Record<string, string> = {
-    POSTED: 'status-active',
-    DRAFT: 'status-pending',
-    VOIDED: 'status-inactive',
-};
-
-const statusBgColors: Record<string, string> = {
-    POSTED: '#e8f5e9',
-    DRAFT: '#fff8e1',
-    VOIDED: '#ffebee',
-};
 
 const JournalEntryPage = () => {
     const navigate = useNavigate();
@@ -51,6 +40,18 @@ const JournalEntryPage = () => {
     const formatCurrency = (val: number) =>
         new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(val || 0);
 
+    const getStatusVariant = (status: string) => {
+        switch (status) {
+            case 'POSTED': return 'success';
+            case 'DRAFT': return 'warning';
+            case 'VOIDED': return 'error';
+            default: return 'neutral';
+        }
+    };
+
+    // Since JournalEntryPage has expandable rows, we keep using a manual table
+    // but replace buttons and status badges with UI components
+
     return (
         <div className="page-container">
             <PageHeader title="Asientos Contables" icon={<FiFileText />} />
@@ -76,23 +77,23 @@ const JournalEntryPage = () => {
                         <option value="ADJUSTMENT">Ajuste</option>
                     </select>
                 </div>
-                <button onClick={fetchEntries} className="btn btn-primary">
-                    <FiRefreshCcw /> Buscar
-                </button>
-                <button onClick={() => navigate('/accounting/journal/new')} className="btn btn-secondary">
-                    <FiPlus /> Nuevo Asiento
-                </button>
+                <Button variant="primary" icon={<FiRefreshCcw />} onClick={fetchEntries}>
+                    Buscar
+                </Button>
+                <Button variant="secondary" icon={<FiPlus />} onClick={() => navigate('/accounting/journal/new')}>
+                    Nuevo Asiento
+                </Button>
                 {startDate && endDate && (
-                    <button onClick={() => accountingApi.exportToExcel('journal-entries', { startDate, endDate })} className="btn btn-secondary">
-                        <FiDownload /> Exportar Excel
-                    </button>
+                    <Button variant="secondary" icon={<FiDownload />} onClick={() => accountingApi.exportToExcel('journal-entries', { startDate, endDate })}>
+                        Exportar Excel
+                    </Button>
                 )}
             </div>
 
             {error && <p className="error-message">{error}</p>}
 
             {loading ? (
-                <p>Cargando asientos contables...</p>
+                <LoadingSpinner text="Cargando asientos contables..." />
             ) : (
                 <div className="list-card full-width">
                     <table className="data-table">
@@ -124,22 +125,16 @@ const JournalEntryPage = () => {
                                         <td>{new Date(entry.date).toLocaleDateString('es-CO')}</td>
                                         <td>{entry.description}</td>
                                         <td>
-                                            <span style={{
-                                                fontSize: '11px', padding: '2px 8px',
-                                                borderRadius: '10px', background: '#e3f2fd', fontWeight: 600,
-                                            }}>
-                                                {entry.source_type}
-                                            </span>
+                                            <StatusBadge status={entry.source_type} variant="info" size="sm" />
                                         </td>
                                         <td style={{ textAlign: 'right' }}>{formatCurrency(entry.total_debit)}</td>
                                         <td style={{ textAlign: 'right' }}>{formatCurrency(entry.total_credit)}</td>
                                         <td>
-                                            <span
-                                                className={`status-badge ${statusColors[entry.status] || ''}`}
-                                                style={{ background: statusBgColors[entry.status] || '#eee' }}
-                                            >
-                                                {entry.status}
-                                            </span>
+                                            <StatusBadge
+                                                status={entry.status}
+                                                variant={getStatusVariant(entry.status)}
+                                                size="sm"
+                                            />
                                         </td>
                                     </tr>
                                     {expandedEntry === entry.id && entry.lines && (

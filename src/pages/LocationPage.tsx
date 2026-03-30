@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FiMap, FiSearch, FiChevronDown, FiChevronRight, FiCheck, FiX, FiEdit2, FiDollarSign } from 'react-icons/fi';
+import { FiMap, FiChevronDown, FiChevronRight, FiCheck, FiX, FiEdit2, FiDollarSign } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
+import { LoadingSpinner, SearchInput, Button } from '../components/ui';
 import locationApi from '../services/locationApi';
 import './LocationPage.css';
 
@@ -57,7 +58,6 @@ const LocationPage = () => {
 
     const handleToggleActive = async (city) => {
         const newState = !city.active;
-        // Optimistic update
         setCitiesMap(prev => ({
             ...prev,
             [city.id_department]: prev[city.id_department].map(c =>
@@ -68,7 +68,6 @@ const LocationPage = () => {
             await locationApi.updateCity(city.id, { active: newState });
         } catch (error) {
             console.error('Error updating city status:', error);
-            // Revert
             setCitiesMap(prev => ({
                 ...prev,
                 [city.id_department]: prev[city.id_department].map(c =>
@@ -103,7 +102,6 @@ const LocationPage = () => {
         setEditingCityId(null);
     };
 
-    // Bulk edit handlers
     const handleBulkEditClick = (e, deptId) => {
         e.stopPropagation();
         setBulkEditDeptId(deptId);
@@ -115,7 +113,6 @@ const LocationPage = () => {
         if (isNaN(newCost) || newCost < 0) return;
         try {
             await locationApi.bulkUpdateCitiesCost(deptId, newCost);
-            // Update local state
             if (citiesMap[deptId]) {
                 setCitiesMap(prev => ({
                     ...prev,
@@ -150,7 +147,6 @@ const LocationPage = () => {
         const cities = citiesMap[deptId] || [];
         if (!searchTerm.trim()) return cities;
         const term = searchTerm.toLowerCase();
-        // If the department name matches, show all cities
         const dept = departments.find(d => d.id === deptId);
         if (dept && dept.name.toLowerCase().includes(term)) return cities;
         return cities.filter(c => c.name.toLowerCase().includes(term));
@@ -166,7 +162,7 @@ const LocationPage = () => {
         return (
             <div className="page-container">
                 <PageHeader title="Departamentos y Ciudades" icon={<FiMap />} />
-                <div className="loc-loading">Cargando departamentos...</div>
+                <LoadingSpinner text="Cargando departamentos..." />
             </div>
         );
     }
@@ -176,20 +172,12 @@ const LocationPage = () => {
             <PageHeader title="Departamentos y Ciudades" icon={<FiMap />} />
 
             {/* Search bar */}
-            <div className="loc-search-bar">
-                <FiSearch className="loc-search-icon" />
-                <input
-                    type="text"
-                    placeholder="Buscar departamento o ciudad..."
+            <div style={{ maxWidth: '500px', marginBottom: '1rem' }}>
+                <SearchInput
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="loc-search-input"
+                    onChange={setSearchTerm}
+                    placeholder="Buscar departamento o ciudad..."
                 />
-                {searchTerm && (
-                    <button className="loc-search-clear" onClick={() => setSearchTerm('')}>
-                        <FiX size={14} />
-                    </button>
-                )}
             </div>
 
             {/* Summary */}
@@ -261,7 +249,7 @@ const LocationPage = () => {
                             {isExpanded && (
                                 <div className="loc-cities-panel">
                                     {isLoadingThis ? (
-                                        <div className="loc-cities-loading">Cargando ciudades...</div>
+                                        <LoadingSpinner size="sm" text="Cargando ciudades..." />
                                     ) : cities.length === 0 ? (
                                         <div className="loc-cities-empty">No se encontraron ciudades.</div>
                                     ) : (

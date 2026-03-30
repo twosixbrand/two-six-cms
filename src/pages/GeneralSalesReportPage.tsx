@@ -7,6 +7,7 @@ import {
 } from 'recharts';
 import PageHeader from '../components/common/PageHeader';
 import { getGeneralSalesReport } from '../services/reportApi';
+import { Button, DataTable, StatusBadge, LoadingSpinner } from '../components/ui';
 import './GeneralSalesReportPage.css';
 
 const COLORS = ['#d4af37', '#e8c468', '#f2d890', '#c29b2b', '#9b781a', '#fff'];
@@ -16,7 +17,6 @@ const GeneralSalesReportPage = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // Default: Últimos 30 días
     const defaultEnd = new Date();
     const defaultStart = new Date();
     defaultStart.setDate(defaultEnd.getDate() - 30);
@@ -55,9 +55,6 @@ const GeneralSalesReportPage = () => {
         fetchReport();
     };
 
-    // --- DATA PARSERS FOR GRAPHS ---
-
-    // 1. Group by Date (Revenue & Count)
     const { dailyData, totalRevenue, totalOrders, totalItems } = useMemo(() => {
         const dateMap = new Map();
         let revenue = 0;
@@ -92,7 +89,6 @@ const GeneralSalesReportPage = () => {
         };
     }, [reportData]);
 
-    // 2. Group by Products (Pie Chart)
     const topProductsData = useMemo(() => {
         const productMap = new Map();
 
@@ -106,7 +102,6 @@ const GeneralSalesReportPage = () => {
             });
         });
 
-        // Sort descending and keep Top 5, group rest as "Otros"
         const sorted = Array.from(productMap.values()).sort((a, b) => b.quantity - a.quantity);
         if (sorted.length > 5) {
             const top5 = sorted.slice(0, 5);
@@ -140,6 +135,53 @@ const GeneralSalesReportPage = () => {
         return null;
     };
 
+    const tableColumns = [
+        {
+            key: 'order_id',
+            header: 'Orden',
+            render: (val: any) => `#${val}`,
+        },
+        {
+            key: 'order_date',
+            header: 'Fecha',
+            render: (val: any) => new Date(val).toLocaleDateString(),
+        },
+        {
+            key: 'customer',
+            header: 'Cliente',
+            render: (_val: any, row: any) => (
+                <div>
+                    <div className="fw-500">{row.customer.name}</div>
+                    <small className="text-muted">{row.customer.email}</small>
+                </div>
+            ),
+        },
+        {
+            key: 'status',
+            header: 'Estado',
+            render: (val: any) => <StatusBadge status={val} />,
+        },
+        {
+            key: 'items',
+            header: 'Prendas',
+            render: (_val: any, row: any) => (
+                <ul className="item-list-compact">
+                    {row.items.map((item: any, idx: number) => (
+                        <li key={idx}>
+                            <span className="qty">{item.quantity}x</span> {item.product_name} <span className="text-muted">({item.size})</span>
+                        </li>
+                    ))}
+                </ul>
+            ),
+        },
+        {
+            key: 'total_payment',
+            header: 'Total',
+            align: 'right' as const,
+            render: (val: any) => <span className="fw-600 gold-text">{formatCurrency(val)}</span>,
+        },
+    ];
+
     return (
         <div className="report-page-container">
             <PageHeader title="Reporte General de Ventas" icon={<FiTrendingUp />} />
@@ -153,9 +195,9 @@ const GeneralSalesReportPage = () => {
                     <label>Fecha Fin:</label>
                     <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required max={new Date().toISOString().split('T')[0]} />
                 </div>
-                <button type="submit" className="btn-search" disabled={loading}>
+                <Button type="submit" variant="primary" loading={loading}>
                     {loading ? 'Cargando...' : 'Actualizar'}
-                </button>
+                </Button>
             </form>
 
             {error && <div className="error-message">{error}</div>}
@@ -187,7 +229,6 @@ const GeneralSalesReportPage = () => {
 
             {/* Charts Grid */}
             <div className="charts-grid">
-                {/* Revenue Timeline */}
                 <div className="chart-card glass-panel chart-span-2">
                     <h3>Curva de Ingresos (COP)</h3>
                     <div className="chart-wrapper">
@@ -210,7 +251,6 @@ const GeneralSalesReportPage = () => {
                     </div>
                 </div>
 
-                {/* Sales Count */}
                 <div className="chart-card glass-panel">
                     <h3>Volumen de Transacciones</h3>
                     <div className="chart-wrapper">
@@ -227,7 +267,6 @@ const GeneralSalesReportPage = () => {
                     </div>
                 </div>
 
-                {/* Top Products */}
                 <div className="chart-card glass-panel">
                     <h3>Top Prendas Vendidas</h3>
                     <div className="chart-wrapper pie-wrapper">
@@ -260,49 +299,12 @@ const GeneralSalesReportPage = () => {
             {/* Table Detail */}
             <div className="report-table-container glass-panel">
                 <h3 className="section-title">Registro Detallado</h3>
-                <div className="table-responsive">
-                    <table className="report-table dark-theme-table">
-                        <thead>
-                            <tr>
-                                <th>Orden</th>
-                                <th>Fecha</th>
-                                <th>Cliente</th>
-                                <th>Estado</th>
-                                <th>Prendas</th>
-                                <th align="right">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {reportData.length === 0 && !loading ? (
-                                <tr>
-                                    <td colSpan={6} style={{ textAlign: 'center' }}>No se encontraron ventas en el rango seleccionado.</td>
-                                </tr>
-                            ) : (
-                                reportData.map((order) => (
-                                    <tr key={order.order_id}>
-                                        <td>#{order.order_id}</td>
-                                        <td>{new Date(order.order_date).toLocaleDateString()}</td>
-                                        <td>
-                                            <div className="fw-500">{order.customer.name}</div>
-                                            <small className="text-muted">{order.customer.email}</small>
-                                        </td>
-                                        <td><span className={`status-badge ${order.status.toLowerCase()}`}>{order.status}</span></td>
-                                        <td>
-                                            <ul className="item-list-compact">
-                                                {order.items.map((item, idx) => (
-                                                    <li key={idx}>
-                                                        <span className="qty">{item.quantity}x</span> {item.product_name} <span className="text-muted">({item.size})</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </td>
-                                        <td align="right" className="fw-600 gold-text">{formatCurrency(order.total_payment)}</td>
-                                    </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+                <DataTable
+                    columns={tableColumns}
+                    data={reportData}
+                    loading={loading}
+                    emptyMessage="No se encontraron ventas en el rango seleccionado."
+                />
             </div>
         </div>
     );

@@ -1,19 +1,28 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { FiBriefcase } from 'react-icons/fi';
+import { FiBriefcase, FiPlus, FiTrash2 } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
-import DesignProviderList from '../components/design-provider/DesignProviderList.jsx';
-import DesignProviderForm from '../components/design-provider/DesignProviderForm.jsx';
-import * as designProviderApi from '../services/designProviderApi.js';
-import * as masterDesignApi from '../services/masterDesignApi.js';
-import * as providerApi from '../services/providerApi.js';
-import { logError } from '../services/errorApi.js';
+import { DataTable, Modal, FormField, Button, SearchInput, ConfirmDialog, LoadingSpinner } from '../components/ui';
+import * as designProviderApi from '../services/designProviderApi';
+import * as masterDesignApi from '../services/masterDesignApi';
+import * as providerApi from '../services/providerApi';
+import { logError } from '../services/errorApi';
 
 const DesignProviderPage = () => {
-  const [assignments, setAssignments] = useState([]);
-  const [masterDesigns, setMasterDesigns] = useState([]);
-  const [providers, setProviders] = useState([]);
+  const [assignments, setAssignments] = useState<any[]>([]);
+  const [masterDesigns, setMasterDesigns] = useState<any[]>([]);
+  const [providers, setProviders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [search, setSearch] = useState('');
+
+  // Modal state
+  const [showModal, setShowModal] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({ id_master_design: '', id_provider: '' });
+
+  // Delete confirm state
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<any>(null);
 
   const fetchData = useCallback(async () => {
     try {
@@ -27,9 +36,9 @@ const DesignProviderPage = () => {
       setAssignments(assignmentsData);
       setMasterDesigns(designsData);
       setProviders(providersData);
-    } catch (err) {
+    } catch (err: any) {
       logError(err, '/design-provider');
-      setError('Failed to fetch data. ' + err.message);
+      setError('Error al cargar datos: ' + err.message);
     } finally {
       setLoading(false);
     }
@@ -39,52 +48,147 @@ const DesignProviderPage = () => {
     fetchData();
   }, [fetchData]);
 
-  const handleSave = async (assignmentData) => {
+  const filteredAssignments = React.useMemo(() => {
+    if (!search) return assignments;
+    const term = search.toLowerCase();
+    return assignments.filter(
+      (item) =>
+        item.masterDesign?.reference?.toLowerCase().includes(term) ||
+        item.provider?.company_name?.toLowerCase().includes(term)
+    );
+  }, [assignments, search]);
+
+  const openCreateModal = () => {
+    setForm({ id_master_design: '', id_provider: '' });
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.id_master_design || !form.id_provider) return;
     try {
-      await designProviderApi.createDesignProvider(assignmentData);
-      fetchData(); // Refresh the list
-    } catch (err) {
+      setSaving(true);
+      setError('');
+      await designProviderApi.createDesignProvider(form);
+      closeModal();
+      fetchData();
+    } catch (err: any) {
+      setError('Error al asignar proveedor: ' + err.message);
       logError(err, '/design-provider-save');
-      setError('Failed to assign provider. ' + err.message);
+    } finally {
+      setSaving(false);
     }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this assignment?')) {
-      try {
-        await designProviderApi.deleteDesignProvider(id);
-        fetchData(); // Refresh the list
-      } catch (err) {
-        logError(err, '/design-provider-delete');
-        setError('Failed to delete assignment. ' + err.message);
-      }
+  const confirmDelete = (row: any) => {
+    setDeleteTarget(row);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    try {
+      setError('');
+      await designProviderApi.deleteDesignProvider(deleteTarget.id);
+      setShowDeleteConfirm(false);
+      setDeleteTarget(null);
+      fetchData();
+    } catch (err: any) {
+      setError('Error al eliminar asignacion: ' + err.message);
+      logError(err, '/design-provider-delete');
+      setShowDeleteConfirm(false);
     }
   };
+
+  const columns = [
+    { key: 'id', header: 'ID', width: '70px' },
+    {
+      key: 'masterDesign',
+      header: 'Diseno (Referencia)',
+      render: (_: any, row: any) => row.masterDesign?.reference || 'N/A',
+    },
+    {
+      key: 'provider',
+      header: 'Proveedor',
+      render: (_: any, row: any) => row.provider?.company_name || 'N/A',
+    },
+  ];
+
+  const designOptions = masterDesigns.map((d) => ({ value: d.id, label: d.reference }));
+  const providerOptions = providers.map((p) => ({ value: p.id, label: p.company_name }));
 
   return (
     <div className="page-container">
-      <PageHeader title="Design Provider Management" icon={<FiBriefcase />} />
+      <PageHeader title="Asignacion Diseno-Proveedor" icon={<FiBriefcase />} />
+
       {error && <p className="error-message">{error}</p>}
-      <div className="grid-container">
-        <div className="form-card">
-          <DesignProviderForm
-            onSave={handleSave}
-            masterDesigns={masterDesigns}
-            providers={providers}
-          />
-        </div>
-        <div className="list-card">
-          <h2>Current Assignments</h2>
-          {loading ? (
-            <p>Loading assignments...</p>
-          ) : (
-            <DesignProviderList
-              items={assignments}
-              onDelete={handleDelete}
-            />
-          )}
-        </div>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+        <SearchInput value={search} onChange={setSearch} placeholder="Buscar por referencia o proveedor..." />
+        <Button variant="primary" icon={<FiPlus />} onClick={openCreateModal}>Asignar Proveedor</Button>
       </div>
+
+      {loading ? (
+        <LoadingSpinner text="Cargando asignaciones..." />
+      ) : (
+        <DataTable
+          columns={columns}
+          data={filteredAssignments}
+          emptyMessage="No hay asignaciones registradas"
+          actions={(row) => (
+            <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => confirmDelete(row)}>Eliminar</Button>
+          )}
+        />
+      )}
+
+      <Modal isOpen={showModal} onClose={closeModal} title="Asignar Proveedor a Diseno" size="md">
+        <form onSubmit={handleSubmit}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <FormField
+              label="Master Design"
+              name="id_master_design"
+              type="select"
+              value={form.id_master_design}
+              onChange={handleChange}
+              required
+              placeholder="Seleccione Diseno"
+              options={designOptions}
+            />
+            <FormField
+              label="Proveedor"
+              name="id_provider"
+              type="select"
+              value={form.id_provider}
+              onChange={handleChange}
+              required
+              placeholder="Seleccione Proveedor"
+              options={providerOptions}
+            />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
+            <Button variant="ghost" onClick={closeModal}>Cancelar</Button>
+            <Button variant="primary" type="submit" loading={saving}>Asignar</Button>
+          </div>
+        </form>
+      </Modal>
+
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        title="Eliminar Asignacion"
+        message={`¿Estas seguro de que deseas eliminar la asignacion del proveedor "${deleteTarget?.provider?.company_name}" al diseno "${deleteTarget?.masterDesign?.reference}"?`}
+        variant="danger"
+        onConfirm={handleDelete}
+        onCancel={() => setShowDeleteConfirm(false)}
+      />
     </div>
   );
 };

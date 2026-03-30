@@ -1,126 +1,200 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { FiAperture, FiSearch } from "react-icons/fi";
+import React, { useState, useEffect, useMemo } from 'react';
+import { FiAperture, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
-import ColorList from '../components/color/ColorList';
-import ColorForm from '../components/color/ColorForm';
-import { logError } from "../services/errorApi";
+import { DataTable, Modal, FormField, Button, SearchInput, ConfirmDialog, LoadingSpinner } from '../components/ui';
 import * as colorApi from '../services/colorApi';
+import { logError } from '../services/errorApi';
 
 const ColorPage = () => {
-  const [colors, setColors] = useState([]);
-  const [currentItem, setCurrentItem] = useState(null);
+  const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [search, setSearch] = useState('');
 
-  const fetchColors = async () => {
+  // Modal state
+  const [showModal, setShowModal] = useState(false);
+  const [editing, setEditing] = useState<any>(null);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({ name: '', hex: '#ffffff' });
+
+  // Delete confirm state
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<any>(null);
+
+  const fetchItems = async () => {
     try {
       setLoading(true);
       setError('');
       const data = await colorApi.getColors();
-      setColors(data);
-    } catch (error) {
-      setError("Error al cargar los colores.");
-      logError(error, '/color');
+      setItems(data);
+    } catch (err: any) {
+      setError('Error al cargar los colores.');
+      logError(err, '/color');
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchColors();
+    fetchItems();
   }, []);
 
-  const filteredColors = useMemo(() => {
-    if (!searchTerm) return colors;
-    const lowerTerm = searchTerm.toLowerCase();
-    return colors.filter(color =>
-      color.name?.toLowerCase().includes(lowerTerm) ||
-      color.hex?.toLowerCase().includes(lowerTerm)
+  const filteredItems = useMemo(() => {
+    if (!search) return items;
+    const term = search.toLowerCase();
+    return items.filter(
+      (item) =>
+        item.name?.toLowerCase().includes(term) ||
+        item.hex?.toLowerCase().includes(term)
     );
-  }, [colors, searchTerm]);
+  }, [items, search]);
 
-  const handleSave = async (itemData) => {
+  const openCreateModal = () => {
+    setEditing(null);
+    setForm({ name: '', hex: '#ffffff' });
+    setShowModal(true);
+  };
+
+  const openEditModal = (row: any) => {
+    setEditing(row);
+    setForm({ name: row.name || '', hex: row.hex || '#ffffff' });
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setEditing(null);
+  };
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setSaving(true);
+      setError('');
+      if (editing) {
+        await colorApi.updateColor(editing.id, form);
+      } else {
+        await colorApi.createColor(form);
+      }
+      closeModal();
+      fetchItems();
+    } catch (err: any) {
+      const action = editing ? 'actualizar' : 'crear';
+      setError(`Error al ${action} el color.`);
+      logError(err, `/color-${action}`);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const confirmDelete = (row: any) => {
+    setDeleteTarget(row);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
     try {
       setError('');
-      if (currentItem) {
-        await colorApi.updateColor(currentItem.id, itemData);
-      } else {
-        await colorApi.createColor(itemData);
-      }
-      fetchColors();
-      setCurrentItem(null);
-    } catch (error) {
-      const action = currentItem ? 'actualizar' : 'crear';
-      setError(`Error al ${action} el color.`);
-      logError(error, `/color-${action}`);
+      await colorApi.deleteColor(deleteTarget.id);
+      setShowDeleteConfirm(false);
+      setDeleteTarget(null);
+      fetchItems();
+    } catch (err: any) {
+      setError('Error al eliminar el color: ' + err.message);
+      logError(err, '/color-delete');
+      setShowDeleteConfirm(false);
     }
   };
 
-  const handleEdit = (color) => {
-    setCurrentItem(color);
-  };
-
-  const handleCancel = () => {
-    setCurrentItem(null);
-  };
-
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this color?")) {
-      try {
-        setError('');
-        await colorApi.deleteColor(id);
-        fetchColors();
-      } catch (error) {
-        setError("Error al eliminar el color: " + error.message);
-        logError(error, '/color-delete');
-      }
-    }
-  };
+  const columns = [
+    { key: 'id', header: 'ID', width: '80px' },
+    {
+      key: 'hex',
+      header: 'Color',
+      render: (value: any) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div
+            style={{
+              width: 24,
+              height: 24,
+              borderRadius: '50%',
+              backgroundColor: value,
+              border: '2px solid rgba(0,0,0,0.1)',
+              boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+              flexShrink: 0,
+            }}
+          />
+          <span style={{ fontSize: '0.8rem', fontFamily: 'monospace' }}>{value}</span>
+        </div>
+      ),
+    },
+    { key: 'name', header: 'Nombre' },
+  ];
 
   return (
     <div className="page-container">
-      <PageHeader title="Administrar Colores" icon={<FiAperture />}>
-        <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
-          <FiSearch style={{ position: 'absolute', left: '1.2rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)', fontSize: '1.2rem', zIndex: 2 }} />
-          <input
-            type="text"
-            placeholder="Search by name or hex..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '0.8rem 1rem 0.8rem 3.2rem',
-              borderRadius: '50px',
-              background: 'var(--surface-color)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid var(--border-color)',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.02)',
-              color: 'var(--text-primary)',
-              transition: 'all 0.3s ease',
-              fontSize: '0.95rem'
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = 'var(--primary-color)';
-              e.target.style.boxShadow = '0 4px 20px rgba(212,175,55,0.15)';
-              e.target.style.outline = 'none';
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = 'var(--border-color)';
-              e.target.style.boxShadow = '0 4px 15px rgba(0,0,0,0.02)';
-            }}
-          />
-        </div>
-      </PageHeader>
+      <PageHeader title="Administrar Colores" icon={<FiAperture />} />
+
       {error && <p className="error-message">{error}</p>}
-      <div className="grid-container">
-        <div className="form-card">
-          <ColorForm onSave={handleSave} currentItem={currentItem} onCancel={handleCancel} />
-        </div>
-        <div className="list-card">
-          {loading ? <p>Cargando...</p> : <ColorList colors={filteredColors} onEdit={handleEdit} onDelete={handleDelete} />}
-        </div>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+        <SearchInput value={search} onChange={setSearch} placeholder="Buscar por nombre o hex..." />
+        <Button variant="primary" icon={<FiPlus />} onClick={openCreateModal}>Crear Color</Button>
       </div>
+
+      {loading ? (
+        <LoadingSpinner text="Cargando colores..." />
+      ) : (
+        <DataTable
+          columns={columns}
+          data={filteredItems}
+          emptyMessage="No hay colores registrados"
+          actions={(row) => (
+            <>
+              <Button variant="ghost" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)}>Editar</Button>
+              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => confirmDelete(row)}>Eliminar</Button>
+            </>
+          )}
+        />
+      )}
+
+      <Modal isOpen={showModal} onClose={closeModal} title={editing ? 'Editar Color' : 'Crear Color'} size="md">
+        <form onSubmit={handleSubmit}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <input
+                type="color"
+                value={form.hex}
+                onChange={(e) => setForm((prev) => ({ ...prev, hex: e.target.value }))}
+                style={{ width: 50, height: 50, padding: 0, border: 'none', borderRadius: 8, cursor: 'pointer', background: 'transparent' }}
+              />
+              <div style={{ flex: 1 }}>
+                <FormField label="Código Hex" name="hex" value={form.hex} onChange={handleChange} required />
+              </div>
+            </div>
+            <FormField label="Nombre del Color" name="name" value={form.name} onChange={handleChange} required placeholder="Ej: Rojo Oscuro" />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
+            <Button variant="ghost" onClick={closeModal}>Cancelar</Button>
+            <Button variant="primary" type="submit" loading={saving}>{editing ? 'Actualizar' : 'Crear'}</Button>
+          </div>
+        </form>
+      </Modal>
+
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        title="Eliminar Color"
+        message={`¿Estás seguro de que deseas eliminar el color "${deleteTarget?.name}"? Esta acción no se puede deshacer.`}
+        variant="danger"
+        onConfirm={handleDelete}
+        onCancel={() => setShowDeleteConfirm(false)}
+      />
     </div>
   );
 };

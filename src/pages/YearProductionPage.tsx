@@ -1,17 +1,25 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FiCalendar, FiSearch } from 'react-icons/fi';
+import { FiCalendar, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
-import YearProductionList from '../components/year-production/YearProductionList';
-import YearProductionForm from '../components/year-production/YearProductionForm';
+import { DataTable, Modal, FormField, Button, SearchInput, ConfirmDialog, LoadingSpinner } from '../components/ui';
 import * as yearProductionApi from '../services/yearProductionApi';
 import { logError } from '../services/errorApi';
 
 const YearProductionPage = () => {
-  const [items, setItems] = useState([]);
-  const [currentItem, setCurrentItem] = useState(null);
+  const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [search, setSearch] = useState('');
+
+  // Modal state
+  const [showModal, setShowModal] = useState(false);
+  const [editing, setEditing] = useState<any>(null);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({ id: '', name: '', description: '' });
+
+  // Delete confirm state
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<any>(null);
 
   const fetchItems = async () => {
     try {
@@ -19,9 +27,9 @@ const YearProductionPage = () => {
       const data = await yearProductionApi.getYearProductions();
       setItems(data);
       setError('');
-    } catch (err) {
+    } catch (err: any) {
       logError(err, '/year-production');
-      setError('Failed to fetch year productions.');
+      setError('Error al cargar los años de producción.');
     } finally {
       setLoading(false);
     }
@@ -32,95 +40,138 @@ const YearProductionPage = () => {
   }, []);
 
   const filteredItems = useMemo(() => {
-    if (!searchTerm) return items;
-    const lowerTerm = searchTerm.toLowerCase();
-    return items.filter(item =>
-      item.name?.toLowerCase().includes(lowerTerm)
-    );
-  }, [items, searchTerm]);
+    if (!search) return items;
+    const term = search.toLowerCase();
+    return items.filter((item) => item.name?.toLowerCase().includes(term));
+  }, [items, search]);
 
-  const handleSave = async (itemData) => {
+  const openCreateModal = () => {
+    setEditing(null);
+    setForm({ id: '', name: '', description: '' });
+    setShowModal(true);
+  };
+
+  const openEditModal = (row: any) => {
+    setEditing(row);
+    setForm({
+      id: row.id || '',
+      name: row.name || '',
+      description: row.description || '',
+    });
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setEditing(null);
+  };
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      if (currentItem) {
-        await yearProductionApi.updateYearProduction(currentItem.id, itemData);
+      setSaving(true);
+      if (editing) {
+        await yearProductionApi.updateYearProduction(editing.id, form);
       } else {
-        await yearProductionApi.createYearProduction(itemData);
+        await yearProductionApi.createYearProduction(form);
       }
+      closeModal();
       fetchItems();
-      setCurrentItem(null);
-    } catch (err) {
+    } catch (err: any) {
       logError(err, '/year-production');
-      setError('Failed to save year production: ' + err.message);
+      setError('Error al guardar el año de producción: ' + err.message);
+    } finally {
+      setSaving(false);
     }
   };
 
-  const handleEdit = (item) => {
-    setCurrentItem(item);
+  const confirmDelete = (row: any) => {
+    setDeleteTarget(row);
+    setShowDeleteConfirm(true);
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this year?')) {
-      try {
-        await yearProductionApi.deleteYearProduction(id);
-        fetchItems();
-      } catch (err) {
-        logError(err, '/year-production');
-        setError('Failed to delete year production.');
-      }
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    try {
+      await yearProductionApi.deleteYearProduction(deleteTarget.id);
+      setShowDeleteConfirm(false);
+      setDeleteTarget(null);
+      fetchItems();
+    } catch (err: any) {
+      logError(err, '/year-production');
+      setError('Error al eliminar el año de producción.');
+      setShowDeleteConfirm(false);
     }
   };
 
-  const handleCancel = () => {
-    setCurrentItem(null);
-  };
+  const columns = [
+    { key: 'id', header: 'ID', width: '80px' },
+    { key: 'name', header: 'Año' },
+    { key: 'description', header: 'Descripción', render: (value: any) => value || '—' },
+  ];
 
   return (
     <div className="page-container">
-      <PageHeader title="Year Production Management" icon={<FiCalendar />}>
-        <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
-          <FiSearch style={{ position: 'absolute', left: '1.2rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)', fontSize: '1.2rem', zIndex: 2 }} />
-          <input
-            type="text"
-            placeholder="Search by year name..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '0.8rem 1rem 0.8rem 3.2rem',
-              borderRadius: '50px',
-              background: 'var(--surface-color)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid var(--border-color)',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.02)',
-              color: 'var(--text-primary)',
-              transition: 'all 0.3s ease',
-              fontSize: '0.95rem'
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = 'var(--primary-color)';
-              e.target.style.boxShadow = '0 4px 20px rgba(212,175,55,0.15)';
-              e.target.style.outline = 'none';
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = 'var(--border-color)';
-              e.target.style.boxShadow = '0 4px 15px rgba(0,0,0,0.02)';
-            }}
-          />
-        </div>
-      </PageHeader>
+      <PageHeader title="Gestión de Años de Producción" icon={<FiCalendar />} />
+
       {error && <p className="error-message">{error}</p>}
-      <div className="grid-container">
-        <div className="form-card">
-          <YearProductionForm onSave={handleSave} currentItem={currentItem} onCancel={handleCancel} />
-        </div>
-        <div className="list-card">
-          {loading ? (
-            <p>Loading years...</p>
-          ) : (
-            <YearProductionList items={filteredItems} onEdit={handleEdit} onDelete={handleDelete} />
-          )}
-        </div>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+        <SearchInput value={search} onChange={setSearch} placeholder="Buscar por año..." />
+        <Button variant="primary" icon={<FiPlus />} onClick={openCreateModal}>Crear Año</Button>
       </div>
+
+      {loading ? (
+        <LoadingSpinner text="Cargando años de producción..." />
+      ) : (
+        <DataTable
+          columns={columns}
+          data={filteredItems}
+          emptyMessage="No hay años de producción registrados"
+          actions={(row) => (
+            <>
+              <Button variant="ghost" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)}>Editar</Button>
+              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => confirmDelete(row)}>Eliminar</Button>
+            </>
+          )}
+        />
+      )}
+
+      <Modal isOpen={showModal} onClose={closeModal} title={editing ? 'Editar Año de Producción' : 'Crear Año de Producción'} size="md">
+        <form onSubmit={handleSubmit}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <FormField
+              label="ID"
+              name="id"
+              value={form.id}
+              onChange={handleChange}
+              required
+              placeholder="Ej: 24"
+              disabled={!!editing}
+            />
+            <FormField label="Año" name="name" value={form.name} onChange={handleChange} required placeholder="Ej: 2024" />
+            <FormField label="Descripción" name="description" type="textarea" value={form.description} onChange={handleChange} placeholder="Breve descripción (Opcional)" />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
+            <Button variant="ghost" onClick={closeModal}>Cancelar</Button>
+            <Button variant="primary" type="submit" loading={saving}>{editing ? 'Actualizar' : 'Crear'}</Button>
+          </div>
+        </form>
+      </Modal>
+
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        title="Eliminar Año de Producción"
+        message={`¿Estás seguro de que deseas eliminar el año "${deleteTarget?.name}"? Esta acción no se puede deshacer.`}
+        variant="danger"
+        onConfirm={handleDelete}
+        onCancel={() => setShowDeleteConfirm(false)}
+      />
     </div>
   );
 };
