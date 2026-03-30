@@ -81,13 +81,19 @@ const PermissionManagementPage = () => {
         permissionApi.getRolePermissions(roleId),
       ]);
 
-      // allPermissions puede venir como array de grupos o como array plano
-      if (Array.isArray(allPermissions) && allPermissions.length > 0) {
+      // allPermissions puede venir como objeto agrupado { grupo: [...] } o como array
+      if (allPermissions && typeof allPermissions === 'object' && !Array.isArray(allPermissions)) {
+        // Objeto agrupado: { "Contabilidad": [...], "Inventario": [...] }
+        setPermissionGroups(
+          Object.entries(allPermissions).map(([group, permissions]) => ({
+            group,
+            permissions: permissions as Permission[],
+          }))
+        );
+      } else if (Array.isArray(allPermissions) && allPermissions.length > 0) {
         if (allPermissions[0].group !== undefined && allPermissions[0].permissions !== undefined) {
-          // Ya viene agrupado
           setPermissionGroups(allPermissions);
         } else {
-          // Array plano: agrupar por grupo
           const grouped: Record<string, Permission[]> = {};
           allPermissions.forEach((p: Permission) => {
             const group = p.group || 'general';
@@ -379,7 +385,6 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'var(--surface-color)',
     borderRadius: '12px',
     border: '1px solid var(--border-color)',
-    overflow: 'hidden',
   },
   panelHeader: {
     padding: '1.2rem 1.5rem',
@@ -445,13 +450,12 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     flexDirection: 'column' as const,
     gap: '0.75rem',
-    maxHeight: '500px',
-    overflowY: 'auto' as const,
   },
   groupCard: {
     borderRadius: '8px',
     border: '1px solid var(--border-color)',
     overflow: 'hidden',
+    marginBottom: '8px',
   },
   groupHeader: {
     display: 'flex',
