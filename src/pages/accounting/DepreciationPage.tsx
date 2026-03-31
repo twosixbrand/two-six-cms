@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiPackage, FiPlus, FiPlay, FiX, FiChevronRight } from 'react-icons/fi';
+import { FiPackage, FiHome, FiPlus, FiPlay, FiX, FiChevronRight } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
@@ -220,7 +220,7 @@ const DepreciationPage: React.FC = () => {
     if (selectedAsset) {
         return (
             <div className="page-container">
-                <PageHeader title={`Activo: ${selectedAsset.name}`} icon={<FiPackage />} />
+                <PageHeader title={`Activo: ${selectedAsset.name}`} icon={<FiHome />} />
                 <div style={{ marginBottom: '1.5rem' }}>
                     <Button variant="secondary" onClick={() => setSelectedAsset(null)}>Volver</Button>
                 </div>
@@ -277,7 +277,7 @@ const DepreciationPage: React.FC = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title="Activos Fijos y Depreciacion" icon={<FiPackage />} />
+            <PageHeader title="Activos Fijos y Depreciacion" icon={<FiHome />} />
 
             <div style={{ borderBottom: '1px solid #2a2a35', marginBottom: '1.5rem' }}>
                 <button style={tabStyle(activeTab === 'assets')} onClick={() => setActiveTab('assets')}>

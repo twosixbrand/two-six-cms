@@ -193,7 +193,7 @@ const StockPage = () => {
                 loading={loading}
                 emptyMessage="No stock records found."
                 actions={(row) => (
-                    <Button variant="ghost" size="sm" icon={<FiEdit2 />} onClick={() => handleEdit(row)}>
+                    <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => handleEdit(row)}>
                         Editar
                     </Button>
                 )}

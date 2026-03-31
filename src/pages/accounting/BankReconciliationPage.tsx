@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiDollarSign, FiRefreshCcw, FiUpload, FiCheck, FiX, FiLink } from 'react-icons/fi';
+import { FiColumns, FiRefreshCcw, FiUpload, FiCheck, FiX, FiLink } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import { Button, StatusBadge, LoadingSpinner, DataTable } from '../../components/ui';
@@ -236,7 +236,7 @@ const BankReconciliationPage = () => {
             key: 'debit',
             header: 'Debito',
             align: 'right' as const,
-            render: (val: any) => val > 0 ? <span style={{ color: '#c62828' }}>{formatCurrency(val)}</span> : '-',
+            render: (val: any) => val > 0 ? <span style={{ color: '#f87171' }}>{formatCurrency(val)}</span> : '-',
         },
         {
             key: 'credit',
@@ -277,10 +277,10 @@ const BankReconciliationPage = () => {
 
     return (
         <div>
-            <PageHeader title="Conciliacion Bancaria" icon={<FiDollarSign />} />
+            <PageHeader title="Conciliacion Bancaria" icon={<FiColumns />} />
 
             {error && (
-                <div style={{ background: '#fce4ec', padding: '12px', borderRadius: 8, marginBottom: 16, color: '#c62828', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ background: 'rgba(248, 113, 113, 0.1)', padding: '12px', borderRadius: 8, marginBottom: 16, color: '#f87171', display: 'flex', alignItems: 'center', gap: '8px' }}>
                     {error}
                     <Button variant="ghost" size="sm" onClick={() => setError('')}>
                         <FiX />
@@ -289,7 +289,7 @@ const BankReconciliationPage = () => {
             )}
 
             {/* Tabs */}
-            <div style={{ display: 'flex', gap: 0, marginBottom: 24, borderBottom: '2px solid #e0e0e0' }}>
+            <div style={{ display: 'flex', gap: 0, marginBottom: 24, borderBottom: '2px solid #2a2a35' }}>
                 {[
                     { key: 'accounts' as const, label: 'Cuentas Bancarias' },
                     { key: 'statements' as const, label: 'Extractos' },
@@ -318,32 +318,32 @@ const BankReconciliationPage = () => {
             {activeTab === 'accounts' && (
                 <div>
                     <h3 style={{ marginBottom: 16 }}>Crear Cuenta Bancaria</h3>
-                    <form onSubmit={handleCreateAccount} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 24, background: '#fafafa', padding: 16, borderRadius: 8 }}>
+                    <form onSubmit={handleCreateAccount} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 24, background: '#13131a', padding: 16, borderRadius: 8 }}>
                         <input
                             placeholder="Nombre de cuenta"
                             value={accountForm.name}
                             onChange={(e) => setAccountForm({ ...accountForm, name: e.target.value })}
                             required
-                            style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+                            style={{ padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
                         />
                         <input
                             placeholder="Nombre del banco"
                             value={accountForm.bank_name}
                             onChange={(e) => setAccountForm({ ...accountForm, bank_name: e.target.value })}
                             required
-                            style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+                            style={{ padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
                         />
                         <input
                             placeholder="Numero de cuenta"
                             value={accountForm.account_number}
                             onChange={(e) => setAccountForm({ ...accountForm, account_number: e.target.value })}
                             required
-                            style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+                            style={{ padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
                         />
                         <select
                             value={accountForm.account_type}
                             onChange={(e) => setAccountForm({ ...accountForm, account_type: e.target.value })}
-                            style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+                            style={{ padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
                         >
                             <option value="AHORROS">Ahorros</option>
                             <option value="CORRIENTE">Corriente</option>
@@ -354,7 +354,7 @@ const BankReconciliationPage = () => {
                             value={accountForm.id_puc_account || ''}
                             onChange={(e) => setAccountForm({ ...accountForm, id_puc_account: parseInt(e.target.value, 10) || 0 })}
                             required
-                            style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+                            style={{ padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
                         />
                         <Button variant="primary" type="submit">
                             Crear Cuenta
@@ -387,14 +387,14 @@ const BankReconciliationPage = () => {
                     </div>
 
                     {showUploadForm && (
-                        <form onSubmit={handleUploadStatement} style={{ background: '#fafafa', padding: 16, borderRadius: 8, marginBottom: 24, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                        <form onSubmit={handleUploadStatement} style={{ background: '#13131a', padding: 16, borderRadius: 8, marginBottom: 24, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                             <div style={{ gridColumn: '1 / -1' }}>
                                 <label style={{ display: 'block', marginBottom: 4, fontWeight: 500 }}>Cuenta Bancaria</label>
                                 <select
                                     value={uploadForm.bankAccountId}
                                     onChange={(e) => setUploadForm({ ...uploadForm, bankAccountId: parseInt(e.target.value, 10) })}
                                     required
-                                    style={{ width: '100%', padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+                                    style={{ width: '100%', padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
                                 >
                                     <option value={0}>Seleccione una cuenta...</option>
                                     {bankAccounts.map((acc) => (
@@ -409,7 +409,7 @@ const BankReconciliationPage = () => {
                                     value={uploadForm.periodStart}
                                     onChange={(e) => setUploadForm({ ...uploadForm, periodStart: e.target.value })}
                                     required
-                                    style={{ width: '100%', padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+                                    style={{ width: '100%', padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
                                 />
                             </div>
                             <div>
@@ -419,7 +419,7 @@ const BankReconciliationPage = () => {
                                     value={uploadForm.periodEnd}
                                     onChange={(e) => setUploadForm({ ...uploadForm, periodEnd: e.target.value })}
                                     required
-                                    style={{ width: '100%', padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+                                    style={{ width: '100%', padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
                                 />
                             </div>
                             <div style={{ gridColumn: '1 / -1' }}>
@@ -429,9 +429,9 @@ const BankReconciliationPage = () => {
                                     accept=".csv"
                                     onChange={handleFileChange}
                                     required
-                                    style={{ width: '100%', padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+                                    style={{ width: '100%', padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
                                 />
-                                <small style={{ color: '#888' }}>Columnas esperadas: date, description, reference, debit, credit, balance</small>
+                                <small style={{ color: '#6b6b7b' }}>Columnas esperadas: date, description, reference, debit, credit, balance</small>
                             </div>
                             <div style={{ gridColumn: '1 / -1', display: 'flex', gap: 8 }}>
                                 <Button variant="primary" type="submit">Subir</Button>
@@ -459,7 +459,7 @@ const BankReconciliationPage = () => {
                             <select
                                 value={selectedStatementId ?? ''}
                                 onChange={(e) => setSelectedStatementId(e.target.value ? parseInt(e.target.value, 10) : null)}
-                                style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+                                style={{ padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
                             >
                                 <option value="">Seleccione extracto...</option>
                                 {statements.map((st) => (
@@ -483,7 +483,7 @@ const BankReconciliationPage = () => {
                     </div>
 
                     {statementDetail && (
-                        <div style={{ background: '#f5f5f5', padding: 12, borderRadius: 8, marginBottom: 16, display: 'flex', gap: 24 }}>
+                        <div style={{ background: '#13131a', padding: 12, borderRadius: 8, marginBottom: 16, display: 'flex', gap: 24 }}>
                             <span><strong>Cuenta:</strong> {statementDetail.bankAccount?.name}</span>
                             <span><strong>Estado:</strong> {statusColors[statementDetail.status]?.label}</span>
                             <span><strong>Total:</strong> {statementDetail.transactions?.length ?? 0} transacciones</span>
@@ -503,7 +503,7 @@ const BankReconciliationPage = () => {
 
                             {/* Manual Match Form */}
                             {matchForm.txnId && (
-                                <div style={{ background: '#fafafa', padding: 16, borderRadius: 8, border: '1px solid #ddd', marginTop: 16 }}>
+                                <div style={{ background: '#13131a', padding: 16, borderRadius: 8, border: '1px solid #2a2a35', marginTop: 16 }}>
                                     <h4 style={{ marginTop: 0, marginBottom: 12 }}>Conciliacion Manual - Transaccion #{matchForm.txnId}</h4>
                                     <div style={{ display: 'flex', gap: 12, alignItems: 'flex-end' }}>
                                         <div>
@@ -511,7 +511,7 @@ const BankReconciliationPage = () => {
                                             <select
                                                 value={matchForm.sourceType}
                                                 onChange={(e) => setMatchForm({ ...matchForm, sourceType: e.target.value })}
-                                                style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+                                                style={{ padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
                                             >
                                                 <option value="PAYMENT">Pago</option>
                                                 <option value="EXPENSE">Gasto</option>
@@ -524,7 +524,7 @@ const BankReconciliationPage = () => {
                                                 value={matchForm.sourceId}
                                                 onChange={(e) => setMatchForm({ ...matchForm, sourceId: e.target.value })}
                                                 placeholder="ID"
-                                                style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4, width: 120 }}
+                                                style={{ padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4, width: 120 }}
                                             />
                                         </div>
                                         <Button variant="primary" onClick={handleManualMatch}>Conciliar</Button>
@@ -534,7 +534,7 @@ const BankReconciliationPage = () => {
                             )}
                         </>
                     ) : (
-                        <p style={{ color: '#999', textAlign: 'center', padding: 40 }}>
+                        <p style={{ color: '#6b6b7b', textAlign: 'center', padding: 40 }}>
                             Seleccione un extracto bancario para ver las transacciones y conciliar.
                         </p>
                     )}

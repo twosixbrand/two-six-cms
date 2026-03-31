@@ -121,7 +121,7 @@ const SizeGuidePage = () => {
                 emptyMessage="No hay medidas registradas."
                 actions={(row) => (
                     <>
-                        <Button variant="ghost" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)}>
+                        <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)}>
                             {''}
                         </Button>
                         <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row.id)}>

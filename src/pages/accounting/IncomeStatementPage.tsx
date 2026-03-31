@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiTrendingUp, FiRefreshCcw, FiPrinter, FiDownload } from 'react-icons/fi';
+import { FiActivity, FiRefreshCcw, FiPrinter, FiDownload } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
 import FormField from '../../components/ui/FormField';
@@ -81,7 +81,7 @@ const IncomeStatementPage = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title="Estado de Resultados" icon={<FiTrendingUp />} />
+            <PageHeader title="Estado de Resultados" icon={<FiActivity />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
                 <div style={{ minWidth: '160px' }}>

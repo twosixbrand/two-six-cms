@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PqrService } from '../../services/pqr/pqr.service';
 import Swal from 'sweetalert2';
-import { FiClock, FiAlertCircle, FiCheckCircle } from 'react-icons/fi';
+import { FiMessageSquare, FiAlertCircle, FiCheckCircle } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
 import { Button, StatusBadge, LoadingSpinner, FormField } from '../../components/ui';
 import '../../styles/ImageClothingPage.css';
@@ -84,14 +84,14 @@ const PqrManagementPage: React.FC = () => {
             return { bg: '#ef4444', color: '#fff', border: 'rgba(239, 68, 68, 0.4)', icon: <FiAlertCircle /> };
         }
         if (slaStatus === 'EN RIESGO') {
-            return { bg: '#f59e0b', color: '#fff', border: 'rgba(245, 158, 11, 0.4)', icon: <FiClock /> };
+            return { bg: '#f59e0b', color: '#fff', border: 'rgba(245, 158, 11, 0.4)', icon: <FiMessageSquare /> };
         }
         return { bg: '#3b82f6', color: '#fff', border: 'rgba(59, 130, 246, 0.4)', icon: <FiCheckCircle /> };
     };
 
     return (
         <div className="page-container">
-            <PageHeader title="Gestión de Casos PQR" icon={<FiClock />} />
+            <PageHeader title="Gestión de Casos PQR" icon={<FiMessageSquare />} />
 
             <div className="row mt-4">
                 {/* Grid de Cards PQR */}
@@ -274,7 +274,7 @@ const PqrManagementPage: React.FC = () => {
                     ) : (
                         <div style={{ borderRadius: '20px', background: '#1a1a24', border: '1px solid #2a2a35', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '3rem', textAlign: 'center', height: '100%' }}>
                             <div style={{ color: '#a0a0b0' }}>
-                                <FiClock style={{ display: 'block', margin: '0 auto 1rem', opacity: 0.5 }} size={48} />
+                                <FiMessageSquare style={{ display: 'block', margin: '0 auto 1rem', opacity: 0.5 }} size={48} />
                                 <p>Selecciona una PQR del listado para ver sus detalles de gestión y modificar su estado.</p>
                             </div>
                         </div>

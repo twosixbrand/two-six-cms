@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiBarChart2, FiRefreshCcw, FiPrinter, FiDownload } from 'react-icons/fi';
+import { FiBarChart, FiRefreshCcw, FiPrinter, FiDownload } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
 import FormField from '../../components/ui/FormField';
@@ -80,7 +80,7 @@ const BalanceSheetPage = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title="Balance General" icon={<FiBarChart2 />} />
+            <PageHeader title="Balance General" icon={<FiBarChart />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
                 <div style={{ minWidth: '120px' }}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiTrendingUp, FiActivity, FiDollarSign, FiPercent, FiShield, FiBox } from 'react-icons/fi';
+import { FiPieChart, FiActivity, FiDollarSign, FiPercent, FiShield, FiBox } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import * as accountingApi from '../../services/accountingApi';
@@ -79,7 +79,7 @@ const FinancialIndicatorsPage: React.FC = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title="Indicadores Financieros" icon={<FiTrendingUp />} />
+            <PageHeader title="Indicadores Financieros" icon={<FiPieChart />} />
 
             <div style={{
                 display: 'flex', gap: '1rem', marginBottom: '2rem',

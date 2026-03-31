@@ -193,7 +193,7 @@ const OrderPage = () => {
               >
                 Guia
               </Button>
-              <Button variant="ghost" size="sm" icon={<FiEye />} onClick={() => navigate(`/order/${row.id}`)}>
+              <Button variant="info" size="sm" icon={<FiEye />} onClick={() => navigate(`/order/${row.id}`)}>
                 Ver
               </Button>
             </>

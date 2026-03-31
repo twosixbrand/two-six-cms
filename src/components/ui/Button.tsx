@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface ButtonProps {
-  variant?: 'primary' | 'secondary' | 'destructive' | 'ghost' | 'outline';
+  variant?: 'primary' | 'secondary' | 'destructive' | 'ghost' | 'outline' | 'edit' | 'info';
   size?: 'sm' | 'md' | 'lg';
   icon?: React.ReactNode;
   loading?: boolean;
@@ -42,6 +42,16 @@ const variantBaseStyles: Record<string, React.CSSProperties> = {
     background: 'transparent',
     color: '#f0b429',
     border: '1px solid #2a2a35',
+  },
+  edit: {
+    background: 'rgba(240, 180, 41, 0.1)',
+    color: '#f0b429',
+    border: '1px solid rgba(240, 180, 41, 0.2)',
+  },
+  info: {
+    background: 'rgba(59, 130, 246, 0.1)',
+    color: '#60a5fa',
+    border: '1px solid rgba(59, 130, 246, 0.2)',
   },
 };
 

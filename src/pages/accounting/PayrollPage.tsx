@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiUsers, FiCalendar, FiFileText, FiPlus, FiEdit2, FiPlay, FiCheckCircle, FiRefreshCcw, FiDownload } from 'react-icons/fi';
+import { FiUsers, FiCalendar, FiFileText, FiPlus, FiEdit2, FiPlay, FiCheckCircle, FiRefreshCcw, FiDownload, FiBriefcase } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import { DataTable, Button, StatusBadge, LoadingSpinner, Modal } from '../../components/ui';
@@ -97,7 +97,7 @@ const EmployeeFormModal = ({
     const inputStyle: React.CSSProperties = {
         width: '100%',
         padding: '8px 12px',
-        border: '1px solid #ddd',
+        border: '1px solid #2a2a35',
         borderRadius: '6px',
         fontSize: '14px',
     };
@@ -249,7 +249,7 @@ const PeriodFormModal = ({
     const inputStyle: React.CSSProperties = {
         width: '100%',
         padding: '8px 12px',
-        border: '1px solid #ddd',
+        border: '1px solid #2a2a35',
         borderRadius: '6px',
         fontSize: '14px',
     };
@@ -563,7 +563,7 @@ const PayrollPage = () => {
 
     return (
         <div>
-            <PageHeader title="Nomina Colombiana" icon={<FiUsers />} />
+            <PageHeader title="Nomina Colombiana" icon={<FiBriefcase />} />
 
             {error && (
                 <div style={{ background: '#fdecea', color: '#d32f2f', padding: '12px 16px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' }}>
@@ -578,7 +578,7 @@ const PayrollPage = () => {
             )}
 
             {/* Tabs */}
-            <div style={{ borderBottom: '1px solid #e0e0e0', marginBottom: '20px', display: 'flex', gap: '4px' }}>
+            <div style={{ borderBottom: '1px solid #2a2a35', marginBottom: '20px', display: 'flex', gap: '4px' }}>
                 <button style={tabStyle(activeTab === 'employees')} onClick={() => setActiveTab('employees')}>
                     <FiUsers style={{ marginRight: '6px', verticalAlign: 'middle' }} /> Empleados
                 </button>

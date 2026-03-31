@@ -159,7 +159,7 @@ const UserRolePage = () => {
           data={filteredAssignments}
           emptyMessage="No hay asignaciones de roles registradas"
           actions={(row) => (
-            <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)}>Eliminar</Button>
+            <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} />
           )}
         />
       )}

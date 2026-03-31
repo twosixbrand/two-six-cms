@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiFileText, FiRefreshCcw, FiPlus, FiChevronDown, FiChevronRight, FiDownload } from 'react-icons/fi';
+import { FiClipboard, FiPlus, FiChevronDown, FiChevronUp, FiChevronRight, FiDownload, FiRefreshCcw } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import PageHeader from '../../components/common/PageHeader';
 import { DataTable, Button, StatusBadge, LoadingSpinner, FormField } from '../../components/ui';
@@ -70,7 +70,7 @@ const JournalEntryPage = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title="Asientos Contables" icon={<FiFileText />} />
+            <PageHeader title="Asientos Contables" icon={<FiClipboard />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
                 <div>

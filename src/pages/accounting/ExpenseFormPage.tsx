@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiDollarSign, FiSave } from 'react-icons/fi';
+import { FiCreditCard, FiSave } from 'react-icons/fi';
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
@@ -119,7 +119,7 @@ const ExpenseFormPage = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title={isEdit ? 'Editar Gasto' : 'Registrar Gasto'} icon={<FiDollarSign />} />
+            <PageHeader title={isEdit ? 'Editar Gasto' : 'Registrar Gasto'} icon={<FiCreditCard />} />
 
             <div style={{
                 backgroundColor: '#1a1a24', border: '1px solid #2a2a35',

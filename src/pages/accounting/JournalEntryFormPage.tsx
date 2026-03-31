@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiFileText, FiPlus, FiTrash2, FiSave } from 'react-icons/fi';
+import { FiClipboard, FiPlus, FiTrash2, FiSave } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
@@ -100,7 +100,7 @@ const JournalEntryFormPage = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title="Nuevo Asiento Contable" icon={<FiFileText />} />
+            <PageHeader title="Nuevo Asiento Contable" icon={<FiClipboard />} />
 
             <div style={{ display: 'flex', gap: '16px', marginBottom: '20px', flexWrap: 'wrap' }}>
                 <div style={{ minWidth: '180px' }}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiFileText, FiRefreshCcw, FiSend, FiDownload, FiEye, FiSearch } from 'react-icons/fi';
+import { FiSend, FiRefreshCcw, FiDownload, FiEye, FiSearch } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import PageHeader from '../components/common/PageHeader';
 import { DataTable, Button, StatusBadge, LoadingSpinner, Modal } from '../components/ui';
@@ -139,7 +139,7 @@ const DianInvoicePage = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title="Facturación DIAN - Historial" icon={<FiFileText />} />
+            <PageHeader title="Facturación DIAN - Historial" icon={<FiSend />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px' }}>
                 <Button variant="primary" icon={<FiRefreshCcw />} onClick={fetchInvoices}>

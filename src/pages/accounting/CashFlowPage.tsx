@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiTrendingUp, FiRefreshCcw, FiPrinter } from 'react-icons/fi';
+import { FiRepeat, FiRefreshCcw, FiPrinter } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
 import FormField from '../../components/ui/FormField';
@@ -92,7 +92,7 @@ const CashFlowPage = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title="Flujo de Caja" icon={<FiTrendingUp />} />
+            <PageHeader title="Flujo de Caja" icon={<FiRepeat />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
                 <div style={{ minWidth: '160px' }}>

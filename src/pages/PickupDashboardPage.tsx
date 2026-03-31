@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import PageHeader from '../components/common/PageHeader';
 import { FaBoxOpen } from 'react-icons/fa';
 import { Button, StatusBadge, LoadingSpinner } from '../components/ui';
-import { FiRefreshCcw } from 'react-icons/fi';
+import { FiRefreshCcw, FiGift } from 'react-icons/fi';
 import '../styles/PickupDashboardPage.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -168,7 +168,7 @@ const PickupDashboardPage = () => {
 
     return (
         <div className="page-container pickup-dashboard">
-            <PageHeader title="Tablero de Retiros en Tienda" icon={<FaBoxOpen />} />
+            <PageHeader title="Tablero de Retiros en Tienda" icon={<FiGift />} />
 
             <div className="pickup-filters">
                 <Button

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiLock, FiCalendar, FiCheckCircle, FiXCircle } from 'react-icons/fi';
+import { FiCheckSquare, FiCalendar, FiCheckCircle, FiXCircle } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
@@ -133,7 +133,7 @@ const PeriodClosingPage = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title="Cierre Contable" icon={<FiLock />} />
+            <PageHeader title="Cierre Contable" icon={<FiCheckSquare />} />
 
             {error && (
                 <div style={{
@@ -200,7 +200,7 @@ const PeriodClosingPage = () => {
                     padding: '20px', border: '1px solid #2a2a35',
                 }}>
                     <h3 style={{ margin: '0 0 16px 0', display: 'flex', alignItems: 'center', gap: '8px', color: '#f1f1f3', fontFamily: 'Inter, sans-serif' }}>
-                        <FiLock /> Cierre Anual
+                        <FiCheckSquare /> Cierre Anual
                     </h3>
                     <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
                         <div style={{ minWidth: '100px' }}>

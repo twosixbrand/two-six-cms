@@ -241,8 +241,8 @@ const ProviderPage = () => {
           actions={(row) => (
             <>
               <Button variant="ghost" size="sm" icon={<FiPaperclip />} onClick={() => openDocModal(row)}>Docs</Button>
-              <Button variant="ghost" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)}>Editar</Button>
-              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)}>Eliminar</Button>
+              <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} />
+              <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} />
             </>
           )}
         />
@@ -332,8 +332,8 @@ const ProviderPage = () => {
                     </Button>
                     {existingDoc && (
                       <>
-                        <Button variant="ghost" size="sm" icon={<FiEye />} onClick={() => window.open(existingDoc.file_url, '_blank')}>Ver</Button>
-                        <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => handleDeleteDoc(existingDoc.id)}>Eliminar</Button>
+                        <Button variant="info" size="sm" icon={<FiEye />} onClick={() => window.open(existingDoc.file_url, '_blank')}>Ver</Button>
+                        <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDeleteDoc(existingDoc.id)} />
                       </>
                     )}
                   </div>

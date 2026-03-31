@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiFileText, FiRefreshCcw, FiPrinter } from 'react-icons/fi';
+import { FiScissors, FiRefreshCcw, FiPrinter } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
 import FormField from '../../components/ui/FormField';
@@ -61,7 +61,7 @@ const ReteFuentePage = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title="Retencion en la Fuente" icon={<FiFileText />} />
+            <PageHeader title="Retencion en la Fuente" icon={<FiScissors />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
                 <div style={{ minWidth: '120px' }}>

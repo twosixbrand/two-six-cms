@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FiUsers, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { FiUser, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import PageHeader from '../components/common/PageHeader';
 import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner } from '../components/ui';
@@ -135,7 +135,7 @@ const UserPage = () => {
 
   return (
     <div className="page-container">
-      <PageHeader title="Administrar Usuarios" icon={<FiUsers />} />
+      <PageHeader title="Administrar Usuarios" icon={<FiUser />} />
 
       {error && <p className="error-message">{error}</p>}
 
@@ -153,8 +153,8 @@ const UserPage = () => {
           emptyMessage="No hay usuarios registrados"
           actions={(row) => (
             <>
-              <Button variant="ghost" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)}>Editar</Button>
-              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)}>Eliminar</Button>
+              <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} />
+              <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} />
             </>
           )}
         />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiShield, FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { FiEye, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
 import FormField from '../../components/ui/FormField';
@@ -99,7 +99,7 @@ const AuditLogPage = () => {
 
     return (
         <div className="page-container" style={{ minHeight: '70vh' }}>
-            <PageHeader title="Auditoria Contable" icon={<FiShield />} />
+            <PageHeader title="Auditoria Contable" icon={<FiEye />} />
 
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '15px', alignItems: 'flex-end' }}>
                 <div style={{ minWidth: '180px' }}>

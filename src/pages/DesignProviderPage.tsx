@@ -144,7 +144,7 @@ const DesignProviderPage = () => {
           data={filteredAssignments}
           emptyMessage="No hay asignaciones registradas"
           actions={(row) => (
-            <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)}>Eliminar</Button>
+            <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} />
           )}
         />
       )}
@@ -159,7 +159,7 @@ const DesignProviderPage = () => {
               value={form.id_master_design}
               onChange={handleChange}
               required
-              placeholder="Seleccione Diseno"
+              placeholder="Seleccione Diseño"
               options={designOptions}
             />
             <FormField

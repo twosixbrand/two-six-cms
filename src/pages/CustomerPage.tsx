@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FiUsers, FiEdit2 } from 'react-icons/fi';
+import { FiUserCheck, FiEdit2 } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
 import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner, StatusBadge } from '../components/ui';
 import * as customerApi from '../services/customerApi';
@@ -170,7 +170,7 @@ const CustomerPage = () => {
 
   return (
     <div className="page-container">
-      <PageHeader title="Gestion de Clientes" icon={<FiUsers />} />
+      <PageHeader title="Gestion de Clientes" icon={<FiUserCheck />} />
 
       {error && <p className="error-message">{error}</p>}
 
@@ -186,7 +186,7 @@ const CustomerPage = () => {
           data={filteredItems}
           emptyMessage="No hay clientes registrados"
           actions={(row) => (
-            <Button variant="ghost" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)}>Editar</Button>
+            <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} />
           )}
         />
       )}

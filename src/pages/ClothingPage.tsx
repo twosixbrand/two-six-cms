@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FiLayers, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { FiServer, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import PageHeader from '../components/common/PageHeader';
 import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner } from '../components/ui';
@@ -154,7 +154,7 @@ const ClothingPage = () => {
 
   return (
     <div className="page-container">
-      <PageHeader title="Gestión de Prendas" icon={<FiLayers />} />
+      <PageHeader title="Gestión de Prendas" icon={<FiServer />} />
 
       {error && <p className="error-message">{error}</p>}
 
@@ -172,8 +172,8 @@ const ClothingPage = () => {
           emptyMessage="No hay prendas registradas"
           actions={(row) => (
             <>
-              <Button variant="ghost" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)}>Editar</Button>
-              <Button variant="ghost" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)}>Eliminar</Button>
+              <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} />
+              <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} />
             </>
           )}
         />

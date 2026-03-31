@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiDollarSign, FiRefreshCcw, FiPlus, FiEdit2, FiTrash2, FiCheck, FiDownload } from 'react-icons/fi';
+import { FiCreditCard, FiRefreshCcw, FiPlus, FiEdit2, FiTrash2, FiCheck, FiDownload } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
@@ -124,23 +124,23 @@ const ExpensePage = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title="Gastos / Compras" icon={<FiDollarSign />} />
+            <PageHeader title="Gastos / Compras" icon={<FiCreditCard />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
                 <div>
                     <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Desde</label>
                     <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)}
-                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }} />
+                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #2a2a35' }} />
                 </div>
                 <div>
                     <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Hasta</label>
                     <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)}
-                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }} />
+                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #2a2a35' }} />
                 </div>
                 <div>
                     <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Categoría</label>
                     <select value={category} onChange={e => setCategory(e.target.value)}
-                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}>
+                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', height: 40, fontSize: '0.875rem' }}>
                         <option value="">Todas</option>
                         {categories.map((c: any) => (
                             <option key={c.id || c.name} value={c.name || c.id}>{c.name}</option>
@@ -150,7 +150,7 @@ const ExpensePage = () => {
                 <div>
                     <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Estado</label>
                     <select value={status} onChange={e => setStatus(e.target.value)}
-                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}>
+                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', height: 40, fontSize: '0.875rem' }}>
                         <option value="ALL">Todos</option>
                         <option value="PENDING">Pendiente</option>
                         <option value="PAID">Pagado</option>

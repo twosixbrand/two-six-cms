@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiDollarSign, FiSave, FiBarChart2, FiArrowLeft } from 'react-icons/fi';
+import { FiTarget, FiSave, FiBarChart2, FiArrowLeft } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
@@ -243,7 +243,7 @@ const BudgetPage: React.FC = () => {
     // Main Budget View
     return (
         <div className="page-container">
-            <PageHeader title="Presupuesto" icon={<FiDollarSign />} />
+            <PageHeader title="Presupuesto" icon={<FiTarget />} />
 
             <div style={{
                 display: 'flex', gap: '1rem', marginBottom: '1.5rem', alignItems: 'center', flexWrap: 'wrap',

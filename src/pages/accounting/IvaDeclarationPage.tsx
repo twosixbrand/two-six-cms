@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiFileText, FiRefreshCcw, FiPrinter } from 'react-icons/fi';
+import { FiPercent, FiRefreshCcw, FiPrinter } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
 import FormField from '../../components/ui/FormField';
@@ -99,7 +99,7 @@ const IvaDeclarationPage = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title="Declaracion de IVA" icon={<FiFileText />} />
+            <PageHeader title="Declaracion de IVA" icon={<FiPercent />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
                 <div style={{ minWidth: '120px' }}>

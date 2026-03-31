@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FiUsers } from 'react-icons/fi';
+import { FiMail } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
 import { DataTable, Modal, Button, SearchInput, StatusBadge, LoadingSpinner } from '../components/ui';
 import * as subscriberApi from '../services/subscriberApi';
@@ -130,7 +130,7 @@ const SubscriberPage = () => {
 
   return (
     <div className="page-container">
-      <PageHeader title="Gestion de Suscriptores" icon={<FiUsers />} />
+      <PageHeader title="Gestion de Suscriptores" icon={<FiMail />} />
 
       {error && <p className="error-message">{error}</p>}
 

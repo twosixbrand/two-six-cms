@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiBookOpen, FiRefreshCcw, FiDownload } from 'react-icons/fi';
+import { FiList, FiRefreshCcw, FiDownload } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
 import FormField from '../../components/ui/FormField';
@@ -84,7 +84,7 @@ const GeneralLedgerPage = () => {
 
     return (
         <div className="page-container" style={{ minHeight: '70vh' }}>
-            <PageHeader title="Libro Mayor" icon={<FiBookOpen />} />
+            <PageHeader title="Libro Mayor" icon={<FiList />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-end', position: 'relative', zIndex: 50 }}>
                 <div style={{ position: 'relative', minWidth: '280px' }}>

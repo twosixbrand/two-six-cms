@@ -172,7 +172,7 @@ const LocationPage = () => {
             <PageHeader title="Departamentos y Ciudades" icon={<FiMap />} />
 
             {/* Search bar */}
-            <div style={{ maxWidth: '500px', marginBottom: '1rem' }}>
+            <div style={{ marginBottom: '1rem' }}>
                 <SearchInput
                     value={searchTerm}
                     onChange={setSearchTerm}

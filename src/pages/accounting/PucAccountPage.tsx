@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiBook, FiPlus, FiChevronRight, FiChevronDown, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { FiBookOpen, FiPlus, FiChevronRight, FiChevronDown, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import { Button, StatusBadge, LoadingSpinner, SearchInput, Modal, FormField } from '../../components/ui';
@@ -198,10 +198,10 @@ const PucAccountPage = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title="PUC - Plan Unico de Cuentas" icon={<FiBook />} />
+            <PageHeader title="PUC - Plan Unico de Cuentas" icon={<FiBookOpen />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
-                <div style={{ flex: '1', maxWidth: '400px' }}>
+                <div style={{ flex: '1' }}>
                     <SearchInput
                         value={search}
                         onChange={setSearch}
