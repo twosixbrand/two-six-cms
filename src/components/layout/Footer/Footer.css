@@ -28,3 +28,21 @@
   color: #3a3a48;
   font-weight: 500;
 }
+
+/* Mobile: stack footer items */
+@media screen and (max-width: 640px) {
+  .footer {
+    padding: 0.75rem 1rem;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    gap: 0.25rem;
+    text-align: center;
+  }
+
+  .footer-copyright,
+  .footer-version {
+    text-align: center;
+  }
+}

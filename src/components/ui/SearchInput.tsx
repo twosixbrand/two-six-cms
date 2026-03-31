@@ -49,7 +49,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
     display: 'flex',
     alignItems: 'center',
     flex: 1,
-    minWidth: '200px',
+    minWidth: 0,
   };
 
   const inputStyle: React.CSSProperties = {

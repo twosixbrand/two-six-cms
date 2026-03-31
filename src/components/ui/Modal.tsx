@@ -36,6 +36,15 @@ const Modal: React.FC<ModalProps> = ({
   footer,
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = React.useState(
+    typeof window !== 'undefined' ? window.innerWidth < 640 : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -59,7 +68,7 @@ const Modal: React.FC<ModalProps> = ({
     }
   };
 
-  const maxW = sizeMap[size] || 600;
+  const maxW = isMobile ? '95%' : (sizeMap[size] || 600);
 
   return (
     <>
@@ -82,17 +91,18 @@ const Modal: React.FC<ModalProps> = ({
         <div
           ref={contentRef}
           style={{
-            width: '100%',
+            width: isMobile ? '95%' : '100%',
             maxWidth: maxW,
             maxHeight: '90vh',
             display: 'flex',
             flexDirection: 'column',
             backgroundColor: '#1a1a24',
-            borderRadius: 16,
+            borderRadius: isMobile ? 12 : 16,
             border: '1px solid #2a2a35',
             boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(240, 180, 41, 0.03)',
             animation: 'ts-modal-slide-in 0.2s ease',
             overflow: 'hidden',
+            margin: isMobile ? 'auto' : undefined,
           }}
         >
           {/* Header */}

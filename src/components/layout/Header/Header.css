@@ -223,6 +223,16 @@
   .header-right {
     gap: 0.5rem;
   }
+
+  /* Bigger touch target for hamburger */
+  .hamburger-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .hamburger-line {
+    width: 20px;
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -231,5 +241,10 @@
     transform: none;
     flex-grow: 1;
     text-align: center;
+  }
+
+  /* Hide title text on very small screens */
+  .header-title {
+    display: none;
   }
 }

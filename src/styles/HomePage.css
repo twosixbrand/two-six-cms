@@ -147,6 +147,12 @@
   box-shadow: 0 4px 15px rgba(240, 180, 41, 0.08);
 }
 
+@media (max-width: 960px) {
+  .home-cards {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
 @media (max-width: 640px) {
   .home-cards {
     grid-template-columns: 1fr;

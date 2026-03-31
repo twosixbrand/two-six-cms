@@ -100,6 +100,21 @@ h1, h2, h3, h4, h5, h6 {
   .app-content.menu-closed {
     padding-left: 0;
   }
+  .container {
+    padding: 1rem;
+  }
+  .page-container {
+    gap: 1rem;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .container {
+    padding: 0.75rem;
+  }
+  input, select, textarea {
+    max-width: 100%;
+  }
 }
 
 /* Page container */

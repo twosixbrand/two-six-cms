@@ -168,3 +168,12 @@
 .nav-links-button:active {
   transform: scale(0.97);
 }
+
+/* Mobile: full-screen overlay */
+@media screen and (max-width: 960px) {
+  .navbar {
+    width: 100%;
+    background: rgba(17, 24, 39, 0.98);
+    z-index: 1001;
+  }
+}

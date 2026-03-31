@@ -11,10 +11,12 @@ interface ButtonProps {
   type?: 'button' | 'submit';
 }
 
+const isTouchDevice = typeof window !== 'undefined' && window.innerWidth < 640;
+
 const sizeStyles: Record<string, React.CSSProperties> = {
-  sm: { padding: '0.35rem 0.7rem', fontSize: '0.75rem' },
-  md: { padding: '0.5rem 1rem', fontSize: '0.8125rem' },
-  lg: { padding: '0.65rem 1.5rem', fontSize: '0.875rem' },
+  sm: { padding: '0.35rem 0.7rem', fontSize: '0.75rem', minHeight: isTouchDevice ? 44 : undefined },
+  md: { padding: '0.5rem 1rem', fontSize: '0.8125rem', minHeight: 44 },
+  lg: { padding: '0.65rem 1.5rem', fontSize: '0.875rem', minHeight: 44 },
 };
 
 const variantBaseStyles: Record<string, React.CSSProperties> = {

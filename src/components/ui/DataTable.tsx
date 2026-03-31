@@ -75,6 +75,7 @@ const DataTable: React.FC<DataTableProps> = ({
     <div
       style={{
         overflowX: 'auto',
+        WebkitOverflowScrolling: 'touch',
         borderRadius: 8,
         backgroundColor: '#1a1a24',
         border: '1px solid #2a2a35',
@@ -114,7 +115,7 @@ const DataTable: React.FC<DataTableProps> = ({
               ))}
               {actions && (
                 <td style={{ ...tdStyle({ key: '__actions__', header: '', align: 'center' }, rowIdx) }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem' }}>
                     {actions(row)}
                   </div>
                 </td>
