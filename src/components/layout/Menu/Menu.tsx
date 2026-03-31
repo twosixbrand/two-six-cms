@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
 import { FiLogOut } from 'react-icons/fi';
+import logoUrl from '../../../assets/logo-white.png';
 
 import './Menu.css';
 import SubMenu from './SubMenu';
@@ -145,7 +146,8 @@ const Menu = ({ isMenuOpen, toggleMenu }) => {
     <nav className={`navbar ${isMenuOpen ? '' : 'closed'}`}>
       <div className="navbar-container">
         {/* Sidebar brand */}
-        <div className="sidebar-brand">
+        <div className="sidebar-brand" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          <img src={logoUrl} alt="Two Six" style={{ height: '30px', opacity: 0.8 }} />
           <span className="sidebar-brand-accent">Two Six</span>
         </div>
 
