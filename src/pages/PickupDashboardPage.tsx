@@ -14,6 +14,7 @@ const PickupDashboardPage = () => {
     const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [visibleCount, setVisibleCount] = useState(5);
 
     const fetchOrders = async (isBackground = false) => {
         try {
@@ -197,7 +198,7 @@ const PickupDashboardPage = () => {
                     </div>
                 )}
 
-                {orders.map(order => (
+                {orders.slice(0, visibleCount).map(order => (
                     <div key={order.id} className={`pickup-card ${getStatusStyle(order.pickup_status)}`}>
                         <div className="pickup-card-header">
                             <h2>Referencia: {order.order_reference}</h2>
@@ -251,7 +252,7 @@ const PickupDashboardPage = () => {
 
                         <div className="pickup-card-actions">
                             <Button
-                                variant="ghost"
+                                variant="outline"
                                 size="sm"
                                 onClick={() => navigate(`/order/${order.id}`)}
                             >
@@ -270,16 +271,27 @@ const PickupDashboardPage = () => {
 
                             {(order.pickup_status === 'READY' || order.pickup_status === 'PENDING') && (
                                 <Button
-                                    variant="secondary"
-                                    size="sm"
+                                    variant="info"
+                                    size="md"
                                     onClick={() => handleMarkCollected(order.id)}
                                 >
-                                    Entregado a Cliente
+                                    Entregar a Cliente
                                 </Button>
                             )}
                         </div>
                     </div>
                 ))}
+
+                {visibleCount < orders.length && (
+                    <div style={{ textAlign: 'center', padding: '1.5rem 0' }}>
+                        <Button
+                            variant="outline"
+                            onClick={() => setVisibleCount(prev => prev + 5)}
+                        >
+                            Ver más ({orders.length - visibleCount} restantes)
+                        </Button>
+                    </div>
+                )}
             </div>
         </div>
     );

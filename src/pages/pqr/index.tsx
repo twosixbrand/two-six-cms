@@ -3,7 +3,7 @@ import { PqrService } from '../../services/pqr/pqr.service';
 import Swal from 'sweetalert2';
 import { FiMessageSquare, FiAlertCircle, FiCheckCircle } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
-import { Button, StatusBadge, LoadingSpinner, FormField } from '../../components/ui';
+import { Button, StatusBadge, LoadingSpinner, FormField, SearchInput, Modal } from '../../components/ui';
 import '../../styles/ImageClothingPage.css';
 
 interface PqrImage {
@@ -27,12 +27,16 @@ interface Pqr {
     images?: PqrImage[];
 }
 
+const PAGE_SIZE = 8;
+
 const PqrManagementPage: React.FC = () => {
     const [pqrs, setPqrs] = useState<Pqr[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [selectedPqr, setSelectedPqr] = useState<Pqr | null>(null);
     const [editStatus, setEditStatus] = useState<string>('');
     const [editObservation, setEditObservation] = useState<string>('');
+    const [search, setSearch] = useState<string>('');
+    const [visibleCount, setVisibleCount] = useState<number>(PAGE_SIZE);
 
     const fetchPqrs = async () => {
         try {
@@ -89,198 +93,218 @@ const PqrManagementPage: React.FC = () => {
         return { bg: '#3b82f6', color: '#fff', border: 'rgba(59, 130, 246, 0.4)', icon: <FiCheckCircle /> };
     };
 
+    const filteredPqrs = pqrs.filter((pqr) => {
+        if (!search.trim()) return true;
+        const q = search.toLowerCase();
+        return (
+            pqr.radicado.toLowerCase().includes(q) ||
+            pqr.customer_name.toLowerCase().includes(q) ||
+            pqr.type.toLowerCase().includes(q) ||
+            pqr.status.toLowerCase().includes(q)
+        );
+    });
+
+    const visiblePqrs = filteredPqrs.slice(0, visibleCount);
+    const hasMore = visibleCount < filteredPqrs.length;
+
     return (
         <div className="page-container">
             <PageHeader title="Gestión de Casos PQR" icon={<FiMessageSquare />} />
 
-            <div className="row mt-4">
-                {/* Grid de Cards PQR */}
-                <div className="col-lg-7 pe-lg-4">
-                    {loading ? (
-                        <LoadingSpinner text="Cargando Casos..." />
-                    ) : pqrs.length === 0 ? (
-                        <div className="empty-search">
-                            <FiCheckCircle className="empty-icon" />
-                            <p>No hay PQRs radicadas en este momento.</p>
-                        </div>
-                    ) : (
-                        <div className="studio-cards-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '0.8rem' }}>
-                            {pqrs.map((pqr) => {
-                                const colors = getSlaColors(pqr.slaStatus, pqr.status);
-                                const isSelected = selectedPqr?.id === pqr.id;
+            <div style={{ marginTop: '1.5rem', marginBottom: '1rem', maxWidth: 360 }}>
+                <SearchInput
+                    value={search}
+                    onChange={(val) => { setSearch(val); setVisibleCount(PAGE_SIZE); }}
+                    placeholder="Buscar por radicado, cliente, tipo..."
+                />
+            </div>
 
-                                return (
-                                    <div
-                                        key={pqr.id}
-                                        className="studio-ref-card"
-                                        style={{
-                                            cursor: 'pointer',
-                                            border: isSelected ? `2px solid ${colors.bg}` : `1px solid ${colors.border}`,
-                                            boxShadow: isSelected ? `0 8px 20px ${colors.border}` : '',
-                                            transform: isSelected ? 'translateY(-2px)' : 'none'
-                                        }}
-                                        onClick={() => handleSelectPqr(pqr)}
-                                    >
-                                        <div className="ref-card-content" style={{ gap: '0.7rem' }}>
-                                            <div
-                                                className="ref-badge"
-                                                style={{
-                                                    background: colors.bg,
-                                                    color: colors.color,
-                                                    width: '36px',
-                                                    height: '36px',
-                                                    fontSize: '0.95rem',
-                                                    borderRadius: '10px'
-                                                }}
-                                            >
-                                                {colors.icon}
-                                            </div>
-                                            <div className="ref-info">
-                                                <h3 style={{ fontSize: '0.95rem', marginBottom: '0.1rem', lineHeight: 1.2 }}>{pqr.radicado}</h3>
-                                                <p style={{ margin: '0', fontSize: '0.78rem' }}>{pqr.customer_name}</p>
-                                                <div style={{ marginTop: '0.3rem', display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                                                    <StatusBadge status={pqr.type} variant="info" size="sm" />
-                                                    <StatusBadge status={pqr.status} variant="neutral" size="sm" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {pqr.status !== 'Resuelto' && pqr.status !== 'Cerrado' && (
-                                            <div style={{ position: 'absolute', top: '10px', right: '10px', fontSize: '0.7rem', fontWeight: 600, color: colors.bg }}>
-                                                {pqr.daysOpen} días
-                                            </div>
-                                        )}
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    )}
+            {loading ? (
+                <LoadingSpinner text="Cargando Casos..." />
+            ) : filteredPqrs.length === 0 ? (
+                <div className="empty-search">
+                    <FiCheckCircle className="empty-icon" />
+                    <p>{pqrs.length === 0 ? 'No hay PQRs radicadas en este momento.' : 'No se encontraron resultados para la búsqueda.'}</p>
                 </div>
+            ) : (
+                <>
+                    <div className="studio-cards-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '0.8rem' }}>
+                        {visiblePqrs.map((pqr) => {
+                            const colors = getSlaColors(pqr.slaStatus, pqr.status);
+                            const isSelected = selectedPqr?.id === pqr.id;
 
-                {/* Panel Lateral del PQR Seleccionado */}
-                <div className="col-lg-4 offset-lg-1 mt-4 mt-lg-0">
-                    {selectedPqr ? (
-                        <div style={{
-                            borderRadius: '16px',
-                            overflow: 'hidden',
-                            background: '#1a1a24',
-                            backdropFilter: 'blur(16px)',
-                            WebkitBackdropFilter: 'blur(16px)',
-                            border: '1px solid #2a2a35',
-                            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
-                            marginTop: '1.5rem'
-                        }}>
-                            <div className="card-body" style={{ padding: '1.5rem' }}>
-                                <form onSubmit={(e) => e.preventDefault()} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.8rem' }}>
-                                        <h3 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.3rem', fontWeight: 700 }}>
-                                            Detalle del Requerimiento
-                                        </h3>
-                                        <StatusBadge
-                                            status={selectedPqr.slaStatus || 'A TIEMPO'}
-                                            variant={
-                                                (selectedPqr.status === 'Resuelto' || selectedPqr.status === 'Cerrado') ? 'success' :
-                                                selectedPqr.slaStatus === 'VENCIDO' ? 'error' :
-                                                selectedPqr.slaStatus === 'EN RIESGO' ? 'warning' : 'info'
-                                            }
-                                            size="sm"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.3rem', display: 'block' }}>Radicado & Tipo</label>
-                                        <div style={{ background: '#13131a', padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid #2a2a35', color: 'var(--text-primary)', fontWeight: 500 }}>
-                                            {selectedPqr.radicado} <span style={{ color: 'var(--text-secondary)', fontWeight: 400 }}>({selectedPqr.type})</span>
+                            return (
+                                <div
+                                    key={pqr.id}
+                                    className="studio-ref-card"
+                                    style={{
+                                        cursor: 'pointer',
+                                        border: isSelected ? `2px solid ${colors.bg}` : `1px solid ${colors.border}`,
+                                        boxShadow: isSelected ? `0 8px 20px ${colors.border}` : '',
+                                        transform: isSelected ? 'translateY(-2px)' : 'none'
+                                    }}
+                                    onClick={() => handleSelectPqr(pqr)}
+                                >
+                                    <div className="ref-card-content" style={{ gap: '0.7rem' }}>
+                                        <div
+                                            className="ref-badge"
+                                            style={{
+                                                background: colors.bg,
+                                                color: colors.color,
+                                                width: '36px',
+                                                height: '36px',
+                                                fontSize: '0.95rem',
+                                                borderRadius: '10px'
+                                            }}
+                                        >
+                                            {colors.icon}
                                         </div>
-                                    </div>
-
-                                    <div>
-                                        <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.3rem', display: 'block' }}>Cliente</label>
-                                        <div style={{ background: '#13131a', padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid #2a2a35', color: 'var(--text-primary)', fontWeight: 500 }}>
-                                            {selectedPqr.customer_name} <span style={{ color: 'var(--text-secondary)', fontWeight: 400 }}>- {selectedPqr.customer_id}</span>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.3rem', display: 'block' }}>Correo Electrónico</label>
-                                        <div style={{ background: '#13131a', padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid #2a2a35', color: 'var(--text-primary)', fontWeight: 500 }}>
-                                            {selectedPqr.customer_email}
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.3rem', display: 'block' }}>Descripción del Caso</label>
-                                        <div style={{ background: '#13131a', padding: '1rem', borderRadius: '12px', border: '1px solid #2a2a35', color: 'var(--text-primary)', fontSize: '0.9rem', lineHeight: 1.6, maxHeight: '200px', overflowY: 'auto' }}>
-                                            {selectedPqr.description}
-                                        </div>
-                                    </div>
-
-                                    {selectedPqr.images && selectedPqr.images.length > 0 && (
-                                        <div>
-                                            <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.3rem', display: 'block' }}>Evidencia Adjunta ({selectedPqr.images.length})</label>
-                                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(65px, 1fr))', gap: '8px' }}>
-                                                {selectedPqr.images.map(img => (
-                                                    <a key={img.id} href={img.image_url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--border-color)', aspectRatio: '1/1', background: 'var(--surface-color)', position: 'relative' }}>
-                                                        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0)', zIndex: 1, transition: '0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(0,0,0,0)'} />
-                                                        <img src={img.image_url} alt="Evidencia PQR" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                                    </a>
-                                                ))}
+                                        <div className="ref-info">
+                                            <h3 style={{ fontSize: '0.95rem', marginBottom: '0.1rem', lineHeight: 1.2 }}>{pqr.radicado}</h3>
+                                            <p style={{ margin: '0', fontSize: '0.78rem' }}>{pqr.customer_name}</p>
+                                            <div style={{ marginTop: '0.3rem', display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                                                <StatusBadge status={pqr.type} variant="info" size="sm" />
+                                                <StatusBadge status={pqr.status} variant="neutral" size="sm" />
                                             </div>
+                                        </div>
+                                    </div>
+                                    {pqr.status !== 'Resuelto' && pqr.status !== 'Cerrado' && (
+                                        <div style={{ position: 'absolute', top: '10px', right: '10px', fontSize: '0.7rem', fontWeight: 600, color: colors.bg }}>
+                                            {pqr.daysOpen} días
                                         </div>
                                     )}
+                                </div>
+                            );
+                        })}
+                    </div>
 
-                                    <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1.2rem', marginTop: '0.5rem' }}>
-                                        <FormField
-                                            label="Actualizar Estado Operativo"
-                                            name="editStatus"
-                                            type="select"
-                                            value={editStatus}
-                                            onChange={(e) => setEditStatus(e.target.value)}
-                                            options={[
-                                                { value: 'Abierto', label: 'Abierto' },
-                                                { value: 'En Revisión', label: 'En Revisión' },
-                                                { value: 'Resuelto', label: 'Resuelto' },
-                                                { value: 'Cerrado', label: 'Cerrado' },
-                                            ]}
-                                        />
-
-                                        <div style={{ marginTop: '1rem' }}>
-                                            <FormField
-                                                label="Observaciones de Gestión / Resolución"
-                                                name="editObservation"
-                                                type="textarea"
-                                                value={editObservation}
-                                                onChange={(e) => setEditObservation(e.target.value)}
-                                                placeholder="Detalla aquí las acciones tomadas o la resolución final otorgada al cliente..."
-                                                rows={3}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div style={{ display: 'flex', gap: '0.8rem', marginTop: '0.5rem' }}>
-                                        <div style={{ flex: 2 }}>
-                                            <Button variant="primary" onClick={handleStatusChange}>
-                                                Guardar Gestión
-                                            </Button>
-                                        </div>
-                                        <div style={{ flex: 1 }}>
-                                            <Button variant="outline" onClick={() => setSelectedPqr(null)}>
-                                                Cerrar
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    ) : (
-                        <div style={{ borderRadius: '20px', background: '#1a1a24', border: '1px solid #2a2a35', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '3rem', textAlign: 'center', height: '100%' }}>
-                            <div style={{ color: '#a0a0b0' }}>
-                                <FiMessageSquare style={{ display: 'block', margin: '0 auto 1rem', opacity: 0.5 }} size={48} />
-                                <p>Selecciona una PQR del listado para ver sus detalles de gestión y modificar su estado.</p>
-                            </div>
+                    {hasMore && (
+                        <div style={{ textAlign: 'center', padding: '1.2rem 0' }}>
+                            <Button
+                                variant="outline"
+                                onClick={() => setVisibleCount(prev => prev + PAGE_SIZE)}
+                            >
+                                Ver más ({filteredPqrs.length - visibleCount} restantes)
+                            </Button>
                         </div>
                     )}
-                </div>
-            </div>
+
+                    {!hasMore && filteredPqrs.length > PAGE_SIZE && (
+                        <p style={{ textAlign: 'center', color: '#6b6b7b', fontSize: '0.8rem', padding: '0.8rem 0', margin: 0 }}>
+                            Mostrando {filteredPqrs.length} de {filteredPqrs.length} casos
+                        </p>
+                    )}
+                </>
+            )}
+
+            {/* Modal de Detalle PQR */}
+            <Modal
+                isOpen={!!selectedPqr}
+                onClose={() => setSelectedPqr(null)}
+                title={`Detalle — ${selectedPqr?.radicado || ''}`}
+                size="lg"
+                footer={
+                    <>
+                        <Button variant="outline" onClick={() => setSelectedPqr(null)}>
+                            Cerrar
+                        </Button>
+                        <Button variant="primary" onClick={handleStatusChange}>
+                            Guardar Gestión
+                        </Button>
+                    </>
+                }
+            >
+                {selectedPqr && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <StatusBadge status={selectedPqr.type} variant="info" />
+                            <StatusBadge
+                                status={selectedPqr.slaStatus || 'A TIEMPO'}
+                                variant={
+                                    (selectedPqr.status === 'Resuelto' || selectedPqr.status === 'Cerrado') ? 'success' :
+                                    selectedPqr.slaStatus === 'VENCIDO' ? 'error' :
+                                    selectedPqr.slaStatus === 'EN RIESGO' ? 'warning' : 'info'
+                                }
+                            />
+                        </div>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                            <div>
+                                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#6b6b7b', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.3rem', display: 'block' }}>Cliente</label>
+                                <div style={{ background: '#13131a', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #2a2a35', color: '#f1f1f3', fontWeight: 500, fontSize: '0.875rem' }}>
+                                    {selectedPqr.customer_name}
+                                    <span style={{ color: '#6b6b7b', fontWeight: 400, fontSize: '0.8rem', display: 'block', marginTop: '2px' }}>{selectedPqr.customer_id}</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#6b6b7b', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.3rem', display: 'block' }}>Correo</label>
+                                <div style={{ background: '#13131a', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #2a2a35', color: '#f1f1f3', fontWeight: 500, fontSize: '0.875rem' }}>
+                                    {selectedPqr.customer_email}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#6b6b7b', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.3rem', display: 'block' }}>Descripción del Caso</label>
+                            <div style={{ background: '#13131a', padding: '1rem', borderRadius: '10px', border: '1px solid #2a2a35', color: '#f1f1f3', fontSize: '0.875rem', lineHeight: 1.6, maxHeight: '180px', overflowY: 'auto' }}>
+                                {selectedPqr.description}
+                            </div>
+                        </div>
+
+                        {selectedPqr.images && selectedPqr.images.length > 0 && (
+                            <div>
+                                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#6b6b7b', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.3rem', display: 'block' }}>Evidencia ({selectedPqr.images.length})</label>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(65px, 1fr))', gap: '8px' }}>
+                                    {selectedPqr.images.map(img => (
+                                        <a key={img.id} href={img.image_url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', borderRadius: '8px', overflow: 'hidden', border: '1px solid #2a2a35', aspectRatio: '1/1', background: '#13131a', position: 'relative' }}>
+                                            <img src={img.image_url} alt="Evidencia PQR" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        </a>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        <div style={{ borderTop: '1px solid #2a2a35', paddingTop: '1.2rem', marginTop: '0.3rem' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                <FormField
+                                    label="Estado Operativo"
+                                    name="editStatus"
+                                    type="select"
+                                    value={editStatus}
+                                    onChange={(e) => setEditStatus(e.target.value)}
+                                    options={[
+                                        { value: 'Abierto', label: 'Abierto' },
+                                        { value: 'En Revisión', label: 'En Revisión' },
+                                        { value: 'Resuelto', label: 'Resuelto' },
+                                        { value: 'Cerrado', label: 'Cerrado' },
+                                    ]}
+                                />
+                                <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                                    <StatusBadge
+                                        status={editStatus}
+                                        variant={
+                                            editStatus === 'Resuelto' || editStatus === 'Cerrado' ? 'success' :
+                                            editStatus === 'En Revisión' ? 'warning' : 'info'
+                                        }
+                                    />
+                                </div>
+                            </div>
+
+                            <div style={{ marginTop: '1rem' }}>
+                                <FormField
+                                    label="Observaciones de Gestión / Resolución"
+                                    name="editObservation"
+                                    type="textarea"
+                                    value={editObservation}
+                                    onChange={(e) => setEditObservation(e.target.value)}
+                                    placeholder="Detalla aquí las acciones tomadas o la resolución final..."
+                                    rows={3}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </Modal>
         </div>
     );
 };

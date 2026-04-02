@@ -112,6 +112,11 @@ const Button: React.FC<ButtonProps> = ({
     } else if (variant === 'outline') {
       base.background = 'rgba(240, 180, 41, 0.08)';
       base.borderColor = 'rgba(240, 180, 41, 0.3)';
+    } else if (variant === 'info') {
+      base.background = '#3b82f6';
+      base.color = '#ffffff';
+      base.borderColor = '#3b82f6';
+      base.boxShadow = '0 0 12px rgba(59, 130, 246, 0.3)';
     }
   }
 
