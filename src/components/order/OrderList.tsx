@@ -28,7 +28,7 @@ const OrderList = ({ orders }) => {
     };
 
     const canGenerateGuide = (status) => {
-        const allowed = ['pagado', 'enviado', 'entregado', 'aprobado pce'];
+        const allowed = ['pagado', 'enviado', 'entregado', 'aprobado pce', 'entregado y pagado'];
         return allowed.includes(status?.toLowerCase());
     };
 
@@ -140,8 +140,8 @@ const OrderList = ({ orders }) => {
                                     <button
                                         className="action-btn guide-btn"
                                         onClick={() => handleOpenGuide(order.id)}
-                                        disabled={!canGenerateGuide(order.status) || order.delivery_method === 'PICKUP'}
-                                        title={order.delivery_method === 'PICKUP' ? 'No requiere guía (Recoge en punto)' : canGenerateGuide(order.status) ? 'Generar Guía de Transporte' : 'Disponible solo para pedidos Pagados, Enviados o Entregados'}
+                                        disabled={!canGenerateGuide(order.status) || order.delivery_method !== 'SHIPPING'}
+                                        title={order.delivery_method !== 'SHIPPING' ? 'No requiere guía (Recoge en punto / Sin envío)' : canGenerateGuide(order.status) ? 'Generar Guía de Transporte' : 'Disponible solo para pedidos Pagados, Enviados o Entregados'}
                                     >
                                         <FiTruck />
                                     </button>
