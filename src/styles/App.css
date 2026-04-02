@@ -1,100 +1,88 @@
-/* 1. Importar una fuente limpia y moderna */
+/* Dark Mode Premium Theme — Two Six CMS 2026 (V2) */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* 2. Definir la nueva paleta de colores (Tema Claro con Degradado) */
 :root {
-  /* Paleta de colores Premium Light (2025/2026 Trenz) */
-  --background-gradient: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 50%, #cbd5e1 100%);
-  /* Degradado gris azulado claro y profesional */
-  --surface-color: rgba(255, 255, 255, 0.6);
-  /* Superficie translucida clara para Glassmorphism */
-  --primary-color: #d4af37;
-  /* Dorado premium */
-  --primary-hover-color: #b8860b;
-  /* Dorado más oscuro para hover */
+  /* Core palette */
+  --background: #0a0a0f;
+  --background-secondary: #13131a;
+  --surface-color: #1a1a24;
+  --primary-color: #f0b429;
+  --primary-hover-color: #d99e1e;
 
-  /* Colores de texto */
-  --text-primary: #1e293b;
-  /* Texto principal oscuro para buen contraste */
-  --text-secondary: #475569;
-  /* Gris azulado medio para texto secundario */
-  --text-on-primary: #ffffff;
-  /* Texto claro sobre el acento dorado */
+  /* Text */
+  --text-primary: #f1f1f3;
+  --text-secondary: #a0a0b0;
+  --text-muted: #6b6b7b;
+  --text-on-primary: #0a0a0f;
 
-  /* Otros colores */
-  --menu-bg: #0f172a;
-  /* Navbar oscura para mantener la identidad visual del sidebar */
-  --menu-text: #94a3b8;
-  /* Gris claro para el sidebar */
-  --menu-text-active: var(--primary-color);
+  /* Sidebar */
+  --menu-bg: #08080d;
+  --menu-text: #a0a0b0;
+  --menu-text-active: #f0b429;
 
-  --border-color: rgba(255, 255, 255, 0.4);
-  /* Borde de vidrio tenue (blanco) */
-  --error-color: #ef4444;
-  --success-color: #22c55e;
+  /* Borders & shadows */
+  --border-color: #2a2a35;
+  --box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --box-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
 
-  /* Métricas de diseño */
+  /* Status */
+  --error-color: #f87171;
+  --success-color: #34d399;
+  --warning-color: #fbbf24;
+  --info-color: #60a5fa;
+
+  /* Accent */
+  --accent-purple: #8b5cf6;
+
+  /* Metrics */
   --border-radius: 8px;
-  --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --sidebar-width: 260px;
+  --header-height: 56px;
 }
 
-/* 3. Reset y estilos base */
-*,
-*::before,
-*::after {
+/* Reset */
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background-color: #f0f4f8;
-  /* Color de fallback que empata con el gradient claro */
+  background-color: var(--background);
 }
 
-body,
-#root {
+body, #root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  font-family: 'Inter', sans-serif;
-  background: var(--background-gradient);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--background);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
   color: var(--text-primary);
   font-weight: 600;
+  line-height: 1.3;
 }
 
-/* 4. Estilos para el layout principal */
+/* Layout */
 .app-content {
-  padding-left: 280px;
-  /* Espacio para el menú lateral */
-  padding-top: calc(70px + 0.5rem);
-  /* Reducido de 2rem a 0.5rem */
+  padding-left: var(--sidebar-width);
+  padding-top: var(--header-height);
   padding-bottom: 0;
-  transition: padding-left 0.3s ease-in-out;
+  transition: padding-left 0.25s ease;
   width: 100%;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
-/* Ajuste del contenido cuando el menú está cerrado */
 .app-content.menu-closed {
   padding-left: 0;
 }
@@ -102,102 +90,108 @@ h6 {
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 2rem 3.5rem;
-  /* Asegurar espacio amplio antes del footer */
+  padding: 1.5rem 2rem 3rem;
   width: 100%;
   flex-grow: 1;
 }
 
 @media screen and (max-width: 960px) {
-  .app-content {
+  .app-content,
+  .app-content.menu-closed {
     padding-left: 0;
   }
-
-  .app-content.menu-closed {
-    /* En móvil no hay menú colapsado, siempre se oculta */
-    padding-left: 0;
+  .container {
+    padding: 1rem;
+  }
+  .page-container {
+    gap: 1rem;
   }
 }
 
-/* 5. Estilos para componentes comunes (Tarjetas, Formularios, etc.) */
+@media screen and (max-width: 640px) {
+  .container {
+    padding: 0.75rem;
+  }
+  input, select, textarea {
+    max-width: 100%;
+  }
+}
+
+/* Page container */
 .page-container {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
   overflow: hidden;
 }
 
 .page-container h1 {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   border-bottom: 1px solid var(--border-color);
-  padding-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  margin: 0;
 }
 
+/* Grid */
 .grid-container {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 @media (min-width: 1024px) {
   .grid-container {
     grid-template-columns: 450px 1fr;
-    /* Formulario más ancho */
   }
 }
 
+/* Cards */
 .form-card,
 .list-card {
   background-color: var(--surface-color);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   padding: 1.5rem;
   border-radius: var(--border-radius);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  /* Sombra clara muy suave */
+  box-shadow: var(--box-shadow);
   border: 1px solid var(--border-color);
-  border-top: 1px solid rgba(255, 255, 255, 0.8);
-  /* Reflejo más fuerte para vidrio claro */
-  border-left: 1px solid rgba(255, 255, 255, 0.6);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
   min-width: 0;
   overflow: hidden;
 }
 
 .form-card:hover,
 .list-card:hover {
-  box-shadow: 0 8px 32px rgba(212, 175, 55, 0.1);
+  box-shadow: var(--box-shadow-lg);
+  border-color: #3a3a48;
 }
 
 .list-card h2 {
-  font-size: 1.25rem;
-  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  margin-bottom: 1.25rem;
 }
 
-/* Estilos de Formularios */
+/* Forms */
 form {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1rem;
 }
 
-form h2,
-form h3 {
+form h2, form h3 {
   text-align: left;
   border-bottom: 1px solid var(--border-color);
-  padding-bottom: 0.8rem;
-  margin-bottom: 0.5rem;
-  font-size: 1.35rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.25rem;
+  font-size: 1.15rem;
   color: var(--text-primary);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 form label {
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 500;
   color: var(--text-secondary);
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.25rem;
   display: block;
 }
 
@@ -205,128 +199,123 @@ input[type="text"],
 input[type="number"],
 input[type="email"],
 input[type="password"],
+input[type="date"],
+input[type="tel"],
 textarea,
 select {
   width: 100%;
-  padding: 0.85rem 1rem;
-  background-color: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
+  padding: 0.55rem 0.75rem;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
   color: var(--text-primary);
   font-family: inherit;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+  font-size: 0.875rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  height: 40px;
+}
+
+textarea {
+  height: auto;
+  min-height: 80px;
 }
 
 input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  background-color: rgba(255, 255, 255, 0.8);
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.01);
+  box-shadow: 0 0 0 2px rgba(240, 180, 41, 0.2), 0 0 12px rgba(240, 180, 41, 0.1);
 }
 
 input:disabled,
 select:disabled {
-  background-color: rgba(0, 0, 0, 0.03);
-  color: var(--text-secondary);
+  background-color: #12121a;
+  color: var(--text-muted);
   cursor: not-allowed;
-  border-color: rgba(0, 0, 0, 0.05);
+  border-color: var(--border-color);
 }
 
-/* 6. Sistema de Botones Premium Unified */
+select option {
+  background-color: var(--surface-color);
+  color: var(--text-primary);
+}
+
+/* Buttons */
 button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
-  padding: 0.7rem 1.4rem;
-  border-radius: 12px;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
   font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size: 0.8125rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.15s ease;
   border: 1px solid transparent;
   outline: none;
   white-space: nowrap;
-  position: relative;
-  overflow: hidden;
 }
 
-/* Botón Primario (Guardar, Confirmar, Crear) */
 button[type="submit"],
 .btn-primary {
-  background: linear-gradient(135deg, #d4af37 0%, #f5d76e 50%, #d4af37 100%);
-  background-size: 200% auto;
-  color: #0f172a;
-  border: 1px solid rgba(184, 134, 11, 0.3);
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  background-color: var(--primary-color);
+  color: var(--text-on-primary);
+  border-color: var(--primary-color);
 }
 
 button[type="submit"]:hover,
 .btn-primary:hover {
-  background-position: right center;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+  background-color: var(--primary-hover-color);
+  border-color: var(--primary-hover-color);
+  box-shadow: 0 0 16px rgba(240, 180, 41, 0.25);
 }
 
-/* Botón Secundario (Cancelar, Volver, Cerrar) */
 button[type="button"],
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background-color: transparent;
   color: var(--text-primary);
-  border: 1.5px solid rgba(212, 175, 55, 0.25);
+  border: 1px solid var(--border-color);
 }
 
 button[type="button"]:hover,
 .btn-secondary:hover {
-  background: rgba(212, 175, 55, 0.08);
-  border-color: var(--primary-color);
-  color: var(--primary-color);
-  transform: translateY(-1px);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: #3a3a48;
 }
 
-/* Botón Destructivo (Eliminar, Borrar) - Identificado por clase específica */
 .btn-destructive {
-  background: rgba(239, 68, 68, 0.05);
-  color: #ef4444;
-  border: 1.5px solid rgba(239, 68, 68, 0.2);
+  background-color: rgba(248, 113, 113, 0.1);
+  color: var(--error-color);
+  border: 1px solid rgba(248, 113, 113, 0.2);
 }
 
 .btn-destructive:hover {
-  background: #ef4444;
+  background-color: var(--error-color);
   color: #ffffff;
-  border-color: #ef4444;
-  box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+  border-color: var(--error-color);
+  box-shadow: 0 0 12px rgba(248, 113, 113, 0.3);
 }
 
-/* Botones de Acción de Tabla / Ghost (Editar, Ver) */
 .btn-ghost {
-  padding: 0.5rem;
+  padding: 0.4rem;
   background: transparent;
   color: var(--text-secondary);
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .btn-ghost:hover {
-  background: rgba(212, 175, 55, 0.1);
-  color: var(--primary-color);
-  transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
 }
 
 button:active {
-  transform: scale(0.96);
+  transform: scale(0.97);
 }
 
-/* 7. Tooltip System (CSS Native) */
+/* Tooltip System */
 [data-tooltip] {
   position: relative;
   cursor: pointer;
@@ -337,23 +326,21 @@ button:active {
   position: absolute;
   bottom: 125%;
   left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  padding: 0.5rem 0.8rem;
-  background: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  color: #ffffff;
+  transform: translateX(-50%) translateY(5px);
+  padding: 0.35rem 0.65rem;
+  background: var(--surface-color);
+  color: var(--text-primary);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: none;
-  border-radius: 8px;
+  border-radius: 6px;
   white-space: nowrap;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.15s ease;
   z-index: 1000;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(212, 175, 55, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-color);
   pointer-events: none;
 }
 
@@ -363,19 +350,18 @@ button:active {
   transform: translateX(-50%) translateY(0);
 }
 
-/* Arrow */
 [data-tooltip]::after {
   content: '';
   position: absolute;
   bottom: 110%;
   left: 50%;
   transform: translateX(-50%);
-  border-width: 6px;
+  border-width: 5px;
   border-style: solid;
-  border-color: rgba(212, 175, 55, 0.3) transparent transparent transparent;
+  border-color: var(--surface-color) transparent transparent transparent;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.15s ease;
   pointer-events: none;
 }
 
@@ -384,107 +370,164 @@ button:active {
   visibility: visible;
 }
 
-/* Estilos de Listas */
+/* Lists */
 .list-card ul {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.35rem;
 }
 
 .list-card li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 1rem;
+  padding: 0.6rem 0.75rem;
   background-color: transparent;
-  /* Permite ver el glassmorphism trasero */
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  transition: box-shadow 0.2s, border-color 0.2s, background-color 0.2s;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .list-card li:hover {
-  border-color: var(--primary-color);
-  background-color: rgba(212, 175, 55, 0.15);
-  /* Efecto hover dorado un poco más fuerte para fondo claro */
-  box-shadow: 0 0 0 1px var(--primary-color);
+  background-color: rgba(255, 255, 255, 0.03);
+  border-color: #3a3a48;
 }
 
-.list-card li>div:first-child {
+.list-card li > div:first-child {
   flex-grow: 1;
 }
 
-.list-card li>div:last-child {
+.list-card li > div:last-child {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.35rem;
 }
 
-/* Mensajes de Error */
+/* Error Messages */
 .error-message {
-  background-color: var(--error-color);
-  color: var(--text-on-primary);
-  padding: 1rem;
+  background-color: rgba(248, 113, 113, 0.08);
+  color: var(--error-color);
+  padding: 0.75rem 1rem;
   border-radius: var(--border-radius);
   text-align: center;
   font-weight: 500;
+  font-size: 0.875rem;
+  border: 1px solid rgba(248, 113, 113, 0.15);
 }
 
-/* Estilos para el Footer */
+/* Footer */
 .footer {
-  background-color: var(--menu-bg);
-  color: #ffffff;
-  /* Cambiado a blanco */
-  padding: 1.5rem 2rem;
+  background-color: var(--background-secondary);
+  color: var(--text-muted);
+  padding: 1rem 2rem;
   text-align: center;
-  border-top: 1px solid #374151;
+  border-top: 1px solid var(--border-color);
 }
 
-/* Estilos de Paginación */
+/* Pagination */
 .pagination {
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
-  margin-top: 2rem;
+  gap: 0.35rem;
+  margin-top: 1.5rem;
   list-style-type: none;
   padding: 0;
 }
 
 .pagination a {
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 0.85rem;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   color: var(--text-primary);
   text-decoration: none;
   cursor: pointer;
   background-color: var(--surface-color);
-  transition: all 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  /* Sombra tenue */
+  transition: all 0.15s ease;
+  font-size: 0.8125rem;
+  font-weight: 500;
 }
 
 .pagination a:hover {
-  background-color: var(--primary-color);
-  color: var(--text-on-primary);
-  border-color: var(--primary-color);
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: #3a3a48;
 }
 
 .pagination .active a {
   background-color: var(--primary-color);
   color: var(--text-on-primary);
   border-color: var(--primary-color);
+  box-shadow: 0 0 10px rgba(240, 180, 41, 0.2);
 }
 
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #adb5bd;
-  border-radius: 4px;
+  background: rgba(240, 180, 41, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(240, 180, 41, 0.5);
 }
 
 ::-webkit-scrollbar-track {
-  background: #f0f4f8;
-  /* Fondo claro para el scrollbar */
+  background: #13131a;
+}
+
+/* Smooth transitions */
+* {
+  scrollbar-color: rgba(240, 180, 41, 0.3) #13131a;
+  scrollbar-width: thin;
+}
+
+/* SweetAlert2 Dark Theme Override */
+.swal2-popup {
+  background: #1a1a24 !important;
+  color: #f1f1f3 !important;
+  border: 1px solid #2a2a35 !important;
+  border-radius: 16px !important;
+}
+.swal2-title {
+  color: #f1f1f3 !important;
+}
+.swal2-html-container {
+  color: #a0a0b0 !important;
+}
+.swal2-icon {
+  border-color: #2a2a35 !important;
+}
+.swal2-icon.swal2-question {
+  border-color: #3b82f6 !important;
+  color: #60a5fa !important;
+}
+.swal2-icon.swal2-warning {
+  border-color: #f59e0b !important;
+  color: #fbbf24 !important;
+}
+.swal2-icon.swal2-success {
+  border-color: #10b981 !important;
+}
+.swal2-icon.swal2-success .swal2-success-line-long,
+.swal2-icon.swal2-success .swal2-success-line-tip {
+  background-color: #34d399 !important;
+}
+.swal2-icon.swal2-success .swal2-success-ring {
+  border-color: rgba(52, 211, 153, 0.3) !important;
+}
+.swal2-icon.swal2-error {
+  border-color: #ef4444 !important;
+}
+.swal2-icon.swal2-error .swal2-x-mark-line-left,
+.swal2-icon.swal2-error .swal2-x-mark-line-right {
+  background-color: #f87171 !important;
+}
+.swal2-actions .swal2-cancel {
+  background-color: #2a2a35 !important;
+  color: #a0a0b0 !important;
+}
+div.swal2-popup .swal2-styled:focus {
+  box-shadow: none !important;
 }

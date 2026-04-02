@@ -4,6 +4,8 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import PageHeader from '../components/common/PageHeader';
 import { FaBoxOpen } from 'react-icons/fa';
+import { Button, StatusBadge, LoadingSpinner } from '../components/ui';
+import { FiRefreshCcw, FiGift } from 'react-icons/fi';
 import '../styles/PickupDashboardPage.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -12,6 +14,7 @@ const PickupDashboardPage = () => {
     const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [visibleCount, setVisibleCount] = useState(5);
 
     const fetchOrders = async (isBackground = false) => {
         try {
@@ -31,19 +34,14 @@ const PickupDashboardPage = () => {
                        d.getFullYear() === today.getFullYear();
             };
 
-            // Filter orders to hide cancelled ones and old collected ones.
             const activeOrders = response.data.filter(order => {
                 if (order.status === 'Cancelado') return false;
-                
-                // If it's collected, only show it if it was processed TODAY.
                 if (order.pickup_status === 'COLLECTED') {
                     return isToday(order.updatedAt || order.order_date);
                 }
-                
                 return true;
             });
-            
-            // Sort: Group by status and sort inside group by date asc
+
             const statusOrder = {
                 'PENDING': 1,
                 'PREPARING': 2,
@@ -55,20 +53,16 @@ const PickupDashboardPage = () => {
             const sortedOrders = activeOrders.sort((a, b) => {
                 const statusA = statusOrder[a.pickup_status || 'PENDING'] || 1;
                 const statusB = statusOrder[b.pickup_status || 'PENDING'] || 1;
-                
-                // Group by status (PENDING -> READY -> COLLECTED)
+
                 if (statusA !== statusB) {
                     return statusA - statusB;
                 }
 
-                // Inside the same group, sort chronologically (oldest to newest)
                 if (a.pickup_status === 'COLLECTED') {
-                    // For collected, order by collection time (updatedAt)
                     const dateA = a.updatedAt ? new Date(a.updatedAt).getTime() : new Date(a.order_date).getTime();
                     const dateB = b.updatedAt ? new Date(b.updatedAt).getTime() : new Date(b.order_date).getTime();
                     return dateA - dateB;
                 } else {
-                    // For pending/ready, order by creation time (order_date)
                     const dateA = new Date(a.order_date).getTime();
                     const dateB = new Date(b.order_date).getTime();
                     return dateA - dateB;
@@ -86,7 +80,6 @@ const PickupDashboardPage = () => {
 
     useEffect(() => {
         fetchOrders();
-        // Polling para refrescar automáticamente cada 15 segundos sin bloquear la pantalla
         const interval = setInterval(() => fetchOrders(true), 15000);
         return () => clearInterval(interval);
     }, []);
@@ -148,7 +141,7 @@ const PickupDashboardPage = () => {
                 text: "Se enviará un correo al cliente notificando que puede recoger el pedido.",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#10b981', // green
+                confirmButtonColor: '#10b981',
                 cancelButtonColor: '#6b7280',
                 confirmButtonText: 'Sí, está listo'
             });
@@ -175,7 +168,7 @@ const PickupDashboardPage = () => {
                 text: "Marca este pedido como entregado (Collected).",
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: '#3b82f6', // blue
+                confirmButtonColor: '#3b82f6',
                 cancelButtonColor: '#6b7280',
                 confirmButtonText: 'Sí, entregado'
             });
@@ -223,14 +216,28 @@ const PickupDashboardPage = () => {
         }
     };
 
+    const getStatusVariant = (pickupStatus) => {
+        switch (pickupStatus) {
+            case 'PENDING': return 'warning';
+            case 'READY': return 'info';
+            case 'COLLECTED': return 'success';
+            default: return 'warning';
+        }
+    };
+
     return (
         <div className="page-container pickup-dashboard">
-            <PageHeader title="Tablero de Retiros en Tienda" icon={<FaBoxOpen />} />
+            <PageHeader title="Tablero de Retiros en Tienda" icon={<FiGift />} />
 
             <div className="pickup-filters">
-                <button className="base-button-refresh" onClick={() => fetchOrders(false)} disabled={loading}>
+                <Button
+                    variant="primary"
+                    icon={<FiRefreshCcw />}
+                    onClick={() => fetchOrders(false)}
+                    loading={loading}
+                >
                     {loading ? 'Actualizando...' : 'Actualizar Listado'}
-                </button>
+                </Button>
                 <div className="pickup-legend">
                     <span className="legend-item pending">Pendiente</span>
                     <span className="legend-item ready">Listo</span>
@@ -238,50 +245,57 @@ const PickupDashboardPage = () => {
                 </div>
             </div>
 
+            {loading && orders.length === 0 && (
+                <LoadingSpinner text="Cargando pedidos para retirar..." />
+            )}
+
             <div className="pickup-board">
                 {orders.length === 0 && !loading && (
                     <div className="no-orders-message">
                         No hay pedidos para retirar en este momento.
                     </div>
                 )}
-                
-                {orders.map(order => (
+
+                {orders.slice(0, visibleCount).map(order => (
                     <div key={order.id} className={`pickup-card ${getStatusStyle(order.pickup_status)}`}>
                         <div className="pickup-card-header">
                             <h2>Referencia: {order.order_reference}</h2>
-                            <span className="pickup-badge">{getStatusText(order.pickup_status)}</span>
+                            <StatusBadge
+                                status={getStatusText(order.pickup_status)}
+                                variant={getStatusVariant(order.pickup_status)}
+                            />
                         </div>
-                        
+
                         <div className="pickup-card-body">
                             <div className="pickup-info-column">
                                 <p><strong>Cliente:</strong> {order.customer?.name}</p>
                                 <p><strong>Teléfono:</strong> {order.customer?.current_phone_number}</p>
                                 <p><strong>Fecha pedido:</strong> {new Date(order.order_date).toLocaleString()}</p>
                                 {order.pickup_pin && (
-                                    <div style={{ marginTop: '15px', display: 'inline-block', background: '#fef3c7', padding: '8px 15px', borderRadius: '6px', border: '2px dashed #f59e0b', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-                                        <p style={{ margin: '0 0 2px 0', fontSize: '11px', color: '#b45309', fontWeight: 'bold', textTransform: 'uppercase' }}>PIN de Seguridad</p>
-                                        <p style={{ margin: 0, fontSize: '22px', fontWeight: '900', letterSpacing: '3px', color: '#000' }}>{order.pickup_pin}</p>
+                                    <div style={{ marginTop: '15px', display: 'inline-block', background: 'rgba(240, 180, 41, 0.1)', padding: '8px 15px', borderRadius: '6px', border: '2px dashed #f0b429', boxShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
+                                        <p style={{ margin: '0 0 2px 0', fontSize: '11px', color: '#f0b429', fontWeight: 'bold', textTransform: 'uppercase' }}>PIN de Seguridad</p>
+                                        <p style={{ margin: 0, fontSize: '22px', fontWeight: '900', letterSpacing: '3px', color: '#f1f1f3' }}>{order.pickup_pin}</p>
                                     </div>
                                 )}
                             </div>
-                            
+
                             <div className="pickup-products-column">
-                                <strong style={{color: '#4b5563', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px'}}>Lista de Empaque:</strong>
+                                <strong style={{color: '#a0a0b0', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px'}}>Lista de Empaque:</strong>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '12px' }}>
                                     {order.orderItems?.map(item => {
-                                        const imageUrl = item.product?.image_url || 
-                                                         item.product?.clothingSize?.clothingColor?.imageClothing?.[0]?.image_url || 
-                                                         item.product?.clothingSize?.clothingColor?.image_url || 
+                                        const imageUrl = item.product?.image_url ||
+                                                         item.product?.clothingSize?.clothingColor?.imageClothing?.[0]?.image_url ||
+                                                         item.product?.clothingSize?.clothingColor?.image_url ||
                                                          'https://via.placeholder.com/60?text=No+Img';
-                                        
+
                                         return (
-                                            <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '12px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                                                <img src={imageUrl} alt={item.product_name} style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '6px', backgroundColor: '#e2e8f0' }} />
+                                            <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '12px', background: '#13131a', borderRadius: '8px', border: '1px solid #2a2a35' }}>
+                                                <img src={imageUrl} alt={item.product_name} style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '6px', backgroundColor: '#2a2a35' }} />
                                                 <div style={{ flex: 1 }}>
-                                                    <p style={{ margin: '0 0 6px 0', fontWeight: 'bold', fontSize: '15px', color: '#1e293b' }}>{item.product_name}</p>
-                                                    <p style={{ margin: 0, fontSize: '13px', color: '#64748b' }}>
-                                                        <span style={{ display: 'inline-block', padding: '2px 8px', background: '#f1f5f9', borderRadius: '4px', marginRight: '8px' }}>Color: <strong style={{display: 'inline', color: '#0f172a'}}>{item.color}</strong></span>
-                                                        <span style={{ display: 'inline-block', padding: '2px 8px', background: '#f1f5f9', borderRadius: '4px' }}>Talla: <strong style={{display: 'inline', color: '#0f172a'}}>{item.size}</strong></span>
+                                                    <p style={{ margin: '0 0 6px 0', fontWeight: 'bold', fontSize: '15px', color: '#f1f1f3' }}>{item.product_name}</p>
+                                                    <p style={{ margin: 0, fontSize: '13px', color: '#a0a0b0' }}>
+                                                        <span style={{ display: 'inline-block', padding: '2px 8px', background: '#1f1f2a', borderRadius: '4px', marginRight: '8px' }}>Color: <strong style={{display: 'inline', color: '#f1f1f3'}}>{item.color}</strong></span>
+                                                        <span style={{ display: 'inline-block', padding: '2px 8px', background: '#1f1f2a', borderRadius: '4px' }}>Talla: <strong style={{display: 'inline', color: '#f1f1f3'}}>{item.size}</strong></span>
                                                     </p>
                                                 </div>
                                                 <div style={{ background: '#3b82f6', color: 'white', fontWeight: 'bold', fontSize: '16px', padding: '8px 16px', borderRadius: '6px', textAlign: 'center', minWidth: '40px' }}>
@@ -295,54 +309,66 @@ const PickupDashboardPage = () => {
                         </div>
 
                         <div className="pickup-card-actions">
-                            <button 
-                                className="action-btn"
-                                style={{ background: '#f8fafc', color: '#475569', boxShadow: 'none', border: '1px solid #cbd5e1', marginRight: 'auto' }}
+                            <Button
+                                variant="outline"
+                                size="sm"
                                 onClick={() => navigate(`/order/${order.id}`)}
-                                title="Ver detalles y gestión de la DIAN"
                             >
-                                📄 Ver Detalle / DIAN
-                            </button>
-                            
+                                Ver Detalle / DIAN
+                            </Button>
+
                             {(!order.pickup_status || order.pickup_status === 'PENDING') && (
-                                <button 
-                                    className="action-btn btn-ready"
-                                    style={{ background: '#f59e0b', color: 'white' }}
+                                <Button
+                                    variant="primary"
+                                    size="sm"
                                     onClick={() => handleMarkPreparing(order.id)}
                                 >
                                     Alistar
-                                </button>
+                                </Button>
                             )}
 
                             {(order.pickup_status === 'PREPARING' || order.pickup_status === 'PENDING') && (
-                                <button 
-                                    className="action-btn btn-ready"
+                                <Button
+                                    variant="primary"
+                                    size="sm"
                                     onClick={() => handleMarkReady(order.id)}
                                 >
-                                    ✔ Notificar Listo
-                                </button>
+                                    Notificar Listo
+                                </Button>
                             )}
-                            
+
                             {(order.pickup_status === 'READY') && (
                                 <>
-                                    <button 
-                                        className="action-btn btn-collect"
+                                    <Button
+                                        variant="info"
+                                        size="md"
                                         onClick={() => handleMarkCollected(order.id)}
                                     >
-                                        📦 Entregado
-                                    </button>
-                                    <button 
-                                        className="action-btn"
-                                        style={{ background: '#ef4444', color: 'white' }}
+                                        Entregar a Cliente
+                                    </Button>
+                                    <Button
+                                        variant="destructive"
+                                        size="sm"
                                         onClick={() => handleMarkUnclaimed(order.id)}
                                     >
                                         No Reclamado
-                                    </button>
+                                    </Button>
                                 </>
                             )}
                         </div>
                     </div>
                 ))}
+
+                {visibleCount < orders.length && (
+                    <div style={{ textAlign: 'center', padding: '1.5rem 0' }}>
+                        <Button
+                            variant="outline"
+                            onClick={() => setVisibleCount(prev => prev + 5)}
+                        >
+                            Ver más ({orders.length - visibleCount} restantes)
+                        </Button>
+                    </div>
+                )}
             </div>
         </div>
     );

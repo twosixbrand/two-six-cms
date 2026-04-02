@@ -1,8 +1,8 @@
 .stock-list-container {
     overflow-x: auto;
-    background-color: white;
+    background-color: #1a1a24;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #2a2a35;
 }
 
 .stock-table {
@@ -15,32 +15,41 @@
 .stock-table td {
     padding: 12px 15px;
     text-align: left;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #1f1f2a;
 }
 
 .stock-table th {
-    background-color: #f9fafb;
-    font-weight: 600;
-    color: #374151;
+    background-color: #1f1f2a;
+    font-weight: 500;
+    color: #6b6b7b;
     text-transform: uppercase;
-    font-size: 0.85rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
 }
 
 .stock-table tbody tr:hover {
-    background-color: #f8f9fa;
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.reference-header-row {
+    background-color: #13131a !important;
+}
+
+.reference-header-row td {
+    color: #f1f1f3;
 }
 
 .design-cell .sub-text {
     font-size: 0.85em;
-    color: #666;
+    color: #a0a0b0;
 }
 
 .variant-badge {
-    background-color: #e2e8f0;
+    background-color: rgba(240, 180, 41, 0.1);
     padding: 4px 8px;
     border-radius: 12px;
     font-size: 0.9em;
-    color: #4a5568;
+    color: #f0b429;
 }
 
 .action-buttons {
@@ -49,8 +58,8 @@
 }
 
 .btn-edit {
-    background-color: #ffc107;
-    color: #000;
+    background-color: #f0b429;
+    color: #0a0a0f;
     border: none;
     padding: 6px 12px;
     border-radius: 4px;
@@ -59,12 +68,12 @@
 }
 
 .btn-edit:hover {
-    background-color: #e0a800;
+    background-color: #d99e1e;
 }
 
 .btn-delete {
-    background-color: #dc3545;
-    color: white;
+    background-color: rgba(248, 113, 113, 0.15);
+    color: #f87171;
     border: none;
     padding: 6px 12px;
     border-radius: 4px;
@@ -73,5 +82,6 @@
 }
 
 .btn-delete:hover {
-    background-color: #c82333;
+    background-color: #f87171;
+    color: #ffffff;
 }

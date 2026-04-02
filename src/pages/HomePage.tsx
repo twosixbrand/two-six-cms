@@ -1,96 +1,138 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { FiHome, FiLayers, FiBarChart2, FiSettings, FiUsers, FiMap, FiTerminal, FiDollarSign } from 'react-icons/fi';
-import PageHeader from '../components/common/PageHeader';
+import { AuthContext } from '../context/AuthContext';
 import {
-  FaTshirt, FaPaintBrush, FaPalette, FaImage, FaBoxOpen, FaWarehouse,
-  FaShoppingCart, FaChartLine, FaFileInvoiceDollar,
-  FaCalendarAlt, FaCloud, FaArchive, FaIndustry, FaTags, FaFolder, FaEyeDropper,
-  FaTruck, FaUsers as FaUsersIcon, FaShieldAlt, FaUserTag, FaEnvelope,
-  FaMapSigns, FaAddressBook,
-  FaExclamationTriangle, FaRulerCombined, FaMapMarkerAlt
-} from 'react-icons/fa';
+  FiHome, FiLayers, FiBarChart2, FiSettings, FiUsers, FiMap, FiTerminal, FiDollarSign,
+  FiServer, FiPenTool, FiDroplet, FiImage, FiPackage, FiBox,
+  FiShoppingCart, FiTrendingUp, FiSend, FiGift,
+  FiMessageSquare,
+  FiCalendar, FiCloud, FiArchive, FiTool, FiTag, FiFolder, FiAperture, FiGrid, FiMapPin,
+  FiTruck, FiUserCheck, FiUser, FiShield, FiLink, FiMail, FiLock,
+  FiBookOpen, FiClipboard, FiCreditCard, FiBriefcase, FiColumns, FiCheckSquare,
+  FiActivity, FiList, FiAlignLeft, FiRepeat, FiWatch, FiPercent, FiScissors,
+  FiAward, FiTarget, FiPieChart, FiDatabase, FiEye, FiBook,
+  FiCompass, FiCode, FiAlertTriangle, FiHeart
+} from 'react-icons/fi';
+import PageHeader from '../components/common/PageHeader';
 import '../styles/HomePage.css';
 import AccountingDashboardWidget from './accounting/AccountingDashboardWidget';
 
 const homeSections = [
   {
-    title: 'Admin Prendas',
-    icon: <FiLayers />,
+    title: 'Admin Prendas', icon: <FiLayers />, permission: 'inventory',
     items: [
-      { path: '/clothing', icon: <FaTshirt />, title: 'Clothing', desc: 'Gestión de inventario de prendas, tallas y stock.' },
-      { path: '/master-design', icon: <FaPaintBrush />, title: 'Design', desc: 'Creación y gestión de diseños maestros.' },
-      { path: '/clothing-color', icon: <FaPalette />, title: 'Clothing Color', desc: 'Gestión de variaciones específicas (color/talla).' },
-      { path: '/image-clothing', icon: <FaImage />, title: 'Image Clothing', desc: 'Gestión de imágenes para variantes de prendas.' },
-      { path: '/product', icon: <FaBoxOpen />, title: 'Product', desc: 'Gestión de productos finales para la venta.' },
-      { path: '/stock', icon: <FaWarehouse />, title: 'Stock', desc: 'Gestión de niveles de inventario.' },
+      { path: '/clothing', icon: <FiServer />, title: 'Clothing', desc: 'Gestion de inventario de prendas, tallas y stock.', permission: 'inventory.clothing.view' },
+      { path: '/master-design', icon: <FiPenTool />, title: 'Design', desc: 'Creacion y gestion de diseños maestros.', permission: 'inventory.clothing.view' },
+      { path: '/clothing-color', icon: <FiDroplet />, title: 'Clothing Color', desc: 'Gestion de variaciones especificas (color/talla).', permission: 'inventory.clothing.view' },
+      { path: '/image-clothing', icon: <FiImage />, title: 'Image Clothing', desc: 'Gestion de imagenes para variantes de prendas.', permission: 'inventory.images.manage' },
+      { path: '/product', icon: <FiPackage />, title: 'Product', desc: 'Gestion de productos finales para la venta.', permission: 'inventory.products.view' },
+      { path: '/stock', icon: <FiBox />, title: 'Stock', desc: 'Gestion de niveles de inventario.', permission: 'inventory.stock.view' },
     ]
   },
   {
-    title: 'Reports',
-    icon: <FiBarChart2 />,
+    title: 'Reports', icon: <FiBarChart2 />, permission: 'sales',
     items: [
-      { path: '/order', icon: <FaShoppingCart />, title: 'Pedidos', desc: 'Visualización y seguimiento de pedidos cliente.' },
-      { path: '/reports/sales/general', icon: <FaChartLine />, title: 'General Sales', desc: 'Reporte general de ventas del sistema.' },
-      { path: '/dian-invoices', icon: <FaFileInvoiceDollar />, title: 'Facturación DIAN', desc: 'Gestión y emisión de facturas electrónicas.' },
-      { path: '/reports/pickup-dashboard', icon: <FaBoxOpen />, title: 'Retiros en Tienda', desc: 'Tablero para gestión de pedidos a entregar en punto físico.' },
+      { path: '/order', icon: <FiShoppingCart />, title: 'Pedidos', desc: 'Visualizacion y seguimiento de pedidos cliente.', permission: 'sales.orders.view' },
+      { path: '/reports/sales/general', icon: <FiTrendingUp />, title: 'General Sales', desc: 'Reporte general de ventas del sistema.', permission: 'sales.reports.view' },
+      { path: '/dian-invoices', icon: <FiSend />, title: 'Facturacion DIAN', desc: 'Gestion y emision de facturas electronicas.', permission: 'sales.dian.view' },
+      { path: '/reports/pickup-dashboard', icon: <FiGift />, title: 'Retiros en Tienda', desc: 'Tablero para gestion de pedidos a entregar en punto fisico.', permission: 'sales.orders.view' },
     ]
   },
   {
-    title: 'Atención Cliente',
-    icon: <FiUsers />,
+    title: 'Atencion Cliente', icon: <FiHeart />, permission: 'sales',
     items: [
-      { path: '/pqr', icon: <FaEnvelope />, title: 'Gestión PQR', desc: 'Administración de Peticiones, Quejas y Reclamos.' },
+      { path: '/pqr', icon: <FiMessageSquare />, title: 'Gestion PQR', desc: 'Administracion de Peticiones, Quejas y Reclamos.', permission: 'sales.customers.view' },
     ]
   },
   {
-    title: 'Admin Maestros',
-    icon: <FiSettings />,
+    title: 'Admin Maestros', icon: <FiSettings />, permission: 'catalog',
     items: [
-      { path: '/year-production', icon: <FaCalendarAlt />, title: 'Year Production', desc: 'Definición de años productivos.' },
-      { path: '/season', icon: <FaCloud />, title: 'Season', desc: 'Gestión de temporadas.' },
-      { path: '/collection', icon: <FaArchive />, title: 'Collection', desc: 'Gestión de colecciones de diseño.' },
-      { path: '/production-type', icon: <FaIndustry />, title: 'Production type', desc: 'Tipos de producción disponibles.' },
-      { path: '/type-clothing', icon: <FaTags />, title: 'Type Clothing', desc: 'Tipologías de prendas registradas.' },
-      { path: '/category', icon: <FaFolder />, title: 'Category', desc: 'Categorías principales del sistema.' },
-      { path: '/color', icon: <FaEyeDropper />, title: 'Color', desc: 'Gestión de colores disponibles en producción.' },
-      { path: '/size-guide', icon: <FaRulerCombined />, title: 'Guía de Tallas', desc: 'Gestión de guías de tallas para el sitio web.' },
-      { path: '/locations', icon: <FaMapMarkerAlt />, title: 'Ubicaciones', desc: 'Departamentos, ciudades y costos de envío.' },
+      { path: '/year-production', icon: <FiCalendar />, title: 'Year Production', desc: 'Definicion de anos productivos.', permission: 'catalog.seasons.view' },
+      { path: '/season', icon: <FiCloud />, title: 'Season', desc: 'Gestion de temporadas.', permission: 'catalog.seasons.view' },
+      { path: '/collection', icon: <FiArchive />, title: 'Collection', desc: 'Gestion de colecciones de diseño.', permission: 'catalog.collections.view' },
+      { path: '/production-type', icon: <FiTool />, title: 'Production type', desc: 'Tipos de produccion disponibles.', permission: 'catalog.categories.view' },
+      { path: '/type-clothing', icon: <FiTag />, title: 'Type Clothing', desc: 'Tipologias de prendas registradas.', permission: 'catalog.categories.view' },
+      { path: '/category', icon: <FiFolder />, title: 'Category', desc: 'Categorias principales del sistema.', permission: 'catalog.categories.view' },
+      { path: '/color', icon: <FiAperture />, title: 'Color', desc: 'Gestion de colores disponibles en produccion.', permission: 'catalog.colors.view' },
+      { path: '/size-guide', icon: <FiGrid />, title: 'Guia de Tallas', desc: 'Gestion de guias de tallas para el sitio web.', permission: 'catalog.sizes.view' },
+      { path: '/locations', icon: <FiMapPin />, title: 'Ubicaciones', desc: 'Departamentos, ciudades y costos de envio.', permission: 'catalog.categories.view' },
     ]
   },
   {
-    title: 'Users / providers',
-    icon: <FiUsers />,
+    title: 'Users / providers', icon: <FiUsers />, permission: 'admin',
     items: [
-      { path: '/provider', icon: <FaTruck />, title: 'Provider', desc: 'Gestión de proveedores externos.' },
-      { path: '/customer', icon: <FaAddressBook />, title: 'Clientes', desc: 'Consulta y edición de información de clientes.' },
-      { path: '/user', icon: <FaUsersIcon />, title: 'User', desc: 'Administración de usuarios del sistema.' },
-      { path: '/role', icon: <FaShieldAlt />, title: 'Role', desc: 'Gestión de roles de seguridad.' },
-      { path: '/user-role', icon: <FaUserTag />, title: 'User Roles', desc: 'Asignación de roles a los usuarios.' },
-      { path: '/subscriber', icon: <FaEnvelope />, title: 'Suscriber', desc: 'Gestión de suscriptores del newsletter.' },
+      { path: '/provider', icon: <FiTruck />, title: 'Provider', desc: 'Gestion de proveedores externos.', permission: 'catalog.providers.view' },
+      { path: '/customer', icon: <FiUserCheck />, title: 'Clientes', desc: 'Consulta y edicion de informacion de clientes.', permission: 'sales.customers.view' },
+      { path: '/user', icon: <FiUser />, title: 'User', desc: 'Administracion de usuarios del sistema.', permission: 'admin.users.view' },
+      { path: '/role', icon: <FiShield />, title: 'Role', desc: 'Gestion de roles de seguridad.', permission: 'admin.roles.view' },
+      { path: '/user-role', icon: <FiLink />, title: 'User Roles', desc: 'Asignacion de roles a los usuarios.', permission: 'admin.roles.view' },
+      { path: '/subscriber', icon: <FiMail />, title: 'Suscriber', desc: 'Gestion de suscriptores del newsletter.', permission: 'sales.customers.view' },
+      { path: '/permissions', icon: <FiLock />, title: 'Gestion de Permisos', desc: 'Asignar permisos por rol a cada pagina.', permission: 'admin.permissions.manage' },
     ]
   },
   {
-    title: 'Plan Estrategico',
-    icon: <FiMap />,
+    title: 'Contabilidad', icon: <FiDollarSign />, permission: 'accounting',
     items: [
-      { path: '/plan-estrategico', icon: <FaMapSigns />, title: 'Ver plan', desc: 'Visualización del plan estratégico anual.' },
-      { path: '/dian-documentation', icon: <FaFileInvoiceDollar />, title: 'Documentación DIAN', desc: 'Arquitectura y flujos de Facturación Electrónica DIAN.' },
+      { path: '/accounting/puc', icon: <FiBookOpen />, title: 'PUC', desc: 'Plan Unico de Cuentas colombiano.', permission: 'accounting.puc.view' },
+      { path: '/accounting/journal', icon: <FiClipboard />, title: 'Asientos Contables', desc: 'Registro de asientos por partida doble.', permission: 'accounting.journal.view' },
+      { path: '/accounting/expenses', icon: <FiCreditCard />, title: 'Gastos / Compras', desc: 'Registro de facturas, servicios y gastos.', permission: 'accounting.expenses.view' },
+      { path: '/accounting/payroll', icon: <FiBriefcase />, title: 'Nomina', desc: 'Calculo de nomina con aportes colombianos.', permission: 'accounting.payroll.view' },
+      { path: '/accounting/bank-reconciliation', icon: <FiColumns />, title: 'Conciliacion Bancaria', desc: 'Carga de extractos y cruce automatico.', permission: 'accounting.bank.view' },
+      { path: '/accounting/closing', icon: <FiCheckSquare />, title: 'Cierre Contable', desc: 'Cierre mensual y anual de periodos.', permission: 'accounting.closing.manage' },
+      { path: '/accounting/balance-sheet', icon: <FiBarChart2 />, title: 'Balance General', desc: 'Activos, Pasivos y Patrimonio.', permission: 'accounting.reports.view' },
+      { path: '/accounting/income-statement', icon: <FiActivity />, title: 'Estado de Resultados', desc: 'Ingresos, gastos y utilidad del periodo.', permission: 'accounting.reports.view' },
+      { path: '/accounting/general-ledger', icon: <FiList />, title: 'Libro Mayor', desc: 'Movimientos por cuenta con saldo corrido.', permission: 'accounting.reports.view' },
+      { path: '/accounting/subsidiary-ledger', icon: <FiAlignLeft />, title: 'Libro Auxiliar', desc: 'Detalle por sub-cuentas.', permission: 'accounting.reports.view' },
+      { path: '/accounting/reports/cash-flow', icon: <FiRepeat />, title: 'Flujo de Caja', desc: 'Estado de flujo de efectivo.', permission: 'accounting.reports.view' },
+      { path: '/accounting/reports/aging', icon: <FiWatch />, title: 'Cartera por Edades', desc: 'Pedidos COD pendientes por antiguedad.', permission: 'accounting.reports.view' },
+      { path: '/accounting/tax/iva', icon: <FiPercent />, title: 'Declaracion IVA', desc: 'IVA generado vs descontable (Form. 300).', permission: 'accounting.tax.view' },
+      { path: '/accounting/tax/retefuente', icon: <FiScissors />, title: 'Retencion en la Fuente', desc: 'Conceptos de retencion (Form. 350).', permission: 'accounting.tax.view' },
+      { path: '/accounting/withholding-certificates', icon: <FiAward />, title: 'Certificados Retencion', desc: 'Generacion de certificados por proveedor.', permission: 'accounting.withholding.view' },
+      { path: '/accounting/budget', icon: <FiTarget />, title: 'Presupuesto', desc: 'Presupuesto vs ejecucion por cuenta.', permission: 'accounting.budget.view' },
+      { path: '/accounting/assets', icon: <FiHome />, title: 'Activos Fijos', desc: 'Registro y depreciacion de activos.', permission: 'accounting.assets.view' },
+      { path: '/accounting/reports/indicators', icon: <FiPieChart />, title: 'Indicadores Financieros', desc: 'Razon corriente, ROE, ROA y mas.', permission: 'accounting.indicators.view' },
+      { path: '/accounting/exogena', icon: <FiDatabase />, title: 'Informacion Exogena', desc: 'Medios magneticos DIAN (formatos 1001-1007).', permission: 'accounting.exogena.view' },
+      { path: '/accounting/audit-log', icon: <FiEye />, title: 'Auditoria', desc: 'Registro de acciones contables.', permission: 'accounting.audit.view' },
+      { path: '/manual-contabilidad', icon: <FiBook />, title: 'Manual Contable', desc: 'Manual completo del modulo contable.', permission: 'accounting.reports.view' },
     ]
   },
   {
-    title: 'Logs App',
-    icon: <FiTerminal />,
+    title: 'Plan Estrategico', icon: <FiMap />, permission: 'sales',
     items: [
-      { path: '/logs', icon: <FaExclamationTriangle />, title: 'Logs', desc: 'Registro de errores y debug del panel.' },
+      { path: '/plan-estrategico', icon: <FiCompass />, title: 'Ver plan', desc: 'Visualizacion del plan estrategico anual.', permission: 'sales.orders.view' },
+      { path: '/dian-documentation', icon: <FiCode />, title: 'Documentacion DIAN', desc: 'Arquitectura y flujos de Facturacion Electronica DIAN.', permission: 'sales.dian.view' },
+    ]
+  },
+  {
+    title: 'Logs App', icon: <FiTerminal />, permission: 'admin',
+    items: [
+      { path: '/logs', icon: <FiAlertTriangle />, title: 'Logs', desc: 'Registro de errores y debug del panel.', permission: 'admin.logs.view' },
     ]
   }
 ];
 
 const HomePage = () => {
+  const { hasPermission, hasGroupPermission, userPermissions } = useContext(AuthContext);
+
+  const filteredSections = homeSections
+    .filter(section => {
+      if (!userPermissions || userPermissions.length === 0) return true;
+      if (!section.permission) return true;
+      return hasGroupPermission(section.permission);
+    })
+    .map(section => ({
+      ...section,
+      items: section.items.filter(item => {
+        if (!userPermissions || userPermissions.length === 0) return true;
+        if (!item.permission) return true;
+        return hasPermission(item.permission);
+      })
+    }))
+    .filter(section => section.items.length > 0);
+
   return (
     <div className="home-container page-container">
-      <PageHeader title="Páginas Principales" icon={<FiHome />} />
+      <PageHeader title="Dashboard" icon={<FiHome />} />
 
       <section className="home-section">
         <h2 className="home-section-title">
@@ -100,7 +142,7 @@ const HomePage = () => {
         <AccountingDashboardWidget />
       </section>
 
-      {homeSections.map((section, idx) => (
+      {filteredSections.map((section, idx) => (
         <section key={idx} className="home-section">
           <h2 className="home-section-title">
             {section.icon}
@@ -118,7 +160,6 @@ const HomePage = () => {
           </div>
         </section>
       ))}
-
     </div>
   );
 };

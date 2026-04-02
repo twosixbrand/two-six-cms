@@ -1,27 +1,40 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FiUsers, FiSearch } from 'react-icons/fi';
+import { FiUserCheck, FiEdit2 } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
-import CustomerList from '../components/customer/CustomerList';
-import CustomerForm from '../components/customer/CustomerForm';
+import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner, StatusBadge } from '../components/ui';
 import * as customerApi from '../services/customerApi';
+import locationApi from '../services/locationApi';
 import { logError } from '../services/errorApi';
 
 const CustomerPage = () => {
-  const [items, setItems] = useState([]);
-  const [currentItem, setCurrentItem] = useState(null);
+  const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [search, setSearch] = useState('');
+
+  // Modal state
+  const [showModal, setShowModal] = useState(false);
+  const [editing, setEditing] = useState<any>(null);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({
+    name: '', email: '', current_phone_number: '', shipping_address: '',
+    city: '', state: '', postal_code: '', country: '',
+  });
+
+  // Location state
+  const [departments, setDepartments] = useState<any[]>([]);
+  const [cities, setCities] = useState<any[]>([]);
+  const [selectedDeptId, setSelectedDeptId] = useState('');
 
   const fetchItems = async () => {
     try {
       setLoading(true);
+      setError('');
       const data = await customerApi.getCustomers();
       setItems(data);
-      setError('');
-    } catch (err) {
-      logError(err, '/customer');
+    } catch (err: any) {
       setError('Error al cargar los clientes.');
+      logError(err, '/customer');
     } finally {
       setLoading(false);
     }
@@ -29,85 +42,207 @@ const CustomerPage = () => {
 
   useEffect(() => {
     fetchItems();
+    const loadDepts = async () => {
+      try {
+        const data = await locationApi.getDepartments();
+        setDepartments(data);
+      } catch (err) {
+        console.error('Error loading departments:', err);
+      }
+    };
+    loadDepts();
   }, []);
 
-  const filteredItems = useMemo(() => {
-    if (!searchTerm) return items;
-    const lowerTerm = searchTerm.toLowerCase();
-    return items.filter(item =>
-      item.name?.toLowerCase().includes(lowerTerm) ||
-      item.email?.toLowerCase().includes(lowerTerm) ||
-      item.document_number?.toLowerCase().includes(lowerTerm) ||
-      item.current_phone_number?.toLowerCase().includes(lowerTerm)
-    );
-  }, [items, searchTerm]);
+  // Load cities when department changes
+  useEffect(() => {
+    if (!selectedDeptId) {
+      setCities([]);
+      return;
+    }
+    const loadCities = async () => {
+      try {
+        const data = await locationApi.getCities(selectedDeptId);
+        setCities(data);
+      } catch (err) {
+        console.error('Error loading cities:', err);
+      }
+    };
+    loadCities();
+  }, [selectedDeptId]);
 
-  const handleSave = async (itemData) => {
+  const filteredItems = useMemo(() => {
+    if (!search) return items;
+    const term = search.toLowerCase();
+    return items.filter(
+      (item) =>
+        item.name?.toLowerCase().includes(term) ||
+        item.email?.toLowerCase().includes(term) ||
+        item.document_number?.toLowerCase().includes(term) ||
+        item.current_phone_number?.toLowerCase().includes(term)
+    );
+  }, [items, search]);
+
+  const openEditModal = (row: any) => {
+    setEditing(row);
+    setForm({
+      name: row.name || '',
+      email: row.email || '',
+      current_phone_number: row.current_phone_number || '',
+      shipping_address: row.shipping_address || '',
+      city: row.city || '',
+      state: row.state || '',
+      postal_code: row.postal_code || '',
+      country: row.country || '',
+    });
+    // Find matching department
+    if (row.state && departments.length > 0) {
+      const dept = departments.find((d: any) => d.name === row.state);
+      setSelectedDeptId(dept ? String(dept.id) : '');
+    } else {
+      setSelectedDeptId('');
+    }
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setEditing(null);
+    setSelectedDeptId('');
+    setCities([]);
+  };
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleDepartmentChange = (e: any) => {
+    const deptId = e.target.value;
+    setSelectedDeptId(deptId);
+    const dept = departments.find((d: any) => String(d.id) === deptId);
+    setForm((prev) => ({ ...prev, state: dept ? dept.name : '', city: '' }));
+  };
+
+  const handleCityChange = (e: any) => {
+    setForm((prev) => ({ ...prev, city: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editing) return;
     try {
-      await customerApi.updateCustomer(currentItem.id, itemData);
+      setSaving(true);
+      setError('');
+      await customerApi.updateCustomer(editing.id, form);
+      closeModal();
       fetchItems();
-      setCurrentItem(null);
-    } catch (err) {
-      logError(err, '/customer');
+    } catch (err: any) {
       setError('Error al actualizar el cliente: ' + err.message);
+      logError(err, '/customer-update');
+    } finally {
+      setSaving(false);
     }
   };
 
-  const handleEdit = (item) => {
-    setCurrentItem(item);
-  };
-
-  const handleCancel = () => {
-    setCurrentItem(null);
-  };
+  const columns = [
+    { key: 'id', header: 'ID', width: '60px' },
+    {
+      key: 'document_number',
+      header: 'Documento',
+      render: (value: any, row: any) => value ? `${row.identificationType?.name || 'Doc'}: ${value}` : '-',
+    },
+    { key: 'name', header: 'Nombre' },
+    { key: 'email', header: 'Email' },
+    { key: 'current_phone_number', header: 'Telefono' },
+    {
+      key: 'city',
+      header: 'Ubicacion',
+      render: (_: any, row: any) => [row.city, row.state].filter(Boolean).join(', ') || '-',
+    },
+    {
+      key: 'is_registered',
+      header: 'Estado',
+      render: (value: any) => (
+        <StatusBadge status={value ? 'Registrado' : 'Invitado'} variant={value ? 'success' : 'warning'} size="sm" />
+      ),
+    },
+  ];
 
   return (
     <div className="page-container">
-      <PageHeader title="Gestión de Clientes" icon={<FiUsers />}>
-        <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
-          <FiSearch style={{ position: 'absolute', left: '1.2rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)', fontSize: '1.2rem', zIndex: 2 }} />
-          <input
-            type="text"
-            placeholder="Buscar por nombre, email o documento..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '0.8rem 1rem 0.8rem 3.2rem',
-              borderRadius: '50px',
-              background: 'var(--surface-color)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid var(--border-color)',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.02)',
-              color: 'var(--text-primary)',
-              transition: 'all 0.3s ease',
-              fontSize: '0.95rem'
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = 'var(--primary-color)';
-              e.target.style.boxShadow = '0 4px 20px rgba(212,175,55,0.15)';
-              e.target.style.outline = 'none';
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = 'var(--border-color)';
-              e.target.style.boxShadow = '0 4px 15px rgba(0,0,0,0.02)';
-            }}
-          />
-        </div>
-      </PageHeader>
+      <PageHeader title="Gestion de Clientes" icon={<FiUserCheck />} />
+
       {error && <p className="error-message">{error}</p>}
-      <div className="grid-container">
-        <div className="form-card">
-          <CustomerForm onSave={handleSave} currentItem={currentItem} onCancel={handleCancel} />
-        </div>
-        <div className="list-card">
-          {loading ? (
-            <p>Cargando clientes...</p>
-          ) : (
-            <CustomerList items={filteredItems} onEdit={handleEdit} />
-          )}
-        </div>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+        <SearchInput value={search} onChange={setSearch} placeholder="Buscar por nombre, email o documento..." />
       </div>
+
+      {loading ? (
+        <LoadingSpinner text="Cargando clientes..." />
+      ) : (
+        <DataTable
+          columns={columns}
+          data={filteredItems}
+          emptyMessage="No hay clientes registrados"
+          actions={(row) => (
+            <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} />
+          )}
+        />
+      )}
+
+      <Modal isOpen={showModal} onClose={closeModal} title="Editar Cliente" size="lg">
+        <form onSubmit={handleSubmit}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {editing?.document_number && (
+              <div style={{ padding: '0.6rem 1rem', background: 'rgba(212,175,55,0.08)', borderRadius: 10, fontSize: '0.8rem', color: '#a0a0b0' }}>
+                <strong>Documento:</strong> {editing.document_number}
+              </div>
+            )}
+            <FormField label="Nombre" name="name" value={form.name} onChange={handleChange} required />
+            <FormField label="Correo Electronico" name="email" type="email" value={form.email} onChange={handleChange} required />
+            <FormField label="Telefono" name="current_phone_number" type="tel" value={form.current_phone_number} onChange={handleChange} required />
+            <FormField label="Direccion de Envio" name="shipping_address" value={form.shipping_address} onChange={handleChange} />
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <div style={{ flex: 1 }}>
+                <FormField
+                  label="Departamento"
+                  name="state"
+                  type="select"
+                  value={selectedDeptId}
+                  onChange={handleDepartmentChange}
+                  placeholder="Seleccionar departamento..."
+                  options={departments.map((d: any) => ({ value: String(d.id), label: d.name }))}
+                />
+              </div>
+              <div style={{ flex: 1 }}>
+                <FormField
+                  label="Ciudad"
+                  name="city"
+                  type="select"
+                  value={form.city}
+                  onChange={handleCityChange}
+                  placeholder="Seleccionar ciudad..."
+                  options={cities.map((c: any) => ({ value: c.name, label: c.name }))}
+                  disabled={!selectedDeptId}
+                />
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <div style={{ flex: 1 }}>
+                <FormField label="Codigo Postal" name="postal_code" value={form.postal_code} onChange={handleChange} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <FormField label="Pais" name="country" value={form.country} onChange={handleChange} />
+              </div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
+            <Button variant="ghost" onClick={closeModal}>Cancelar</Button>
+            <Button variant="primary" type="submit" loading={saving}>Actualizar</Button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };

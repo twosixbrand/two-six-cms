@@ -1,6 +1,6 @@
 .pickup-dashboard {
   padding: 20px;
-  background-color: #f9fafb;
+  background-color: transparent;
   min-height: 100vh;
 }
 
@@ -9,30 +9,8 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-  background: white;
   padding: 16px 24px;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.base-button-refresh {
-  background-color: #1f2937;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.base-button-refresh:hover:not(:disabled) {
-  background-color: #374151;
-}
-
-.base-button-refresh:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
 }
 
 .pickup-legend {
@@ -45,7 +23,7 @@
   align-items: center;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #4b5563;
+  color: #a0a0b0;
 }
 
 .legend-item::before {
@@ -57,9 +35,9 @@
   margin-right: 8px;
 }
 
-.legend-item.pending::before { background-color: #f59e0b; border: 1px solid #d97706; }
-.legend-item.ready::before { background-color: #10b981; border: 1px solid #059669; }
-.legend-item.collected::before { background-color: #9ca3af; border: 1px solid #6b7280; }
+.legend-item.pending::before { background-color: #f59e0b; }
+.legend-item.ready::before { background-color: #10b981; }
+.legend-item.collected::before { background-color: #6b7280; }
 
 .pickup-board {
   display: flex;
@@ -70,57 +48,55 @@
 .no-orders-message {
   text-align: center;
   padding: 40px;
-  background: white;
+  background: #1a1a24;
   border-radius: 8px;
-  color: #6b7280;
+  color: #6b6b7b;
   font-size: 1.125rem;
+  border: 1px solid #2a2a35;
 }
 
 .pickup-card {
   display: flex;
   flex-direction: column;
-  background: white;
+  background: #1a1a24;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid #2a2a35;
   border-left: 6px solid transparent;
   transition: transform 0.2s, box-shadow 0.2s;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .pickup-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
 .pickup-card-pending {
-  border-left-color: #f59e0b; /* Amber */
+  border-left-color: #f59e0b;
 }
-.pickup-card-pending .pickup-card-header { background-color: #f59e0b; }
-.pickup-card-pending .pickup-card-header h2 { color: white; }
-.pickup-card-pending .pickup-badge { background-color: white; color: #b45309; }
+.pickup-card-pending .pickup-card-header { background-color: rgba(245, 158, 11, 0.15); }
+.pickup-card-pending .pickup-card-header h2 { color: #fbbf24; }
 
 .pickup-card-ready {
-  border-left-color: #10b981; /* Green */
+  border-left-color: #10b981;
 }
-.pickup-card-ready .pickup-card-header { background-color: #10b981; }
-.pickup-card-ready .pickup-card-header h2 { color: white; }
-.pickup-card-ready .pickup-badge { background-color: white; color: #047857; }
+.pickup-card-ready .pickup-card-header { background-color: rgba(16, 185, 129, 0.15); }
+.pickup-card-ready .pickup-card-header h2 { color: #34d399; }
 
 .pickup-card-collected {
-  border-left-color: #9ca3af; /* Gray */
-  opacity: 0.8;
+  border-left-color: #6b7280;
+  opacity: 0.7;
 }
-.pickup-card-collected .pickup-card-header { background-color: #9ca3af; }
-.pickup-card-collected .pickup-card-header h2 { color: white; }
-.pickup-card-collected .pickup-badge { background-color: white; color: #4b5563; }
+.pickup-card-collected .pickup-card-header { background-color: rgba(107, 114, 128, 0.15); }
+.pickup-card-collected .pickup-card-header h2 { color: #9ca3af; }
 
 .pickup-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid #2a2a35;
   padding: 16px 24px;
 }
 
@@ -129,13 +105,6 @@
   font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: 0.5px;
-}
-
-.pickup-badge {
-  padding: 6px 14px;
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  font-weight: 700;
 }
 
 .pickup-card-body {
@@ -147,20 +116,27 @@
 
 .pickup-info-column p {
   margin: 0 0 8px 0;
-  color: #374151;
+  color: #a0a0b0;
   font-size: 0.95rem;
+}
+
+.pickup-info-column p strong {
+  color: #f1f1f3;
 }
 
 .pickup-products-column strong {
   display: block;
   margin-bottom: 8px;
-  color: #1f2937;
+  color: #a0a0b0;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
 }
 
 .pickup-products-column ul {
   margin: 0;
   padding-left: 20px;
-  color: #4b5563;
+  color: #a0a0b0;
   font-size: 0.95rem;
 }
 
@@ -172,41 +148,10 @@
   display: flex;
   gap: 12px;
   justify-content: flex-end;
-  border-top: 1px solid #f3f4f6;
-  padding: 16px 24px;
-  background-color: #f8fafc;
-}
-
-.action-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
   align-items: center;
-  gap: 8px;
-  transition: all 0.2s;
-}
-
-.btn-ready {
-  background-color: #10b981;
-  color: white;
-  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
-}
-
-.btn-ready:hover {
-  background-color: #059669;
-}
-
-.btn-collect {
-  background-color: #3b82f6;
-  color: white;
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
-}
-
-.btn-collect:hover {
-  background-color: #2563eb;
+  border-top: 1px solid #2a2a35;
+  padding: 16px 24px;
+  background-color: #13131a;
 }
 
 @media (max-width: 768px) {
@@ -214,7 +159,7 @@
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   .pickup-filters {
     flex-direction: column;
     align-items: flex-start;

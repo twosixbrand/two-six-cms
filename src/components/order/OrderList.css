@@ -1,8 +1,8 @@
 .list-container {
-  background: white;
+  background: #1a1a24;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .table-responsive {
@@ -13,24 +13,27 @@
 .data-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 800px; /* Ensure it doesn't get too squished */
+  min-width: 800px;
 }
 
 .data-table th,
 .data-table td {
-  padding: 15px; /* More padding for breathing room */
+  padding: 15px;
   text-align: left;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #2a2a35;
 }
 
 .data-table th {
-  background-color: #f8f9fa;
+  background-color: #1f1f2a;
   font-weight: 600;
-  color: #333;
+  color: #6b6b7b;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .data-table tr:hover {
-  background-color: #f8f9fa;
+  background-color: rgba(255, 255, 255, 0.03);
 }
 
 .status-badge {
@@ -42,34 +45,34 @@
 }
 
 .status-badge.pagado {
-  background-color: #d1fae5;
-  color: #065f46;
+  background-color: rgba(52, 211, 153, 0.15);
+  color: #34d399;
 }
 
 .status-badge.aprobado-pce {
-  background-color: #ffedd5;
-  color: #c2410c;
-  border: 1px solid #fed7aa;
+  background-color: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.3);
 }
 
 .status-badge.pendiente {
-  background-color: #fef3c7;
-  color: #92400e;
+  background-color: rgba(251, 191, 36, 0.12);
+  color: #fbbf24;
 }
 
 .status-badge.enviado {
-  background-color: #dbeafe;
-  color: #1e40af;
+  background-color: rgba(96, 165, 250, 0.15);
+  color: #60a5fa;
 }
 
 .status-badge.entregado {
-  background-color: #e0e7ff;
-  color: #3730a3;
+  background-color: rgba(139, 92, 246, 0.15);
+  color: #8b5cf6;
 }
 
 .status-badge.cancelado {
-  background-color: #fee2e2;
-  color: #991b1b;
+  background-color: rgba(248, 113, 113, 0.15);
+  color: #f87171;
 }
 
 .action-btn {
@@ -84,18 +87,18 @@
 }
 
 .view-btn, .guide-btn {
-  background-color: #d4af37 !important;
-  color: #1a1a1a !important;
+  background-color: #f0b429 !important;
+  color: #0a0a0f !important;
 }
 
 .view-btn:hover, .guide-btn:hover:not(:disabled) {
-  background-color: #e6c34a !important;
-  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3) !important;
+  background-color: #d99e1e !important;
+  box-shadow: 0 2px 8px rgba(240, 180, 41, 0.3) !important;
 }
 
 .guide-btn:disabled {
-  background-color: #e5e7eb !important;
-  color: #9ca3af !important;
+  background-color: #2a2a35 !important;
+  color: #6b6b7b !important;
   cursor: not-allowed;
   opacity: 0.7;
 }

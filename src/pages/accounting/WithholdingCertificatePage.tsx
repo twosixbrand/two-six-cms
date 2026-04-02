@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { FiFileText, FiRefreshCcw, FiDownload, FiTrash2, FiZap } from 'react-icons/fi';
+import { FiFileText, FiAward, FiRefreshCcw, FiDownload, FiTrash2, FiZap } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
+import { DataTable, Button, StatusBadge, LoadingSpinner } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
 import { getProviders } from '../../services/providerApi';
 import { logError } from '../../services/errorApi';
@@ -54,11 +56,20 @@ const WithholdingCertificatePage = () => {
 
     const handleGenerate = async () => {
         if (!year) {
-            alert('Seleccione un a\u00f1o para generar los certificados.');
+            await Swal.fire({ title: 'Atención', text: 'Seleccione un año para generar los certificados.', icon: 'warning', confirmButtonColor: '#f0b429' });
             return;
         }
-        if (!window.confirm(`\u00bfGenerar certificados de retenci\u00f3n para el a\u00f1o ${year}? Esto reemplazar\u00e1 los certificados existentes de ese a\u00f1o.`)) return;
-
+        const swalResult = await Swal.fire({
+            title: 'Generar certificados',
+            text: `¿Generar certificados de retención para el año ${year}? Esto reemplazará los certificados existentes de ese año.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Generar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!swalResult.isConfirmed) return;
         try {
             setGenerating(true);
             setError('');
@@ -85,17 +96,27 @@ const WithholdingCertificatePage = () => {
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
         } catch (err: any) {
-            alert('Error descargando PDF: ' + (err.message || err));
+            await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Error descargando PDF', icon: 'error', confirmButtonColor: '#f0b429' });
         }
     };
 
     const handleDelete = async (id: number) => {
-        if (!window.confirm('\u00bfEliminar este certificado?')) return;
+        const result = await Swal.fire({
+            title: 'Eliminar certificado',
+            text: '¿Eliminar este certificado?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!result.isConfirmed) return;
         try {
             await accountingApi.deleteWithholdingCertificate(id);
             fetchData();
         } catch (err: any) {
-            alert('Error al eliminar: ' + (err.message || err));
+            await Swal.fire({ title: 'Error', text: (err.message || String(err)) || 'Error al eliminar', icon: 'error', confirmButtonColor: '#f0b429' });
         }
     };
 
@@ -108,15 +129,71 @@ const WithholdingCertificatePage = () => {
         RETEIVA: 'ReteIVA',
     };
 
+    const getConceptVariant = (concept: string) => {
+        switch (concept) {
+            case 'RETEFUENTE': return 'info';
+            case 'RETEICA': return 'warning';
+            case 'RETEIVA': return 'gold';
+            default: return 'neutral';
+        }
+    };
+
+    const columns = [
+        {
+            key: 'certificate_number',
+            header: '# Certificado',
+            render: (val: any) => <strong>{val}</strong>,
+        },
+        {
+            key: 'provider',
+            header: 'Proveedor',
+            render: (_val: any, row: any) => row.provider?.company_name || row.id_provider,
+        },
+        {
+            key: 'concept',
+            header: 'Concepto',
+            render: (val: any) => (
+                <StatusBadge
+                    status={conceptLabels[val] || val}
+                    variant={getConceptVariant(val)}
+                    size="sm"
+                />
+            ),
+        },
+        {
+            key: 'base_amount',
+            header: 'Base Gravable',
+            align: 'right' as const,
+            render: (val: any) => formatCurrency(val),
+        },
+        {
+            key: 'rate',
+            header: 'Tarifa',
+            align: 'right' as const,
+            render: (val: any) => `${val}%`,
+        },
+        {
+            key: 'withheld_amount',
+            header: 'Valor Retenido',
+            align: 'right' as const,
+            render: (val: any) => <strong>{formatCurrency(val)}</strong>,
+        },
+        {
+            key: 'issue_date',
+            header: 'Fecha Expedici\u00f3n',
+            render: (val: any) => new Date(val).toLocaleDateString('es-CO'),
+        },
+    ];
+
     return (
         <div className="page-container">
-            <PageHeader title="Certificados de Retenci\u00f3n" icon={<FiFileText />} />
+            <PageHeader title="Certificados de Retenci\u00f3n" icon={<FiAward />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
                 <div>
                     <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>A\u00f1o</label>
                     <select value={year} onChange={e => setYear(e.target.value)}
-                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd', minWidth: '100px' }}>
+                        style={{ padding: '8px', borderRadius: '6px', backgroundColor: '#1a1a24', color: '#f1f1f3', border: '1px solid #2a2a35', minWidth: '100px' }}>
                         {yearOptions.map(y => (
                             <option key={y} value={String(y)}>{y}</option>
                         ))}
@@ -125,7 +202,7 @@ const WithholdingCertificatePage = () => {
                 <div>
                     <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Proveedor</label>
                     <select value={provider} onChange={e => setProvider(e.target.value)}
-                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd', minWidth: '180px' }}>
+                        style={{ padding: '8px', borderRadius: '6px', backgroundColor: '#1a1a24', color: '#f1f1f3', border: '1px solid #2a2a35', minWidth: '180px' }}>
                         <option value="">Todos</option>
                         {providers.map((p: any) => (
                             <option key={p.id || p.nit} value={p.id || p.nit}>{p.company_name}</option>
@@ -135,24 +212,25 @@ const WithholdingCertificatePage = () => {
                 <div>
                     <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Concepto</label>
                     <select value={concept} onChange={e => setConcept(e.target.value)}
-                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd', minWidth: '140px' }}>
+                        style={{ padding: '8px', borderRadius: '6px', backgroundColor: '#1a1a24', color: '#f1f1f3', border: '1px solid #2a2a35', minWidth: '140px' }}>
                         <option value="">Todos</option>
                         <option value="RETEFUENTE">Retefuente</option>
                         <option value="RETEICA">ReteICA</option>
                         <option value="RETEIVA">ReteIVA</option>
                     </select>
                 </div>
-                <button onClick={fetchData} className="btn btn-primary">
-                    <FiRefreshCcw /> Buscar
-                </button>
-                <button
+                <Button variant="primary" icon={<FiRefreshCcw />} onClick={fetchData}>
+                    Buscar
+                </Button>
+                <Button
+                    variant="secondary"
+                    icon={<FiZap />}
                     onClick={handleGenerate}
-                    className="btn btn-secondary"
+                    loading={generating}
                     disabled={generating}
-                    style={{ background: '#d4af37', color: '#0f172a', fontWeight: 700 }}
                 >
-                    <FiZap /> {generating ? 'Generando...' : 'Generar Certificados'}
-                </button>
+                    {generating ? 'Generando...' : 'Generar Certificados'}
+                </Button>
             </div>
 
             {error && <p className="error-message">{error}</p>}
@@ -162,70 +240,32 @@ const WithholdingCertificatePage = () => {
                 </p>
             )}
 
-            {loading ? (
-                <p>Cargando certificados...</p>
-            ) : (
-                <div className="list-card full-width">
-                    <table className="data-table">
-                        <thead>
-                            <tr>
-                                <th># Certificado</th>
-                                <th>Proveedor</th>
-                                <th>Concepto</th>
-                                <th>Base Gravable</th>
-                                <th>Tarifa</th>
-                                <th>Valor Retenido</th>
-                                <th>Fecha Expedici\u00f3n</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {certificates.length === 0 ? (
-                                <tr><td colSpan={8} style={{ textAlign: 'center' }}>No hay certificados para los filtros seleccionados</td></tr>
-                            ) : certificates.map((cert: any) => (
-                                <tr key={cert.id}>
-                                    <td><strong>{cert.certificate_number}</strong></td>
-                                    <td>{cert.provider?.company_name || cert.id_provider}</td>
-                                    <td>
-                                        <span style={{
-                                            padding: '3px 8px',
-                                            borderRadius: '4px',
-                                            fontSize: '11px',
-                                            fontWeight: 700,
-                                            background: cert.concept === 'RETEFUENTE' ? '#e3f2fd' : cert.concept === 'RETEICA' ? '#fff3e0' : '#f3e5f5',
-                                            color: cert.concept === 'RETEFUENTE' ? '#1565c0' : cert.concept === 'RETEICA' ? '#e65100' : '#7b1fa2',
-                                        }}>
-                                            {conceptLabels[cert.concept] || cert.concept}
-                                        </span>
-                                    </td>
-                                    <td style={{ textAlign: 'right' }}>{formatCurrency(cert.base_amount)}</td>
-                                    <td style={{ textAlign: 'right' }}>{cert.rate}%</td>
-                                    <td style={{ textAlign: 'right', fontWeight: 700 }}>{formatCurrency(cert.withheld_amount)}</td>
-                                    <td>{new Date(cert.issue_date).toLocaleDateString('es-CO')}</td>
-                                    <td style={{ whiteSpace: 'nowrap' }}>
-                                        <button
-                                            className="btn btn-sm"
-                                            onClick={() => handleDownloadPdf(cert.id, cert.certificate_number)}
-                                            style={{ marginRight: '4px', padding: '4px 8px', fontSize: '12px', color: '#1565c0' }}
-                                            title="Descargar PDF"
-                                        >
-                                            <FiDownload />
-                                        </button>
-                                        <button
-                                            className="btn btn-sm"
-                                            onClick={() => handleDelete(cert.id)}
-                                            style={{ padding: '4px 8px', fontSize: '12px', color: '#e53935' }}
-                                            title="Eliminar"
-                                        >
-                                            <FiTrash2 />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            )}
+            <DataTable
+                columns={columns}
+                data={certificates}
+                loading={loading}
+                emptyMessage="No hay certificados para los filtros seleccionados"
+                actions={(cert: any) => (
+                    <>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            icon={<FiDownload />}
+                            onClick={() => handleDownloadPdf(cert.id, cert.certificate_number)}
+                        >
+                            {''}
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            size="sm"
+                            icon={<FiTrash2 />}
+                            onClick={() => handleDelete(cert.id)}
+                        >
+                            {''}
+                        </Button>
+                    </>
+                )}
+            />
         </div>
     );
 };

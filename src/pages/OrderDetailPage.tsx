@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import * as orderApi from '../services/orderApi';
 import * as dianApi from '../services/dianApi';
 import { logError } from '../services/errorApi';
@@ -26,14 +27,24 @@ const OrderDetailPage = () => {
     const [isPickupActionLoading, setIsPickupActionLoading] = useState(false);
 
     const handleMarkAsReadyForPickup = async () => {
-        if (!window.confirm('¿Seguro de enviar el correo "Listo para recoger" al cliente?')) return;
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Seguro de enviar el correo "Listo para recoger" al cliente?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Sí, enviar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!result.isConfirmed) return;
         try {
             setIsPickupActionLoading(true);
             await orderApi.markAsReadyForPickup(id);
-            alert('Correo enviado exitosamente.');
+            await Swal.fire({ title: '¡Éxito!', text: 'Correo enviado exitosamente.', icon: 'success', confirmButtonColor: '#f0b429' });
             fetchOrder();
         } catch (err) {
-            alert('Error al marcar como listo para recoger.');
+            await Swal.fire({ title: 'Error', text: 'Error al marcar como listo para recoger.', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setIsPickupActionLoading(false);
         }
@@ -68,14 +79,24 @@ const OrderDetailPage = () => {
     };
 
     const handleMarkAsCollected = async () => {
-        if (!window.confirm('¿Seguro de marcar este pedido como entregado en el punto físico?')) return;
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Seguro de marcar este pedido como entregado en el punto físico?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Sí, confirmar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!result.isConfirmed) return;
         try {
             setIsPickupActionLoading(true);
             await orderApi.markAsCollected(id);
-            alert('Pedido marcado como entregado (Recogido).');
+            await Swal.fire({ title: '¡Éxito!', text: 'Pedido marcado como entregado (Recogido).', icon: 'success', confirmButtonColor: '#f0b429' });
             fetchOrder();
         } catch (err) {
-            alert('Error al actualizar a recogido.');
+            await Swal.fire({ title: 'Error', text: 'Error al actualizar a recogido.', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setIsPickupActionLoading(false);
         }
@@ -110,17 +131,27 @@ const OrderDetailPage = () => {
             const updatedOrder = await orderApi.getOrder(id);
             setOrder(updatedOrder);
             setStatus(updatedOrder.status);
-            alert(`Estado actualizado exitosamente a ${finalStatus}`);
+            await Swal.fire({ title: '¡Éxito!', text: `Estado actualizado exitosamente a ${finalStatus}`, icon: 'success', confirmButtonColor: '#f0b429' });
         } catch (err) {
             console.error('Error updating order status:', err);
-            alert('Error al actualizar el estado del pedido.');
+            await Swal.fire({ title: 'Error', text: 'Error al actualizar el estado del pedido.', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setSaving(false);
         }
     };
 
     const handleCreateInvoice = async () => {
-        if (!window.confirm('¿Seguro de generar la Factura Electrónica en la DIAN para este pedido?')) return;
+        const confirmResult = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Seguro de generar la Factura Electrónica en la DIAN para este pedido?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Sí, generar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!confirmResult.isConfirmed) return;
         try {
             setIsDianGenerating(true);
             const res = await dianApi.createDianInvoice({
@@ -131,10 +162,10 @@ const OrderDetailPage = () => {
                 customerDoc: '222222222222',
                 customerDocType: '13',
             });
-            alert('Factura enviada a DIAN exitosamente');
+            await Swal.fire({ title: '¡Éxito!', text: 'Factura enviada a DIAN exitosamente', icon: 'success', confirmButtonColor: '#f0b429' });
             fetchOrder();
         } catch (err: any) {
-            alert(`Error al generar factura DIAN: ${err?.message || 'Error desconocido'}`);
+            await Swal.fire({ title: 'Error', text: err?.message || 'Error al generar factura DIAN', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setIsDianGenerating(false);
         }
@@ -143,7 +174,17 @@ const OrderDetailPage = () => {
     const handleCreateNote = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!order.dianEInvoicing?.id) return;
-        if (!window.confirm(`¿Seguro de generar Nota ${noteType === 'CREDIT' ? 'Crédito' : 'Débito'} en la DIAN?`)) return;
+        const noteConfirm = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: `¿Seguro de generar Nota ${noteType === 'CREDIT' ? 'Crédito' : 'Débito'} en la DIAN?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Sí, generar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!noteConfirm.isConfirmed) return;
 
         try {
             setIsDianGenerating(true);
@@ -156,15 +197,15 @@ const OrderDetailPage = () => {
 
             if (noteType === 'CREDIT') {
                 await dianApi.createCreditNote(order.dianEInvoicing.id, payload);
-                alert('Nota Crédito enviada exitosamente a la DIAN');
+                await Swal.fire({ title: '¡Éxito!', text: 'Nota Crédito enviada exitosamente a la DIAN', icon: 'success', confirmButtonColor: '#f0b429' });
             } else {
                 await dianApi.createDebitNote(order.dianEInvoicing.id, payload);
-                alert('Nota Débito enviada exitosamente a la DIAN');
+                await Swal.fire({ title: '¡Éxito!', text: 'Nota Débito enviada exitosamente a la DIAN', icon: 'success', confirmButtonColor: '#f0b429' });
             }
             setNoteType(null);
             fetchOrder();
         } catch (err: any) {
-            alert(`Error al generar Nota DIAN: ${err?.message || 'Error desconocido'}`);
+            await Swal.fire({ title: 'Error', text: err?.message || 'Error al generar Nota DIAN', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setIsDianGenerating(false);
         }
@@ -175,17 +216,17 @@ const OrderDetailPage = () => {
             setIsDianGenerating(true);
             const res = await dianApi.syncNoteStatus(noteId);
             if (res.isValid && res.statusCode === '00') {
-                alert('¡Éxito! La Nota ha sido Autorizada por la DIAN.');
+                await Swal.fire({ title: '¡Éxito!', text: 'La Nota ha sido Autorizada por la DIAN.', icon: 'success', confirmButtonColor: '#f0b429' });
             } else if (!res.isValid && res.statusCode === '2') {
-                alert(`¡SET DE PRUEBAS FINALIZADO!\nLa DIAN indica: "${res.statusDescription}"\nEsto significa que Two Six ya pasó las pruebas de habilitación en Sandbox y el set de pruebas se cerró. Para seguir enviando, deben pasar a Producción o generar un nuevo Test Set.`);
+                await Swal.fire({ title: 'SET DE PRUEBAS FINALIZADO', text: `La DIAN indica: "${res.statusDescription}". Esto significa que Two Six ya pasó las pruebas de habilitación en Sandbox y el set de pruebas se cerró. Para seguir enviando, deben pasar a Producción o generar un nuevo Test Set.`, icon: 'info', confirmButtonColor: '#f0b429' });
             } else if (!res.isValid) {
-                alert(`Nota Rechazada o con Errores: ${res.statusCode} - ${res.statusDescription}`);
+                await Swal.fire({ title: 'Nota Rechazada', text: `${res.statusCode} - ${res.statusDescription}`, icon: 'error', confirmButtonColor: '#f0b429' });
             } else {
-                alert(`Estado: ${res.statusCode} - ${res.statusDescription}`);
+                await Swal.fire({ title: 'Estado', text: `${res.statusCode} - ${res.statusDescription}`, icon: 'info', confirmButtonColor: '#f0b429' });
             }
             fetchOrder();
         } catch (err: any) {
-            alert(`Error sincronizando estado: ${err?.message || 'Error desconocido'}`);
+            await Swal.fire({ title: 'Error', text: err?.message || 'Error sincronizando estado', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setIsDianGenerating(false);
         }
@@ -193,8 +234,18 @@ const OrderDetailPage = () => {
 
     const handleRetryInvoice = async () => {
         if (!order) return;
-        if (!window.confirm('¿Estás seguro de que deseas generar un NUEVO consecutivo y reintentar el envío a la DIAN para este pedido?')) return;
-        
+        const retryConfirm = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Deseas generar un NUEVO consecutivo y reintentar el envío a la DIAN para este pedido?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f0b429',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Sí, reintentar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!retryConfirm.isConfirmed) return;
+
         setIsDianGenerating(true);
         try {
             const res = await dianApi.retryInvoice(order.id, {
@@ -202,14 +253,14 @@ const OrderDetailPage = () => {
                 time: '12:00:00-05:00',
             });
             if (res.success) {
-                alert('¡Factura Reintentada Exitosamente!');
+                await Swal.fire({ title: '¡Éxito!', text: 'Factura Reintentada Exitosamente!', icon: 'success', confirmButtonColor: '#f0b429' });
                 fetchOrder();
             } else {
-                alert(`Error al reintentar: ${res.error || 'Desconocido'}`);
+                await Swal.fire({ title: 'Error', text: res.error || 'Error al reintentar', icon: 'error', confirmButtonColor: '#f0b429' });
             }
         } catch (error: any) {
             console.error('Error reintentando factura DIAN:', error);
-            alert(`Error interno: ${error.message || 'Error en comunicación con DIAN'}`);
+            await Swal.fire({ title: 'Error', text: error.message || 'Error en comunicación con DIAN', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setIsDianGenerating(false);
         }
@@ -219,24 +270,24 @@ const OrderDetailPage = () => {
         if (!order || !order.dianEInvoicing || !order.dianEInvoicing.dian_response) return;
         const zipKeyMatch = order.dianEInvoicing.dian_response.match(/<b:ZipKey>(.*?)<\/b:ZipKey>/);
         if (!zipKeyMatch) {
-            alert('No se encontró ZipKey válido para esta factura, no se puede consultar estado.');
+            await Swal.fire({ title: 'Error', text: 'No se encontró ZipKey válido para esta factura, no se puede consultar estado.', icon: 'error', confirmButtonColor: '#f0b429' });
             return;
         }
         setIsDianGenerating(true);
         try {
             const res = await dianApi.checkInvoiceStatus(zipKeyMatch[1]);
             if (res.isValid === 'true' && res.statusCode === '00') {
-                alert('¡Éxito! La Factura ha sido Autorizada por la DIAN.');
+                await Swal.fire({ title: '¡Éxito!', text: 'La Factura ha sido Autorizada por la DIAN.', icon: 'success', confirmButtonColor: '#f0b429' });
             } else if (res.isValid === 'false' && res.statusCode === '2') {
-                alert(`¡SET DE PRUEBAS FINALIZADO!\nLa DIAN indica: "${res.statusDescription}"`);
+                await Swal.fire({ title: 'SET DE PRUEBAS FINALIZADO', text: `La DIAN indica: "${res.statusDescription}"`, icon: 'info', confirmButtonColor: '#f0b429' });
             } else if (res.isValid === 'false') {
-                alert(`Factura Rechazada o con Errores: ${res.statusCode} - ${res.statusDescription}`);
+                await Swal.fire({ title: 'Factura Rechazada', text: `${res.statusCode} - ${res.statusDescription}`, icon: 'error', confirmButtonColor: '#f0b429' });
             } else {
-                alert(`Estado DIAN: ${res.statusCode} - ${res.statusDescription}`);
+                await Swal.fire({ title: 'Estado DIAN', text: `${res.statusCode} - ${res.statusDescription}`, icon: 'info', confirmButtonColor: '#f0b429' });
             }
             fetchOrder();
         } catch (err: any) {
-            alert(`Error sincronizando estado: ${err?.message || 'Error desconocido'}`);
+            await Swal.fire({ title: 'Error', text: err?.message || 'Error sincronizando estado', icon: 'error', confirmButtonColor: '#f0b429' });
         } finally {
             setIsDianGenerating(false);
         }
@@ -265,15 +316,15 @@ const OrderDetailPage = () => {
                     <p><strong>Total:</strong> ${order.total_payment.toLocaleString()}</p>
                     <p><strong>Pagado:</strong> {order.is_paid ? 'Sí' : 'No'}</p>
                     {order.payment_method === 'WOMPI_COD' && (
-                        <div style={{ marginTop: '10px', background: '#fef3c7', padding: '10px', borderRadius: '4px', borderLeft: '4px solid #f59e0b' }}>
-                            <p style={{ margin: 0, color: '#b45309', fontWeight: 'bold' }}>⚠️ PEDIDO PAGO CONTRA ENTREGA</p>
-                            <p style={{ margin: '5px 0 0 0', color: '#92400e' }}>Valor Recaudo: <strong>${order.cod_amount?.toLocaleString()}</strong></p>
+                        <div style={{ marginTop: '10px', background: 'rgba(245, 158, 11, 0.1)', padding: '10px', borderRadius: '4px', borderLeft: '4px solid #f0b429' }}>
+                            <p style={{ margin: 0, color: '#f0b429', fontWeight: 'bold' }}>⚠️ PEDIDO PAGO CONTRA ENTREGA</p>
+                            <p style={{ margin: '5px 0 0 0', color: '#a0a0b0' }}>Valor Recaudo: <strong>${order.cod_amount?.toLocaleString()}</strong></p>
                         </div>
                     )}
 
                     {order.payments && order.payments.length > 0 ? (
                         <>
-                            <h4 style={{ marginTop: '15px', marginBottom: '10px', borderBottom: '1px solid #eee' }}>Pagos</h4>
+                            <h4 style={{ marginTop: '15px', marginBottom: '10px', borderBottom: '1px solid #2a2a35' }}>Pagos</h4>
                             {order.payments.map((payment, index) => (
                                 <div key={payment.id || index} style={{ marginBottom: '10px', fontSize: '0.9em' }}>
                                     <p><strong>Método:</strong> {payment.paymentMethod?.name || 'N/A'}</p>
@@ -300,22 +351,22 @@ const OrderDetailPage = () => {
 
                 {/* Gestión de Recogida */}
                 {order.delivery_method === 'PICKUP' && (
-                    <div className="detail-card full-width" style={{ border: '2px solid #aecbfa', backgroundColor: '#f4f8ff' }}>
+                    <div className="detail-card full-width" style={{ border: '2px solid rgba(59, 130, 246, 0.3)', backgroundColor: '#13131a' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '15px' }}>
                             <div>
-                                <h3 style={{ color: '#1e3a8a', margin: '0 0 10px 0' }}>📍 Gestión de Recogida en Punto</h3>
+                                <h3 style={{ color: '#60a5fa', margin: '0 0 10px 0' }}>📍 Gestión de Recogida en Punto</h3>
                                 <p style={{ margin: 0 }}><strong>Estado de Recogida:</strong> {
                                     order.pickup_status === 'UNCLAIMED' ? '🔴 No Reclamado (Abandonado)' :
-                                    order.pickup_status === 'READY' ? '🟢 Listo para Recoger (Notificado)' : 
-                                    order.pickup_status === 'COLLECTED' ? '🔵 Cliente Recogió el Pedido' : 
+                                    order.pickup_status === 'READY' ? '🟢 Listo para Recoger (Notificado)' :
+                                    order.pickup_status === 'COLLECTED' ? '🔵 Cliente Recogió el Pedido' :
                                     order.pickup_status === 'PREPARING' ? '🟡 Preparando Empaque' :
                                     '⚪ Pendiente de Revisión'
                                 }</p>
                             </div>
                             {order.pickup_pin && (
-                                <div style={{ background: '#fef3c7', border: '2px dashed #f59e0b', padding: '10px 20px', borderRadius: '8px', textAlign: 'center' }}>
-                                    <p style={{ margin: '0 0 5px 0', fontSize: '12px', color: '#b45309', fontWeight: 'bold', textTransform: 'uppercase' }}>PIN de Seguridad</p>
-                                    <div style={{ fontSize: '24px', fontWeight: '900', letterSpacing: '4px', color: '#000' }}>{order.pickup_pin}</div>
+                                <div style={{ background: 'rgba(240, 180, 41, 0.1)', border: '2px dashed #f0b429', padding: '10px 20px', borderRadius: '8px', textAlign: 'center' }}>
+                                    <p style={{ margin: '0 0 5px 0', fontSize: '12px', color: '#f0b429', fontWeight: 'bold', textTransform: 'uppercase' }}>PIN de Seguridad</p>
+                                    <div style={{ fontSize: '24px', fontWeight: '900', letterSpacing: '4px', color: '#f1f1f3' }}>{order.pickup_pin}</div>
                                 </div>
                             )}
                         </div>
@@ -405,8 +456,8 @@ const OrderDetailPage = () => {
                     </div>
 
                     {order.payment_method === 'WOMPI_COD' && order.status === 'Enviado' && (
-                        <div style={{ marginTop: '15px', paddingTop: '15px', borderTop: '1px solid #eee' }}>
-                            <p style={{ marginBottom: '10px', fontSize: '0.9rem', color: '#666' }}>
+                        <div style={{ marginTop: '15px', paddingTop: '15px', borderTop: '1px solid #2a2a35' }}>
+                            <p style={{ marginBottom: '10px', fontSize: '0.9rem', color: '#a0a0b0' }}>
                                 Si la transportadora ya entregó el dinero del recaudo, marca el pedido como Pagado.
                             </p>
                             <button
@@ -432,21 +483,21 @@ const OrderDetailPage = () => {
 
                     {order.dianEInvoicing ? (
                         <>
-                            <div style={{ background: '#f8fafc', padding: '15px', borderRadius: '6px', border: '1px solid #e2e8f0', marginBottom: '15px' }}>
+                            <div style={{ background: '#13131a', padding: '15px', borderRadius: '6px', border: '1px solid #2a2a35', marginBottom: '15px' }}>
                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px', marginBottom: '15px' }}>
                                     <div>
-                                        <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: '#64748b' }}>FACTURA ELECTRÓNICA</p>
-                                        <p style={{ margin: 0, fontWeight: 'bold', fontSize: '14px' }}>{order.dianEInvoicing.document_number}</p>
+                                        <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: '#a0a0b0' }}>FACTURA ELECTRÓNICA</p>
+                                        <p style={{ margin: 0, fontWeight: 'bold', fontSize: '14px', color: '#f1f1f3' }}>{order.dianEInvoicing.document_number}</p>
                                     </div>
                                     <div>
-                                        <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: '#64748b' }}>ESTADO</p>
-                                        <span style={{ background: '#dcfce7', color: '#166534', padding: '2px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: 'bold' }}>
+                                        <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: '#a0a0b0' }}>ESTADO</p>
+                                        <span style={{ background: '#0d3b2e', color: '#34d399', padding: '2px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: 'bold' }}>
                                             {order.dianEInvoicing.status}
                                         </span>
                                     </div>
                                     <div style={{ wordBreak: 'break-all', gridColumn: '1 / -1' }}>
-                                        <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: '#64748b' }}>CUFE</p>
-                                        <p style={{ margin: 0, fontSize: '11px', fontFamily: 'monospace' }}>{order.dianEInvoicing.cufe_code || 'No asignado'}</p>
+                                        <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: '#a0a0b0' }}>CUFE</p>
+                                        <p style={{ margin: 0, fontSize: '11px', fontFamily: 'monospace', color: '#f1f1f3' }}>{order.dianEInvoicing.cufe_code || 'No asignado'}</p>
                                     </div>
                                 </div>
                                 <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
@@ -513,8 +564,8 @@ const OrderDetailPage = () => {
 
                             {/* Historial de Envíos */}
                             {order.dianEInvoicings && order.dianEInvoicings.length > 1 && (
-                                <div style={{ background: '#f8fafc', padding: '15px', borderRadius: '6px', border: '1px solid #e2e8f0', marginBottom: '15px' }}>
-                                    <h4 style={{ margin: '0 0 10px 0', fontSize: '13px', color: '#475569' }}>Historial de Intentos de Envío</h4>
+                                <div style={{ background: '#13131a', padding: '15px', borderRadius: '6px', border: '1px solid #2a2a35', marginBottom: '15px' }}>
+                                    <h4 style={{ margin: '0 0 10px 0', fontSize: '13px', color: '#a0a0b0' }}>Historial de Intentos de Envío</h4>
                                     <table className="data-table" style={{ fontSize: '11px', marginBottom: 0 }}>
                                         <thead>
                                             <tr>
@@ -533,8 +584,8 @@ const OrderDetailPage = () => {
                                                     <td>
                                                         <span style={{ 
                                                             padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold',
-                                                            background: inv.status === 'AUTHORIZED' ? '#dcfce7' : (inv.status === 'REJECTED' || inv.status === 'ERROR' ? '#fee2e2' : '#f1f5f9'),
-                                                            color: inv.status === 'AUTHORIZED' ? '#166534' : (inv.status === 'REJECTED' || inv.status === 'ERROR' ? '#991b1b' : '#334155')
+                                                            background: inv.status === 'AUTHORIZED' ? '#0d3b2e' : (inv.status === 'REJECTED' || inv.status === 'ERROR' ? '#3b1515' : '#1f1f2a'),
+                                                            color: inv.status === 'AUTHORIZED' ? '#34d399' : (inv.status === 'REJECTED' || inv.status === 'ERROR' ? '#f87171' : '#a0a0b0')
                                                         }}>
                                                             {inv.status}
                                                             {inv.id === order.dianEInvoicing?.id && ' (Actual)'}
@@ -551,7 +602,7 @@ const OrderDetailPage = () => {
                                                                     setIsDianGenerating(true);
                                                                     try {
                                                                         const res = await dianApi.checkInvoiceStatus(zipKeyMatch[1]);
-                                                                        alert(`Estado Histórico (${inv.document_number}):\n${res.statusCode} - ${res.statusDescription}`);
+                                                                        await Swal.fire({ title: `Estado Histórico (${inv.document_number})`, text: `${res.statusCode} - ${res.statusDescription}`, icon: 'info', confirmButtonColor: '#f0b429' });
                                                                     } finally { setIsDianGenerating(false); }
                                                                 }}
                                                             >Verificar</button>
@@ -583,14 +634,14 @@ const OrderDetailPage = () => {
                             )}
 
                             {noteType && (
-                                <div style={{ background: '#fff', border: '1px solid #cbd5e1', padding: '15px', borderRadius: '6px', marginBottom: '15px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>
-                                    <h4 style={{ marginTop: 0, borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
+                                <div style={{ background: '#1a1a24', border: '1px solid #2a2a35', padding: '15px', borderRadius: '6px', marginBottom: '15px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.3)' }}>
+                                    <h4 style={{ marginTop: 0, borderBottom: '1px solid #2a2a35', paddingBottom: '10px', color: '#f1f1f3' }}>
                                         Generar Nota {noteType === 'CREDIT' ? 'Crédito' : 'Débito'} para {order.dianEInvoicing.document_number}
                                     </h4>
                                     <form onSubmit={handleCreateNote}>
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '10px', marginBottom: '15px' }}>
                                             <div>
-                                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '12px', fontWeight: 'bold' }}>Motivo DIAN:</label>
+                                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '12px', fontWeight: 'bold', color: '#a0a0b0' }}>Motivo DIAN:</label>
                                                 <select className="form-input" value={noteReasonCode} onChange={(e) => setNoteReasonCode(e.target.value)} required>
                                                     {noteType === 'CREDIT' ? (
                                                         <>
@@ -609,7 +660,7 @@ const OrderDetailPage = () => {
                                                 </select>
                                             </div>
                                             <div>
-                                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '12px', fontWeight: 'bold' }}>Descripción Justificativa:</label>
+                                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '12px', fontWeight: 'bold', color: '#a0a0b0' }}>Descripción Justificativa:</label>
                                                 <textarea 
                                                     className="form-input" 
                                                     rows={2} 
@@ -656,7 +707,7 @@ const OrderDetailPage = () => {
                                                         {note.status === 'REJECTED' && <span style={{color: '#dc2626', fontWeight: 'bold'}}>Rechazada</span>}
                                                         {note.status === 'ERROR' && <span style={{color: '#dc2626', fontWeight: 'bold'}}>Error</span>}
                                                         {note.status === 'PROCESSED' && <span style={{color: '#ca8a04', fontWeight: 'bold'}}>Procesado</span>}
-                                                        {note.status === 'PENDING' && <span style={{color: '#64748b'}}>Pendiente</span>}
+                                                        {note.status === 'PENDING' && <span style={{color: '#a0a0b0'}}>Pendiente</span>}
                                                         {note.status === 'SENT' && <span style={{color: '#2563eb', fontWeight: 'bold'}}>Enviado</span>}
                                                     </td>
                                                     <td>
@@ -689,8 +740,8 @@ const OrderDetailPage = () => {
                             )}
                         </>
                     ) : (
-                        <div style={{ textAlign: 'center', padding: '20px', background: '#f8fafc', border: '1px dashed #cbd5e1', borderRadius: '6px' }}>
-                            <p style={{ color: '#64748b', marginBottom: '15px' }}>Este pedido aún no cuenta con Factura Electrónica emitida en la DIAN.</p>
+                        <div style={{ textAlign: 'center', padding: '20px', background: '#13131a', border: '1px dashed #2a2a35', borderRadius: '6px' }}>
+                            <p style={{ color: '#a0a0b0', marginBottom: '15px' }}>Este pedido aún no cuenta con Factura Electrónica emitida en la DIAN.</p>
                             <button 
                                 className="action-btn" 
                                 style={{ background: '#10b981', color: 'white' }}

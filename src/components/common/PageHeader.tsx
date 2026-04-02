@@ -3,36 +3,35 @@ import React, { ReactNode } from 'react';
 interface PageHeaderProps {
     title: string;
     icon: ReactNode;
-    children?: ReactNode; // For optional search bars or other elements on the right
+    children?: ReactNode;
 }
 
 const PageHeader: React.FC<PageHeaderProps> = ({ title, icon, children }) => {
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <div style={{
-                        background: 'linear-gradient(135deg, rgba(212,175,55,0.2) 0%, rgba(212,175,55,0.05) 100%)',
-                        border: '1px solid rgba(212,175,55,0.3)',
-                        color: 'var(--primary-color)',
-                        width: '48px',
-                        height: '48px',
-                        borderRadius: '14px',
+                        background: 'rgba(240, 180, 41, 0.1)',
+                        color: '#f0b429',
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '10px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '1.5rem',
-                        boxShadow: '0 4px 15px rgba(212,175,55,0.1)'
+                        fontSize: '1.25rem',
+                        boxShadow: '0 0 12px rgba(240, 180, 41, 0.08)',
                     }}>
                         {icon}
                     </div>
-                    <h1 style={{ margin: 0, border: 'none', padding: 0, fontSize: '2rem', letterSpacing: '-0.5px' }}>
+                    <h1 style={{ margin: 0, border: 'none', padding: 0, fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.3px', color: '#f1f1f3' }}>
                         {title}
                     </h1>
                 </div>
 
                 {children && (
-                    <div style={{ width: '100%', maxWidth: '400px', marginTop: '0.5rem' }}>
+                    <div style={{ width: '100%', maxWidth: '360px' }}>
                         {children}
                     </div>
                 )}

@@ -9,7 +9,7 @@
     background: none;
     border: none;
     font-size: 1rem;
-    color: #666;
+    color: #a0a0b0;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -17,7 +17,7 @@
 }
 
 .back-btn:hover {
-    color: #333;
+    color: #f1f1f3;
 }
 
 .details-grid {
@@ -35,8 +35,8 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     /* Sombra clara */
     border: 1px solid var(--border-color);
-    border-top: 1px solid rgba(255, 255, 255, 0.8);
-    border-left: 1px solid rgba(255, 255, 255, 0.6);
+    border-top: 1px solid #2a2a35;
+    border-left: 1px solid #2a2a35;
 }
 
 .detail-card.full-width {
@@ -67,16 +67,15 @@
     display: flex;
     align-items: center;
     gap: 15px;
-    background: rgba(255, 255, 255, 0.4);
-    /* Fondo más claro */
+    background: #13131a;
     padding: 20px;
     border-radius: 6px;
 }
 
 .form-input {
     padding: 10px;
-    background-color: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: #1a1a24;
+    border: 1px solid #2a2a35;
     color: var(--text-primary);
     border-radius: var(--border-radius);
     font-size: 1rem;
@@ -96,7 +95,7 @@
 }
 
 .save-btn:disabled {
-    background-color: #a7f3d0;
+    background-color: rgba(16, 185, 129, 0.3);
     cursor: not-allowed;
 }
 
@@ -108,5 +107,5 @@
 
 .product-thumb {
     border-radius: 4px;
-    border: 1px solid #eee;
+    border: 1px solid #2a2a35;
 }

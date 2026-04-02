@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { FiTrendingUp, FiRefreshCcw, FiPrinter } from 'react-icons/fi';
+import { FiRepeat, FiRefreshCcw, FiPrinter } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
+import Button from '../../components/ui/Button';
+import FormField from '../../components/ui/FormField';
+import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
 
@@ -39,14 +42,20 @@ const CashFlowPage = () => {
 
     const handlePrint = () => window.print();
 
+    const sectionColors: Record<string, string> = {
+        'Actividades de Operacion': '#60a5fa',
+        'Actividades de Inversion': '#fbbf24',
+        'Actividades de Financiacion': '#a78bfa',
+    };
+
     const renderLineItems = (items: any[]) => (
         items.map((item: any, i: number) => (
             <div key={i} style={{
                 display: 'flex', justifyContent: 'space-between', padding: '6px 0',
-                borderBottom: '1px solid #f0f0f0', fontSize: '13px', paddingLeft: '16px',
+                borderBottom: '1px solid #2a2a35', fontSize: '13px', paddingLeft: '16px',
             }}>
-                <span>{item.concept}</span>
-                <span style={{ fontWeight: 600, color: item.amount >= 0 ? '#2e7d32' : '#c62828' }}>
+                <span style={{ color: '#f1f1f3' }}>{item.concept}</span>
+                <span style={{ fontWeight: 600, color: item.amount >= 0 ? '#34d399' : '#f87171' }}>
                     {formatCurrency(item.amount)}
                 </span>
             </div>
@@ -55,26 +64,26 @@ const CashFlowPage = () => {
 
     const renderSection = (title: string, section: any, color: string) => (
         <div style={{ marginBottom: '24px' }}>
-            <h3 style={{ borderBottom: `3px solid ${color}`, paddingBottom: '8px', color, marginBottom: '12px' }}>
+            <h3 style={{ borderBottom: `3px solid ${color}`, paddingBottom: '8px', color, marginBottom: '12px', fontFamily: 'Inter, sans-serif' }}>
                 {title}
             </h3>
             {section?.netIncome !== undefined && (
                 <div style={{
                     display: 'flex', justifyContent: 'space-between', padding: '6px 0',
-                    borderBottom: '1px solid #f0f0f0', fontSize: '13px', paddingLeft: '16px',
+                    borderBottom: '1px solid #2a2a35', fontSize: '13px', paddingLeft: '16px',
                 }}>
-                    <span>Utilidad Neta del Periodo</span>
-                    <span style={{ fontWeight: 600 }}>{formatCurrency(section.netIncome)}</span>
+                    <span style={{ color: '#f1f1f3' }}>Utilidad Neta del Periodo</span>
+                    <span style={{ fontWeight: 600, color: '#f1f1f3' }}>{formatCurrency(section.netIncome)}</span>
                 </div>
             )}
             {section?.adjustments && renderLineItems(section.adjustments)}
             {section?.items && renderLineItems(section.items)}
             <div style={{
                 display: 'flex', justifyContent: 'space-between', padding: '10px 0',
-                borderTop: '2px solid #333', fontWeight: 700, fontSize: '15px', marginTop: '8px',
+                borderTop: '2px solid #3a3a48', fontWeight: 700, fontSize: '15px', marginTop: '8px', color: '#f1f1f3',
             }}>
                 <span>Total {title}</span>
-                <span style={{ color: section?.total >= 0 ? '#2e7d32' : '#c62828' }}>
+                <span style={{ color: section?.total >= 0 ? '#34d399' : '#f87171' }}>
                     {formatCurrency(section?.total || 0)}
                 </span>
             </div>
@@ -83,61 +92,56 @@ const CashFlowPage = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title="Flujo de Caja" icon={<FiTrendingUp />} />
+            <PageHeader title="Flujo de Caja" icon={<FiRepeat />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
-                <div>
-                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Fecha Inicio</label>
-                    <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)}
-                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }} />
+                <div style={{ minWidth: '160px' }}>
+                    <FormField label="Fecha Inicio" name="startDate" type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
                 </div>
-                <div>
-                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Fecha Fin</label>
-                    <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)}
-                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }} />
+                <div style={{ minWidth: '160px' }}>
+                    <FormField label="Fecha Fin" name="endDate" type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
                 </div>
-                <button onClick={fetchReport} className="btn btn-primary">
-                    <FiRefreshCcw /> Generar
-                </button>
-                <button onClick={handlePrint} className="btn btn-secondary">
-                    <FiPrinter /> Imprimir
-                </button>
+                <Button variant="primary" icon={<FiRefreshCcw />} onClick={fetchReport}>Generar</Button>
+                <Button variant="secondary" icon={<FiPrinter />} onClick={handlePrint}>Imprimir</Button>
             </div>
 
-            {error && <p className="error-message">{error}</p>}
+            {error && <p style={{ color: '#f87171', fontSize: '13px', fontWeight: 600 }}>{error}</p>}
 
             {loading ? (
-                <p>Generando flujo de caja...</p>
+                <LoadingSpinner size="md" text="Generando flujo de caja..." />
             ) : data ? (
-                <div className="list-card full-width" style={{ padding: '24px' }}>
-                    <h2 style={{ textAlign: 'center', marginBottom: '4px' }}>Estado de Flujo de Efectivo</h2>
-                    <p style={{ textAlign: 'center', color: '#666', marginBottom: '24px' }}>
+                <div style={{
+                    backgroundColor: '#1a1a24', border: '1px solid #2a2a35',
+                    borderRadius: 12, padding: '24px',
+                }}>
+                    <h2 style={{ textAlign: 'center', marginBottom: '4px', color: '#f1f1f3', fontFamily: 'Inter, sans-serif' }}>Estado de Flujo de Efectivo</h2>
+                    <p style={{ textAlign: 'center', color: '#a0a0b0', marginBottom: '24px', fontFamily: 'Inter, sans-serif' }}>
                         {startDate} al {endDate}
                     </p>
 
-                    {renderSection('Actividades de Operacion', data.operatingActivities, '#1565c0')}
-                    {renderSection('Actividades de Inversion', data.investingActivities, '#e65100')}
-                    {renderSection('Actividades de Financiacion', data.financingActivities, '#6a1b9a')}
+                    {renderSection('Actividades de Operacion', data.operatingActivities, sectionColors['Actividades de Operacion'])}
+                    {renderSection('Actividades de Inversion', data.investingActivities, sectionColors['Actividades de Inversion'])}
+                    {renderSection('Actividades de Financiacion', data.financingActivities, sectionColors['Actividades de Financiacion'])}
 
                     {/* Summary */}
-                    <div style={{ marginTop: '24px', padding: '16px', background: '#f8f9fa', borderRadius: '8px' }}>
+                    <div style={{ marginTop: '24px', padding: '16px', background: '#1f1f2a', borderRadius: '8px', border: '1px solid #2a2a35' }}>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', color: '#f1f1f3' }}>
                                 <span>Efectivo al Inicio del Periodo:</span>
                                 <span style={{ fontWeight: 700 }}>{formatCurrency(data.openingCash)}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', color: '#f1f1f3' }}>
                                 <span>Cambio Neto en Efectivo:</span>
-                                <span style={{ fontWeight: 700, color: data.netChange >= 0 ? '#2e7d32' : '#c62828' }}>
+                                <span style={{ fontWeight: 700, color: data.netChange >= 0 ? '#34d399' : '#f87171' }}>
                                     {formatCurrency(data.netChange)}
                                 </span>
                             </div>
                             <div style={{
                                 display: 'flex', justifyContent: 'space-between', fontSize: '16px',
-                                borderTop: '2px solid #333', paddingTop: '10px', fontWeight: 700,
+                                borderTop: '2px solid #3a3a48', paddingTop: '10px', fontWeight: 700, color: '#f1f1f3',
                             }}>
                                 <span>Efectivo al Final del Periodo:</span>
-                                <span style={{ color: '#1565c0' }}>{formatCurrency(data.closingCash)}</span>
+                                <span style={{ color: '#60a5fa' }}>{formatCurrency(data.closingCash)}</span>
                             </div>
                         </div>
                     </div>
