@@ -50,6 +50,34 @@ const OrderDetailPage = () => {
         }
     };
 
+    const handleMarkAsPreparing = async () => {
+        if (!window.confirm('¿Marcar este pedido como "Preparando"?')) return;
+        try {
+            setIsPickupActionLoading(true);
+            await orderApi.markAsPreparingForPickup(id);
+            alert('Pedido marcado como Preparando.');
+            fetchOrder();
+        } catch (err) {
+            alert('Error al marcar como preparando.');
+        } finally {
+            setIsPickupActionLoading(false);
+        }
+    };
+
+    const handleMarkAsUnclaimed = async () => {
+        if (!window.confirm('¿Seguro de marcar este pedido como NO RECLAMADO? (El cliente no recogió el paquete a tiempo)')) return;
+        try {
+            setIsPickupActionLoading(true);
+            await orderApi.markAsUnclaimedForPickup(id);
+            alert('Pedido marcado como No Reclamado.');
+            fetchOrder();
+        } catch (err) {
+            alert('Error al actualizar a no reclamado.');
+        } finally {
+            setIsPickupActionLoading(false);
+        }
+    };
+
     const handleMarkAsCollected = async () => {
         const result = await Swal.fire({
             title: '¿Estás seguro?',
@@ -327,7 +355,13 @@ const OrderDetailPage = () => {
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '15px' }}>
                             <div>
                                 <h3 style={{ color: '#60a5fa', margin: '0 0 10px 0' }}>📍 Gestión de Recogida en Punto</h3>
-                                <p style={{ margin: 0 }}><strong>Estado de Recogida:</strong> {order.pickup_status === 'READY' ? '🟢 Listo para Recoger (Notificado)' : order.pickup_status === 'COLLECTED' ? '🔵 Cliente Recogió el Pedido' : '🟡 Pendiente de Empaque'}</p>
+                                <p style={{ margin: 0 }}><strong>Estado de Recogida:</strong> {
+                                    order.pickup_status === 'UNCLAIMED' ? '🔴 No Reclamado (Abandonado)' :
+                                    order.pickup_status === 'READY' ? '🟢 Listo para Recoger (Notificado)' :
+                                    order.pickup_status === 'COLLECTED' ? '🔵 Cliente Recogió el Pedido' :
+                                    order.pickup_status === 'PREPARING' ? '🟡 Preparando Empaque' :
+                                    '⚪ Pendiente de Revisión'
+                                }</p>
                             </div>
                             {order.pickup_pin && (
                                 <div style={{ background: 'rgba(240, 180, 41, 0.1)', border: '2px dashed #f0b429', padding: '10px 20px', borderRadius: '8px', textAlign: 'center' }}>
@@ -340,19 +374,35 @@ const OrderDetailPage = () => {
                         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                             <button
                                 className="action-btn"
-                                style={{ background: '#3b82f6', color: 'white', flex: 1, padding: '10px', fontWeight: 'bold' }}
-                                onClick={handleMarkAsReadyForPickup}
-                                disabled={isPickupActionLoading || order.pickup_status === 'READY' || order.pickup_status === 'COLLECTED'}
+                                style={{ background: '#f59e0b', color: 'white', flex: '1 1 auto', padding: '10px', fontWeight: 'bold' }}
+                                onClick={handleMarkAsPreparing}
+                                disabled={isPickupActionLoading || order.pickup_status === 'PREPARING' || order.pickup_status === 'READY' || order.pickup_status === 'COLLECTED' || order.pickup_status === 'UNCLAIMED'}
                             >
-                                {isPickupActionLoading ? 'Procesando...' : '1. Notificar: Listo para Recoger'}
+                                {isPickupActionLoading ? '...' : 'Alistar (Preparando)'}
+                            </button>
+                            <button
+                                className="action-btn"
+                                style={{ background: '#3b82f6', color: 'white', flex: '1 1 auto', padding: '10px', fontWeight: 'bold' }}
+                                onClick={handleMarkAsReadyForPickup}
+                                disabled={isPickupActionLoading || order.pickup_status === 'READY' || order.pickup_status === 'COLLECTED' || order.pickup_status === 'UNCLAIMED'}
+                            >
+                                {isPickupActionLoading ? '...' : 'Notificar: Listo para Recoger'}
                             </button>
                             <button
                                 className="action-btn save-btn"
-                                style={{ flex: 1, padding: '10px', fontWeight: 'bold' }}
+                                style={{ flex: '1 1 auto', padding: '10px', fontWeight: 'bold' }}
                                 onClick={handleMarkAsCollected}
-                                disabled={isPickupActionLoading || order.pickup_status === 'COLLECTED'}
+                                disabled={isPickupActionLoading || order.pickup_status === 'COLLECTED' || order.pickup_status === 'UNCLAIMED'}
                             >
-                                {isPickupActionLoading ? 'Procesando...' : '2. Marcar como Entregado al Cliente'}
+                                {isPickupActionLoading ? '...' : 'Marcar Entregado (Recogido)'}
+                            </button>
+                            <button
+                                className="action-btn"
+                                style={{ background: '#ef4444', color: 'white', flex: '1 1 auto', padding: '10px', fontWeight: 'bold' }}
+                                onClick={handleMarkAsUnclaimed}
+                                disabled={isPickupActionLoading || order.pickup_status === 'COLLECTED' || order.pickup_status === 'UNCLAIMED'}
+                            >
+                                {isPickupActionLoading ? '...' : 'Marcar No Reclamado'}
                             </button>
                         </div>
                     </div>
@@ -368,12 +418,33 @@ const OrderDetailPage = () => {
                             onChange={(e) => setStatus(e.target.value)}
                             className="form-input"
                         >
-                            <option value="Pendiente">Pendiente</option>
-                            <option value="Aprobado PCE">Aprobado PCE</option>
-                            <option value="Pagado">Pagado</option>
-                            <option value="Enviado">Enviado</option>
-                            <option value="Entregado">Entregado</option>
-                            <option value="Cancelado">Cancelado</option>
+                            {order.payment_method === 'WOMPI_COD' ? (
+                                <>
+                                    <option value="Aprobado PCE">Aprobado PCE</option>
+                                    <option value="Enviado">Enviado</option>
+                                    <option value="Entregado y Pagado">Entregado y Pagado</option>
+                                    <option value="Devuelto y No pagado">Devuelto y No pagado</option>
+                                    <option value="Cancelado">Cancelado</option>
+                                </>
+                            ) : order.delivery_method === 'PICKUP' ? (
+                                <>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Pagado">Pagado</option>
+                                    <option value="Preparando Pedido">Preparando Pedido</option>
+                                    <option value="Listo para Recoger">Listo para Recoger</option>
+                                    <option value="Entregado">Entregado</option>
+                                    <option value="No Reclamado">No Reclamado</option>
+                                    <option value="Cancelado">Cancelado</option>
+                                </>
+                            ) : (
+                                <>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Pagado">Pagado</option>
+                                    <option value="Enviado">Enviado</option>
+                                    <option value="Entregado">Entregado</option>
+                                    <option value="Cancelado">Cancelado</option>
+                                </>
+                            )}
                         </select>
                         <button
                             className="action-btn save-btn"

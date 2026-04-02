@@ -8,7 +8,7 @@ export const getDianInvoices = async () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'x-api-key': 'TwoSixAdminKey123!'
+                'x-api-key': import.meta.env.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!'
             },
         });
         return await handleResponse(response, 'getDianInvoices');
@@ -19,7 +19,7 @@ export const getDianInvoices = async () => {
 
 export const downloadInvoiceXml = async (id: number, docNumber: string) => {
     const response = await fetch(`${API_URL}/v1/dian/invoices/${id}/xml`, {
-        headers: { 'x-api-key': 'TwoSixAdminKey123!' },
+        headers: { 'x-api-key': import.meta.env.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!' },
     });
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
@@ -32,7 +32,7 @@ export const downloadInvoiceXml = async (id: number, docNumber: string) => {
 
 export const downloadInvoicePdf = async (id: number, docNumber: string) => {
     const response = await fetch(`${API_URL}/v1/dian/invoices/${id}/pdf`, {
-        headers: { 'x-api-key': 'TwoSixAdminKey123!' },
+        headers: { 'x-api-key': import.meta.env.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!' },
     });
 
     if (!response.ok) {
@@ -60,7 +60,7 @@ export const downloadInvoicePdf = async (id: number, docNumber: string) => {
 
 export const downloadInvoiceZip = async (trackId: string, docNumber: string) => {
     const response = await fetch(`${API_URL}/v1/dian/status/${trackId}/xml`, {
-        headers: { 'x-api-key': 'TwoSixAdminKey123!' },
+        headers: { 'x-api-key': import.meta.env.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!' },
     });
 
     if (!response.ok) {
@@ -86,7 +86,7 @@ export const createDianInvoice = async (data: any) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-api-key': 'TwoSixAdminKey123!'
+                'x-api-key': import.meta.env.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!'
             },
             body: JSON.stringify(data)
         });
@@ -102,7 +102,7 @@ export const retryInvoice = async (orderId: number, data: any) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-api-key': 'TwoSixAdminKey123!'
+                'x-api-key': import.meta.env.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!'
             },
             body: JSON.stringify(data)
         });
@@ -118,7 +118,7 @@ export const createCreditNote = async (id: number, data: any) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-api-key': 'TwoSixAdminKey123!'
+                'x-api-key': import.meta.env.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!'
             },
             body: JSON.stringify(data)
         });
@@ -134,7 +134,7 @@ export const createDebitNote = async (id: number, data: any) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-api-key': 'TwoSixAdminKey123!'
+                'x-api-key': import.meta.env.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!'
             },
             body: JSON.stringify(data)
         });
@@ -149,7 +149,7 @@ export const syncNoteStatus = async (noteId: number) => {
         const response = await fetch(`${API_URL}/v1/dian/notes/${noteId}/sync-status`, {
             method: 'POST',
             headers: {
-                'x-api-key': 'TwoSixAdminKey123!'
+                'x-api-key': import.meta.env.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!'
             }
         });
         return await handleResponse(response, 'syncNoteStatus');
@@ -163,7 +163,7 @@ export const checkInvoiceStatus = async (trackId: string) => {
         const response = await fetch(`${API_URL}/v1/dian/status/${trackId}`, {
             method: 'GET',
             headers: {
-                'x-api-key': 'TwoSixAdminKey123!'
+                'x-api-key': import.meta.env.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!'
             }
         });
         return await handleResponse(response, 'checkInvoiceStatus');

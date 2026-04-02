@@ -44,8 +44,10 @@ const PickupDashboardPage = () => {
 
             const statusOrder = {
                 'PENDING': 1,
-                'READY': 2,
-                'COLLECTED': 3
+                'PREPARING': 2,
+                'READY': 3,
+                'COLLECTED': 4,
+                'UNCLAIMED': 5
             };
 
             const sortedOrders = activeOrders.sort((a, b) => {
@@ -81,6 +83,56 @@ const PickupDashboardPage = () => {
         const interval = setInterval(() => fetchOrders(true), 15000);
         return () => clearInterval(interval);
     }, []);
+
+    const handleMarkPreparing = async (id) => {
+        try {
+            const result = await Swal.fire({
+                title: '¿Alistar Pedido?',
+                text: "Marca el pedido como 'Preparando'.",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#f59e0b',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Sí, alistar'
+            });
+
+            if (result.isConfirmed) {
+                const token = localStorage.getItem('accessToken');
+                await axios.post(`${API_BASE_URL}/order/${id}/preparing-for-pickup`, {}, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                Swal.fire('¡Preparando!', 'El pedido fue marcado como en preparación.', 'success');
+                fetchOrders();
+            }
+        } catch (error) {
+            Swal.fire('Error', 'No se pudo actualizar el estado', 'error');
+        }
+    };
+
+    const handleMarkUnclaimed = async (id) => {
+        try {
+            const result = await Swal.fire({
+                title: '¿Marcar No Reclamado?',
+                text: "Marca este pedido como 'No Reclamado' (abandonado).",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Sí, no reclamado'
+            });
+
+            if (result.isConfirmed) {
+                const token = localStorage.getItem('accessToken');
+                await axios.post(`${API_BASE_URL}/order/${id}/unclaimed-pickup`, {}, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                Swal.fire('¡No Reclamado!', 'El pedido fue marcado como no reclamado.', 'info');
+                fetchOrders();
+            }
+        } catch (error) {
+            Swal.fire('Error', 'No se pudo actualizar el estado', 'error');
+        }
+    };
 
     const handleMarkReady = async (id) => {
         try {
@@ -140,9 +192,13 @@ const PickupDashboardPage = () => {
         switch (pickupStatus) {
             case 'PENDING':
                 return 'pickup-card-pending';
+            case 'PREPARING':
+                return 'pickup-card-pending';
             case 'READY':
                 return 'pickup-card-ready';
             case 'COLLECTED':
+                return 'pickup-card-collected';
+            case 'UNCLAIMED':
                 return 'pickup-card-collected';
             default:
                 return 'pickup-card-pending';
@@ -151,10 +207,12 @@ const PickupDashboardPage = () => {
 
     const getStatusText = (pickupStatus) => {
         switch (pickupStatus) {
-            case 'PENDING': return 'Pendiente de Preparación';
+            case 'PENDING': return 'Pendiente de Revisión';
+            case 'PREPARING': return 'Preparando Empaque';
             case 'READY': return 'Listo para Recoger';
             case 'COLLECTED': return 'Entregado (Recogido)';
-            default: return 'Pendiente de Preparación';
+            case 'UNCLAIMED': return 'No Reclamado (Abandonado)';
+            default: return 'Pendiente de Revisión';
         }
     };
 
@@ -263,20 +321,39 @@ const PickupDashboardPage = () => {
                                 <Button
                                     variant="primary"
                                     size="sm"
-                                    onClick={() => handleMarkReady(order.id)}
+                                    onClick={() => handleMarkPreparing(order.id)}
                                 >
-                                    Marcar: Listo para Recoger
+                                    Alistar
                                 </Button>
                             )}
 
-                            {(order.pickup_status === 'READY' || order.pickup_status === 'PENDING') && (
+                            {(order.pickup_status === 'PREPARING' || order.pickup_status === 'PENDING') && (
                                 <Button
-                                    variant="info"
-                                    size="md"
-                                    onClick={() => handleMarkCollected(order.id)}
+                                    variant="primary"
+                                    size="sm"
+                                    onClick={() => handleMarkReady(order.id)}
                                 >
-                                    Entregar a Cliente
+                                    Notificar Listo
                                 </Button>
+                            )}
+
+                            {(order.pickup_status === 'READY') && (
+                                <>
+                                    <Button
+                                        variant="info"
+                                        size="md"
+                                        onClick={() => handleMarkCollected(order.id)}
+                                    >
+                                        Entregar a Cliente
+                                    </Button>
+                                    <Button
+                                        variant="destructive"
+                                        size="sm"
+                                        onClick={() => handleMarkUnclaimed(order.id)}
+                                    >
+                                        No Reclamado
+                                    </Button>
+                                </>
                             )}
                         </div>
                     </div>

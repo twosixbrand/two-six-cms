@@ -53,11 +53,21 @@ export const deleteOrder = async (id) => {
 };
 
 export const markAsReadyForPickup = async (id: number | string) => {
-    const response = await fetch(`\${ENDPOINT}/\${id}/ready-for-pickup`, { method: 'POST' });
+    const response = await fetch(`${ENDPOINT}/${id}/ready-for-pickup`, { method: 'POST' });
     return handleResponse(response);
 };
 
 export const markAsCollected = async (id: number | string) => {
-    const response = await fetch(`\${ENDPOINT}/\${id}/collected`, { method: 'POST' });
+    const response = await fetch(`${ENDPOINT}/${id}/collected`, { method: 'POST' });
+    return handleResponse(response);
+};
+
+export const markAsPreparingForPickup = async (id: number | string) => {
+    const response = await fetch(`${ENDPOINT}/${id}/preparing-for-pickup`, { method: 'POST' });
+    return handleResponse(response);
+};
+
+export const markAsUnclaimedForPickup = async (id: number | string) => {
+    const response = await fetch(`${ENDPOINT}/${id}/unclaimed-pickup`, { method: 'POST' });
     return handleResponse(response);
 };

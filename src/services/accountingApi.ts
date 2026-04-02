@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3050/api'
 
 const authHeaders = () => ({
     'Content-Type': 'application/json',
-    'x-api-key': 'TwoSixAdminKey123!',
+    'x-api-key': import.meta.env.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!',
 });
 
 // ── PUC Accounts ──────────────────────────────────────────────
@@ -324,7 +324,7 @@ export const generateWithholdingCertificates = async (year: number) => {
 export const downloadWithholdingPdf = async (id: number) => {
     const response = await fetch(`${API_URL}/accounting/withholding-certificates/${id}/pdf`, {
         method: 'GET',
-        headers: { 'x-api-key': 'TwoSixAdminKey123!' },
+        headers: { 'x-api-key': import.meta.env.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!' },
     });
     if (!response.ok) {
         throw new Error(`Error descargando PDF: ${response.statusText}`);
@@ -615,7 +615,7 @@ export const getFinancialIndicators = async (params: { year: number; month: numb
 export const exportToExcel = async (reportType: string, params: Record<string, string>) => {
     const query = new URLSearchParams(params).toString();
     const response = await fetch(`${API_URL}/accounting/export/${reportType}?${query}`, {
-        headers: { 'x-api-key': 'TwoSixAdminKey123!' },
+        headers: { 'x-api-key': import.meta.env.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!' },
     });
     if (!response.ok) throw new Error('Error exportando');
     const blob = await response.blob();
@@ -643,7 +643,7 @@ export const previewExogena = async (year: number) => {
 export const generateExogena = async (year: number) => {
     const query = new URLSearchParams({ year: String(year) });
     const response = await fetch(`${API_URL}/accounting/exogena/generate?${query}`, {
-        headers: { 'x-api-key': 'TwoSixAdminKey123!' },
+        headers: { 'x-api-key': import.meta.env.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!' },
     });
     if (!response.ok) throw new Error('Error generando información exógena');
     const blob = await response.blob();
