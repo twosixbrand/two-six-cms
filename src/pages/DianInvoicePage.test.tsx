@@ -235,7 +235,7 @@ describe('DianInvoicePage', () => {
         expect(screen.getByText('Facturación DIAN - Historial')).toBeInTheDocument();
     });
 
-    it('renders action buttons (Actualizar and Generar Factura)', async () => {
+    it('renders action buttons (Actualizar)', async () => {
         render(
             <BrowserRouter>
                 <DianInvoicePage />
@@ -243,6 +243,5 @@ describe('DianInvoicePage', () => {
         );
 
         expect(screen.getByText(/Actualizar/)).toBeInTheDocument();
-        expect(screen.getByText(/Generar Factura de Prueba/)).toBeInTheDocument();
     });
 });

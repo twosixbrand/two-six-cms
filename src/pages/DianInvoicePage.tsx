@@ -27,26 +27,7 @@ const DianInvoicePage = () => {
         }
     };
 
-    const handleTestInvoice = async () => {
-        const result = await Swal.fire({
-            title: 'Factura de Prueba',
-            text: '¿Seguro que deseas enviar una factura de prueba a la DIAN?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#f0b429',
-            cancelButtonColor: '#2a2a35',
-            confirmButtonText: 'Sí, enviar',
-            cancelButtonText: 'Cancelar',
-        });
-        if (!result.isConfirmed) return;
-        try {
-            await dianApi.createDianInvoice({});
-            await Swal.fire({ title: '¡Éxito!', text: 'Factura generada y enviada al Motor DIAN.', icon: 'success', confirmButtonColor: '#f0b429' });
-            fetchInvoices();
-        } catch (err: any) {
-            await Swal.fire({ title: 'Error', text: err.error || err.message || 'Error generando factura', icon: 'error', confirmButtonColor: '#f0b429' });
-        }
-    };
+
 
     const handleCheckStatus = async (inv: any) => {
         try {
@@ -144,9 +125,6 @@ const DianInvoicePage = () => {
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px' }}>
                 <Button variant="primary" icon={<FiRefreshCcw />} onClick={fetchInvoices}>
                     Actualizar
-                </Button>
-                <Button variant="secondary" icon={<FiSend />} onClick={handleTestInvoice}>
-                    Generar Factura de Prueba
                 </Button>
             </div>
 
