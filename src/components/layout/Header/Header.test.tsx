@@ -20,7 +20,7 @@ vi.mock('react-router-dom', () => ({
 }));
 
 // Mock logo import
-vi.mock('../../../assets/logo.png', () => ({ default: 'mock-logo.png' }));
+vi.mock('../../../assets/logo-gorilla.png', () => ({ default: 'mock-logo.png' }));
 
 describe('Header', () => {
     it('renders without crashing', () => {

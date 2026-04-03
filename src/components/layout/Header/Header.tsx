@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
 import './Header.css';
-import logoUrl from '../../../assets/logo-white.png';
+import logoUrl from '../../../assets/logo-gorilla.png';
 
 const getInitials = (email) => {
   if (!email) return '??';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiPrinter } from 'react-icons/fi';
-import logoImg from '../../assets/logo.png';
+import logoImg from '../../assets/logo-gorilla.png';
 import './TransportGuideModal.css';
 
 const TransportGuideModal = ({ order, onClose }) => {
