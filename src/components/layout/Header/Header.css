@@ -85,12 +85,27 @@
 }
 
 .header-title {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #f1f1f3;
+  font-size: 1rem;
+  font-weight: 800;
   margin: 0;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
+  background: linear-gradient(110deg, #fceeb5 0%, #f5d76e 25%, #d4af37 50%, #b8860b 75%, #fceeb5 100%);
+  background-size: 200% auto;
+  color: #000;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.3));
+  position: relative;
+  display: inline-block;
+  animation: shineGoldTitle 6s linear infinite;
+}
+
+@keyframes shineGoldTitle {
+  to {
+    background-position: 200% center;
+  }
 }
 
 /* Right Section */
