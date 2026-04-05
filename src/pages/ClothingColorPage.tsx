@@ -24,13 +24,17 @@ const ClothingColorPage = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editing, setEditing] = useState<any>(null);
   const [saving, setSaving] = useState(false);
-  const [editForm, setEditForm] = useState({ id_design: '', id_color: '', slug: '' });
+  const [editForm, setEditForm] = useState({ id_design: '', id_color: '', slug: '', seo_title: '', seo_desc: '', seo_h1: '', seo_alt: '' });
 
   // Create modal state
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createDesign, setCreateDesign] = useState('');
   const [createColor, setCreateColor] = useState('');
   const [createSlug, setCreateSlug] = useState('');
+  const [createSeoTitle, setCreateSeoTitle] = useState('');
+  const [createSeoDesc, setCreateSeoDesc] = useState('');
+  const [createSeoH1, setCreateSeoH1] = useState('');
+  const [createSeoAlt, setCreateSeoAlt] = useState('');
   const [sizeSelections, setSizeSelections] = useState<Record<number, { selected: boolean; quantity: number }>>({});
 
   const fetchData = useCallback(async () => {
@@ -82,7 +86,7 @@ const ClothingColorPage = () => {
   // Edit
   const openEditModal = (row: any) => {
     setEditing(row);
-    setEditForm({ id_design: row.id_design || '', id_color: row.id_color || '', slug: row.slug || '' });
+    setEditForm({ id_design: row.id_design || '', id_color: row.id_color || '', slug: row.slug || '', seo_title: row.seo_title || '', seo_desc: row.seo_desc || '', seo_h1: row.seo_h1 || '', seo_alt: row.seo_alt || '' });
     setShowEditModal(true);
   };
 
@@ -102,7 +106,7 @@ const ClothingColorPage = () => {
     try {
       setSaving(true);
       setError('');
-      const dataToSave: any = { id_color: Number(editForm.id_color), slug: editForm.slug };
+      const dataToSave: any = { id_color: Number(editForm.id_color), slug: editForm.slug, seo_title: editForm.seo_title || null, seo_desc: editForm.seo_desc || null, seo_h1: editForm.seo_h1 || null, seo_alt: editForm.seo_alt || null };
       await clothingColorApi.updateClothingColor(editing.id, dataToSave);
       closeEditModal();
       fetchData();
@@ -119,6 +123,10 @@ const ClothingColorPage = () => {
     setCreateDesign('');
     setCreateColor('');
     setCreateSlug('');
+    setCreateSeoTitle('');
+    setCreateSeoDesc('');
+    setCreateSeoH1('');
+    setCreateSeoAlt('');
     setSizeSelections({});
     setShowCreateModal(true);
   };
@@ -157,7 +165,7 @@ const ClothingColorPage = () => {
     try {
       setSaving(true);
       setError('');
-      const payload = { id_design: createDesign, id_color: createColor, slug: createSlug, sizes: JSON.stringify(sizesData) };
+      const payload = { id_design: createDesign, id_color: createColor, slug: createSlug, seo_title: createSeoTitle || undefined, seo_desc: createSeoDesc || undefined, seo_h1: createSeoH1 || undefined, seo_alt: createSeoAlt || undefined, sizes: JSON.stringify(sizesData) };
       const result = await clothingColorApi.createContextual(payload);
       closeCreateModal();
       fetchData();
@@ -237,6 +245,16 @@ const ClothingColorPage = () => {
       key: 'gender',
       header: 'Genero',
       render: (_: any, row: any) => row.design?.clothing?.gender?.name || 'N/A',
+    },
+    {
+      key: 'seo',
+      header: 'SEO',
+      width: '60px',
+      render: (_: any, row: any) => (
+        <span style={{ color: row.seo_h1 ? '#22c55e' : '#6b7280', fontWeight: 600, fontSize: '0.85rem' }}>
+          {row.seo_h1 ? '✓' : '✗'}
+        </span>
+      ),
     },
   ];
 
@@ -321,6 +339,46 @@ const ClothingColorPage = () => {
               onChange={handleEditChange}
               placeholder="Ej: camiseta-negra"
             />
+
+            <div style={{ borderTop: '1px solid #2a2a35', paddingTop: '1rem', marginTop: '0.5rem' }}>
+              <h4 style={{ margin: '0 0 1rem', fontSize: '0.85rem', fontWeight: 700, fontFamily: 'Inter, sans-serif', color: '#f0b429', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                SEO / Contenido Web
+              </h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <FormField
+                  label="Título SEO (pestaña del navegador)"
+                  name="seo_title"
+                  type="text"
+                  value={editForm.seo_title}
+                  onChange={handleEditChange}
+                  placeholder="Ej: Camiseta Essentials Negra - Logo Gorila | Two Six"
+                />
+                <FormField
+                  label="H1 (título visible en la página)"
+                  name="seo_h1"
+                  type="text"
+                  value={editForm.seo_h1}
+                  onChange={handleEditChange}
+                  placeholder="Ej: Camiseta Essentials - Edición Femenina (Negra)"
+                />
+                <FormField
+                  label="Meta Descripción"
+                  name="seo_desc"
+                  type="textarea"
+                  value={editForm.seo_desc}
+                  onChange={handleEditChange}
+                  placeholder="Descripción del producto para buscadores (máx. 160 caracteres)"
+                />
+                <FormField
+                  label="Texto Alt (imágenes)"
+                  name="seo_alt"
+                  type="text"
+                  value={editForm.seo_alt}
+                  onChange={handleEditChange}
+                  placeholder="Ej: Mujer usando camiseta negra Two Six con logo gorila"
+                />
+              </div>
+            </div>
           </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
             <Button variant="ghost" onClick={closeEditModal}>Cancelar</Button>
@@ -362,6 +420,46 @@ const ClothingColorPage = () => {
               required
               placeholder="Ej: camiseta-negra"
             />
+
+            <div style={{ borderTop: '1px solid #2a2a35', paddingTop: '1rem', marginTop: '0.5rem' }}>
+              <h4 style={{ margin: '0 0 1rem', fontSize: '0.85rem', fontWeight: 700, fontFamily: 'Inter, sans-serif', color: '#f0b429', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                SEO / Contenido Web (Opcional)
+              </h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <FormField
+                  label="Título SEO"
+                  name="seo_title"
+                  type="text"
+                  value={createSeoTitle}
+                  onChange={(e: any) => setCreateSeoTitle(e.target.value)}
+                  placeholder="Ej: Camiseta Essentials Negra | Two Six"
+                />
+                <FormField
+                  label="H1 (título visible)"
+                  name="seo_h1"
+                  type="text"
+                  value={createSeoH1}
+                  onChange={(e: any) => setCreateSeoH1(e.target.value)}
+                  placeholder="Ej: Camiseta Essentials - Edición Femenina (Negra)"
+                />
+                <FormField
+                  label="Meta Descripción"
+                  name="seo_desc"
+                  type="textarea"
+                  value={createSeoDesc}
+                  onChange={(e: any) => setCreateSeoDesc(e.target.value)}
+                  placeholder="Descripción para buscadores"
+                />
+                <FormField
+                  label="Texto Alt (imágenes)"
+                  name="seo_alt"
+                  type="text"
+                  value={createSeoAlt}
+                  onChange={(e: any) => setCreateSeoAlt(e.target.value)}
+                  placeholder="Ej: Mujer usando camiseta negra Two Six"
+                />
+              </div>
+            </div>
 
             <div>
               <h4 style={{ margin: '0.5rem 0 1rem', fontSize: '0.9rem', fontWeight: 700, fontFamily: 'Inter, sans-serif', color: '#f1f1f3' }}>
