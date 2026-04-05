@@ -83,6 +83,25 @@ const ClothingColorPage = () => {
     });
   }, [items, search]);
 
+  // Auto-fill SEO fields when creating
+  useEffect(() => {
+    if (showCreateModal && createDesign && createColor && !createSeoTitle && !createSeoH1) {
+      const designMatch = designs.find((d) => d.id === Number(createDesign));
+      const colorMatch = colors.find((c) => c.id === Number(createColor));
+      
+      if (designMatch && colorMatch) {
+        const clothingName = designMatch.clothing?.name || 'Prenda';
+        const reference = designMatch.reference || 'Diseño';
+        const colorNameCap = colorMatch.name.charAt(0).toUpperCase() + colorMatch.name.slice(1).toLowerCase();
+        
+        setCreateSeoTitle(`${clothingName} ${reference} en color ${colorNameCap} | Two Six`);
+        setCreateSeoH1(`${clothingName} ${reference} (${colorNameCap})`);
+        setCreateSeoDesc(`Descubre nuestra ${clothingName.toLowerCase()} ${reference} en color ${colorMatch.name.toLowerCase()}. Calidad premium y diseño exclusivo. Crafted for real ones.`);
+        setCreateSeoAlt(`Foto de ${clothingName.toLowerCase()} color ${colorMatch.name.toLowerCase()} de la marca Two Six`);
+      }
+    }
+  }, [createDesign, createColor, designs, colors, showCreateModal]);
+
   // Edit
   const openEditModal = (row: any) => {
     setEditing(row);
@@ -234,7 +253,7 @@ const ClothingColorPage = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <div style={{
             width: 14, height: 14, borderRadius: '50%',
-            backgroundColor: row.color?.hex_code || '#ccc',
+            backgroundColor: row.color?.hex || '#ccc',
             border: '1px solid rgba(0,0,0,0.1)',
           }} />
           <span>{row.color?.name || 'N/A'}</span>
