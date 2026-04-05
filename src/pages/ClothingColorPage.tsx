@@ -252,9 +252,10 @@ const ClothingColorPage = () => {
       render: (_: any, row: any) => (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <div style={{
-            width: 14, height: 14, borderRadius: '50%',
+            width: 16, height: 16, borderRadius: '50%',
             backgroundColor: row.color?.hex || '#ccc',
-            border: '1px solid rgba(0,0,0,0.1)',
+            border: '2px solid rgba(255, 255, 255, 0.25)',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
           }} />
           <span>{row.color?.name || 'N/A'}</span>
         </div>
