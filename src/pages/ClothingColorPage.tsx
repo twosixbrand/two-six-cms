@@ -24,12 +24,13 @@ const ClothingColorPage = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editing, setEditing] = useState<any>(null);
   const [saving, setSaving] = useState(false);
-  const [editForm, setEditForm] = useState({ id_design: '', id_color: '' });
+  const [editForm, setEditForm] = useState({ id_design: '', id_color: '', slug: '' });
 
   // Create modal state
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createDesign, setCreateDesign] = useState('');
   const [createColor, setCreateColor] = useState('');
+  const [createSlug, setCreateSlug] = useState('');
   const [sizeSelections, setSizeSelections] = useState<Record<number, { selected: boolean; quantity: number }>>({});
 
   const fetchData = useCallback(async () => {
@@ -81,7 +82,7 @@ const ClothingColorPage = () => {
   // Edit
   const openEditModal = (row: any) => {
     setEditing(row);
-    setEditForm({ id_design: row.id_design || '', id_color: row.id_color || '' });
+    setEditForm({ id_design: row.id_design || '', id_color: row.id_color || '', slug: row.slug || '' });
     setShowEditModal(true);
   };
 
@@ -101,7 +102,7 @@ const ClothingColorPage = () => {
     try {
       setSaving(true);
       setError('');
-      const dataToSave: any = { id_color: Number(editForm.id_color) };
+      const dataToSave: any = { id_color: Number(editForm.id_color), slug: editForm.slug };
       await clothingColorApi.updateClothingColor(editing.id, dataToSave);
       closeEditModal();
       fetchData();
@@ -117,6 +118,7 @@ const ClothingColorPage = () => {
   const openCreateModal = () => {
     setCreateDesign('');
     setCreateColor('');
+    setCreateSlug('');
     setSizeSelections({});
     setShowCreateModal(true);
   };
@@ -155,7 +157,7 @@ const ClothingColorPage = () => {
     try {
       setSaving(true);
       setError('');
-      const payload = { id_design: createDesign, id_color: createColor, sizes: JSON.stringify(sizesData) };
+      const payload = { id_design: createDesign, id_color: createColor, slug: createSlug, sizes: JSON.stringify(sizesData) };
       const result = await clothingColorApi.createContextual(payload);
       closeCreateModal();
       fetchData();
@@ -241,8 +243,25 @@ const ClothingColorPage = () => {
   const designOptions = designs.map((d) => ({
     value: d.id,
     label: `${d.reference} - ${d.clothing?.name || ''} (${d.collection?.name || ''})`,
+    clothingName: d.clothing?.name || '',
+    reference: d.reference || '',
   }));
   const colorOptions = colors.map((c) => ({ value: c.id, label: c.name }));
+
+  const generateSlug = (text: string) => {
+    return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
+  };
+
+  useEffect(() => {
+    if (createDesign && createColor) {
+      const selectedDev = designOptions.find(d => d.value.toString() === createDesign.toString());
+      const selectedCol = colorOptions.find(c => c.value.toString() === createColor.toString());
+      if (selectedDev && selectedCol) {
+        const generated = generateSlug(`${selectedDev.clothingName} ${selectedCol.label}`);
+        setCreateSlug(generated);
+      }
+    }
+  }, [createDesign, createColor]);
 
   return (
     <div className="page-container">
@@ -294,6 +313,14 @@ const ClothingColorPage = () => {
               placeholder="Seleccione Color"
               options={colorOptions}
             />
+            <FormField
+              label="Slug"
+              name="slug"
+              type="text"
+              value={editForm.slug}
+              onChange={handleEditChange}
+              placeholder="Ej: camiseta-negra"
+            />
           </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
             <Button variant="ghost" onClick={closeEditModal}>Cancelar</Button>
@@ -325,6 +352,15 @@ const ClothingColorPage = () => {
               required
               placeholder="Seleccione Color"
               options={colorOptions}
+            />
+            <FormField
+              label="Slug URL"
+              name="slug"
+              type="text"
+              value={createSlug}
+              onChange={(e: any) => setCreateSlug(e.target.value)}
+              required
+              placeholder="Ej: camiseta-negra"
             />
 
             <div>
