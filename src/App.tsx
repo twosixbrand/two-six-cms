@@ -45,6 +45,7 @@ import SizeGuidePage from './pages/SizeGuidePage.tsx';
 import DianInvoicePage from './pages/DianInvoicePage';
 import DianDocumentationPage from './pages/DianDocumentationPage.tsx';
 import DatabaseDocumentationPage from './pages/DatabaseDocumentationPage';
+import ArchitectureDocumentationPage from './pages/ArchitectureDocumentationPage';
 import PickupDashboardPage from './pages/PickupDashboardPage.tsx';
 import CustomerPage from './pages/CustomerPage.tsx';
 import PermissionManagementPage from './pages/PermissionManagementPage.tsx';
@@ -142,6 +143,7 @@ const MainLayout = () => {
               <Route path="/plan-estrategico" element={<PlanEstrategicoPage />} />
               <Route path="/dian-documentation" element={<DianDocumentationPage />} />
               <Route path="/database-docs" element={<DatabaseDocumentationPage />} />
+              <Route path="/architecture-docs" element={<ArchitectureDocumentationPage />} />
               <Route path="/order" element={<OrderPage />} />
               <Route path="/order/:id" element={<OrderDetailPage />} />
               <Route path="/locations" element={<LocationPage />} />
