@@ -190,6 +190,35 @@ graph TD
                         </div>
                     </div>
                 </section>
+
+                {/* Modulo 5: Analitica, SEO y Monitoreo */}
+                <section className="bg-[#1a1a24] p-6 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.3)] border border-[#2a2a35] mt-4">
+                    <h2 className="text-xl font-bold flex items-center text-[#f1f1f3] mb-4"><FaChartLine className="mr-2 text-purple-400" /> 5. Telemetría, SEO y Monitoreo de Errores</h2>
+                    <p className="text-[#a0a0b0] mb-4 text-sm max-w-4xl">La trazabilidad publicitaria y salud técnica. El Frontend web de Next.js envía mapas de sitio y metaetiquetas (SEO) al motor de indexación de Google Search Console. Mientras tanto, librerías incrustadas de Sentry monitorean las caídas silenciosas de React/NextJS y alertan a los desarrolladores de bugs en tiempo real.</p>
+                    <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-4 overflow-hidden">
+                        <MermaidChart chart={`
+graph TD
+    subgraph "Two Six Web (Next.js)"
+        WEB((Frontend<br/>SSR / SSG))
+    end
+    
+    subgraph "Marketing & SEO (Motores de Búsqueda)"
+        WEB -->|sitemap.xml / robots.txt<br/>Metatags OpenGraph| GSC[Google Search Console]
+        GSC -.->|Indexación Orgánica| GOOGLE((Buscador Google))
+    end
+
+    subgraph "Telemetría y Estabilidad Técnica"
+        WEB -->|Error boundaries<br/>Captura de Excepciones| SENTRY[Sentry.io]
+        SENTRY -.->|Alertas de Caídas JS| DEV((Equipo de Desarrollo))
+    end
+
+    style WEB fill:#1a1a24,stroke:#4a5568,stroke-width:2px,color:#fff
+    style GSC fill:#4285f4,stroke:#fff,color:#fff
+    style GOOGLE fill:#34a853,stroke:#fff,color:#fff
+    style SENTRY fill:#362d59,stroke:#e06a4b,stroke-width:2px,color:#fff
+                        `} id="analytics" />
+                    </div>
+                </section>
             </div>
         </div>
     );
