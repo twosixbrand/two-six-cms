@@ -44,6 +44,7 @@ import PqrManagementPage from './pages/pqr/index.tsx';
 import SizeGuidePage from './pages/SizeGuidePage.tsx';
 import DianInvoicePage from './pages/DianInvoicePage';
 import DianDocumentationPage from './pages/DianDocumentationPage.tsx';
+import DatabaseDocumentationPage from './pages/DatabaseDocumentationPage';
 import PickupDashboardPage from './pages/PickupDashboardPage.tsx';
 import CustomerPage from './pages/CustomerPage.tsx';
 import PermissionManagementPage from './pages/PermissionManagementPage.tsx';
@@ -138,9 +139,7 @@ const MainLayout = () => {
               <Route path="/image-clothing/:id" element={<ImageClothingPage />} />
               <Route path="/product" element={<ProductPage />} />
               <Route path="/color" element={<ColorPage />} />
-import PlanEstrategicoPage from './pages/PlanEstrategicoPage';
-import DatabaseDocumentationPage from './pages/DatabaseDocumentationPage';
-
+              <Route path="/plan-estrategico" element={<PlanEstrategicoPage />} />
               <Route path="/dian-documentation" element={<DianDocumentationPage />} />
               <Route path="/database-docs" element={<DatabaseDocumentationPage />} />
               <Route path="/order" element={<OrderPage />} />
