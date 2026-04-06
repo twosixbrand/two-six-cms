@@ -138,8 +138,11 @@ const MainLayout = () => {
               <Route path="/image-clothing/:id" element={<ImageClothingPage />} />
               <Route path="/product" element={<ProductPage />} />
               <Route path="/color" element={<ColorPage />} />
-              <Route path="/plan-estrategico" element={<PlanEstrategicoPage />} />
+import PlanEstrategicoPage from './pages/PlanEstrategicoPage';
+import DatabaseDocumentationPage from './pages/DatabaseDocumentationPage';
+
               <Route path="/dian-documentation" element={<DianDocumentationPage />} />
+              <Route path="/database-docs" element={<DatabaseDocumentationPage />} />
               <Route path="/order" element={<OrderPage />} />
               <Route path="/order/:id" element={<OrderDetailPage />} />
               <Route path="/locations" element={<LocationPage />} />

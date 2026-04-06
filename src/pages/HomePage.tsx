@@ -101,6 +101,7 @@ const homeSections = [
     items: [
       { path: '/plan-estrategico', icon: <FiCompass />, title: 'Ver plan', desc: 'Visualizacion del plan estrategico anual.', permission: 'sales.orders.view' },
       { path: '/dian-documentation', icon: <FiCode />, title: 'Documentacion DIAN', desc: 'Arquitectura y flujos de Facturacion Electronica DIAN.', permission: 'sales.dian.view' },
+      { path: '/database-docs', icon: <FiDatabase />, title: 'Doc. Base de Datos', desc: 'Diagramas visuales de la arquitectura de datos del sistema.', permission: 'admin.users.view' },
     ]
   },
   {
