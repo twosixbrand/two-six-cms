@@ -76,9 +76,9 @@ const menuData = [
     permission: 'sales.orders.view',
     subNav: [
       { title: 'Ver plan', path: '/plan-estrategico', permission: 'sales.orders.view' },
-      { title: 'Documentacion DIAN', path: '/dian-documentation', permission: 'sales.dian.view' },
-      { title: 'Doc. Base de Datos', path: '/database-docs', permission: 'sales.orders.view' },
       { title: 'Doc. Arquitectura', path: '/architecture-docs', permission: 'admin.users.view' },
+      { title: 'Doc. Base de Datos', path: '/database-docs', permission: 'sales.orders.view' },
+      { title: 'Documentacion DIAN', path: '/dian-documentation', permission: 'sales.dian.view' },
     ],
   },
   {
