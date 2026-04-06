@@ -75,10 +75,28 @@ const PucAccountPage = () => {
     const handleSave = async () => {
         try {
             setSaving(true);
+            
+            // Determinar nivel según PUC Colombiano (1, 2, 4, 6 u 8 dígitos)
+            let calculatedLevel = 1;
+            const len = form.code.length;
+            if (len === 2) calculatedLevel = 2;
+            else if (len >= 3 && len <= 4) calculatedLevel = 3;
+            else if (len >= 5 && len <= 6) calculatedLevel = 4;
+            else if (len > 6) calculatedLevel = 5;
+
+            const payload = {
+                code: form.code,
+                name: form.name,
+                nature: form.nature,
+                parent_code: form.parent_code || null,
+                level: calculatedLevel,
+                accepts_movements: calculatedLevel === 5,
+            };
+
             if (editingAccount) {
-                await accountingApi.updateAccount(editingAccount.id, form);
+                await accountingApi.updateAccount(editingAccount.id, payload);
             } else {
-                await accountingApi.createAccount(form);
+                await accountingApi.createAccount(payload);
             }
             setShowModal(false);
             fetchAccounts();
