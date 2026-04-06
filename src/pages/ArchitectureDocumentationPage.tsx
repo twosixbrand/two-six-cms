@@ -219,6 +219,102 @@ graph TD
                         `} id="analytics" />
                     </div>
                 </section>
+                {/* Modulo 6: Seguridad y Autenticacion */}
+                <section className="bg-[#1a1a24] p-6 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.3)] border border-[#2a2a35] mt-4">
+                    <h2 className="text-xl font-bold flex items-center text-[#f1f1f3] mb-4"><FaShieldAlt className="mr-2 text-red-400" /> 6. Seguridad, Autenticación y Autorización (RBAC)</h2>
+                    <p className="text-[#a0a0b0] mb-4 text-sm max-w-4xl">Las fronteras de identidad. La plataforma maneja una separación estricta entre los compradores (Web) y el personal (CMS). Toda interacción privada se firma criptográficamente con tokens JWT, y el backend valida bloque por bloque usando Guardias de NestJS y agrupaciones por Roles (RBAC).</p>
+                    <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-4 overflow-hidden">
+                        <MermaidChart chart={`
+sequenceDiagram
+    participant U as Usuario Web
+    participant A as Admin CMS
+    participant N as NestJS Backend
+    participant DB as PostgreSQL
+
+    U->>N: Login con Documento / Email
+    N->>DB: Verifica Hash Bcrypt
+    DB-->>N: Usuario Válido
+    N-->>U: Retorna Auth Token JWT + Refresh
+
+    A->>N: Login con Email y Contraseña
+    N->>DB: Valida + Obtiene Grupo de Roles
+    DB-->>N: Roles = [sales.orders.view, admin.users]
+    N-->>A: Retorna Admin Token JWT
+
+    Note over A,N: Operación Protegida
+    A->>N: GET /api/admin/users (Envía JWT)
+    N->>N: JWT AuthGuard (Verifica Firma)
+    N->>N: RBAC RoleGuard (Requiere 'admin.users')
+    N-->>A: JSON Data Exitoso
+                        `} id="security" />
+                    </div>
+                </section>
+
+                {/* Modulo 7: Trabajos de Fondo */}
+                <section className="bg-[#1a1a24] p-6 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.3)] border border-[#2a2a35] mt-4">
+                    <h2 className="text-xl font-bold flex items-center text-[#f1f1f3] mb-4"><FaDatabase className="mr-2 text-gray-400" /> 7. Procesos Asíncronos y Tareas Programadas (Cron Jobs)</h2>
+                    <p className="text-[#a0a0b0] mb-4 text-sm max-w-4xl">El servidor operativo no solo reacciona, también toma la iniciativa. Se emplean directivas de tipo Cron (@Cron) para barrer automáticamente la base de datos durante la madrugada y realizar operaciones de mantenimiento sin impacto comercial.</p>
+                    <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-4 overflow-hidden">
+                        <MermaidChart chart={`
+graph TD
+    subgraph "NestJS Schedule Engine"
+        CRON((Cron Daemon))
+    end
+    
+    subgraph "Demonios (Background Jobs)"
+        CRON -->|Diario 2:00 AM| CART[Vaciado de Carritos Abandonados > 48hr]
+        CRON -->|Mensual Fin de Mes| ACC[Generador de Cierres Contables]
+        CRON -->|Cada Hora| DIAN_RETRY[Re-transmisor de Facturas DIAN Fallidas]
+    end
+
+    subgraph "Base de Datos de Mantenimiento"
+        CART -->|DELETE CASCADE| DB[(PostgreSQL)]
+        ACC -->|Calculo de Ledger| DB
+        DIAN_RETRY -->|Select con error| DB
+    end
+
+    style CRON fill:#1a1a24,stroke:#eab308,stroke-width:2px,color:#fff
+    style CART fill:#475569,stroke:#fff,color:#fff
+    style ACC fill:#475569,stroke:#fff,color:#fff
+    style DIAN_RETRY fill:#475569,stroke:#fff,color:#fff
+                        `} id="cron-jobs" />
+                    </div>
+                </section>
+
+                {/* Modulo 8: Manejo del Estado */}
+                <section className="bg-[#1a1a24] p-6 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.3)] border border-[#2a2a35] mt-4">
+                    <h2 className="text-xl font-bold flex items-center text-[#f1f1f3] mb-4"><FaCodeBranch className="mr-2 text-teal-400" /> 8. Ciclo de Vida del Estado del Cliente (State Management)</h2>
+                    <p className="text-[#a0a0b0] mb-4 text-sm max-w-4xl">La retención de compra. La experiencia de React (Next.js) utiliza una mezcla de Contextos Globales efímeros y preservación criptográfica en LocalStorage para garantizar que el progreso de compra y las preferencias de sesión nunca se pierdan si se refresca la página o se cierra el navegador.</p>
+                    <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-4 overflow-hidden">
+                        <MermaidChart chart={`
+graph LR
+    subgraph "Navegador Web (Cliente)"
+        BROWSER((Browser))
+        
+        subgraph "Memoria Volátil"
+            REACT[React Context API<br/>CartContext / AuthContext]
+        end
+        
+        subgraph "Memoria Persistente"
+            LOCAL[Navegador LocalStorage<br/>'cart-storage' / 'jwt-token']
+        end
+        
+        BROWSER -->|Agrega Prenda| REACT
+        REACT -->|Actualiza Re-renderiza| BROWSER
+        REACT <-->|Sincroniza Persistencia| LOCAL
+    end
+    
+    subgraph "Sincronía Nube"
+        LOCAL <-->|Sync Session al Iniciar| API[Backend RestAPI]
+        API -->|Registra Pedido Oficial| DB[(PostgreSQL)]
+    end
+
+    style BROWSER fill:#1a1a24,stroke:#14b8a6,stroke-width:2px,color:#fff
+    style REACT fill:#61dafb,stroke:#000,color:#000
+    style LOCAL fill:#f59e0b,stroke:#000,color:#000
+                        `} id="state-management" />
+                    </div>
+                </section>
             </div>
         </div>
     );
