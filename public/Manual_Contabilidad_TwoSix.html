@@ -558,7 +558,10 @@ kbd {
     <li class="toc-section"><a href="#cap8-3">8.3 Libro Mayor</a></li>
     <li class="toc-section"><a href="#cap8-4">8.4 Libro Auxiliar</a></li>
     <li class="toc-section"><a href="#cap8-5">8.5 Flujo de Caja</a></li>
-    <li class="toc-section"><a href="#cap8-6">8.6 Cartera por Edades</a></li>
+    <li class="toc-section"><a href="#cap8-6">8.6 Cartera y Valoración</a></li>
+    <li class="toc-subsection" style="padding-left: 2.5rem;"><a href="#cap8-6-1">8.6.1 Cuentas por Cobrar (CxC)</a></li>
+    <li class="toc-subsection" style="padding-left: 2.5rem;"><a href="#cap8-6-2">8.6.2 Cuentas por Pagar (CxP)</a></li>
+    <li class="toc-subsection" style="padding-left: 2.5rem;"><a href="#cap8-6-3">8.6.3 Valoración de Inventario</a></li>
     <li class="toc-section"><a href="#cap8-7">8.7 Exportar reportes a Excel</a></li>
 
     <li class="toc-chapter"><a href="#cap9">Capítulo 9: Presupuesto</a></li>
@@ -626,7 +629,7 @@ kbd {
   <ul>
     <li><strong>Facturación electrónica DIAN:</strong> Emisión automática de facturas electrónicas con validación en tiempo real ante la DIAN, generación de notas crédito y débito, y cumplimiento de la resolución de numeración vigente.</li>
     <li><strong>Contabilidad por partida doble:</strong> Registro de asientos contables manuales y automáticos, garantizando que cada transacción cumpla con la ecuación fundamental: <em>Débito = Crédito</em>.</li>
-    <li><strong>Reportes financieros:</strong> Balance General, Estado de Resultados, Libro Mayor, Libro Auxiliar, Flujo de Caja y Cartera por Edades, todos exportables a Excel.</li>
+    <li><strong>Reportes financieros:</strong> Balance General, Estado de Resultados, Libro Mayor, Libro Auxiliar, Flujo de Caja, Cartera y Valoración (CxC, CxP e Inventario), todos exportables a Excel.</li>
     <li><strong>Nómina:</strong> Liquidación quincenal o mensual de nómina con cálculo automático de devengados, deducciones, aportes patronales y provisiones.</li>
     <li><strong>Conciliación bancaria:</strong> Cruce automático y manual de transacciones con extractos bancarios.</li>
     <li><strong>Declaraciones fiscales:</strong> Preparación de declaraciones de IVA (Formulario 300), Retención en la Fuente (Formulario 350) y certificados de retención.</li>
@@ -1476,8 +1479,17 @@ kbd {
 
   <div class="formula">Efectivo Final = Efectivo Inicial + Flujo Operación + Flujo Inversión + Flujo Financiación</div>
 
-  <h3 id="cap8-6">8.6 Cartera por Edades</h3>
-  <p>El reporte de Cartera por Edades muestra los pedidos con método de pago <strong>COD (contra entrega)</strong> que están pendientes de cobro, agrupados por antigüedad:</p>
+  <h3 id="cap8-6">8.6 Cartera y Valoración</h3>
+  <p>El módulo de <strong>Cartera y Valoración</strong> unifica tres reportes esenciales para el control financiero de la empresa en una sola página con <strong>tres pestañas</strong>:</p>
+  <ul>
+    <li><strong>Cuentas por Cobrar (CxC):</strong> Pedidos COD pendientes de cobro, agrupados por antigüedad.</li>
+    <li><strong>Cuentas por Pagar (CxP):</strong> Gastos y compras pendientes de pago a proveedores, agrupados por antigüedad.</li>
+    <li><strong>Valoración de Inventario:</strong> Valor del inventario activo, valorado al costo de producción conforme a la NIC 2.</li>
+  </ul>
+  <p>Cada pestaña puede <strong>exportarse individualmente a Excel</strong> mediante el botón "Exportar Excel".</p>
+
+  <h4 id="cap8-6-1">8.6.1 Cuentas por Cobrar (CxC)</h4>
+  <p>La pestaña CxC muestra los pedidos con método de pago <strong>COD (contra entrega)</strong> que están pendientes de cobro, agrupados por antigüedad desde la fecha del pedido:</p>
 
   <table>
     <thead>
@@ -1491,7 +1503,54 @@ kbd {
     </tbody>
   </table>
 
-  <p>El reporte incluye para cada rango: número de pedidos, valor total, porcentaje del total de cartera, y el listado detallado de cada pedido con su cliente, fecha y monto.</p>
+  <p>El reporte incluye para cada rango: número de pedidos, valor total, y el listado detallado de cada pedido con su referencia, cliente, fecha y monto. La tarjeta resumen muestra el <strong>Total Cartera Pendiente</strong>.</p>
+
+  <h4 id="cap8-6-2">8.6.2 Cuentas por Pagar (CxP)</h4>
+  <p>La pestaña CxP muestra los gastos y compras registrados con estado <strong>PENDING (pendiente de pago)</strong>, agrupados por antigüedad. Los días vencidos se calculan desde la <strong>fecha de vencimiento</strong> del gasto (<code>due_date</code>); si no existe fecha de vencimiento, se usa la <strong>fecha del gasto</strong> (<code>expense_date</code>).</p>
+
+  <table>
+    <thead>
+      <tr><th>Rango</th><th>Clasificación</th><th>Color</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>0 &ndash; 30 días</td><td>Corriente</td><td style="color: #38bdf8;">Azul</td></tr>
+      <tr><td>31 &ndash; 60 días</td><td>Vencida 30 días</td><td style="color: #fb923c;">Naranja</td></tr>
+      <tr><td>61 &ndash; 90 días</td><td>Vencida 60 días</td><td class="ind-red">Rojo</td></tr>
+      <tr><td>90+ días</td><td>Vencida 90+ días</td><td class="ind-red">Rojo intenso</td></tr>
+    </tbody>
+  </table>
+
+  <p>Para cada gasto pendiente se muestra: número de gasto, proveedor, NIT, número de factura, categoría, fecha del gasto, fecha de vencimiento, días vencidos y monto total. La tarjeta resumen muestra el <strong>Total por Pagar</strong>.</p>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    Para mantener un control óptimo de las cuentas por pagar, registre siempre la <strong>fecha de vencimiento</strong> al crear un gasto. Esto permite que el sistema calcule correctamente los días vencidos y priorice los pagos más urgentes.
+  </div>
+
+  <h4 id="cap8-6-3">8.6.3 Valoración de Inventario</h4>
+  <p>La pestaña de Valoración de Inventario presenta el valor total del inventario activo de la empresa, siguiendo la normatividad contable <strong>NIC 2 &mdash; Inventarios</strong> de las Normas Internacionales de Información Financiera (NIIF).</p>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Método de Valoración (NIC 2)</div>
+    Según la NIC 2, los inventarios deben medirse al <strong>menor entre el costo y el valor neto realizable</strong>. El sistema utiliza el <strong>costo de producción</strong> (<code>manufactured_cost</code> del diseño) como base de valoración contable, y muestra adicionalmente el <strong>precio de venta</strong> para cálculo del margen potencial.
+  </div>
+
+  <p>El reporte presenta:</p>
+  <ul>
+    <li><strong>Tarjetas de resumen:</strong> Productos activos, total unidades, valor total a costo de producción (base contable), valor total a precio de venta (valor neto realizable), y margen potencial del inventario.</li>
+    <li><strong>Detalle por categoría:</strong> Los productos se agrupan por categoría de prenda. Cada categoría se puede expandir/colapsar y muestra subtotales de unidades, valor costo y valor venta.</li>
+    <li><strong>Detalle por producto:</strong> SKU, nombre del producto, tipo de prenda, color, talla, cantidad disponible, costo unitario de producción, precio de venta unitario, valor total a costo y valor total a precio de venta. Los productos outlet se identifican con una etiqueta especial.</li>
+  </ul>
+
+  <p>Fórmulas utilizadas:</p>
+  <div class="formula">Valor Costo por Línea = Cantidad Disponible &times; Costo de Producción (manufactured_cost)</div>
+  <div class="formula">Valor Venta por Línea = Cantidad Disponible &times; Precio de Venta</div>
+  <div class="formula">Margen Potencial = Valor Total a Precio de Venta &minus; Valor Total a Costo de Producción</div>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">Advertencia</div>
+    El costo de producción proviene del campo <code>manufactured_cost</code> de la tabla <strong>Design</strong>. Es fundamental que este valor esté actualizado para cada diseño, ya que afecta directamente la valoración contable del inventario en el Balance General.
+  </div>
 
   <h3 id="cap8-7">8.7 Exportar reportes a Excel</h3>
   <p>Todos los reportes financieros pueden exportarse a formato Excel (.xlsx) para análisis adicional o archivo:</p>
