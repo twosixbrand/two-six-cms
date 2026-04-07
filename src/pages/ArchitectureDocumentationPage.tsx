@@ -14,24 +14,24 @@ graph TD
     subgraph "Repositorios (GitHub)"
         GH(GitHub)
         GH --> REPO1[two-six-backend]
-        GH --> REPO2[two-six-web]
-        GH --> REPO3[two-six-cms]
+        GH --> REPO2[two-six-web Dockerized]
+        GH --> REPO3[two-six-cms Dockerized]
     end
 
     subgraph "CI / CD (DigitalOcean App Platform)"
         REPO1 -->|Push to main| DO_BUILD1{DO Build}
-        REPO2 -->|Push to main| DO_BUILD2{DO Build}
+        REPO2 -->|Push to main| DO_BUILD2{Docker Build}
         REPO3 -->|Push to main| DO_BUILD3{DO Build}
         
         DO_BUILD1 -->|Despliega| API[API Backend]
-        DO_BUILD2 -->|Despliega| WEB[Web Frontend]
+        DO_BUILD2 -->|Despliega Imagen| WEB[Web Frontend Contenedor Docker]
         DO_BUILD3 -->|Despliega| CMS[Admin CMS]
     end
     
     style GH fill:#24292e,stroke:#fff,stroke-width:2px,color:#fff
     style DEV fill:#1a1a24,stroke:#4a5568,color:#fff
     style DO_BUILD1 fill:#0069ff,stroke:#fff,color:#fff
-    style DO_BUILD2 fill:#0069ff,stroke:#fff,color:#fff
+    style DO_BUILD2 fill:#0db7ed,stroke:#fff,color:#fff
     style DO_BUILD3 fill:#0069ff,stroke:#fff,color:#fff
 `;
 
@@ -42,7 +42,7 @@ graph LR
     end
 
     subgraph "Infraestructura DigitalOcean (ATL1)"
-        DNS_DO -->|Route| WEB(Web App Container)
+        DNS_DO -->|Route| WEB(Web App - Contenedor Docker)
         DNS_DO -->|Route| CMS(CMS Admin Container)
         DNS_DO -->|Route| API(NestJS API Container)
         
@@ -55,6 +55,7 @@ graph LR
 
     style GD fill:#1bce61,stroke:#000,color:#fff
     style DNS_DO fill:#0069ff,stroke:#fff,color:#fff
+    style WEB fill:#0db7ed,stroke:#fff,color:#fff
     style DB fill:#336791,stroke:#fff,color:#fff
     style S3 fill:#1db746,stroke:#fff,color:#fff
 `;
