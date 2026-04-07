@@ -49,6 +49,7 @@ import ArchitectureDocumentationPage from './pages/ArchitectureDocumentationPage
 import PickupDashboardPage from './pages/PickupDashboardPage.tsx';
 import CustomerPage from './pages/CustomerPage.tsx';
 import PermissionManagementPage from './pages/PermissionManagementPage.tsx';
+import GoogleMerchantFeedPage from './pages/GoogleMerchantFeedPage.tsx';
 
 // Accounting pages
 import PucAccountPage from './pages/accounting/PucAccountPage.tsx';
@@ -156,6 +157,7 @@ const MainLayout = () => {
               <Route path="/dian-invoices" element={<DianInvoicePage />} />
               <Route path="/customer" element={<CustomerPage />} />
               <Route path="/permissions" element={<PermissionManagementPage />} />
+              <Route path="/google-merchant-feed" element={<GoogleMerchantFeedPage />} />
               {/* Accounting routes */}
               <Route path="/accounting/puc" element={<PucAccountPage />} />
               <Route path="/accounting/journal" element={<JournalEntryPage />} />

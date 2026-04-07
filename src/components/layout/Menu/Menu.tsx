@@ -30,6 +30,7 @@ const menuData = [
       { title: 'General Sales', path: '/reports/sales/general', permission: 'sales.reports.view' },
       { title: 'Facturacion DIAN', path: '/dian-invoices', permission: 'sales.dian.view' },
       { title: 'Retiros en Tienda', path: '/reports/pickup-dashboard', permission: 'sales.orders.view' },
+      { title: 'Google Merchant Feed', path: '/google-merchant-feed', permission: 'sales.reports.view' },
     ],
   },
   {
