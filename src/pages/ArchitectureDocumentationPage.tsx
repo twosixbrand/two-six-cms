@@ -15,7 +15,7 @@ graph TD
         GH(GitHub)
         GH --> REPO1[two-six-backend]
         GH --> REPO2[two-six-web Dockerized]
-        GH --> REPO3[two-six-cms Dockerized]
+        GH --> REPO3[two-six-cms]
     end
 
     subgraph "CI / CD (DigitalOcean App Platform)"
@@ -43,8 +43,8 @@ graph LR
 
     subgraph "Infraestructura DigitalOcean (ATL1)"
         DNS_DO -->|Route| WEB(Web App - Contenedor Docker)
-        DNS_DO -->|Route| CMS(CMS Admin Container)
-        DNS_DO -->|Route| API(NestJS API Container)
+        DNS_DO -->|Route| CMS(CMS Admin App)
+        DNS_DO -->|Route| API(NestJS API)
         
         API <-->|Prisma ORM<br/>SSL Port 25060| DB[(PostgreSQL 15<br/>Managed DB)]
         
