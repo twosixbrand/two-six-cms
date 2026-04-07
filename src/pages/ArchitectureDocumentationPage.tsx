@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaServer, FaCodeBranch, FaCloud, FaExchangeAlt, FaShieldAlt, FaChartLine, FaMoneyCheckAlt, FaDatabase } from 'react-icons/fa';
+import { FaServer, FaCodeBranch, FaCloud, FaExchangeAlt, FaShieldAlt, FaChartLine, FaMoneyCheckAlt, FaDatabase, FaDocker } from 'react-icons/fa';
 import MermaidChart from '../components/common/MermaidChart';
 
 const ArchitectureDocumentationPage = () => {
@@ -13,24 +13,24 @@ graph TD
 
     subgraph "Repositorios (GitHub)"
         GH(GitHub)
-        GH --> REPO1[two-six-backend]
+        GH --> REPO1[two-six-backend + Dockerfile]
         GH --> REPO2[two-six-web Dockerized]
         GH --> REPO3[two-six-cms]
     end
 
     subgraph "CI / CD (DigitalOcean App Platform)"
-        REPO1 -->|Push to main| DO_BUILD1{DO Build}
+        REPO1 -->|Push to main| DO_BUILD1{Docker Build}
         REPO2 -->|Push to main| DO_BUILD2{Docker Build}
         REPO3 -->|Push to main| DO_BUILD3{DO Build}
         
-        DO_BUILD1 -->|Despliega| API[API Backend]
-        DO_BUILD2 -->|Despliega Imagen| WEB[Web Frontend Contenedor Docker]
+        DO_BUILD1 -->|Despliega Contenedor| API[API Backend Contenedor Docker]
+        DO_BUILD2 -->|Despliega Contenedor| WEB[Web Frontend Contenedor Docker]
         DO_BUILD3 -->|Despliega| CMS[Admin CMS]
     end
     
     style GH fill:#24292e,stroke:#fff,stroke-width:2px,color:#fff
     style DEV fill:#1a1a24,stroke:#4a5568,color:#fff
-    style DO_BUILD1 fill:#0069ff,stroke:#fff,color:#fff
+    style DO_BUILD1 fill:#0db7ed,stroke:#fff,color:#fff
     style DO_BUILD2 fill:#0db7ed,stroke:#fff,color:#fff
     style DO_BUILD3 fill:#0069ff,stroke:#fff,color:#fff
 `;
@@ -314,6 +314,57 @@ graph LR
     style REACT fill:#61dafb,stroke:#000,color:#000
     style LOCAL fill:#f59e0b,stroke:#000,color:#000
                         `} id="state-management" />
+                    </div>
+                </section>
+
+                {/* Modulo 9: Docker Backend */}
+                <section className="bg-[#1a1a24] p-6 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.3)] border border-[#2a2a35] mt-4">
+                    <h2 className="text-xl font-bold flex items-center text-[#f1f1f3] mb-4"><FaDocker className="mr-2 text-cyan-400" /> 9. Arquitectura Docker del Backend (Containerización)</h2>
+                    <p className="text-[#a0a0b0] mb-4 text-sm max-w-4xl">El backend utiliza un Dockerfile multi-etapa para garantizar reproducibilidad, aislamiento de dependencias y compatibilidad multiplataforma (ARM64/AMD64). Chrome Headless se embebe directamente en la imagen para la generación de PDFs DIAN, y el certificado digital viaja cifrado como variable de entorno Base64, eliminando archivos sensibles del repositorio.</p>
+                    <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-4 overflow-hidden">
+                        <MermaidChart chart={`
+graph TD
+    subgraph "Dockerfile Multi-Etapa"
+        BASE["1. Base\nnode:20-bookworm-slim\n+ Chromium + Fonts"] --> BUILDER
+        BUILDER["2. Builder\nnpm ci + prisma generate\n+ npm run build"] --> RUNNER
+        RUNNER["3. Runner\nSolo dist + node_modules prod\n+ prisma schema"]
+    end
+
+    subgraph "Secretos en Runtime"
+        ENV_B64["DIAN_CERT_BASE64\n(Variable de Entorno Cifrada)"] -->|Buffer.from base64| DIAN_SVC[DianService]
+        ENV_PUPP["PUPPETEER_EXECUTABLE_PATH\n/usr/bin/chromium"] --> PDF_SVC[DianPdfService]
+    end
+
+    subgraph "Generacion de PDFs"
+        PDF_SVC -->|Lanza| CHROME[Chromium Headless]
+        CHROME -->|Renderiza HTML| PDF[Factura PDF DIAN]
+        DIAN_SVC -->|Firma XAdES| PDF
+    end
+
+    RUNNER --> DIAN_SVC
+    RUNNER --> PDF_SVC
+
+    style BASE fill:#0db7ed,stroke:#fff,color:#fff
+    style BUILDER fill:#2563eb,stroke:#fff,color:#fff
+    style RUNNER fill:#16a34a,stroke:#fff,color:#fff
+    style ENV_B64 fill:#eab308,stroke:#000,color:#000
+    style ENV_PUPP fill:#eab308,stroke:#000,color:#000
+    style CHROME fill:#4285f4,stroke:#fff,color:#fff
+                        `} id="docker-architecture" />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                        <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-4">
+                            <h4 className="text-sm font-semibold text-cyan-400 mb-2">Etapa Base</h4>
+                            <p className="text-xs text-[#a0a0b0]">Instala Chromium y todas las dependencias gráficas del sistema operativo (fonts, librerías X11) necesarias para que Puppeteer renderice HTML a PDF sin errores.</p>
+                        </div>
+                        <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-4">
+                            <h4 className="text-sm font-semibold text-blue-400 mb-2">Etapa Builder</h4>
+                            <p className="text-xs text-[#a0a0b0]">Compila TypeScript, genera el cliente Prisma y produce el bundle de producción. Los artefactos de desarrollo se descartan para optimizar el tamaño final.</p>
+                        </div>
+                        <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-4">
+                            <h4 className="text-sm font-semibold text-green-400 mb-2">Etapa Runner</h4>
+                            <p className="text-xs text-[#a0a0b0]">Imagen final ultra-ligera que solo contiene dist/, node_modules de producción y el schema de Prisma. Expone el puerto 3050 y arranca con npm run start:prod.</p>
+                        </div>
                     </div>
                 </section>
             </div>
