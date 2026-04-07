@@ -522,6 +522,22 @@ export const getAgingReport = async () => {
     return await handleResponse(response, 'getAgingReport');
 };
 
+export const getPayablesAging = async () => {
+    const response = await fetch(`${API_URL}/accounting/reports/aging/payables`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getPayablesAging');
+};
+
+export const getInventoryValuation = async () => {
+    const response = await fetch(`${API_URL}/accounting/reports/aging/inventory`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getInventoryValuation');
+};
+
 // ── Budget (Presupuesto) ──────────────────────────────────
 
 export const getBudgets = async (year: number) => {

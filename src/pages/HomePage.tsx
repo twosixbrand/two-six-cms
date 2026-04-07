@@ -84,7 +84,7 @@ const homeSections = [
       { path: '/accounting/general-ledger', icon: <FiList />, title: 'Libro Mayor', desc: 'Movimientos por cuenta con saldo corrido.', permission: 'accounting.reports.view' },
       { path: '/accounting/subsidiary-ledger', icon: <FiAlignLeft />, title: 'Libro Auxiliar', desc: 'Detalle por sub-cuentas.', permission: 'accounting.reports.view' },
       { path: '/accounting/reports/cash-flow', icon: <FiRepeat />, title: 'Flujo de Caja', desc: 'Estado de flujo de efectivo.', permission: 'accounting.reports.view' },
-      { path: '/accounting/reports/aging', icon: <FiWatch />, title: 'Cartera por Edades', desc: 'Pedidos COD pendientes por antiguedad.', permission: 'accounting.reports.view' },
+      { path: '/accounting/reports/aging', icon: <FiWatch />, title: 'Cartera y Valoracion', desc: 'CxC, CxP por antiguedad e inventario valorizado.', permission: 'accounting.reports.view' },
       { path: '/accounting/tax/iva', icon: <FiPercent />, title: 'Declaracion IVA', desc: 'IVA generado vs descontable (Form. 300).', permission: 'accounting.tax.view' },
       { path: '/accounting/tax/retefuente', icon: <FiScissors />, title: 'Retencion en la Fuente', desc: 'Conceptos de retencion (Form. 350).', permission: 'accounting.tax.view' },
       { path: '/accounting/withholding-certificates', icon: <FiAward />, title: 'Certificados Retencion', desc: 'Generacion de certificados por proveedor.', permission: 'accounting.withholding.view' },

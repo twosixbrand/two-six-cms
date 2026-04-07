@@ -102,7 +102,7 @@ const menuData = [
       { title: 'Declaracion IVA', path: '/accounting/tax/iva', permission: 'accounting.tax.view' },
       { title: 'Retencion en la Fuente', path: '/accounting/tax/retefuente', permission: 'accounting.tax.view' },
       { title: 'Flujo de Caja', path: '/accounting/reports/cash-flow', permission: 'accounting.reports.view' },
-      { title: 'Cartera por Edades', path: '/accounting/reports/aging', permission: 'accounting.reports.view' },
+      { title: 'Cartera y Valoracion', path: '/accounting/reports/aging', permission: 'accounting.reports.view' },
       { title: 'Presupuesto', path: '/accounting/budget', permission: 'accounting.budget.view' },
       { title: 'Activos Fijos', path: '/accounting/assets', permission: 'accounting.assets.view' },
       { title: 'Indicadores Financieros', path: '/accounting/reports/indicators', permission: 'accounting.indicators.view' },
