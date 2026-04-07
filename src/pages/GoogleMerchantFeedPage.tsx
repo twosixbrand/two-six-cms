@@ -557,7 +557,7 @@ const GoogleMerchantFeedPage: React.FC = () => {
                     return `${catId} (${GOOGLE_CATEGORY_NAMES[catId] || 'Generic'})`;
                   })() },
                   { label: 'g:identifier_exists', value: 'false' },
-                  { label: 'g:shipping', value: 'CO — 8,000.00 COP' },
+                  { label: 'g:mpn', value: selectedProduct.sku },
                 ].map(({ label, value }) => (
                   <div key={label} style={{ display: 'flex', gap: '0.5rem', borderBottom: '1px solid #1f1f2a', paddingBottom: '0.5rem' }}>
                     <span style={{ color: '#f0b429', fontSize: '0.7rem', fontFamily: 'monospace', minWidth: 150, flexShrink: 0 }}>
