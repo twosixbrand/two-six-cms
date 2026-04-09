@@ -64,8 +64,13 @@ graph LR
 graph TD
     subgraph "Ecosistema Two Six"
         CORE((API Central<br/>NestJS))
+        INV[Motor Inventarios<br/>Kardex]
+        PAY[Nómina Profesional<br/>Ley 1607]
     end
     
+    CORE <--> INV
+    CORE <--> PAY
+
     subgraph "Pasarelas de Pago"
         CORE <-->|Tokens / Webhooks| WOMPI[Wompi Colombia]
         WOMPI -.->|Notifica Cambio de Estado| CORE
@@ -76,6 +81,7 @@ graph TD
         UBL -->|Firma XAdES| GSE[Certificado GSE.p12]
         GSE <-->|SOAP Wcf WS| DIAN[DIAN API Facturación]
         DIAN -.->|Validación CUFE Async| CORE
+        PAY -.->|Futura Integración| DIAN
     end
 
     subgraph "Comunicaciones y Notificaciones"
@@ -86,6 +92,8 @@ graph TD
     end
 
     style CORE fill:#1a1a24,stroke:#4a5568,stroke-width:2px,color:#fff
+    style INV fill:#f59e0b,stroke:#fff,color:#000
+    style PAY fill:#38bdf8,stroke:#fff,color:#000
     style WOMPI fill:#0f172a,stroke:#3b82f6,color:#fff
     style DIAN fill:#047857,stroke:#fff,color:#fff
     style GSE fill:#f59e0b,stroke:#fff,color:#fff

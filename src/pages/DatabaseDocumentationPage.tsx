@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaDatabase, FaBoxOpen, FaShoppingCart, FaFileInvoiceDollar, FaCalculator, FaUsers } from 'react-icons/fa';
+import { FaDatabase, FaBoxOpen, FaShoppingCart, FaFileInvoiceDollar, FaCalculator, FaUsers, FaChartLine } from 'react-icons/fa';
 import MermaidChart from '../components/common/MermaidChart';
 
 const DatabaseDocumentationPage = () => {
@@ -26,12 +26,13 @@ erDiagram
     }
 
     CLOTHING_SIZE ||--|{ ORDER_ITEM : "used_in"
+    CLOTHING_SIZE ||--o{ INVENTORY_KARDEX : "tracks"
     CLOTHING_SIZE {
         int id PK
         int clothing_color_id FK
         int size_id FK
-        int stock
-        float price
+        int quantity_available
+        int quantity_produced
     }
 
     PRODUCT {
@@ -136,7 +137,7 @@ erDiagram
     CUSTOMER ||--o{ DIAN_E_INVOICING : "issued_to"
 `;
 
-    // Sintaxis Mermaid para Contabilidad
+    // Sintaxis Mermaid para Contabilidad e Impuestos
     const accountingSchema = `
 erDiagram
     PUC_ACCOUNT ||--o{ JOURNAL_ENTRY_LINE : "credits/debits"
@@ -144,37 +145,73 @@ erDiagram
         int id PK
         string code UK
         string name
-        string type "ACTIVO, PASIVO, PATRIMONIO..."
-        boolean requires_third_party
+        string type
     }
 
     JOURNAL_ENTRY ||--|{ JOURNAL_ENTRY_LINE : "comprises"
     JOURNAL_ENTRY {
         int id PK
-        string number UK
-        date date
-        string concept
-        string status "DRAFT, POSTED"
+        string entry_number UK
+        date entry_date
+        string source_type "SALE, PAYROLL, RECONCILIATION"
     }
 
-    JOURNAL_ENTRY_LINE {
+    TAX_CONFIGURATION ||--o| PUC_ACCOUNT : "references"
+    TAX_CONFIGURATION {
+        int id PK
+        string name
+        string type "ICA, AUTORETENCION"
+        float rate
+    }
+
+    JOURNAL_ENTRY ||--o{ TAX_TRANSACTION : "records"
+    TAX_TRANSACTION {
         int id PK
         int journal_entry_id FK
-        int account_id FK
-        float debit
-        float credit
-        string third_party_doc
+        float base_amount
+        float tax_amount
     }
+`;
 
-    EXPENSE ||--o{ JOURNAL_ENTRY : "generates"
-    EXPENSE {
+    // Sintaxis Mermaid para Nómina e Inventario Avanzado
+    const advancedModulesSchema = `
+erDiagram
+    EMPLOYEE ||--o{ PAYROLL_ENTRY : "receives"
+    EMPLOYEE {
         int id PK
-        string invoice_number
-        int category_id FK
-        float total_amount
+        string name
+        float base_salary
+        boolean is_exonerated "Ley 1607"
+        string contract_type
     }
 
-    ACCOUNTING_CLOSING ||--|{ JOURNAL_ENTRY : "locks"
+    PAYROLL_PERIOD ||--o{ PAYROLL_ENTRY : "contains"
+    PAYROLL_PERIOD {
+        int id PK
+        int year
+        int month
+        string status "DRAFT, CALCULATED, APPROVED"
+    }
+
+    PAYROLL_ENTRY ||--o| JOURNAL_ENTRY : "generates"
+
+    INVENTORY_KARDEX {
+        int id PK
+        int id_clothing_size FK
+        string type "IN/OUT"
+        int quantity
+        int balance_after
+        float unit_cost
+    }
+
+    INVENTORY_ADJUSTMENT ||--|{ INVENTORY_ADJUSTMENT_ITEM : "contains"
+    INVENTORY_ADJUSTMENT {
+        int id PK
+        string reason "MERMA, REGALO, ERROR"
+        int id_journal_entry FK
+    }
+
+    INVENTORY_ADJUSTMENT_ITEM ||--o| CLOTHING_SIZE : "affects"
 `;
 
     return (
@@ -186,7 +223,7 @@ erDiagram
                 <div>
                     <h1 className="pe-title" style={{ fontSize: '28px', margin: 0, color: '#f1f1f3', fontWeight: 'bold' }}>Documentación Técnica de la Base de Datos</h1>
                     <p className="pe-desc" style={{ marginTop: '4px', color: '#a0a0b0', fontSize: '14px' }}>
-                        Modelos de Entidad-Relación (ER) generados en tiempo real describiendo la arquitectura central del sistema.
+                        Modelos de Entidad-Relación (ER) actualizados describiendo la arquitectura extendida del sistema.
                     </p>
                 </div>
             </div>
@@ -195,50 +232,47 @@ erDiagram
                 {/* 1. Módulo Core / Catálogo */}
                 <section className="bg-[#1a1a24] p-6 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.3)] border border-[#2a2a35]">
                     <h2 className="text-xl font-bold flex items-center text-[#f1f1f3] mb-4"><FaBoxOpen className="mr-2 text-indigo-500" /> 1. Arquitectura Base (Core & Catálogo)</h2>
-                    <p className="text-[#a0a0b0] mb-4 text-sm max-w-4xl">Este es el corazón del comercio. La tabla <code>CLOTHING</code> representa el modelo conceptual de una prenda, que luego materializa sus variaciones mediante <code>CLOTHING_COLOR</code> (Diseños y colores) y finalmente crea el control de stock tangible en <code>CLOTHING_SIZE</code>. <code>PRODUCT</code> funciona como un código único virtual.</p>
+                    <p className="text-[#a0a0b0] mb-4 text-sm max-w-4xl">Este es el corazón del comercio. Incluye ahora la relación con el <code>INVENTORY_KARDEX</code> para el seguimiento en tiempo real de cada movimiento físico de stock.</p>
                     <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-4 overflow-hidden">
                         <MermaidChart chart={catalogSchema} id="catalog" />
                     </div>
                 </section>
 
-                {/* 2. Módulo de Ventas */}
-                <section className="bg-[#1a1a24] p-6 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.3)] border border-[#2a2a35]">
-                    <h2 className="text-xl font-bold flex items-center text-[#f1f1f3] mb-4"><FaShoppingCart className="mr-2 text-green-500" /> 2. Ecosistema de Ventas y Pedidos</h2>
-                    <p className="text-[#a0a0b0] mb-4 text-sm max-w-4xl">El ciclo de vida del comprador. Contiene la cabecera <code>ORDER</code> enganchada con su cliente. A través de <code>ORDER_ITEM</code> captura el precio histórico comprado de una talla en específico (<code>clothing_size_id</code>), abstrayéndolo de las variaciones de precio futuro. Todo se soporta por sus pagos y guías de envío.</p>
-                    <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-4 overflow-hidden">
-                        <MermaidChart chart={salesSchema} id="sales" />
-                    </div>
-                </section>
-                
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* 3. DIAN */}
                     <section className="bg-[#1a1a24] p-6 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.3)] border border-[#2a2a35] flex flex-col">
                         <h2 className="text-xl font-bold flex items-center text-[#f1f1f3] mb-4"><FaFileInvoiceDollar className="mr-2 text-yellow-500" /> 3. Motor DIAN E-Invoicing</h2>
-                        <p className="text-[#a0a0b0] mb-4 text-sm">Entidades requeridas legalmente para la emisión fiscal. Administran las vigencias de las resoluciones, almacenan los Hash (CUFE) generados con la firma digital y llevan la trazabilidad de Notas Crédito y Débito atadas a su orden madre.</p>
                         <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-2 flex-grow flex items-center overflow-hidden">
                             <MermaidChart chart={dianSchema} id="dian" />
                         </div>
                     </section>
                     
-                    {/* 4. Contabilidad */}
+                    {/* 4. Contabilidad e Impuestos */}
                     <section className="bg-[#1a1a24] p-6 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.3)] border border-[#2a2a35] flex flex-col">
-                        <h2 className="text-xl font-bold flex items-center text-[#f1f1f3] mb-4"><FaCalculator className="mr-2 text-rose-500" /> 4. Contabilidad General & Libros</h2>
-                        <p className="text-[#a0a0b0] mb-4 text-sm">Módulo financiero basado en el Plan Único de Cuentas (PUC). Garantiza asientos de Partida Doble en <code>JOURNAL_ENTRY_LINE</code> obligando que los saldos Debit/Credit sumen cero antes del cierre (<code>ACCOUNTING_CLOSING</code>).</p>
+                        <h2 className="text-xl font-bold flex items-center text-[#f1f1f3] mb-4"><FaCalculator className="mr-2 text-rose-500" /> 4. Contabilidad & Motor de Impuestos</h2>
+                        <p className="text-[#a0a0b0] mb-4 text-sm">Extendido con <code>TAX_CONFIGURATION</code> y <code>TAX_TRANSACTION</code> para automatizar el cálculo de ICA y Autorretenciones directamente en el Libro Diario.</p>
                         <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-2 flex-grow flex items-center overflow-hidden">
                             <MermaidChart chart={accountingSchema} id="accounting" />
                         </div>
                     </section>
                 </div>
 
-                {/* 5. Otros (Usuarios / CRM) */}
+                {/* 5. Nómina e Inventario Avanzado */}
                 <section className="bg-[#1a1a24] p-6 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.3)] border border-[#2a2a35]">
-                    <h2 className="text-xl font-bold flex items-center text-[#f1f1f3] mb-4"><FaUsers className="mr-2 text-cyan-500" /> 5. Estructura de Usuarios / Seguridad (RBAC)</h2>
+                    <h2 className="text-xl font-bold flex items-center text-[#f1f1f3] mb-4"><FaChartLine className="mr-2 text-orange-500" /> 5. Nómina Profesional & Gestión de Ajustes</h2>
+                    <p className="text-[#a0a0b0] mb-4 text-sm max-w-4xl">Implementación de trazabilidad profesional. El sistema de Nómina maneja exoneraciones de ley (Ley 1607) y provisiones, mientras que el módulo de Ajustes garantiza que cada merma o regalo tenga un soporte contable y un impacto en el costo.</p>
+                    <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-4 overflow-hidden">
+                        <MermaidChart chart={advancedModulesSchema} id="advanced" />
+                    </div>
+                </section>
+
+                {/* 6. Estructura de Seguridad */}
+                <section className="bg-[#1a1a24] p-6 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.3)] border border-[#2a2a35]">
+                    <h2 className="text-xl font-bold flex items-center text-[#f1f1f3] mb-4"><FaUsers className="mr-2 text-cyan-500" /> 6. Estructura de Usuarios / Seguridad (RBAC)</h2>
                     <ul className="list-disc pl-5 text-[#a0a0b0] text-sm space-y-2 mt-4 columns-1 md:columns-2">
-                        <li><code>UserApp</code>: Representa la identidad física en plataforma (CMS o WMS).</li>
-                        <li><code>Role</code>: Grupos lógicos de control (ej. Cajero, Administrador).</li>
-                        <li><code>Permission</code>: Atomicidad de permisos (ej. "Ver_Contabilidad").</li>
-                        <li><code>RolePermission</code> / <code>UserRole</code>: Tablas pivote N:M permitiendo Roles Híbridos dinámicos asignados por token JWT.</li>
-                        <li><code>Subscriber</code> / <code>PQR</code>: Módulo de contacto y boletines publicitarios aislados del núcleo comercial transaccional.</li>
+                        <li><code>UserApp</code>: Identidad física en plataforma.</li>
+                        <li><code>Role</code> / <code>Permission</code>: Control de acceso granular.</li>
+                        <li><code>Subscriber</code> / <code>PQR</code>: Módulos de CRM y soporte.</li>
                     </ul>
                 </section>
             </div>

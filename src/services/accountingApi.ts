@@ -645,7 +645,7 @@ export const exportToExcel = async (reportType: string, params: Record<string, s
     URL.revokeObjectURL(url);
 };
 
-// ── Información Exógena (Medios Magnéticos DIAN) ───────────
+// ── Information Exógena (Medios Magnéticos DIAN) ───────────
 
 export const previewExogena = async (year: number) => {
     const query = new URLSearchParams({ year: String(year) });
@@ -671,4 +671,51 @@ export const generateExogena = async (year: number) => {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+};
+
+// ── Tax Configuration (ICA / Autoretención) ──────────────────
+
+export const getTaxConfigs = async () => {
+    const response = await fetch(`${API_URL}/accounting/tax-config`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getTaxConfigs');
+};
+
+export const createTaxConfig = async (data: any) => {
+    const response = await fetch(`${API_URL}/accounting/tax-config`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify(data),
+    });
+    return await handleResponse(response, 'createTaxConfig');
+};
+
+export const deleteTaxConfig = async (id: number) => {
+    const response = await fetch(`${API_URL}/accounting/tax-config/${id}`, {
+        method: 'DELETE',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'deleteTaxConfig');
+};
+
+// ── Profitability Reports ──────────────────────────────────
+
+export const getProfitabilityByDesign = async (startDate: string, endDate: string) => {
+    const query = new URLSearchParams({ startDate, endDate });
+    const response = await fetch(`${API_URL}/accounting/reports/profitability/design?${query}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getProfitabilityByDesign');
+};
+
+export const getProfitabilityByCollection = async (startDate: string, endDate: string) => {
+    const query = new URLSearchParams({ startDate, endDate });
+    const response = await fetch(`${API_URL}/accounting/reports/profitability/collection?${query}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getProfitabilityByCollection');
 };

@@ -544,7 +544,8 @@ kbd {
     <li class="toc-section"><a href="#cap6-3">6.3 Formato del archivo CSV</a></li>
     <li class="toc-section"><a href="#cap6-4">6.4 Auto-match</a></li>
     <li class="toc-section"><a href="#cap6-5">6.5 Match manual</a></li>
-    <li class="toc-section"><a href="#cap6-6">6.6 Estados de conciliación</a></li>
+    <li class="toc-section"><a href="#cap6-6">6.6 Conciliación de Pasarelas (Wompi)</a></li>
+    <li class="toc-section"><a href="#cap6-7">6.7 Estados de conciliación</a></li>
 
     <li class="toc-chapter"><a href="#cap7">Capítulo 7: Cierre Contable</a></li>
     <li class="toc-section"><a href="#cap7-1">7.1 Qué es el cierre contable</a></li>
@@ -604,6 +605,31 @@ kbd {
     <li class="toc-section"><a href="#cap15-3">15.3 Descargar XML y PDF</a></li>
     <li class="toc-section"><a href="#cap15-4">15.4 Notas crédito y débito</a></li>
     <li class="toc-section"><a href="#cap15-5">15.5 Configuración de resolución y certificado</a></li>
+
+    <li class="toc-chapter"><a href="#cap16">Capítulo 16: Configuración de Impuestos (ICA y Autorretención)</a></li>
+    <li class="toc-section"><a href="#cap16-1">16.1 Parametrización de ICA por municipio</a></li>
+    <li class="toc-section"><a href="#cap16-2">16.2 Autorretención Especial de Renta</a></li>
+    <li class="toc-section"><a href="#cap16-3">16.3 Automatización en asientos de venta</a></li>
+
+    <li class="toc-chapter"><a href="#cap17">Capítulo 17: Ajustes de Inventario y Kardex</a></li>
+    <li class="toc-section"><a href="#cap17-1">17.1 Trazabilidad mediante Kardex</a></li>
+    <li class="toc-section"><a href="#cap17-2">17.2 Tipos de Ajuste (Merma, Regalos, Sobrantes)</a></li>
+    <li class="toc-section"><a href="#cap17-3">17.3 Impacto Contable de los Ajustes</a></li>
+
+    <li class="toc-chapter"><a href="#cap18">Capítulo 18: Documento Soporte Electrónico</a></li>
+    <li class="toc-section"><a href="#cap18-1">18.1 Qué es el Documento Soporte</a></li>
+    <li class="toc-section"><a href="#cap18-2">18.2 Requisitos del Proveedor</a></li>
+    <li class="toc-section"><a href="#cap18-3">18.3 Emisión desde el Módulo de Gastos</a></li>
+
+    <li class="toc-chapter"><a href="#cap19">Capítulo 19: Análisis de Rentabilidad Real</a></li>
+    <li class="toc-section"><a href="#cap19-1">19.1 Algoritmo de Utilidad Bruta</a></li>
+    <li class="toc-section"><a href="#cap19-2">19.2 Reporte por Colección</a></li>
+    <li class="toc-section"><a href="#cap19-3">19.3 Reporte por Diseño Detallado</a></li>
+
+    <li class="toc-chapter"><a href="#cap20">Capítulo 20: Certificados de Retención Automáticos</a></li>
+    <li class="toc-section"><a href="#cap20-1">20.1 Tipos de Certificados (Fuente, ICA, IVA)</a></li>
+    <li class="toc-section"><a href="#cap20-2">20.2 Generación Masiva Anual</a></li>
+    <li class="toc-section"><a href="#cap20-3">20.3 Descarga de soportes PDF</a></li>
 
     <li class="toc-appendix"><a href="#apA">Apéndice A: Plan Único de Cuentas (Resumen)</a></li>
     <li class="toc-appendix"><a href="#apB">Apéndice B: Tarifas de Retención en Colombia</a></li>
@@ -1292,7 +1318,29 @@ kbd {
     <li>Repita para todas las transacciones pendientes.</li>
   </ol>
 
-  <h3 id="cap6-6">6.6 Estados de conciliación</h3>
+  <h3 id="cap6-6">6.6 Conciliación de Pasarelas (Wompi)</h3>
+  <p>Para marcas con alto volumen de ventas online como Two Six, la conciliación de pasarelas de pago es crítica debido al descuento de comisiones antes del depósito bancario.</p>
+  
+  <h4>Proceso de Conciliación de Wompi</h4>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Conciliación Bancaria &rarr; Pasarela (Wompi)</strong>.</li>
+    <li>Cargue el archivo CSV de transacciones exportado desde el dashboard de Wompi.</li>
+    <li>El sistema procesará cada transacción buscando el número de orden de Two Six.</li>
+    <li><strong>Asiento Automático:</strong> El sistema generará un asiento que desglosa:
+      <ul>
+        <li>Débito a <strong>Bancos</strong> por el valor neto recibido.</li>
+        <li>Débito a <strong>Gastos Bancarios (5305)</strong> por la comisión e IVA de la comisión.</li>
+        <li>Crédito a <strong>Cuentas por Cobrar (1305)</strong> por el valor bruto de la venta.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Beneficio Contable</div>
+    Este proceso elimina la necesidad de calcular manualmente las comisiones de cada venta, asegurando que el saldo en Bancos coincida exactamente con el extracto y que el gasto bancario esté correctamente registrado para efectos tributarios.
+  </div>
+
+  <h3 id="cap6-7">6.7 Estados de conciliación</h3>
 
   <table>
     <thead>
@@ -2417,6 +2465,172 @@ kbd {
       <tr><td><strong>Vida útil</strong></td><td>Período durante el cual se espera que un activo fijo sea utilizado por la empresa.</td></tr>
     </tbody>
   </table>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 16: CONFIGURACIÓN DE IMPUESTOS                        -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap16">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 16</div>
+    <h2 class="chapter-title">Configuración de Impuestos (ICA y Autorretención)</h2>
+  </div>
+
+  <h3 id="cap16-1">16.1 Parametrización de ICA por municipio</h3>
+  <p>El Impuesto de Industria y Comercio (ICA) es territorial y varía según el municipio donde se realice la actividad económica. El sistema permite parametrizar estas tarifas para su cálculo automático.</p>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Configuración Impuestos</strong>.</li>
+    <li>Haga clic en <strong>"Nueva Configuración"</strong>.</li>
+    <li>Seleccione el tipo <strong>ICA</strong> y la ciudad correspondiente (ej. Bogotá).</li>
+    <li>Ingrese la tarifa decimal (ej: para 11.04 x 1000, ingrese 0.01104).</li>
+    <li>Asigne las cuentas PUC de gasto y pasivo.</li>
+  </ol>
+
+  <h3 id="cap16-2">16.2 Autorretención Especial de Renta</h3>
+  <p>Conforme al Decreto 2201 de 2016, las empresas exoneradas de aportes parafiscales deben practicarse una autorretención especial de renta sobre sus ingresos.</p>
+  <ul>
+    <li>Configure el tipo <strong>AUTORETENCION_RENTA</strong> en el módulo de configuración.</li>
+    <li>La tarifa general suele ser del <strong>0.40%, 0.80% o 1.60%</strong> según la actividad económica principal.</li>
+  </ul>
+
+  <h3 id="cap16-3">16.3 Automatización en asientos de venta</h3>
+  <p>Una vez configurados, el sistema calculará estos impuestos <strong>automáticamente</strong> cada vez que se complete una venta, generando las líneas correspondientes en el asiento contable sin intervención manual.</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 17: AJUSTES DE INVENTARIO Y KARDEX                    -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap17">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 17</div>
+    <h2 class="chapter-title">Ajustes de Inventario y Kardex</h2>
+  </div>
+
+  <h3 id="cap17-1">17.1 Trazabilidad mediante Kardex</h3>
+  <p>El Kardex es el registro cronológico de todas las entradas y salidas de mercancía. Cada movimiento registra:</p>
+  <ul>
+    <li>Saldo anterior.</li>
+    <li>Cantidad del movimiento.</li>
+    <li>Nuevo saldo (Balance After).</li>
+    <li>Costo unitario de la transacción.</li>
+  </ul>
+
+  <h3 id="cap17-2">17.2 Tipos de Ajuste (Merma, Regalos, Sobrantes)</h3>
+  <p>El módulo de <strong>Ajustes Inventario</strong> permite registrar movimientos que no provienen de una venta o compra:</p>
+  <ul>
+    <li><strong>MERMA:</strong> Pérdida por daño o deterioro de la prenda.</li>
+    <li><strong>REGALO:</strong> Salida por concepto de marketing o muestras comerciales.</li>
+    <li><strong>ERROR_CONTEO:</strong> Ajustes tras auditoría física de inventario.</li>
+  </ul>
+
+  <h3 id="cap17-3">17.3 Impacto Contable de los Ajustes</h3>
+  <p>Cada ajuste genera automáticamente un movimiento contable valorado al <strong>costo de producción</strong> del diseño, asegurando que el Balance General refleje siempre el valor real de las existencias.</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 18: DOCUMENTO SOPORTE ELECTRÓNICO                     -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap18">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 18</div>
+    <h2 class="chapter-title">Documento Soporte Electrónico</h2>
+  </div>
+
+  <h3 id="cap18-1">18.1 Qué es el Documento Soporte</h3>
+  <p>Es el documento que debe emitir Two Six cuando compra bienes o servicios a proveedores que no están obligados a expedir factura de venta o documento equivalente. Es el único soporte válido para que dicho gasto sea deducible en el Impuesto sobre la Renta y descontable en IVA (cuando aplique).</p>
+
+  <h3 id="cap18-2">18.2 Requisitos del Proveedor</h3>
+  <p>Para emitir un Documento Soporte legalmente válido, el proveedor debe estar registrado en el sistema con:</p>
+  <ul>
+    <li>Nombre o Razón Social.</li>
+    <li>NIT o Número de Cédula.</li>
+    <li>Correo electrónico (para envío de la notificación).</li>
+    <li>Responsabilidad fiscal (No responsable de IVA).</li>
+  </ul>
+
+  <h3 id="cap18-3">18.3 Emisión desde el Módulo de Gastos</h3>
+  <p>El proceso de emisión es semi-automático:</p>
+  <ol class="steps">
+    <li>Registre el gasto normalmente en <strong>Contabilidad &rarr; Gastos</strong>.</li>
+    <li>En la lista de gastos, identifique el registro y haga clic en el ícono de <strong>"Enviar a DIAN"</strong> (ícono de color azul).</li>
+    <li>El sistema generará el XML estándar UBL 2.1 (Tipo 05), lo firmará digitalmente y lo transmitirá a la DIAN.</li>
+    <li>Una vez autorizado, el estado en la columna <strong>DIAN</strong> cambiará a <span class="status-badge status-success">AUTHORIZED</span> y se generará el CUDS (Código Único de Documento Soporte).</li>
+  </ol>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">Nota Tributaria</div>
+    El Documento Soporte debe emitirse a más tardar el último día hábil de la semana en que se realizó la operación, o de forma individual por cada operación. El sistema permite ambos manejos según la fecha del gasto registrada.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 19: ANÁLISIS DE RENTABILIDAD REAL                     -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap19">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 19</div>
+    <h2 class="chapter-title">Análisis de Rentabilidad Real</h2>
+  </div>
+
+  <h3 id="cap19-1">19.1 Algoritmo de Utilidad Bruta</h3>
+  <p>A diferencia de los reportes de ventas tradicionales que solo muestran el ingreso bruto, el módulo de rentabilidad aplica un descuento automático de costos operativos para hallar la utilidad real por prenda:</p>
+  <div class="formula">
+    Utilidad Real = (Venta Neta) - (Costo Manufactura) - (Comisión Pasarela) - (Impuestos de Venta)
+  </div>
+  <ul>
+    <li><strong>Costo Manufactura:</strong> Tomado del campo <em>Costo de Fabricación</em> definido en la ficha del diseño.</li>
+    <li><strong>Comisión Pasarela:</strong> Cálculo proporcional basado en la tarifa de Wompi (3.49% + $900).</li>
+    <li><strong>Impuestos:</strong> Proporción de ICA y Autorretención de Renta causados por la orden.</li>
+  </ul>
+
+  <h3 id="cap19-2">19.2 Reporte por Colección</h3>
+  <p>Permite visualizar el desempeño financiero de una colección completa. Es útil para evaluar qué temporadas o lanzamientos fueron más exitosos en términos de margen de ganancia acumulado.</p>
+
+  <h3 id="cap19-3">19.3 Reporte por Diseño Detallado</h3>
+  <p>Muestra el margen individual de cada referencia. El sistema utiliza semáforos visuales para identificar rápidamente:</p>
+  <ul>
+    <li><span class="status-badge status-success">Verde:</span> Margen superior al 40%.</li>
+    <li><span class="status-badge status-info">Azul:</span> Margen saludable entre 20% y 40%.</li>
+    <li><span class="status-badge status-warning">Naranja:</span> Margen bajo (menor al 20%).</li>
+    <li><span class="status-badge status-error">Rojo:</span> Utilidad negativa o nula.</li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 20: CERTIFICADOS DE RETENCIÓN                         -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap20">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 20</div>
+    <h2 class="chapter-title">Certificados de Retención Automáticos</h2>
+  </div>
+
+  <h3 id="cap20-1">20.1 Tipos de Certificados (Fuente, ICA, IVA)</h3>
+  <p>El sistema genera automáticamente los tres certificados exigidos por la normativa colombiana, extrayendo la información directamente de los movimientos del Libro Diario:</p>
+  <ul>
+    <li><strong>Retención en la Fuente:</strong> Aplicada sobre el impuesto de renta (Cuentas 2365).</li>
+    <li><strong>ReteICA:</strong> Aplicada sobre el impuesto de industria y comercio municipal (Cuentas 2368).</li>
+    <li><strong>ReteIVA:</strong> Aplicada sobre el impuesto al valor agregado (Cuentas 2367).</li>
+  </ul>
+
+  <h3 id="cap20-2">20.2 Generación Masiva Anual</h3>
+  <p>Durante la temporada de cierre fiscal, el contador puede generar todos los certificados del año en un solo paso:</p>
+  <ol class="steps">
+    <li>Navegue a <strong>Contabilidad &rarr; Certificados de Retención</strong>.</li>
+    <li>Seleccione el año gravable deseado.</li>
+    <li>Haga clic en <strong>"Generar Certificados"</strong>.</li>
+    <li>El sistema escaneará todos los gastos del año y agrupará las retenciones por proveedor y concepto.</li>
+  </ol>
+
+  <h3 id="cap20-3">20.3 Descarga de soportes PDF</h3>
+  <p>Cada certificado cuenta con un botón de descarga que genera un archivo PDF con validez legal, incluyendo:</p>
+  <ul>
+    <li>Identificación completa del Agente Retenedor (Two Six).</li>
+    <li>Datos del beneficiario del pago.</li>
+    <li>Desglose de base gravable, tarifa aplicada y monto retenido.</li>
+    <li>Ciudad y fecha de expedición automática.</li>
+  </ul>
+</div>
 
   <div style="text-align: center; padding: 4rem 0 2rem; color: var(--gray-500); font-size: 0.9rem;">
     <div style="width: 60px; height: 2px; background: var(--gold); margin: 0 auto 1.5rem;"></div>

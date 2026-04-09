@@ -79,6 +79,33 @@ const ExpensePage = () => {
         }
     };
 
+    const handleEmitSupportDocument = async (id: number) => {
+        const result = await Swal.fire({
+            title: 'Emitir Documento Soporte',
+            text: '¿Desea enviar este gasto como Documento Soporte Electrónico a la DIAN?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#38bdf8',
+            cancelButtonColor: '#2a2a35',
+            confirmButtonText: 'Sí, enviar a DIAN',
+            cancelButtonText: 'Cancelar',
+        });
+
+        if (!result.isConfirmed) return;
+
+        try {
+            setLoading(true);
+            const response = await accountingApi.emitSupportDocument(id);
+            await Swal.fire('¡Enviado!', `Documento Soporte emitido correctamente. CUDS: ${response.cuds.substring(0, 20)}...`, 'success');
+            fetchData();
+        } catch (err: any) {
+            logError(err, 'emit-support-doc');
+            await Swal.fire('Error', err.message || 'No se pudo emitir el documento soporte.', 'error');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const formatCurrency = (val: number) =>
         new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(val || 0);
 
@@ -120,6 +147,15 @@ const ExpensePage = () => {
             header: 'Estado Pago',
             render: (val: any) => <StatusBadge status={val} variant={getStatusVariant(val)} size="sm" />,
         },
+        {
+            key: 'dianEInvoicing',
+            header: 'DIAN',
+            render: (val: any) => {
+                if (!val || val.length === 0) return <span style={{ color: '#6b6b7b', fontSize: '11px' }}>No emitido</span>;
+                const last = val[val.length - 1];
+                return <StatusBadge status={last.status} variant={last.status === 'AUTHORIZED' ? 'success' : 'warning'} size="sm" />;
+            }
+        }
     ];
 
     return (
@@ -178,34 +214,41 @@ const ExpensePage = () => {
                 loading={loading}
                 emptyMessage="No hay gastos registrados"
                 actions={(exp: any) => (
-                    <>
+                    <div style={{ display: 'flex', gap: '4px' }}>
                         <Button
                             variant="ghost"
                             size="sm"
+                            title="Editar"
                             icon={<FiEdit2 />}
                             onClick={() => navigate(`/accounting/expenses/${exp.id}`)}
-                        >
-                            {''}
-                        </Button>
+                        />
+                        {(!exp.dianEInvoicing || exp.dianEInvoicing.length === 0) && (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                title="Emitir Documento Soporte DIAN"
+                                style={{ color: '#38bdf8' }}
+                                icon={<FiSend />}
+                                onClick={() => handleEmitSupportDocument(exp.id)}
+                            />
+                        )}
                         {exp.payment_status !== 'PAID' && (
                             <Button
                                 variant="ghost"
                                 size="sm"
+                                title="Marcar Pagado"
                                 icon={<FiCheck />}
                                 onClick={() => handleMarkPaid(exp.id)}
-                            >
-                                {''}
-                            </Button>
+                            />
                         )}
                         <Button
                             variant="destructive"
                             size="sm"
+                            title="Eliminar"
                             icon={<FiTrash2 />}
                             onClick={() => handleDelete(exp.id)}
-                        >
-                            {''}
-                        </Button>
-                    </>
+                        />
+                    </div>
                 )}
             />
         </div>

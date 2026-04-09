@@ -108,6 +108,19 @@ const DianDocumentationPage = () => {
                         </ul>
                     </section>
                 </div>
+
+                {/* 7. Futura Integración: Nómina Electrónica */}
+                <div className="grid grid-cols-1 gap-8 mt-8">
+                    <section className="bg-[#1a1a24] p-6 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.3)] border border-[#2a2a35]">
+                        <h2 className="text-xl font-bold flex items-center text-[#f1f1f3] mb-4"><FaProjectDiagram className="mr-2 text-cyan-500" /> 7. Nómina Electrónica (Preparación Técnica)</h2>
+                        <p className="text-[#a0a0b0] mb-4 text-sm">El ecosistema está habilitado para la liquidación de nómina profesional (Ley 1607, Provisiones y Aportes). La arquitectura está diseñada para la futura conexión con el sistema de transmisión XML hacia la DIAN.</p>
+                        <ul className="list-disc pl-5 text-[#a0a0b0] text-sm space-y-2">
+                            <li><b>Motor de Cálculo:</b> Implementado en NestJS bajo normatividad NIIF/Colombiana.</li>
+                            <li><b>Transmisión XML:</b> Preparado para generar documentos soporte de pago de nómina electrónica bajo el estándar UBL de la DIAN.</li>
+                            <li><b>Habilitación:</b> El proceso de habilitación ante la DIAN será el paso final al contratar el primer empleado, utilizando el mismo certificado digital <b>GSE.p12</b> ya configurado.</li>
+                        </ul>
+                    </section>
+                </div>
             </div>
         </div>
     );

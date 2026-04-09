@@ -75,6 +75,9 @@ import ManualContablePage from './pages/accounting/ManualContablePage.tsx';
 import BudgetPage from './pages/accounting/BudgetPage.tsx';
 import DepreciationPage from './pages/accounting/DepreciationPage.tsx';
 import FinancialIndicatorsPage from './pages/accounting/FinancialIndicatorsPage.tsx';
+import TaxConfigPage from './pages/accounting/TaxConfigPage.tsx';
+import InventoryAdjustmentPage from './pages/accounting/InventoryAdjustmentPage.tsx';
+import ProfitabilityReportPage from './pages/accounting/ProfitabilityReportPage.tsx';
 
 /**
  * Componente que hace scroll al inicio de la página
@@ -178,9 +181,12 @@ const MainLayout = () => {
               <Route path="/accounting/tax/retefuente" element={<ReteFuentePage />} />
               <Route path="/accounting/reports/cash-flow" element={<CashFlowPage />} />
               <Route path="/accounting/reports/aging" element={<AgingReportPage />} />
+              <Route path="/accounting/reports/profitability" element={<ProfitabilityReportPage />} />
               <Route path="/accounting/budget" element={<BudgetPage />} />
               <Route path="/accounting/assets" element={<DepreciationPage />} />
               <Route path="/accounting/reports/indicators" element={<FinancialIndicatorsPage />} />
+              <Route path="/accounting/tax-config" element={<TaxConfigPage />} />
+              <Route path="/accounting/inventory-adjustments" element={<InventoryAdjustmentPage />} />
               <Route path="/accounting/exogena" element={<ExogenaPage />} />
               <Route path="/manual-contabilidad" element={<ManualContablePage />} />
             </Routes>

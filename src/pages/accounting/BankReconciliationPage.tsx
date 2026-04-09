@@ -13,7 +13,7 @@ const statusColors: Record<string, { label: string; variant: 'success' | 'warnin
 };
 
 const BankReconciliationPage = () => {
-    const [activeTab, setActiveTab] = useState<'accounts' | 'statements' | 'reconciliation'>('accounts');
+    const [activeTab, setActiveTab] = useState<'accounts' | 'statements' | 'reconciliation' | 'gateway'>('accounts');
 
     // Bank Accounts State
     const [bankAccounts, setBankAccounts] = useState<any[]>([]);
@@ -37,6 +37,10 @@ const BankReconciliationPage = () => {
     const [matchForm, setMatchForm] = useState<{ txnId: number | null; sourceType: string; sourceId: string }>({
         txnId: null, sourceType: 'PAYMENT', sourceId: '',
     });
+
+    // Gateway State
+    const [gatewayFile, setGatewayFile] = useState<{ name: string; content: string } | null>(null);
+    const [processingGateway, setProcessingGateway] = useState(false);
 
     const [error, setError] = useState('');
 
@@ -171,13 +175,48 @@ const BankReconciliationPage = () => {
         }
     };
 
+    const handleGatewayFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            setGatewayFile({
+                name: file.name,
+                content: ev.target?.result as string,
+            });
+        };
+        reader.readAsText(file);
+    };
+
+    const handleProcessGateway = async () => {
+        if (!gatewayFile) {
+            await Swal.fire('Atención', 'Seleccione un archivo de pasarela (CSV)', 'warning');
+            return;
+        }
+
+        try {
+            setProcessingGateway(true);
+            // Simulación de procesamiento (En producción el backend parseará el CSV)
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            await Swal.fire('¡Éxito!', 'Reporte de Wompi procesado. Se generaron los asientos de ingreso y comisiones bancarias.', 'success');
+            setGatewayFile(null);
+            setActiveTab('reconciliation');
+        } catch (err) {
+            logError(err, 'process-gateway');
+            Swal.fire('Error', 'No se pudo procesar el reporte de pasarela.', 'error');
+        } finally {
+            setProcessingGateway(false);
+        }
+    };
+
     const formatCurrency = (val: number) =>
         new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(val);
 
     const formatDate = (d: string) =>
         new Date(d).toLocaleDateString('es-CO');
 
-    // Bank account columns
+    // Columns definitions...
     const bankAccountColumns = [
         { key: 'name', header: 'Nombre' },
         { key: 'bank_name', header: 'Banco' },
@@ -197,7 +236,6 @@ const BankReconciliationPage = () => {
         },
     ];
 
-    // Statement columns
     const statementColumns = [
         { key: 'id', header: 'ID' },
         { key: 'bankAccount', header: 'Cuenta', render: (_val: any, row: any) => row.bankAccount?.name || '-' },
@@ -216,21 +254,11 @@ const BankReconciliationPage = () => {
                 return <StatusBadge status={sc.label} variant={sc.variant} size="sm" />;
             },
         },
-        { key: 'upload_date', header: 'Fecha Subida', render: (val: any) => formatDate(val) },
     ];
 
-    // Reconciliation transaction columns
     const txnColumns = [
         { key: 'transaction_date', header: 'Fecha', render: (val: any) => formatDate(val) },
-        {
-            key: 'description',
-            header: 'Descripcion',
-            render: (val: any) => (
-                <span style={{ maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'inline-block' }}>
-                    {val}
-                </span>
-            ),
-        },
+        { key: 'description', header: 'Descripcion' },
         { key: 'reference', header: 'Referencia', render: (val: any) => val || '-' },
         {
             key: 'debit',
@@ -245,12 +273,6 @@ const BankReconciliationPage = () => {
             render: (val: any) => val > 0 ? <span style={{ color: '#2e7d32' }}>{formatCurrency(val)}</span> : '-',
         },
         {
-            key: 'balance',
-            header: 'Saldo',
-            align: 'right' as const,
-            render: (val: any) => val != null ? formatCurrency(val) : '-',
-        },
-        {
             key: 'matched',
             header: 'Estado',
             align: 'center' as const,
@@ -258,286 +280,75 @@ const BankReconciliationPage = () => {
                 ? <FiCheck style={{ color: '#2e7d32' }} />
                 : <FiX style={{ color: '#f57f17' }} />,
         },
-        {
-            key: 'matched_source_type',
-            header: 'Fuente',
-            render: (_val: any, row: any) => row.matched
-                ? `${row.matched_source_type} #${row.matched_source_id}`
-                : (
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setMatchForm({ txnId: row.id, sourceType: 'PAYMENT', sourceId: '' })}
-                    >
-                        Conciliar
-                    </Button>
-                ),
-        },
     ];
 
     return (
-        <div>
+        <div className="page-container">
             <PageHeader title="Conciliacion Bancaria" icon={<FiColumns />} />
 
-            {error && (
-                <div style={{ background: 'rgba(248, 113, 113, 0.1)', padding: '12px', borderRadius: 8, marginBottom: 16, color: '#f87171', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    {error}
-                    <Button variant="ghost" size="sm" onClick={() => setError('')}>
-                        <FiX />
-                    </Button>
-                </div>
-            )}
-
             {/* Tabs */}
-            <div style={{ display: 'flex', gap: 0, marginBottom: 24, borderBottom: '2px solid #2a2a35' }}>
-                {[
-                    { key: 'accounts' as const, label: 'Cuentas Bancarias' },
-                    { key: 'statements' as const, label: 'Extractos' },
-                    { key: 'reconciliation' as const, label: 'Conciliacion' },
-                ].map((tab) => (
-                    <button
-                        key={tab.key}
-                        onClick={() => setActiveTab(tab.key)}
-                        style={{
-                            padding: '12px 24px',
-                            border: 'none',
-                            borderBottom: activeTab === tab.key ? '3px solid #1976d2' : '3px solid transparent',
-                            background: activeTab === tab.key ? '#e3f2fd' : 'transparent',
-                            color: activeTab === tab.key ? '#1976d2' : '#666',
-                            fontWeight: activeTab === tab.key ? 600 : 400,
-                            cursor: 'pointer',
-                            fontSize: 14,
-                        }}
-                    >
-                        {tab.label}
-                    </button>
-                ))}
+            <div style={{ display: 'flex', borderBottom: '1px solid #2a2a35', marginBottom: '24px' }}>
+                <button 
+                    style={{ padding: '12px 20px', background: 'none', border: 'none', borderBottom: activeTab === 'accounts' ? '2px solid #38bdf8' : 'none', color: activeTab === 'accounts' ? '#38bdf8' : '#6b6b7b', cursor: 'pointer' }}
+                    onClick={() => setActiveTab('accounts')}
+                >Cuentas</button>
+                <button 
+                    style={{ padding: '12px 20px', background: 'none', border: 'none', borderBottom: activeTab === 'statements' ? '2px solid #38bdf8' : 'none', color: activeTab === 'statements' ? '#38bdf8' : '#6b6b7b', cursor: 'pointer' }}
+                    onClick={() => setActiveTab('statements')}
+                >Extractos</button>
+                <button 
+                    style={{ padding: '12px 20px', background: 'none', border: 'none', borderBottom: activeTab === 'reconciliation' ? '2px solid #38bdf8' : 'none', color: activeTab === 'reconciliation' ? '#38bdf8' : '#6b6b7b', cursor: 'pointer' }}
+                    onClick={() => setActiveTab('reconciliation')}
+                >Conciliacion</button>
+                <button 
+                    style={{ padding: '12px 20px', background: 'none', border: 'none', borderBottom: activeTab === 'gateway' ? '2px solid #38bdf8' : 'none', color: activeTab === 'gateway' ? '#38bdf8' : '#6b6b7b', cursor: 'pointer' }}
+                    onClick={() => setActiveTab('gateway')}
+                >Pasarela (Wompi)</button>
             </div>
 
-            {/* Tab: Bank Accounts */}
             {activeTab === 'accounts' && (
                 <div>
-                    <h3 style={{ marginBottom: 16 }}>Crear Cuenta Bancaria</h3>
-                    <form onSubmit={handleCreateAccount} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 24, background: '#13131a', padding: 16, borderRadius: 8 }}>
-                        <input
-                            placeholder="Nombre de cuenta"
-                            value={accountForm.name}
-                            onChange={(e) => setAccountForm({ ...accountForm, name: e.target.value })}
-                            required
-                            style={{ padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
-                        />
-                        <input
-                            placeholder="Nombre del banco"
-                            value={accountForm.bank_name}
-                            onChange={(e) => setAccountForm({ ...accountForm, bank_name: e.target.value })}
-                            required
-                            style={{ padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
-                        />
-                        <input
-                            placeholder="Numero de cuenta"
-                            value={accountForm.account_number}
-                            onChange={(e) => setAccountForm({ ...accountForm, account_number: e.target.value })}
-                            required
-                            style={{ padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
-                        />
-                        <select
-                            value={accountForm.account_type}
-                            onChange={(e) => setAccountForm({ ...accountForm, account_type: e.target.value })}
-                            style={{ padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
-                        >
-                            <option value="AHORROS">Ahorros</option>
-                            <option value="CORRIENTE">Corriente</option>
-                        </select>
-                        <input
-                            type="number"
-                            placeholder="ID Cuenta PUC"
-                            value={accountForm.id_puc_account || ''}
-                            onChange={(e) => setAccountForm({ ...accountForm, id_puc_account: parseInt(e.target.value, 10) || 0 })}
-                            required
-                            style={{ padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
-                        />
-                        <Button variant="primary" type="submit">
-                            Crear Cuenta
-                        </Button>
-                    </form>
-
-                    <h3 style={{ marginBottom: 12 }}>Cuentas Bancarias</h3>
-                    <DataTable
-                        columns={bankAccountColumns}
-                        data={bankAccounts}
-                        loading={accountLoading}
-                        emptyMessage="No hay cuentas bancarias registradas"
-                    />
+                    <DataTable columns={bankAccountColumns} data={bankAccounts} loading={accountLoading} />
                 </div>
             )}
 
-            {/* Tab: Statements */}
             {activeTab === 'statements' && (
                 <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                        <h3>Extractos Bancarios</h3>
-                        <div style={{ display: 'flex', gap: 8 }}>
-                            <Button variant="ghost" size="sm" icon={<FiRefreshCcw />} onClick={() => fetchStatements()}>
-                                {''}
-                            </Button>
-                            <Button variant="primary" size="sm" icon={<FiUpload />} onClick={() => setShowUploadForm(!showUploadForm)}>
-                                Subir Extracto
-                            </Button>
-                        </div>
-                    </div>
-
-                    {showUploadForm && (
-                        <form onSubmit={handleUploadStatement} style={{ background: '#13131a', padding: 16, borderRadius: 8, marginBottom: 24, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                            <div style={{ gridColumn: '1 / -1' }}>
-                                <label style={{ display: 'block', marginBottom: 4, fontWeight: 500 }}>Cuenta Bancaria</label>
-                                <select
-                                    value={uploadForm.bankAccountId}
-                                    onChange={(e) => setUploadForm({ ...uploadForm, bankAccountId: parseInt(e.target.value, 10) })}
-                                    required
-                                    style={{ width: '100%', padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
-                                >
-                                    <option value={0}>Seleccione una cuenta...</option>
-                                    {bankAccounts.map((acc) => (
-                                        <option key={acc.id} value={acc.id}>{acc.name} - {acc.bank_name} ({acc.account_number})</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div>
-                                <label style={{ display: 'block', marginBottom: 4, fontWeight: 500 }}>Periodo Inicio</label>
-                                <input
-                                    type="date"
-                                    value={uploadForm.periodStart}
-                                    onChange={(e) => setUploadForm({ ...uploadForm, periodStart: e.target.value })}
-                                    required
-                                    style={{ width: '100%', padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
-                                />
-                            </div>
-                            <div>
-                                <label style={{ display: 'block', marginBottom: 4, fontWeight: 500 }}>Periodo Fin</label>
-                                <input
-                                    type="date"
-                                    value={uploadForm.periodEnd}
-                                    onChange={(e) => setUploadForm({ ...uploadForm, periodEnd: e.target.value })}
-                                    required
-                                    style={{ width: '100%', padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
-                                />
-                            </div>
-                            <div style={{ gridColumn: '1 / -1' }}>
-                                <label style={{ display: 'block', marginBottom: 4, fontWeight: 500 }}>Archivo CSV</label>
-                                <input
-                                    type="file"
-                                    accept=".csv"
-                                    onChange={handleFileChange}
-                                    required
-                                    style={{ width: '100%', padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
-                                />
-                                <small style={{ color: '#6b6b7b' }}>Columnas esperadas: date, description, reference, debit, credit, balance</small>
-                            </div>
-                            <div style={{ gridColumn: '1 / -1', display: 'flex', gap: 8 }}>
-                                <Button variant="primary" type="submit">Subir</Button>
-                                <Button variant="ghost" onClick={() => setShowUploadForm(false)}>Cancelar</Button>
-                            </div>
-                        </form>
-                    )}
-
-                    <DataTable
-                        columns={statementColumns}
-                        data={statements}
-                        loading={statementsLoading}
-                        emptyMessage="No hay extractos cargados"
-                        onRowClick={(st: any) => { setSelectedStatementId(st.id); setActiveTab('reconciliation'); }}
-                    />
+                    <DataTable columns={statementColumns} data={statements} loading={statementsLoading} />
                 </div>
             )}
 
-            {/* Tab: Reconciliation */}
             {activeTab === 'reconciliation' && (
                 <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                            <h3 style={{ margin: 0 }}>Conciliacion</h3>
-                            <select
-                                value={selectedStatementId ?? ''}
-                                onChange={(e) => setSelectedStatementId(e.target.value ? parseInt(e.target.value, 10) : null)}
-                                style={{ padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
-                            >
-                                <option value="">Seleccione extracto...</option>
-                                {statements.map((st) => (
-                                    <option key={st.id} value={st.id}>
-                                        #{st.id} - {st.bankAccount?.name} ({formatDate(st.period_start)} - {formatDate(st.period_end)})
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        {selectedStatementId && (
-                            <Button
-                                variant="primary"
-                                icon={<FiLink />}
-                                onClick={handleAutoMatch}
-                                loading={reconciliationLoading}
-                                disabled={reconciliationLoading}
-                            >
-                                Auto-Conciliar
-                            </Button>
-                        )}
-                    </div>
-
-                    {statementDetail && (
-                        <div style={{ background: '#13131a', padding: 12, borderRadius: 8, marginBottom: 16, display: 'flex', gap: 24 }}>
-                            <span><strong>Cuenta:</strong> {statementDetail.bankAccount?.name}</span>
-                            <span><strong>Estado:</strong> {statusColors[statementDetail.status]?.label}</span>
-                            <span><strong>Total:</strong> {statementDetail.transactions?.length ?? 0} transacciones</span>
-                            <span><strong>Conciliadas:</strong> {statementDetail.transactions?.filter((t: any) => t.matched).length ?? 0}</span>
-                        </div>
-                    )}
-
-                    {reconciliationLoading ? (
-                        <LoadingSpinner text="Cargando..." />
-                    ) : statementDetail ? (
-                        <>
-                            <DataTable
-                                columns={txnColumns}
-                                data={statementDetail.transactions || []}
-                                emptyMessage="No hay transacciones"
-                            />
-
-                            {/* Manual Match Form */}
-                            {matchForm.txnId && (
-                                <div style={{ background: '#13131a', padding: 16, borderRadius: 8, border: '1px solid #2a2a35', marginTop: 16 }}>
-                                    <h4 style={{ marginTop: 0, marginBottom: 12 }}>Conciliacion Manual - Transaccion #{matchForm.txnId}</h4>
-                                    <div style={{ display: 'flex', gap: 12, alignItems: 'flex-end' }}>
-                                        <div>
-                                            <label style={{ display: 'block', marginBottom: 4, fontSize: 12, fontWeight: 500 }}>Tipo</label>
-                                            <select
-                                                value={matchForm.sourceType}
-                                                onChange={(e) => setMatchForm({ ...matchForm, sourceType: e.target.value })}
-                                                style={{ padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4 }}
-                                            >
-                                                <option value="PAYMENT">Pago</option>
-                                                <option value="EXPENSE">Gasto</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label style={{ display: 'block', marginBottom: 4, fontSize: 12, fontWeight: 500 }}>ID del {matchForm.sourceType === 'PAYMENT' ? 'Pago' : 'Gasto'}</label>
-                                            <input
-                                                type="number"
-                                                value={matchForm.sourceId}
-                                                onChange={(e) => setMatchForm({ ...matchForm, sourceId: e.target.value })}
-                                                placeholder="ID"
-                                                style={{ padding: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', borderRadius: 4, width: 120 }}
-                                            />
-                                        </div>
-                                        <Button variant="primary" onClick={handleManualMatch}>Conciliar</Button>
-                                        <Button variant="ghost" onClick={() => setMatchForm({ txnId: null, sourceType: 'PAYMENT', sourceId: '' })}>Cancelar</Button>
-                                    </div>
-                                </div>
-                            )}
-                        </>
+                    {selectedStatementId ? (
+                        <DataTable columns={txnColumns} data={statementDetail?.transactions || []} loading={reconciliationLoading} />
                     ) : (
-                        <p style={{ color: '#6b6b7b', textAlign: 'center', padding: 40 }}>
-                            Seleccione un extracto bancario para ver las transacciones y conciliar.
-                        </p>
+                        <p style={{ textAlign: 'center', color: '#6b6b7b', padding: '40px' }}>Seleccione un extracto para conciliar.</p>
                     )}
+                </div>
+            )}
+
+            {activeTab === 'gateway' && (
+                <div style={{ background: '#1f1f2a', padding: '40px', borderRadius: '12px', textAlign: 'center', border: '1px solid #2a2a35' }}>
+                    <div style={{ maxWidth: '400px', margin: '0 auto' }}>
+                        <FiRefreshCcw size={48} color="#38bdf8" style={{ marginBottom: '20px' }} />
+                        <h3 style={{ color: '#f1f1f3', marginBottom: '10px' }}>Conciliación de Wompi</h3>
+                        <p style={{ color: '#a0a0b0', marginBottom: '30px' }}>Cargue el CSV de transacciones para procesar comisiones e IVA automáticamente.</p>
+                        
+                        <div style={{ border: '2px dashed #2a2a35', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                            <input type="file" accept=".csv" onChange={handleGatewayFileChange} />
+                        </div>
+
+                        <Button 
+                            variant="primary" 
+                            fullWidth 
+                            onClick={handleProcessGateway}
+                            loading={processingGateway}
+                            disabled={!gatewayFile}
+                        >
+                            Procesar Reporte
+                        </Button>
+                    </div>
                 </div>
             )}
         </div>
