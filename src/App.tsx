@@ -72,6 +72,7 @@ import CashFlowPage from './pages/accounting/CashFlowPage.tsx';
 import AgingReportPage from './pages/accounting/AgingReportPage.tsx';
 import ExogenaPage from './pages/accounting/ExogenaPage.tsx';
 import ManualContablePage from './pages/accounting/ManualContablePage.tsx';
+import UserManualPage from './pages/UserManualPage.tsx';
 import BudgetPage from './pages/accounting/BudgetPage.tsx';
 import DepreciationPage from './pages/accounting/DepreciationPage.tsx';
 import FinancialIndicatorsPage from './pages/accounting/FinancialIndicatorsPage.tsx';
@@ -189,6 +190,7 @@ const MainLayout = () => {
               <Route path="/accounting/inventory-adjustments" element={<InventoryAdjustmentPage />} />
               <Route path="/accounting/exogena" element={<ExogenaPage />} />
               <Route path="/manual-contabilidad" element={<ManualContablePage />} />
+              <Route path="/user-manual" element={<UserManualPage />} />
             </Routes>
           </main>
         </div>

@@ -105,18 +105,13 @@ const homeSections = [
     ]
   },
   {
-    title: 'Plan Estrategico', icon: <FiMap />, permission: 'sales',
-    items: [
-      { path: '/plan-estrategico', icon: <FiCompass />, title: 'Ver plan', desc: 'Visualizacion del plan estrategico anual.', permission: 'sales.orders.view' },
-    ]
-  },
-  {
     title: 'Documentación', icon: <FiBook />, permission: 'sales',
     items: [
       { path: '/architecture-docs', icon: <FiServer />, title: 'Doc. Arquitectura', desc: 'Topografía Cloud, DevSecOps y costos de ecosistema.', permission: 'admin.users.view' },
       { path: '/database-docs', icon: <FiDatabase />, title: 'Doc. Base de Datos', desc: 'Diagramas visuales de la arquitectura de datos del sistema.', permission: 'admin.users.view' },
       { path: '/dian-documentation', icon: <FiCode />, title: 'Documentacion DIAN', desc: 'Arquitectura y flujos de Facturacion Electronica DIAN.', permission: 'sales.dian.view' },
       { path: '/manual-contabilidad', icon: <FiBookOpen />, title: 'Manual Contable', desc: 'Manual completo del modulo contable.', permission: 'accounting.reports.view' },
+      { path: '/plan-estrategico', icon: <FiCompass />, title: 'Plan Estrategico', desc: 'Visualizacion del plan estrategico anual.', permission: 'sales.orders.view' },
     ]
   },
   {

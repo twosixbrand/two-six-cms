@@ -109,22 +109,16 @@ const menuData = [
     ],
   },
   {
-    title: 'Plan Estrategico',
-    path: '#',
-    permission: 'sales.orders.view',
-    subNav: [
-      { title: 'Ver plan', path: '/plan-estrategico', permission: 'sales.orders.view' },
-    ],
-  },
-  {
     title: 'Documentación',
     path: '#',
     permission: 'sales.orders.view',
     subNav: [
+      { title: 'Manual de Usuario', path: '/user-manual', permission: 'sales.orders.view' },
       { title: 'Doc. Arquitectura', path: '/architecture-docs', permission: 'admin.users.view' },
       { title: 'Doc. Base de Datos', path: '/database-docs', permission: 'sales.orders.view' },
-      { title: 'Documentacion DIAN', path: '/dian-documentation', permission: 'sales.dian.view' },
+      { title: 'Documentación DIAN', path: '/dian-documentation', permission: 'sales.dian.view' },
       { title: 'Manual Contable', path: '/manual-contabilidad', permission: 'accounting.reports.view' },
+      { title: 'Plan Estratégico', path: '/plan-estrategico', permission: 'sales.orders.view' },
     ],
   },
   {
