@@ -153,7 +153,7 @@ erDiagram
         int id PK
         string entry_number UK
         date entry_date
-        string source_type "SALE, PAYROLL, RECONCILIATION"
+        string source_type "SALE, PAYROLL, COGS, INVENTORY_ADJUSTMENT"
     }
 
     TAX_CONFIGURATION ||--o| PUC_ACCOUNT : "references"
@@ -194,6 +194,19 @@ erDiagram
     }
 
     PAYROLL_ENTRY ||--o| JOURNAL_ENTRY : "generates"
+
+    PROVIDER ||--o{ WITHHOLDING_CERTIFICATE : "receives"
+    PROVIDER {
+        string nit PK
+        string company_name
+    }
+
+    WITHHOLDING_CERTIFICATE {
+        int id PK
+        string certificate_number UK
+        string concept "RETEFUENTE, RETEICA, RETEIVA"
+        float withheld_amount
+    }
 
     INVENTORY_KARDEX {
         int id PK

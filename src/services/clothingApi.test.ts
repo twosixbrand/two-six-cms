@@ -11,149 +11,106 @@ describe('clothingApi.ts', () => {
         vi.restoreAllMocks();
     });
 
-
-    it('should test getClothing success', async () => {
+    it('getClothing: should return data on success', async () => {
+        const mockData = [{ id: 1, name: 'Camiseta' }];
         (global.fetch as any).mockResolvedValue({
             ok: true,
             status: 200,
-            json: vi.fn().mockResolvedValue({ data: 'success' }),
+            json: vi.fn().mockResolvedValue(mockData),
         });
 
-        try {
-            await api.getClothing(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
+        const result = await api.getClothing();
+        expect(result).toEqual(mockData);
+        expect(global.fetch).toHaveBeenCalledWith('http://localhost:3050/api/clothing');
     });
 
-    it('should test getClothing failure', async () => {
+    it('getClothing: should throw error on failure', async () => {
         (global.fetch as any).mockResolvedValue({
             ok: false,
-            status: 400,
-            json: vi.fn().mockResolvedValue({ message: 'Error' }),
+            status: 500,
+            headers: { get: () => 'application/json' },
+            json: vi.fn().mockResolvedValue({ message: 'Server Error' }),
         });
 
-        try {
-            await api.getClothing(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
+        await expect(api.getClothing()).rejects.toThrow('Server Error');
     });
 
-
-    it('should test getClothingById success', async () => {
+    it('getClothingById: should return data on success', async () => {
+        const mockData = { id: 1, name: 'Camiseta' };
         (global.fetch as any).mockResolvedValue({
             ok: true,
             status: 200,
-            json: vi.fn().mockResolvedValue({ data: 'success' }),
+            json: vi.fn().mockResolvedValue(mockData),
         });
 
-        try {
-            await api.getClothingById(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
+        const result = await api.getClothingById(1);
+        expect(result).toEqual(mockData);
+        expect(global.fetch).toHaveBeenCalledWith('http://localhost:3050/api/clothing/1');
     });
 
-    it('should test getClothingById failure', async () => {
+    it('createClothing: should send correct data and return response', async () => {
+        const clothingData = { name: 'Pantalón', id_gender: '1', id_type_clothing: 2, id_category: '3' };
+        const mockResponse = { id: 10, ...clothingData };
         (global.fetch as any).mockResolvedValue({
-            ok: false,
-            status: 400,
-            json: vi.fn().mockResolvedValue({ message: 'Error' }),
+            ok: true,
+            status: 201,
+            json: vi.fn().mockResolvedValue(mockResponse),
         });
 
-        try {
-            await api.getClothingById(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
+        const result = await api.createClothing(clothingData);
+        expect(result).toEqual(mockResponse);
+        expect(global.fetch).toHaveBeenCalledWith('http://localhost:3050/api/clothing', expect.objectContaining({
+            method: 'POST',
+            body: JSON.stringify({
+                name: 'Pantalón',
+                id_gender: 1,
+                id_type_clothing: 2,
+                id_category: 3
+            })
+        }));
     });
 
-
-    it('should test createClothing success', async () => {
+    it('updateClothing: should send PATCH request with correct data', async () => {
+        const clothingData = { name: 'Pantalón Editado', id_gender: '2', id_type_clothing: 1, id_category: '5' };
         (global.fetch as any).mockResolvedValue({
             ok: true,
             status: 200,
-            json: vi.fn().mockResolvedValue({ data: 'success' }),
+            json: vi.fn().mockResolvedValue({ success: true }),
         });
 
-        try {
-            await api.createClothing(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
+        await api.updateClothing(1, clothingData);
+        expect(global.fetch).toHaveBeenCalledWith('http://localhost:3050/api/clothing/1', expect.objectContaining({
+            method: 'PATCH',
+            body: JSON.stringify({
+                name: 'Pantalón Editado',
+                id_gender: 2,
+                id_type_clothing: 1,
+                id_category: 5
+            })
+        }));
     });
 
-    it('should test createClothing failure', async () => {
-        (global.fetch as any).mockResolvedValue({
-            ok: false,
-            status: 400,
-            json: vi.fn().mockResolvedValue({ message: 'Error' }),
-        });
-
-        try {
-            await api.createClothing(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
-    });
-
-
-    it('should test updateClothing success', async () => {
+    it('deleteClothing: should send DELETE request', async () => {
         (global.fetch as any).mockResolvedValue({
             ok: true,
             status: 200,
-            json: vi.fn().mockResolvedValue({ data: 'success' }),
+            json: vi.fn().mockResolvedValue({}),
         });
 
-        try {
-            await api.updateClothing(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
+        await api.deleteClothing(1);
+        expect(global.fetch).toHaveBeenCalledWith('http://localhost:3050/api/clothing/1', expect.objectContaining({
+            method: 'DELETE'
+        }));
     });
 
-    it('should test updateClothing failure', async () => {
+    it('deleteClothing: should throw error on failure', async () => {
         (global.fetch as any).mockResolvedValue({
             ok: false,
-            status: 400,
-            json: vi.fn().mockResolvedValue({ message: 'Error' }),
+            status: 404,
+            headers: { get: () => 'text/plain' },
+            text: vi.fn().mockResolvedValue('Not Found'),
         });
 
-        try {
-            await api.updateClothing(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
+        await expect(api.deleteClothing(1)).rejects.toThrow('Not Found');
     });
-
-
-    it('should test deleteClothing success', async () => {
-        (global.fetch as any).mockResolvedValue({
-            ok: true,
-            status: 200,
-            json: vi.fn().mockResolvedValue({ data: 'success' }),
-        });
-
-        try {
-            await api.deleteClothing(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
-    });
-
-    it('should test deleteClothing failure', async () => {
-        (global.fetch as any).mockResolvedValue({
-            ok: false,
-            status: 400,
-            json: vi.fn().mockResolvedValue({ message: 'Error' }),
-        });
-
-        try {
-            await api.deleteClothing(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
-    });
-
 });

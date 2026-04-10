@@ -276,6 +276,12 @@ graph TD
         CRON -->|Cada Hora| DIAN_RETRY[Re-transmisor de Facturas DIAN Fallidas]
     end
 
+    subgraph "Motor de Automatización (Triggers)"
+        TR[Payment Webhook] -->|Venta + Wompi Fee| AUTO[JournalAutoService]
+        ST[Stock Adjustment] -->|Merma / Regalo| AUTO
+        AUTO -->|Asiento Real COGS| DB
+    end
+
     subgraph "Base de Datos de Mantenimiento"
         CART -->|DELETE CASCADE| DB[(PostgreSQL)]
         ACC -->|Calculo de Ledger| DB
@@ -286,6 +292,9 @@ graph TD
     style CART fill:#475569,stroke:#fff,color:#fff
     style ACC fill:#475569,stroke:#fff,color:#fff
     style DIAN_RETRY fill:#475569,stroke:#fff,color:#fff
+    style TR fill:#ef4444,stroke:#fff,color:#fff
+    style ST fill:#ef4444,stroke:#fff,color:#fff
+    style AUTO fill:#16a34a,stroke:#fff,stroke-width:2px,color:#fff
                         `} id="cron-jobs" />
                     </div>
                 </section>

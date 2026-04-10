@@ -576,6 +576,17 @@ export const getBudgetComparison = async (params: { year: number; month: number 
     return await handleResponse(response, 'getBudgetComparison');
 };
 
+export const getAnnualBudgetComparison = async (year: number) => {
+    const query = new URLSearchParams({
+        year: String(year),
+    });
+    const response = await fetch(`${API_URL}/accounting/budget/comparison/annual?${query}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getAnnualBudgetComparison');
+};
+
 // ── Fixed Assets & Depreciation ───────────────────────────
 
 export const getFixedAssets = async () => {
@@ -718,4 +729,13 @@ export const getProfitabilityByCollection = async (startDate: string, endDate: s
         headers: authHeaders(),
     });
     return await handleResponse(response, 'getProfitabilityByCollection');
+};
+
+export const getExogenaThirdPartyMovements = async (year: number, nit: string) => {
+    const query = new URLSearchParams({ year: String(year), nit });
+    const response = await fetch(`${API_URL}/accounting/exogena/movements?${query}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getExogenaThirdPartyMovements');
 };

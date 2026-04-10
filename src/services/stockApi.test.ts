@@ -11,120 +11,83 @@ describe('stockApi.ts', () => {
         vi.restoreAllMocks();
     });
 
-
-    it('should test getStocks success', async () => {
+    it('getStocks: should fetch all stocks', async () => {
+        const mockData = [{ id: 1, current_quantity: 50 }];
         (global.fetch as any).mockResolvedValue({
             ok: true,
             status: 200,
-            json: vi.fn().mockResolvedValue({ data: 'success' }),
+            json: vi.fn().mockResolvedValue(mockData),
         });
 
-        try {
-            await api.getStocks(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
+        const result = await api.getStocks();
+        expect(result).toEqual(mockData);
+        expect(global.fetch).toHaveBeenCalledWith('http://localhost:3050/api/stock');
     });
 
-    it('should test getStocks failure', async () => {
+    it('createStock: should convert input to numbers and POST', async () => {
+        const input = {
+            id_design_clothing: '10',
+            current_quantity: '100',
+            available_quantity: '90',
+            sold_quantity: '10',
+            consignment_quantity: '0'
+        };
         (global.fetch as any).mockResolvedValue({
-            ok: false,
-            status: 400,
-            json: vi.fn().mockResolvedValue({ message: 'Error' }),
+            ok: true,
+            status: 201,
+            json: vi.fn().mockResolvedValue({ id: 1, ...input }),
         });
 
-        try {
-            await api.getStocks(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
+        await api.createStock(input);
+
+        expect(global.fetch).toHaveBeenCalledWith('http://localhost:3050/api/stock', expect.objectContaining({
+            method: 'POST',
+            body: JSON.stringify({
+                id_design_clothing: 10,
+                current_quantity: 100,
+                available_quantity: 90,
+                sold_quantity: 10,
+                consignment_quantity: 0
+            })
+        }));
     });
 
-
-    it('should test createStock success', async () => {
+    it('updateStock: should send PATCH with correct data', async () => {
+        const input = {
+            current_quantity: '120',
+            available_quantity: '110',
+            sold_quantity: '10',
+            consignment_quantity: '0'
+        };
         (global.fetch as any).mockResolvedValue({
             ok: true,
             status: 200,
-            json: vi.fn().mockResolvedValue({ data: 'success' }),
+            json: vi.fn().mockResolvedValue({ success: true }),
         });
 
-        try {
-            await api.createStock(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
+        await api.updateStock(5, input);
+
+        expect(global.fetch).toHaveBeenCalledWith('http://localhost:3050/api/stock/5', expect.objectContaining({
+            method: 'PATCH',
+            body: JSON.stringify({
+                current_quantity: 120,
+                available_quantity: 110,
+                sold_quantity: 10,
+                consignment_quantity: 0
+            })
+        }));
     });
 
-    it('should test createStock failure', async () => {
-        (global.fetch as any).mockResolvedValue({
-            ok: false,
-            status: 400,
-            json: vi.fn().mockResolvedValue({ message: 'Error' }),
-        });
-
-        try {
-            await api.createStock(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
-    });
-
-
-    it('should test updateStock success', async () => {
+    it('deleteStock: should send DELETE request', async () => {
         (global.fetch as any).mockResolvedValue({
             ok: true,
             status: 200,
-            json: vi.fn().mockResolvedValue({ data: 'success' }),
+            json: vi.fn().mockResolvedValue({}),
         });
 
-        try {
-            await api.updateStock(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
+        await api.deleteStock(10);
+        expect(global.fetch).toHaveBeenCalledWith('http://localhost:3050/api/stock/10', expect.objectContaining({
+            method: 'DELETE'
+        }));
     });
-
-    it('should test updateStock failure', async () => {
-        (global.fetch as any).mockResolvedValue({
-            ok: false,
-            status: 400,
-            json: vi.fn().mockResolvedValue({ message: 'Error' }),
-        });
-
-        try {
-            await api.updateStock(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
-    });
-
-
-    it('should test deleteStock success', async () => {
-        (global.fetch as any).mockResolvedValue({
-            ok: true,
-            status: 200,
-            json: vi.fn().mockResolvedValue({ data: 'success' }),
-        });
-
-        try {
-            await api.deleteStock(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
-    });
-
-    it('should test deleteStock failure', async () => {
-        (global.fetch as any).mockResolvedValue({
-            ok: false,
-            status: 400,
-            json: vi.fn().mockResolvedValue({ message: 'Error' }),
-        });
-
-        try {
-            await api.deleteStock(1, { id: 1, name: 'test' }, 'test');
-        } catch (e) {
-            // ignore
-        }
-    });
-
 });

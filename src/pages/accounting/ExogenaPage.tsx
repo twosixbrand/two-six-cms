@@ -31,6 +31,9 @@ const ExogenaPage = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [activeTab, setActiveTab] = useState('1001');
+    const [nit, setNit] = useState('');
+    const [thirdPartyData, setThirdPartyMovements] = useState<any>(null);
+    const [searching, setSearching] = useState(false);
 
     const handlePreview = async () => {
         try {
@@ -43,6 +46,21 @@ const ExogenaPage = () => {
             setError('Error al previsualizar la informacion exogena.');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleSearchThirdParty = async () => {
+        if (!nit) return;
+        try {
+            setSearching(true);
+            setError('');
+            const result = await accountingApi.getExogenaThirdPartyMovements(year, nit);
+            setThirdPartyMovements(result);
+        } catch (err) {
+            logError(err, '/accounting/exogena');
+            setError('Error al buscar movimientos del tercero.');
+        } finally {
+            setSearching(false);
         }
     };
 
@@ -129,6 +147,7 @@ const ExogenaPage = () => {
                         <button style={tabStyle(activeTab === '1005')} onClick={() => setActiveTab('1005')}>Formato 1005</button>
                         <button style={tabStyle(activeTab === '1006')} onClick={() => setActiveTab('1006')}>Formato 1006</button>
                         <button style={tabStyle(activeTab === '1007')} onClick={() => setActiveTab('1007')}>Formato 1007</button>
+                        <button style={tabStyle(activeTab === 'DETALLE')} onClick={() => setActiveTab('DETALLE')}>Movimientos por Tercero</button>
                     </div>
 
                     {/* Tab Content */}
@@ -253,6 +272,76 @@ const ExogenaPage = () => {
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+                    )}
+
+                    {activeTab === 'DETALLE' && (
+                        <div>
+                            <h3 style={{ fontSize: '16px', marginBottom: '12px', color: '#f1f1f3', fontFamily: 'Inter, sans-serif' }}>
+                                Libro Auxiliar por Tercero - Auditoría Exogena
+                            </h3>
+                            
+                            <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', alignItems: 'flex-end' }}>
+                                <div style={{ flex: 1, maxWidth: '300px' }}>
+                                    <FormField
+                                        label="NIT / Cédula del Tercero"
+                                        name="nit"
+                                        type="text"
+                                        placeholder="Ej: 901234567"
+                                        value={nit}
+                                        onChange={e => setNit(e.target.value)}
+                                    />
+                                </div>
+                                <Button variant="secondary" icon={<FiSearch />} onClick={handleSearchThirdParty} disabled={searching || !nit}>
+                                    {searching ? 'Buscando...' : 'Buscar Movimientos'}
+                                </Button>
+                            </div>
+
+                            {searching && <LoadingSpinner size="sm" text="Consultando libro auxiliar..." />}
+
+                            {thirdPartyData && (
+                                <div style={{ overflowX: 'auto', backgroundColor: '#1a1a24', borderRadius: 12, border: '1px solid #2a2a35' }}>
+                                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                        <thead>
+                                            <tr>
+                                                <th style={thStyle}>Fecha</th>
+                                                <th style={thStyle}>Asiento</th>
+                                                <th style={thStyle}>Tipo</th>
+                                                <th style={thStyle}>Descripción</th>
+                                                <th style={thStyle}>Cuenta</th>
+                                                <th style={thStyle}>Nombre Cuenta</th>
+                                                <th style={{ ...thStyle, textAlign: 'right' }}>Débito</th>
+                                                <th style={{ ...thStyle, textAlign: 'right' }}>Crédito</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {thirdPartyData.movements.length === 0 ? (
+                                                <tr><td colSpan={8} style={{ ...tdStyleBase, textAlign: 'center', padding: '40px', color: '#6b6b7b' }}>No se encontraron movimientos para este NIT en el año seleccionado.</td></tr>
+                                            ) : thirdPartyData.movements.map((m: any, i: number) => (
+                                                <tr key={i}>
+                                                    <td style={tdStyleBase}>{new Date(m.date).toLocaleDateString()}</td>
+                                                    <td style={tdStyleBase}><strong style={{ color: '#f0b429' }}>{m.entry_number}</strong></td>
+                                                    <td style={tdStyleBase}>{m.source_type}</td>
+                                                    <td style={{ ...tdStyleBase, whiteSpace: 'normal', minWidth: '200px' }}>{m.description}</td>
+                                                    <td style={tdStyleBase}>{m.puc_code}</td>
+                                                    <td style={tdStyleBase}>{m.puc_name}</td>
+                                                    <td style={{ ...tdStyleBase, textAlign: 'right' }}>{formatCurrency(m.debit)}</td>
+                                                    <td style={{ ...tdStyleBase, textAlign: 'right' }}>{formatCurrency(m.credit)}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                        {thirdPartyData.movements.length > 0 && (
+                                            <tfoot>
+                                                <tr style={{ background: '#1f1f2a', fontWeight: 700 }}>
+                                                    <td colSpan={6} style={{ ...tdStyleBase, textAlign: 'right', color: '#f0b429' }}>TOTALES</td>
+                                                    <td style={{ ...tdStyleBase, textAlign: 'right' }}>{formatCurrency(thirdPartyData.totals.debit)}</td>
+                                                    <td style={{ ...tdStyleBase, textAlign: 'right' }}>{formatCurrency(thirdPartyData.totals.credit)}</td>
+                                                </tr>
+                                            </tfoot>
+                                        )}
+                                    </table>
+                                </div>
+                            )}
                         </div>
                     )}
                 </>

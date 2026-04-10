@@ -566,8 +566,8 @@ kbd {
     <li class="toc-section"><a href="#cap8-7">8.7 Exportar reportes a Excel</a></li>
 
     <li class="toc-chapter"><a href="#cap9">Capítulo 9: Presupuesto</a></li>
-    <li class="toc-section"><a href="#cap9-1">9.1 Crear presupuesto anual</a></li>
-    <li class="toc-section"><a href="#cap9-2">9.2 Editar montos mensuales</a></li>
+    <li class="toc-section"><a href="#cap9-1">9.1 Gestión de presupuesto anual</a></li>
+    <li class="toc-section"><a href="#cap9-2">9.2 Edición de la grilla presupuestal</a></li>
     <li class="toc-section"><a href="#cap9-3">9.3 Comparativo presupuesto vs ejecución</a></li>
 
     <li class="toc-chapter"><a href="#cap10">Capítulo 10: Activos Fijos y Depreciación</a></li>
@@ -592,6 +592,7 @@ kbd {
     <li class="toc-section"><a href="#cap13-1">13.1 Qué es y cuándo se presenta</a></li>
     <li class="toc-section"><a href="#cap13-2">13.2 Formatos disponibles</a></li>
     <li class="toc-section"><a href="#cap13-3">13.3 Previsualizar y generar Excel</a></li>
+    <li class="toc-section"><a href="#cap13-4">13.4 Auditoría Detallada por Tercero</a></li>
 
     <li class="toc-chapter"><a href="#cap14">Capítulo 14: Auditoría</a></li>
     <li class="toc-section"><a href="#cap14-1">14.1 Qué registra el log de auditoría</a></li>
@@ -630,6 +631,17 @@ kbd {
     <li class="toc-section"><a href="#cap20-1">20.1 Tipos de Certificados (Fuente, ICA, IVA)</a></li>
     <li class="toc-section"><a href="#cap20-2">20.2 Generación Masiva Anual</a></li>
     <li class="toc-section"><a href="#cap20-3">20.3 Descarga de soportes PDF</a></li>
+<li class="toc-chapter"><a href="#cap21">Capítulo 21: Integridad y Bloqueo de Periodos</a></li>
+<li class="toc-section"><a href="#cap21-1">21.1 Concepto de Periodo Cerrado</a></li>
+<li class="toc-section"><a href="#cap21-2">21.2 Operaciones Bloqueadas</a></li>
+<li class="toc-section"><a href="#cap21-3">21.3 Auditoría de Intentos</a></li>
+
+<li class="toc-chapter"><a href="#cap22">Capítulo 22: Automatización de Asientos</a></li>
+<li class="toc-section"><a href="#cap22-1">22.1 Automatización de Ventas y Comisiones</a></li>
+<li class="toc-section"><a href="#cap22-2">22.2 Costo de Ventas Real (COGS)</a></li>
+<li class="toc-section"><a href="#cap22-3">22.3 Asientos por Ajustes de Inventario</a></li>
+</ul>
+
 
     <li class="toc-appendix"><a href="#apA">Apéndice A: Plan Único de Cuentas (Resumen)</a></li>
     <li class="toc-appendix"><a href="#apB">Apéndice B: Tarifas de Retención en Colombia</a></li>
@@ -1623,52 +1635,70 @@ kbd {
     <h2 class="chapter-title">Presupuesto</h2>
   </div>
 
-  <h3 id="cap9-1">9.1 Crear presupuesto anual</h3>
+  <h3 id="cap9-1">9.1 Gestión de presupuesto anual</h3>
   <p>El módulo de presupuesto permite definir metas financieras anuales por cuenta PUC y hacer seguimiento mensual contra la ejecución real.</p>
   <ol class="steps">
     <li>Navegue a <strong>Contabilidad &rarr; Presupuesto</strong>.</li>
-    <li>Haga clic en <strong>"Nuevo Presupuesto"</strong>.</li>
-    <li>Seleccione el <strong>año</strong> del presupuesto.</li>
-    <li>Ingrese un <strong>nombre</strong> descriptivo (ej. "Presupuesto Operativo 2026").</li>
-    <li>Haga clic en <strong>"Crear"</strong>.</li>
+    <li>Seleccione el <strong>año</strong> del presupuesto en el selector superior.</li>
+    <li>El sistema cargará automáticamente la grilla de presupuesto para ese año.</li>
   </ol>
 
-  <h3 id="cap9-2">9.2 Editar montos mensuales</h3>
-  <p>Una vez creado el presupuesto, se presenta una <strong>grilla editable</strong> donde las filas son las cuentas PUC y las columnas son los 12 meses del año:</p>
+  <h3 id="cap9-2">9.2 Edición de la grilla presupuestal</h3>
+  <p>Se presenta una <strong>grilla editable</strong> donde las filas son las cuentas PUC y las columnas son los 12 meses del año:</p>
   <ol class="steps">
-    <li>Haga clic en <strong>"Agregar Cuenta"</strong> para incluir una cuenta PUC al presupuesto.</li>
-    <li>En la grilla, haga clic en la celda correspondiente al mes y cuenta que desea presupuestar.</li>
-    <li>Ingrese el <strong>monto presupuestado</strong> para ese mes.</li>
-    <li>Repita para todas las cuentas y meses necesarios.</li>
-    <li>El sistema calcula automáticamente los <strong>totales por cuenta</strong> (fila) y <strong>totales por mes</strong> (columna).</li>
-    <li>Haga clic en <strong>"Guardar"</strong> para conservar los cambios.</li>
+    <li>Haga clic en el selector <strong>"+ Agregar cuenta..."</strong> para incluir una cuenta PUC específica al presupuesto si aún no aparece en la lista.</li>
+    <li>En la grilla, ingrese el <strong>monto presupuestado</strong> en la celda correspondiente al mes y cuenta deseada.</li>
+    <li>El sistema calcula automáticamente los <strong>totales por cuenta</strong> (fila) al final de la derecha.</li>
+    <li>Haga clic en el botón <strong>"Guardar"</strong> (icono de disco) para conservar los cambios en el servidor.</li>
   </ol>
-
-  <div class="callout callout-tip">
-    <div class="callout-title">Consejo</div>
-    Puede usar la función <strong>"Distribuir uniformemente"</strong> para dividir un monto anual en 12 partes iguales. Ingrese el total anual y el sistema lo distribuirá automáticamente en los 12 meses.
-  </div>
 
   <h3 id="cap9-3">9.3 Comparativo presupuesto vs ejecución</h3>
-  <p>El reporte de comparativo muestra para cada cuenta y cada mes:</p>
+  <p>El sistema ofrece tres formas de visualizar y analizar el cumplimiento presupuestal:</p>
 
-  <table>
-    <thead>
-      <tr><th>Columna</th><th>Descripción</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><strong>Presupuestado</strong></td><td>Monto que se planeó para el período.</td></tr>
-      <tr><td><strong>Ejecutado</strong></td><td>Monto real registrado en contabilidad durante el período.</td></tr>
-      <tr><td><strong>Variación ($)</strong></td><td>Presupuestado - Ejecutado. Positivo = sub-ejecución, Negativo = sobre-ejecución.</td></tr>
-      <tr><td><strong>Variación (%)</strong></td><td>Porcentaje de ejecución: (Ejecutado / Presupuestado) &times; 100.</td></tr>
-    </tbody>
-  </table>
-
-  <p>Las celdas se colorean según el nivel de ejecución:</p>
+  <h4>A. Tablero de Indicadores (Dashboard)</h4>
+  <p>En la parte superior de la vista de comparativo (mensual o anual), el sistema presenta tarjetas de resumen con KPIs críticos:</p>
   <ul>
-    <li><span class="ind-green">Verde:</span> Ejecución entre 90% y 110% del presupuesto.</li>
-    <li><span class="ind-yellow">Amarillo:</span> Ejecución entre 70%-90% o 110%-130%.</li>
-    <li><span class="ind-red">Rojo:</span> Ejecución por debajo del 70% o por encima del 130%.</li>
+    <li><strong>Total Presupuestado:</strong> Sumatoria de metas para el periodo.</li>
+    <li><strong>Total Ejecutado:</strong> Movimientos reales del libro diario.</li>
+    <li><strong>Desviación Total:</strong> Diferencia en pesos (Verde si es ahorro, Rojo si es exceso).</li>
+    <li><strong>% de Cumplimiento:</strong> Porcentaje de ejecución sobre la meta.</li>
+  </ul>
+
+  <h4>B. Vista Mensual Detallada</h4>
+  <p>Permite analizar el cumplimiento de un mes específico:</p>
+  <ol class="steps">
+    <li>Seleccione el mes en el selector junto al botón de comparativo.</li>
+    <li>Haga clic en <strong>"Ver Comparativo"</strong>.</li>
+    <li>Se mostrará una tabla con el <strong>Presupuestado</strong>, <strong>Ejecutado</strong>, <strong>Variación ($)</strong> y <strong>Variación (%)</strong>.</li>
+    <li>Incluye una barra de progreso visual y etiquetas de estado (Sobre presupuesto, Bajo presupuesto, En meta).</li>
+  </ol>
+
+  <h4>B. Vista Anual (YTD)</h4>
+  <p>Ideal para ver el acumulado del año hasta la fecha:</p>
+  <ol class="steps">
+    <li>Desde la vista de presupuesto o el comparativo mensual, haga clic en <strong>"Comparativo Anual"</strong>.</li>
+    <li>Esta vista suma los 12 meses de presupuesto y los compara contra el acumulado de ejecuciones reales del año.</li>
+    <li>Permite identificar desviaciones estructurales a largo plazo en el plan financiero.</li>
+  </ol>
+
+  <h4>C. Exportación a Excel</h4>
+  <p>Para análisis externos o auditorías, el sistema permite generar un reporte completo:</p>
+  <ol class="steps">
+    <li>Haga clic en <strong>"Exportar Excel (Año Completo)"</strong>.</li>
+    <li>Se descargará un archivo <code>.xlsx</code> que contiene:
+      <ul>
+        <li>Desglose mes a mes (Ene-Dic) para cada cuenta.</li>
+        <li>Columnas de Presupuesto, Ejecución y Variación para cada uno de los 12 meses.</li>
+        <li>Totales anuales consolidados y porcentajes de cumplimiento final.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <p>Interpretación de estados en el comparativo:</p>
+  <ul>
+    <li><strong>Sobre presupuesto (Rojo):</strong> La ejecución real superó lo planeado (Crítico en Gastos/Costos).</li>
+    <li><strong>Bajo presupuesto (Verde/Amarillo):</strong> La ejecución real es inferior a lo planeado (Positivo en Gastos, requiere atención en Ingresos).</li>
+    <li><strong>En meta (Azul):</strong> La ejecución está alineada con el presupuesto.</li>
   </ul>
 </div>
 
@@ -2041,17 +2071,25 @@ kbd {
   <h3 id="cap13-3">13.3 Previsualizar y generar Excel</h3>
   <ol class="steps">
     <li>Navegue a <strong>Contabilidad &rarr; Información Exógena</strong>.</li>
-    <li>Seleccione el <strong>año a reportar</strong>.</li>
-    <li>Seleccione el <strong>formato</strong> que desea generar (1001, 1005, 1006 o 1007).</li>
-    <li>Haga clic en <strong>"Previsualizar"</strong> para ver la información en pantalla antes de generar el archivo.</li>
+    <li>Seleccione el <strong>año gravable</strong> a reportar.</li>
+    <li>Haga clic en <strong>"Previsualizar"</strong> para ver el resumen consolidado de los formatos 1001, 1005, 1006 y 1007.</li>
     <li>Revise la información y corrija cualquier inconsistencia (terceros sin NIT, valores inusuales, etc.).</li>
-    <li>Haga clic en <strong>"Generar Excel"</strong> para descargar el archivo en el formato requerido por la DIAN.</li>
+    <li>Haga clic en <strong>"Generar Excel"</strong> para descargar el archivo .xlsx con todas las pestañas reglamentarias.</li>
     <li>Cargue el archivo en la plataforma <strong>MUISCA</strong> de la DIAN para su presentación oficial.</li>
+  </ol>
+
+  <h3 id="cap13-4">13.4 Auditoría Detallada por Tercero</h3>
+  <p>Para facilitar el cruce de información antes del reporte final, el sistema cuenta con una herramienta de auditoría de libro auxiliar:</p>
+  <ol class="steps">
+    <li>En el módulo de Exógena, seleccione la pestaña <strong>"Movimientos por Tercero"</strong>.</li>
+    <li>Ingrese el <strong>NIT o Cédula</strong> del proveedor o cliente que desea auditar.</li>
+    <li>Haga clic en <strong>"Buscar Movimientos"</strong>.</li>
+    <li>El sistema generará un reporte de todos los asientos contables asociados a ese tercero (Ventas, Comisiones, Gastos, Pagos), permitiendo rastrear el origen exacto de cada cifra reportada.</li>
   </ol>
 
   <div class="callout callout-tip">
     <div class="callout-title">Consejo</div>
-    Ejecute la previsualización con anticipación (en enero) para identificar y corregir inconsistencias. Los problemas más comunes son proveedores sin NIT registrado y operaciones sin tercero asociado.
+    Ejecute la previsualización con anticipación para identificar y corregir inconsistencias. El reporte detallado por tercero es su mejor aliado para explicar discrepancias entre el balance general y los formatos de exógena.
   </div>
 </div>
 
@@ -2629,6 +2667,69 @@ kbd {
     <li>Datos del beneficiario del pago.</li>
     <li>Desglose de base gravable, tarifa aplicada y monto retenido.</li>
     <li>Ciudad y fecha de expedición automática.</li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 21: INTEGRIDAD Y BLOQUEO DE PERIODOS                  -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap21">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 21</div>
+    <h2 class="chapter-title">Integridad y Bloqueo de Periodos</h2>
+  </div>
+
+  <h3 id="cap21-1">21.1 Concepto de Periodo Cerrado</h3>
+  <p>Un periodo cerrado es un intervalo de tiempo (mes o año) cuya información contable ha sido auditada, conciliada y declarada ante las entidades gubernamentales. El sistema Two Six impone un bloqueo de escritura estricto para evitar alteraciones involuntarias que generen discrepancias legales.</p>
+
+  <h3 id="cap21-2">21.2 Operaciones Bloqueadas</h3>
+  <p>Una vez realizado el cierre en <strong>Contabilidad &rarr; Cierre Contable</strong>, el sistema denegará automáticamente las siguientes acciones para cualquier fecha perteneciente al periodo bloqueado:</p>
+  <ul>
+    <li>Creación, edición o eliminación de <strong>Asientos Contables</strong> manuales.</li>
+    <li>Registro o modificación de <strong>Gastos y Compras</strong>.</li>
+    <li>Aprobación o reliquidación de <strong>Nómina</strong>.</li>
+    <li>Anulación de facturas de venta (requieren nota crédito en periodo abierto).</li>
+  </ul>
+
+  <h3 id="cap21-3">21.3 Auditoría de Intentos de Modificación</h3>
+  <p>Cualquier intento de modificar un periodo cerrado queda registrado en los logs de seguridad del sistema, permitiendo al administrador identificar usuarios que intenten saltar los controles de integridad.</p>
+
+  <div class="callout callout-danger">
+    <div class="callout-title">Atención</div>
+    Si se requiere corregir un error en un periodo ya cerrado, la buena práctica contable dicta que debe realizarse un <strong>asiento de ajuste</strong> en el periodo actual (abierto), o en casos excepcionales, solicitar la reapertura formal del periodo al administrador del sistema.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 22: AUTOMATIZACIÓN DE ASIENTOS                        -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap22">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 22</div>
+    <h2 class="chapter-title">Automatización de Asientos</h2>
+  </div>
+
+  <h3 id="cap22-1">22.1 Automatización de Ventas y Comisiones</h3>
+  <p>Para reducir el registro manual, el sistema genera asientos automáticos al confirmar pagos:</p>
+  <ul>
+    <li><strong>Ingreso Neto:</strong> El sistema calcula la comisión de pasarela (Wompi) y registra en bancos solo el valor neto.</li>
+    <li><strong>Gasto por Comisión:</strong> Se genera automáticamente el asiento en la cuenta 529505 por el valor del servicio de pasarela.</li>
+    <li><strong>IVA de Comisión:</strong> Se registra el IVA descontable (240802) asociado a la transacción.</li>
+  </ul>
+
+  <h3 id="cap22-2">22.2 Costo de Ventas Real (COGS)</h3>
+  <p>A diferencia de otros sistemas que usan promedios estimados, Two Six utiliza el <strong>Costo de Manufactura</strong> real de cada prenda:</p>
+  <ul>
+    <li>Al momento de la venta, el sistema consulta el costo de producción definido en el diseño.</li>
+    <li>Genera un asiento automático: Débito 6135 (Costo) / Crédito 1435 (Inventario).</li>
+  </ul>
+
+  <h3 id="cap22-3">22.3 Asientos por Ajustes de Inventario</h3>
+  <p>Los movimientos de almacén generan contabilidad inmediata según su razón:</p>
+  <ul>
+    <li><strong>Merma (Dañado/Robo):</strong> Genera un gasto (519995) contra el inventario.</li>
+    <li><strong>Regalo (Influencers/Promoción):</strong> Genera un gasto de publicidad (523560) contra el inventario.</li>
+    <li><strong>Sobrantes:</strong> Genera un ingreso extraordinario (429581) contra el inventario.</li>
   </ul>
 </div>
 
