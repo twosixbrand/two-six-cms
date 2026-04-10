@@ -9,6 +9,17 @@ import SubMenu from './SubMenu';
 
 const menuData = [
   {
+    title: 'Gestion Ventas',
+    path: '#',
+    permission: 'sales.reports.view',
+    subNav: [
+      { title: 'Pedidos', path: '/order', permission: 'sales.orders.view' },
+      { title: 'Facturacion DIAN', path: '/dian-invoices', permission: 'sales.dian.view' },
+      { title: 'General Sales', path: '/reports/sales/general', permission: 'sales.reports.view' },
+      { title: 'Retiros en Tienda', path: '/reports/pickup-dashboard', permission: 'sales.orders.view' },
+    ],
+  },
+  {
     title: 'Admin Prendas',
     path: '#',
     permission: 'inventory',
@@ -19,18 +30,6 @@ const menuData = [
       { title: 'Image Clothing', path: '/image-clothing', permission: 'inventory.images.manage' },
       { title: 'Product', path: '/product', permission: 'inventory.products.view' },
       { title: 'Stock', path: '/stock', permission: 'inventory.stock.view' },
-    ],
-  },
-  {
-    title: 'Reports',
-    path: '#',
-    permission: 'sales.reports.view',
-    subNav: [
-      { title: 'Pedidos', path: '/order', permission: 'sales.orders.view' },
-      { title: 'General Sales', path: '/reports/sales/general', permission: 'sales.reports.view' },
-      { title: 'Facturacion DIAN', path: '/dian-invoices', permission: 'sales.dian.view' },
-      { title: 'Retiros en Tienda', path: '/reports/pickup-dashboard', permission: 'sales.orders.view' },
-      { title: 'Google Merchant Feed', path: '/google-merchant-feed', permission: 'sales.reports.view' },
     ],
   },
   {
@@ -72,17 +71,6 @@ const menuData = [
     ],
   },
   {
-    title: 'Plan Estrategico',
-    path: '#',
-    permission: 'sales.orders.view',
-    subNav: [
-      { title: 'Ver plan', path: '/plan-estrategico', permission: 'sales.orders.view' },
-      { title: 'Doc. Arquitectura', path: '/architecture-docs', permission: 'admin.users.view' },
-      { title: 'Doc. Base de Datos', path: '/database-docs', permission: 'sales.orders.view' },
-      { title: 'Documentacion DIAN', path: '/dian-documentation', permission: 'sales.dian.view' },
-    ],
-  },
-  {
     title: 'Contabilidad',
     path: '#',
     permission: 'accounting',
@@ -110,6 +98,32 @@ const menuData = [
       { title: 'Indicadores Financieros', path: '/accounting/reports/indicators', permission: 'accounting.indicators.view' },
       { title: 'Informacion Exogena', path: '/accounting/exogena', permission: 'accounting.exogena.view' },
       { title: 'Configuracion Impuestos', path: '/accounting/tax-config', permission: 'accounting.tax.view' },
+    ],
+  },
+  {
+    title: 'Integraciones-APIs',
+    path: '#',
+    permission: 'sales.reports.view',
+    subNav: [
+      { title: 'Google Merchant Feed', path: '/google-merchant-feed', permission: 'sales.reports.view' },
+    ],
+  },
+  {
+    title: 'Plan Estrategico',
+    path: '#',
+    permission: 'sales.orders.view',
+    subNav: [
+      { title: 'Ver plan', path: '/plan-estrategico', permission: 'sales.orders.view' },
+    ],
+  },
+  {
+    title: 'Documentación',
+    path: '#',
+    permission: 'sales.orders.view',
+    subNav: [
+      { title: 'Doc. Arquitectura', path: '/architecture-docs', permission: 'admin.users.view' },
+      { title: 'Doc. Base de Datos', path: '/database-docs', permission: 'sales.orders.view' },
+      { title: 'Documentacion DIAN', path: '/dian-documentation', permission: 'sales.dian.view' },
       { title: 'Manual Contable', path: '/manual-contabilidad', permission: 'accounting.reports.view' },
     ],
   },

@@ -19,6 +19,15 @@ import AccountingDashboardWidget from './accounting/AccountingDashboardWidget';
 
 const homeSections = [
   {
+    title: 'Gestion Ventas', icon: <FiBarChart2 />, permission: 'sales',
+    items: [
+      { path: '/order', icon: <FiShoppingCart />, title: 'Pedidos', desc: 'Visualizacion y seguimiento de pedidos cliente.', permission: 'sales.orders.view' },
+      { path: '/dian-invoices', icon: <FiSend />, title: 'Facturacion DIAN', desc: 'Gestion y emision de facturas electronicas.', permission: 'sales.dian.view' },
+      { path: '/reports/sales/general', icon: <FiTrendingUp />, title: 'General Sales', desc: 'Reporte general de ventas del sistema.', permission: 'sales.reports.view' },
+      { path: '/reports/pickup-dashboard', icon: <FiGift />, title: 'Retiros en Tienda', desc: 'Tablero para gestion de pedidos a entregar en punto fisico.', permission: 'sales.orders.view' },
+    ]
+  },
+  {
     title: 'Admin Prendas', icon: <FiLayers />, permission: 'inventory',
     items: [
       { path: '/clothing', icon: <FiServer />, title: 'Clothing', desc: 'Gestion de inventario de prendas, tallas y stock.', permission: 'inventory.clothing.view' },
@@ -27,15 +36,6 @@ const homeSections = [
       { path: '/image-clothing', icon: <FiImage />, title: 'Image Clothing', desc: 'Gestion de imagenes para variantes de prendas.', permission: 'inventory.images.manage' },
       { path: '/product', icon: <FiPackage />, title: 'Product', desc: 'Gestion de productos finales para la venta.', permission: 'inventory.products.view' },
       { path: '/stock', icon: <FiBox />, title: 'Stock', desc: 'Gestion de niveles de inventario.', permission: 'inventory.stock.view' },
-    ]
-  },
-  {
-    title: 'Reports', icon: <FiBarChart2 />, permission: 'sales',
-    items: [
-      { path: '/order', icon: <FiShoppingCart />, title: 'Pedidos', desc: 'Visualizacion y seguimiento de pedidos cliente.', permission: 'sales.orders.view' },
-      { path: '/reports/sales/general', icon: <FiTrendingUp />, title: 'General Sales', desc: 'Reporte general de ventas del sistema.', permission: 'sales.reports.view' },
-      { path: '/dian-invoices', icon: <FiSend />, title: 'Facturacion DIAN', desc: 'Gestion y emision de facturas electronicas.', permission: 'sales.dian.view' },
-      { path: '/reports/pickup-dashboard', icon: <FiGift />, title: 'Retiros en Tienda', desc: 'Tablero para gestion de pedidos a entregar en punto fisico.', permission: 'sales.orders.view' },
     ]
   },
   {
@@ -93,16 +93,30 @@ const homeSections = [
       { path: '/accounting/reports/indicators', icon: <FiPieChart />, title: 'Indicadores Financieros', desc: 'Razon corriente, ROE, ROA y mas.', permission: 'accounting.indicators.view' },
       { path: '/accounting/exogena', icon: <FiDatabase />, title: 'Informacion Exogena', desc: 'Medios magneticos DIAN (formatos 1001-1007).', permission: 'accounting.exogena.view' },
       { path: '/accounting/audit-log', icon: <FiEye />, title: 'Auditoria', desc: 'Registro de acciones contables.', permission: 'accounting.audit.view' },
-      { path: '/manual-contabilidad', icon: <FiBook />, title: 'Manual Contable', desc: 'Manual completo del modulo contable.', permission: 'accounting.reports.view' },
+      { path: '/accounting/reports/profitability', icon: <FiTrendingUp />, title: 'Rentabilidad por Diseño', desc: 'Analisis de rentabilidad por diseño.', permission: 'accounting.reports.view' },
+      { path: '/accounting/inventory-adjustments', icon: <FiBox />, title: 'Ajustes Inventario', desc: 'Ajustes de inventario contable.', permission: 'accounting.journal.view' },
+      { path: '/accounting/tax-config', icon: <FiSettings />, title: 'Configuracion Impuestos', desc: 'Configuracion de impuestos del sistema.', permission: 'accounting.tax.view' },
+    ]
+  },
+  {
+    title: 'Integraciones-APIs', icon: <FiCode />, permission: 'sales',
+    items: [
+      { path: '/google-merchant-feed', icon: <FiGrid />, title: 'Google Merchant Feed', desc: 'Dashboard del feed XML para Google Merchant Center.', permission: 'sales.reports.view' },
     ]
   },
   {
     title: 'Plan Estrategico', icon: <FiMap />, permission: 'sales',
     items: [
       { path: '/plan-estrategico', icon: <FiCompass />, title: 'Ver plan', desc: 'Visualizacion del plan estrategico anual.', permission: 'sales.orders.view' },
-      { path: '/dian-documentation', icon: <FiCode />, title: 'Documentacion DIAN', desc: 'Arquitectura y flujos de Facturacion Electronica DIAN.', permission: 'sales.dian.view' },
-      { path: '/database-docs', icon: <FiDatabase />, title: 'Doc. Base de Datos', desc: 'Diagramas visuales de la arquitectura de datos del sistema.', permission: 'admin.users.view' },
+    ]
+  },
+  {
+    title: 'Documentación', icon: <FiBook />, permission: 'sales',
+    items: [
       { path: '/architecture-docs', icon: <FiServer />, title: 'Doc. Arquitectura', desc: 'Topografía Cloud, DevSecOps y costos de ecosistema.', permission: 'admin.users.view' },
+      { path: '/database-docs', icon: <FiDatabase />, title: 'Doc. Base de Datos', desc: 'Diagramas visuales de la arquitectura de datos del sistema.', permission: 'admin.users.view' },
+      { path: '/dian-documentation', icon: <FiCode />, title: 'Documentacion DIAN', desc: 'Arquitectura y flujos de Facturacion Electronica DIAN.', permission: 'sales.dian.view' },
+      { path: '/manual-contabilidad', icon: <FiBookOpen />, title: 'Manual Contable', desc: 'Manual completo del modulo contable.', permission: 'accounting.reports.view' },
     ]
   },
   {
