@@ -52,15 +52,21 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   const userEmail = useMemo(() => {
-    return decodedPayload?.email || null;
+    return decodedPayload?.email || decodedPayload?.sub || null;
   }, [decodedPayload]);
 
   const userRoles = useMemo(() => {
-    return decodedPayload?.roles || [];
+    const roles = decodedPayload?.roles;
+    if (Array.isArray(roles)) return roles;
+    if (typeof roles === 'string') return [roles];
+    return [];
   }, [decodedPayload]);
 
   const userPermissions = useMemo(() => {
-    return decodedPayload?.permissions || [];
+    const perms = decodedPayload?.permissions;
+    if (Array.isArray(perms)) return perms;
+    if (typeof perms === 'string') return [perms];
+    return [];
   }, [decodedPayload]);
 
   /**
@@ -91,7 +97,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const authContextValue = {
-    isAuthenticated: !!token,
+    isAuthenticated: !!token && !!decodedPayload,
     token,
     userEmail,
     userRoles,

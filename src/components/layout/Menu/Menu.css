@@ -70,8 +70,23 @@
   list-style: none;
   padding: 0.5rem 0;
   margin: 0;
-  overflow-y: auto;
+  overflow-y: overlay; /* Evita saltos de layout al aparecer scroll */
   overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(240, 180, 41, 0.2) transparent;
+}
+
+.nav-menu::-webkit-scrollbar {
+  width: 5px;
+}
+
+.nav-menu::-webkit-scrollbar-thumb {
+  background: rgba(240, 180, 41, 0.2);
+  border-radius: 10px;
+}
+
+.nav-menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(240, 180, 41, 0.4);
 }
 
 /* Section titles */
@@ -79,22 +94,23 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.6rem 1.5rem;
+  padding: 0.75rem 1.25rem;
   color: #f0b429;
   cursor: pointer;
-  transition: color 0.15s ease, background-color 0.15s ease;
+  transition: all 0.2s ease;
   font-size: 0.65rem;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
   white-space: nowrap;
   gap: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
+  user-select: none;
 }
 
 .menu-title:hover {
   color: #fbbf24;
-  background-color: rgba(240, 180, 41, 0.04);
+  background-color: rgba(240, 180, 41, 0.08);
 }
 
 .menu-title-text {
@@ -108,39 +124,40 @@
   margin: 0;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease-in-out;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .submenu.active {
-  max-height: 1200px;
+  max-height: 2000px;
 }
 
 /* Submenu links */
 .dropdown-link {
   display: flex;
   align-items: center;
-  padding: 0.5rem 1.5rem 0.5rem 2rem;
-  color: #a0a0b0;
+  padding: 0.65rem 1.25rem 0.65rem 2.25rem;
+  color: rgba(160, 160, 176, 0.85);
   text-decoration: none;
-  transition: color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+  transition: all 0.2s ease;
   font-size: 0.8125rem;
   font-weight: 400;
   white-space: nowrap;
-  border-left: 2px solid transparent;
+  border-left: 3px solid transparent;
+  position: relative;
 }
 
 .dropdown-link:hover {
   color: #f1f1f3;
-  background-color: rgba(255, 255, 255, 0.04);
-  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.01);
+  background-color: rgba(255, 255, 255, 0.05);
+  padding-left: 2.5rem;
 }
 
 .dropdown-link.active {
   color: #f0b429;
-  font-weight: 500;
+  font-weight: 600;
   border-left-color: #f0b429;
-  background-color: rgba(240, 180, 41, 0.06);
-  box-shadow: inset 0 0 30px rgba(240, 180, 41, 0.03);
+  background-color: rgba(240, 180, 41, 0.08);
+  box-shadow: inset 5px 0 15px rgba(240, 180, 41, 0.03);
 }
 
 /* Arrow */

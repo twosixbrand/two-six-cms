@@ -105,12 +105,6 @@ const MainLayout = () => {
   useEffect(() => {
     // Este mensaje debe aparecer en la consola si se carga la versión correcta.
     console.log('¡MainLayout cargado correctamente! Versión: ', new Date().toLocaleTimeString());
-
-    const handleClick = (e) => {
-      console.log('Global click detected:', e.target, 'DefaultPrevented:', e.defaultPrevented);
-    };
-    window.addEventListener('click', handleClick);
-    return () => window.removeEventListener('click', handleClick);
   }, []);
 
   if (!isAuthenticated) {

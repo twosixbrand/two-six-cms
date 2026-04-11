@@ -1,8 +1,51 @@
 import React from 'react';
-import { FaServer, FaCodeBranch, FaCloud, FaExchangeAlt, FaShieldAlt, FaChartLine, FaMoneyCheckAlt, FaDatabase, FaDocker } from 'react-icons/fa';
+import { FaServer, FaCodeBranch, FaCloud, FaExchangeAlt, FaShieldAlt, FaChartLine, FaMoneyCheckAlt, FaDatabase, FaDocker, FaLayerGroup } from 'react-icons/fa';
 import MermaidChart from '../components/common/MermaidChart';
 
 const ArchitectureDocumentationPage = () => {
+
+    const techStackSchema = `
+graph TD
+    subgraph "Navegador y Dispositivos de Usuario"
+        UI_WEB(Web App Tienda)
+        UI_CMS(CMS Admin Panel)
+    end
+
+    subgraph "Capa: Interfaces de Usuario (Frontend)"
+        WEB[Next.js 14<br/>React, TypeScript, Tailwind]
+        CMS[Vite SPA<br/>React, TypeScript, Tailwind]
+    end
+
+    subgraph "Capa: API Core (Backend)"
+        NEST[NestJS<br/>Framework Node.js, TypeScript]
+        PRISMA[Prisma ORM<br/>Capa de Datos Type-Safe]
+    end
+
+    subgraph "Capa: Datos e Infraestructura"
+        PG[(PostgreSQL 15<br/>Base de Datos Relacional)]
+        S3[(DigitalOcean Spaces<br/>S3 Storage & CDN)]
+    end
+
+    UI_WEB -->|SSR / ISR| WEB
+    UI_CMS -->|Carga Inicial| CMS
+
+    WEB <-->|API REST / Fetch| NEST
+    CMS <-->|API REST / JWT| NEST
+    
+    NEST <-->|Queries SQL| PRISMA
+    PRISMA <-->|Conexión Segura| PG
+    NEST -->|Sube Assets| S3
+    WEB -->|Descarga Optimizada| S3
+
+    style UI_WEB fill:#24292e,stroke:#fff,color:#fff
+    style UI_CMS fill:#1a1a24,stroke:#4a5568,color:#fff
+    style WEB fill:#000,stroke:#fff,color:#fff,stroke-width:2px
+    style CMS fill:#646cff,stroke:#fff,color:#fff,stroke-width:2px
+    style NEST fill:#e0234e,stroke:#fff,color:#fff,stroke-width:2px
+    style PRISMA fill:#16a394,stroke:#fff,color:#fff,stroke-width:2px
+    style PG fill:#336791,stroke:#fff,color:#fff,stroke-width:2px
+    style S3 fill:#1db746,stroke:#fff,color:#fff,stroke-width:2px
+`;
 
     const devopsSchema = `
 graph TD
@@ -381,6 +424,48 @@ graph TD
                         <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-4">
                             <h4 className="text-sm font-semibold text-green-400 mb-2">Etapa Runner</h4>
                             <p className="text-xs text-[#a0a0b0]">Imagen final ultra-ligera que solo contiene dist/, node_modules de producción y el schema de Prisma. Expone el puerto 3050 y arranca con npm run start:prod.</p>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Modulo 10: Stack Tecnologico */}
+                <section className="bg-[#1a1a24] p-6 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.3)] border border-[#2a2a35] mt-4">
+                    <h2 className="text-xl font-bold flex items-center text-[#f1f1f3] mb-4"><FaLayerGroup className="mr-2 text-rose-500" /> 10. Stack Tecnológico del Ecosistema</h2>
+                    <p className="text-[#a0a0b0] mb-4 text-sm max-w-4xl">Las tecnologías fundamentales que impulsan a The Two Six Brand garantizan un entorno moderno, fuertemente tipado mediante TypeScript (End-to-End) y altamente escalable. Se divide en tres núcleos: el comercio electrónico orientado al consumidor final (C2C) renderizado desde el servidor para SEO óptimo, el panel administrativo dinámico (SPA) y el cerebro central de la organización o API Core.</p>
+                    <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-4 overflow-hidden mb-6">
+                        <MermaidChart chart={techStackSchema} id="tech-stack" />
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* Backend */}
+                        <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-5">
+                            <h3 className="text-md font-semibold text-rose-400 mb-2 border-b border-[#2a2a35] pb-2">Core API (Backend)</h3>
+                            <ul className="text-sm text-[#a0a0b0] space-y-2">
+                                <li><strong className="text-[#f1f1f3]">NestJS:</strong> Framework robusto basado en Node.js, implementa arquitectura modular inyectando dependencias.</li>
+                                <li><strong className="text-[#f1f1f3]">TypeScript:</strong> Tipado estático estricto.</li>
+                                <li><strong className="text-[#f1f1f3]">Prisma ORM:</strong> Modelado intuitivo con el motor de base de datos relacional.</li>
+                                <li><strong className="text-[#f1f1f3]">PostgreSQL 15:</strong> Motor de base de datos confiable en cluster administrado (DigitalOcean).</li>
+                            </ul>
+                        </div>
+
+                        {/* Web */}
+                        <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-5">
+                            <h3 className="text-md font-semibold text-gray-200 mb-2 border-b border-[#2a2a35] pb-2">E-commerce (Frontend Web)</h3>
+                            <ul className="text-sm text-[#a0a0b0] space-y-2">
+                                <li><strong className="text-[#f1f1f3]">Next.js 14+:</strong> Renderizado Server-Side (SSR) y estático incremental (ISR), maximizando indexabilidad.</li>
+                                <li><strong className="text-[#f1f1f3]">React 18:</strong> Librería declarativa de UI.</li>
+                                <li><strong className="text-[#f1f1f3]">Tailwind CSS:</strong> Sistema de diseño por utilidades para un desarrollo visual rápido y consistente.</li>
+                            </ul>
+                        </div>
+
+                        {/* CMS */}
+                        <div className="bg-[#13131a] border border-[#2a2a35] rounded-xl p-5">
+                            <h3 className="text-md font-semibold text-indigo-400 mb-2 border-b border-[#2a2a35] pb-2">Admin Panel (CMS)</h3>
+                            <ul className="text-sm text-[#a0a0b0] space-y-2">
+                                <li><strong className="text-[#f1f1f3]">Vite:</strong> Empaquetador ultrarrápido ideal para Single Page Applications (SPA).</li>
+                                <li><strong className="text-[#f1f1f3]">React 18:</strong> Componentes fluidos manteniendo la carga reducida sin SSR ya que es un portal blindado.</li>
+                                <li><strong className="text-[#f1f1f3]">Tailwind CSS:</strong> Interfaces responsivas y temáticas en Dark Mode exclusivas para gestores y administradores.</li>
+                            </ul>
                         </div>
                     </div>
                 </section>

@@ -19,12 +19,7 @@ const PickupDashboardPage = () => {
     const fetchOrders = async (isBackground = false) => {
         try {
             if (!isBackground) setLoading(true);
-            const token = localStorage.getItem('accessToken');
-            const response = await axios.get(`${API_BASE_URL}/order?delivery_method=PICKUP&sort=asc`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            const response = await axios.get(`${API_BASE_URL}/order?delivery_method=PICKUP&sort=asc`);
             const today = new Date();
             const isToday = (dateString) => {
                 if (!dateString) return false;
@@ -97,10 +92,7 @@ const PickupDashboardPage = () => {
             });
 
             if (result.isConfirmed) {
-                const token = localStorage.getItem('accessToken');
-                await axios.post(`${API_BASE_URL}/order/${id}/preparing-for-pickup`, {}, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                await axios.post(`${API_BASE_URL}/order/${id}/preparing-for-pickup`, {});
                 Swal.fire('¡Preparando!', 'El pedido fue marcado como en preparación.', 'success');
                 fetchOrders();
             }
@@ -122,10 +114,7 @@ const PickupDashboardPage = () => {
             });
 
             if (result.isConfirmed) {
-                const token = localStorage.getItem('accessToken');
-                await axios.post(`${API_BASE_URL}/order/${id}/unclaimed-pickup`, {}, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                await axios.post(`${API_BASE_URL}/order/${id}/unclaimed-pickup`, {});
                 Swal.fire('¡No Reclamado!', 'El pedido fue marcado como no reclamado.', 'info');
                 fetchOrders();
             }
@@ -147,12 +136,7 @@ const PickupDashboardPage = () => {
             });
 
             if (result.isConfirmed) {
-                const token = localStorage.getItem('accessToken');
-                await axios.post(`${API_BASE_URL}/order/${id}/ready-for-pickup`, {}, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                await axios.post(`${API_BASE_URL}/order/${id}/ready-for-pickup`, {});
                 Swal.fire('¡Listo!', 'El pedido fue marcado como listo y el cliente fue notificado.', 'success');
                 fetchOrders();
             }
@@ -174,12 +158,7 @@ const PickupDashboardPage = () => {
             });
 
             if (result.isConfirmed) {
-                const token = localStorage.getItem('accessToken');
-                await axios.post(`${API_BASE_URL}/order/${id}/collected`, {}, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                await axios.post(`${API_BASE_URL}/order/${id}/collected`, {});
                 Swal.fire('¡Entregado!', 'El pedido ha sido entregado exitosamente.', 'success');
                 fetchOrders();
             }
