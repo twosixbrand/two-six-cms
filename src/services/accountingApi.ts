@@ -2,10 +2,14 @@ import { handleResponse } from './apiUtils';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3050/api';
 
-const authHeaders = () => ({
-    'Content-Type': 'application/json',
-    'x-api-key': import.meta.env.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!',
-});
+const authHeaders = () => {
+    const token = localStorage.getItem('accessToken');
+    return {
+        'Content-Type': 'application/json',
+        'x-api-key': import.meta.env.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+    };
+};
 
 // ── PUC Accounts ──────────────────────────────────────────────
 
