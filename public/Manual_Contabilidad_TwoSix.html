@@ -2768,39 +2768,54 @@ kbd {
       M --> O((Reportes Fiscales: IVA, Exógena, Formulario 350));
   </div>
 
-  <h3 id="cap23-2">23.2 Calendario de Obligaciones (Mensual y Local)</h3>
-  <p>El diagrama de Gantt ilustra de manera estructurada los periodos regulares, fechas de causación y vencimientos del ciclo contable estándar en la compañía.</p>
+  <h3 id="cap23-2">23.2 Calendario de Obligaciones</h3>
+  <p>Dado que las obligaciones tienen diferentes magnitudes de tiempo, a continuación se dividen en el ciclo operativo mensual y el ciclo fiscal anual para mayor claridad.</p>
   
-  <div class="mermaid" style="margin: 2rem 0; overflow-x: auto;">
+  <h4 style="margin-top:2rem;">A. Calendario Operativo Mensual</h4>
+  <p>Secuencia recurrente de tareas durante un mes estándar (del 1 al 30).</p>
+  <div class="mermaid" style="margin: 1.5rem 0; overflow-x: auto;">
     gantt
-      title Calendario de Procesos Contables y Fiscales
+      title Periodo Mensual Típico (Ejemplo)
       dateFormat  YYYY-MM-DD
       axisFormat  %d
+      tickInterval 5day
       
-      section Operativa Diaria
-      Causación Ventas & COGS  :active, d1, 2026-06-01, 30d
-      Registro de Gastos       :active, d2, 2026-06-01, 30d
-      Facturación Electrónica  :active, d3, 2026-06-01, 30d
+      section Diario
+      Ventas, COGS y Facturación DIAN :active, d1, 2026-06-01, 30d
+      Amortización y Gastos           :active, d2, 2026-06-01, 30d
       
-      section Quincenal
-      Liquidación Nómina Q1    :crit, n1, 2026-06-15, 1d
-      Prestaciones y Pago Q1   :n2, 2026-06-15, 1d
-      Liquidación Nómina Q2    :crit, n3, 2026-06-30, 1d
-      Prestaciones y Pago Q2   :n4, 2026-06-30, 1d
+      section Nómina
+      Primera Quincena (Liquidación)  :crit, n1, 2026-06-13, 2d
+      Segunda Quincena (Liquidación)  :crit, n2, 2026-06-28, 2d
       
-      section Fin de Mes
-      Conciliación Bancaria    :m1, 2026-06-25, 5d
-      Depreciación Activos Fijos:m2, 2026-06-30, 1d
-      Cierre Contable Mensual  :milestone, m3, 2026-06-30, 0d
+      section Cierre de Mes
+      Conciliación Bancaria           :m1, 2026-06-25, 5d
+      Depreciación Activos            :m2, 2026-06-30, 1d
+      Cierre Contable Mensual         :milestone, m3, 2026-06-30, 0d
       
-      section Impuestos Mensuales
-      Retefuente (Form 350)    :crit, i1, 2026-07-07, 7d
-      Declaración IVA (Bimestral):i2, 2026-07-14, 7d
+      section Impuestos
+      Retefuente & IVA (Mes Anterior) :crit, i1, 2026-06-01, 14d
+  </div>
+
+  <h4 style="margin-top:2rem;">B. Obligaciones Anuales</h4>
+  <p>Hitos macro correspondientes al cierre de la vigencia y requerimientos de la DIAN al año siguiente.</p>
+  <div class="mermaid" style="margin: 1.5rem 0; overflow-x: auto;">
+    gantt
+      title Cierres y Reportes Fiscales Anuales
+      dateFormat  YYYY-MM-DD
+      axisFormat  %b %Y
+      tickInterval 1month
       
-      section Periodo Anual
-      Cierre Anual NIIF        :a1, 2026-12-31, 15d
-      Certificados Retención   :a2, 2027-03-01, 15d
-      Información Exógena DIAN :a3, 2027-04-15, 20d
+      section Cierre Anual
+      Ajustes de Fin de Año NIIF      :a1, 2026-12-15, 30d
+      Cierre Definitivo del Año       :milestone, a2, 2027-01-15, 0d
+      
+      section Proveedores
+      Emisión Certificados Retención  :a3, 2027-02-01, 28d
+      
+      section DIAN
+      Preparación Exógena             :a4, 2027-03-01, 45d
+      Presentación Medios Magnéticos  :milestone, a5, 2027-04-15, 0d
   </div>
 </div>
 
