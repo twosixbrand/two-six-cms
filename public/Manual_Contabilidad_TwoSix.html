@@ -640,9 +640,11 @@ kbd {
 <li class="toc-section"><a href="#cap22-1">22.1 Automatización de Ventas y Comisiones</a></li>
 <li class="toc-section"><a href="#cap22-2">22.2 Costo de Ventas Real (COGS)</a></li>
 <li class="toc-section"><a href="#cap22-3">22.3 Asientos por Ajustes de Inventario</a></li>
+
+<li class="toc-chapter"><a href="#cap23">Capítulo 23: Flujo de Procesos y Calendario Contable</a></li>
+<li class="toc-section"><a href="#cap23-1">23.1 Ciclo Operativo Financiero</a></li>
+<li class="toc-section"><a href="#cap23-2">23.2 Calendario de Obligaciones</a></li>
 </ul>
-
-
     <li class="toc-appendix"><a href="#apA">Apéndice A: Plan Único de Cuentas (Resumen)</a></li>
     <li class="toc-appendix"><a href="#apB">Apéndice B: Tarifas de Retención en Colombia</a></li>
     <li class="toc-appendix"><a href="#apC">Apéndice C: Glosario</a></li>
@@ -2733,6 +2735,75 @@ kbd {
   </ul>
 </div>
 
+<!-- ============================================================ -->
+<!-- CHAPTER 23: FLUJO DE PROCESOS Y CALENDARIO CONTABLE           -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap23">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 23</div>
+    <h2 class="chapter-title">Flujo de Procesos y Calendario Contable</h2>
+  </div>
+
+  <h3 id="cap23-1">23.1 Ciclo Operativo Financiero</h3>
+  <p>El siguiente diagrama de flujo consolida la interacción de todos los módulos. Evidencia cómo cada frente operativo alimenta de manera transparente y automatizada el núcleo contable para el cierre final.</p>
+  
+  <div class="mermaid" style="text-align: center; margin: 2rem 0;">
+    graph TD;
+      A[Orden y Venta CMS/Web] --> B(Facturación Electrónica DIAN);
+      A --> C(Reconocimiento Ingreso y Descuento Inventario);
+      C --> D{Centro de Asientos Contables};
+      
+      E[Recepción Proveedores] --> F(Registro de Gasto o Compra);
+      F --> G(Cuentas por Pagar - CxP);
+      G --> H[Pago y Causación de Retenciones];
+      H --> D;
+      
+      I[Gestión de Empleados] --> J(Liquidación Nómina Quincenal/Mensual);
+      J --> D;
+      
+      D --> K[Revisión Libro Auxiliar y Mayor];
+      K --> L[Conciliación Bancaria y Depreciaciones];
+      L --> M[Cierre Contable Mensual / Anual];
+      M --> N((Dashboard: Estados Financieros e Indicadores));
+      M --> O((Reportes Fiscales: IVA, Exógena, Formulario 350));
+  </div>
+
+  <h3 id="cap23-2">23.2 Calendario de Obligaciones (Mensual y Local)</h3>
+  <p>El diagrama de Gantt ilustra de manera estructurada los periodos regulares, fechas de causación y vencimientos del ciclo contable estándar en la compañía.</p>
+  
+  <div class="mermaid" style="margin: 2rem 0; overflow-x: auto;">
+    gantt
+      title Calendario de Procesos Contables y Fiscales
+      dateFormat  YYYY-MM-DD
+      axisFormat  %d
+      
+      section Operativa Diaria
+      Causación Ventas & COGS  :active, d1, 2026-06-01, 30d
+      Registro de Gastos       :active, d2, 2026-06-01, 30d
+      Facturación Electrónica  :active, d3, 2026-06-01, 30d
+      
+      section Quincenal
+      Liquidación Nómina Q1    :crit, n1, 2026-06-15, 1d
+      Prestaciones y Pago Q1   :n2, 2026-06-15, 1d
+      Liquidación Nómina Q2    :crit, n3, 2026-06-30, 1d
+      Prestaciones y Pago Q2   :n4, 2026-06-30, 1d
+      
+      section Fin de Mes
+      Conciliación Bancaria    :m1, 2026-06-25, 5d
+      Depreciación Activos Fijos:m2, 2026-06-30, 1d
+      Cierre Contable Mensual  :milestone, m3, 2026-06-30, 0d
+      
+      section Impuestos Mensuales
+      Retefuente (Form 350)    :crit, i1, 2026-07-07, 7d
+      Declaración IVA (Bimestral):i2, 2026-07-14, 7d
+      
+      section Periodo Anual
+      Cierre Anual NIIF        :a1, 2026-12-31, 15d
+      Certificados Retención   :a2, 2027-03-01, 15d
+      Información Exógena DIAN :a3, 2027-04-15, 20d
+  </div>
+</div>
+
   <div style="text-align: center; padding: 4rem 0 2rem; color: var(--gray-500); font-size: 0.9rem;">
     <div style="width: 60px; height: 2px; background: var(--gold); margin: 0 auto 1.5rem;"></div>
     <strong style="color: var(--gold); letter-spacing: 0.2em;">TWO SIX S.A.S.</strong><br>
@@ -2743,5 +2814,23 @@ kbd {
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#fafafa',
+        primaryTextColor: '#1a1a1a',
+        primaryBorderColor: '#d4af37',
+        lineColor: '#b8960e',
+        secondaryColor: '#f5e6b8',
+        tertiaryColor: '#fff',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+      }
+    });
+  });
+</script>
 </body>
 </html>
