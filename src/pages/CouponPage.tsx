@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { FiGift, FiPlus } from 'react-icons/fi';
+import { FiGift, FiPlus, FiEdit2 } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
-import { DataTable, Modal, Button, StatusBadge, LoadingSpinner } from '../components/ui';
+import { DataTable, Modal, Button, LoadingSpinner } from '../components/ui';
 import * as couponApi from '../services/couponApi';
 import { logError } from '../services/errorApi';
 
@@ -23,7 +23,8 @@ const CouponPage = () => {
     is_active: true,
     max_uses: '',
     min_purchase_amount: '',
-    min_items_count: ''
+    min_items_count: '',
+    current_uses: 0
   });
 
   const fetchCoupons = async () => {
@@ -48,7 +49,8 @@ const CouponPage = () => {
     setEditingId(null);
     setFormData({
       code: '', percentage: 0, free_shipping: false, valid_from: '', valid_until: '',
-      is_single_use_per_client: false, is_active: true, max_uses: '', min_purchase_amount: '', min_items_count: ''
+      is_single_use_per_client: false, is_active: true, max_uses: '', min_purchase_amount: '', min_items_count: '',
+      current_uses: 0
     });
     setIsModalOpen(true);
   };
@@ -59,13 +61,14 @@ const CouponPage = () => {
       code: item.code,
       percentage: item.percentage || 0,
       free_shipping: item.free_shipping || false,
-      valid_from: new Date(item.valid_from).toISOString().slice(0, 16),
-      valid_until: new Date(item.valid_until).toISOString().slice(0, 16),
+      valid_from: item.valid_from ? new Date(item.valid_from).toISOString().slice(0, 16) : '',
+      valid_until: item.valid_until ? new Date(item.valid_until).toISOString().slice(0, 16) : '',
       is_single_use_per_client: item.is_single_use_per_client || false,
       is_active: item.is_active,
       max_uses: item.max_uses || '',
       min_purchase_amount: item.min_purchase_amount || '',
-      min_items_count: item.min_items_count || ''
+      min_items_count: item.min_items_count || '',
+      current_uses: item.current_uses || 0
     });
     setIsModalOpen(true);
   };
@@ -84,9 +87,9 @@ const CouponPage = () => {
         is_active: formData.is_active,
       };
 
-      if (formData.max_uses) payload.max_uses = Number(formData.max_uses);
-      if (formData.min_purchase_amount) payload.min_purchase_amount = Number(formData.min_purchase_amount);
-      if (formData.min_items_count) payload.min_items_count = Number(formData.min_items_count);
+      if (formData.max_uses !== '') payload.max_uses = Number(formData.max_uses);
+      if (formData.min_purchase_amount !== '') payload.min_purchase_amount = Number(formData.min_purchase_amount);
+      if (formData.min_items_count !== '') payload.min_items_count = Number(formData.min_items_count);
 
       if (editingId) {
         await couponApi.updateCoupon(editingId, payload);
@@ -97,8 +100,8 @@ const CouponPage = () => {
       fetchCoupons();
     } catch (err: any) {
       logError(err, '/coupons/submit');
-      console.error(err.response?.data?.message || 'Error al guardar cupón');
-      alert(err.response?.data?.message || 'Error al guardar cupón. Revisa los datos.');
+      const msg = err.message || 'Error al guardar cupón';
+      alert(msg);
     } finally {
       setIsSubmitting(false);
     }
@@ -142,6 +145,8 @@ const CouponPage = () => {
     },
   ];
 
+  const isLocked = editingId && formData.current_uses > 0;
+
   return (
     <div className="page-container">
       <PageHeader title="Campañas de Descuento" icon={<FiGift />} />
@@ -158,25 +163,54 @@ const CouponPage = () => {
           columns={columns}
           data={coupons}
           emptyMessage="No hay campañas registradas"
-          onEdit={openEditModal}
+          actions={(row) => (
+            <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} />
+          )}
         />
       )}
 
       {/* Modal CRUD */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={editingId ? 'Editar Campaña' : 'Crear Campaña'}>
         <form onSubmit={handleSubmit} className="crud-form">
+          {isLocked && (
+            <div style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)', color: '#d97706', padding: '0.75rem', borderRadius: '8px', marginBottom: '1.5rem', fontSize: '0.85rem', border: '1px solid rgba(245, 158, 11, 0.2)' }}>
+              <strong>Nota:</strong> Esta campaña ya ha sido utilizada {formData.current_uses} veces. El código y el valor del descuento están bloqueados para preservar la integridad de los reportes contables.
+            </div>
+          )}
+
           <div className="form-group">
             <label>Código Promocional</label>
-            <input type="text" value={formData.code} onChange={(e) => setFormData({...formData, code: e.target.value.toUpperCase()})} required />
+            <input 
+              type="text" 
+              value={formData.code} 
+              onChange={(e) => setFormData({...formData, code: e.target.value.toUpperCase()})} 
+              required 
+              disabled={isLocked}
+              title={isLocked ? "No se puede editar el código de una campaña con usos" : ""}
+            />
           </div>
           <div className="form-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
              <div>
                 <label>Porcentaje (%)</label>
-                <input type="number" min="0" max="100" value={formData.percentage} onChange={(e) => setFormData({...formData, percentage: e.target.value as any})} required />
+                <input 
+                  type="number" 
+                  min="0" 
+                  max="100" 
+                  value={formData.percentage} 
+                  onChange={(e) => setFormData({...formData, percentage: e.target.value as any})} 
+                  required 
+                  disabled={isLocked}
+                />
              </div>
              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingTop: '1.8rem' }}>
-                <input type="checkbox" checked={formData.free_shipping} onChange={(e) => setFormData({...formData, free_shipping: e.target.checked})} id="fs" />
-                <label htmlFor="fs" style={{ margin: 0, cursor: 'pointer' }}>Forzar Envío Gratis</label>
+                <input 
+                  type="checkbox" 
+                  checked={formData.free_shipping} 
+                  onChange={(e) => setFormData({...formData, free_shipping: e.target.checked})} 
+                  id="fs" 
+                  disabled={isLocked}
+                />
+                <label htmlFor="fs" style={{ margin: 0, cursor: 'pointer', opacity: isLocked ? 0.6 : 1 }}>Forzar Envío Gratis</label>
              </div>
           </div>
           <div className="form-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
@@ -191,22 +225,22 @@ const CouponPage = () => {
           </div>
           <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '1rem' }}>
              <input type="checkbox" checked={formData.is_single_use_per_client} onChange={(e) => setFormData({...formData, is_single_use_per_client: e.target.checked})} id="su" />
-             <label htmlFor="su" style={{ margin: 0, cursor: 'pointer' }}>Exclusivo: Un Solo Uso por Cliente (Registrado por Email/Cedula)</label>
+             <label htmlFor="su" style={{ margin: 0, cursor: 'pointer' }}>Exclusivo: Un Solo Uso por Cliente (Email registrado)</label>
           </div>
-          <hr style={{ margin: '1rem 0', borderColor: '#333' }} />
+          <hr style={{ margin: '1rem 0', border: 'none', borderTop: '1px solid #333' }} />
           <h5>Reglas y Limitaciones Opcionales</h5>
           <div className="form-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', marginTop: '0.5rem' }}>
              <div>
                 <label>Max. Usos Gbl.</label>
-                <input type="number" min="1" value={formData.max_uses} placeholder="Ilimitado" onChange={(e) => setFormData({...formData, max_uses: e.target.value})} />
+                <input type="number" min="0" value={formData.max_uses} placeholder="Ilimitado" onChange={(e) => setFormData({...formData, max_uses: e.target.value})} />
              </div>
              <div>
                 <label>Compra Mín. ($)</label>
-                <input type="number" min="1" value={formData.min_purchase_amount} placeholder="Sin mínimo" onChange={(e) => setFormData({...formData, min_purchase_amount: e.target.value})} />
+                <input type="number" min="0" value={formData.min_purchase_amount} placeholder="Sin mínimo" onChange={(e) => setFormData({...formData, min_purchase_amount: e.target.value})} />
              </div>
              <div>
                 <label>Prendas Mín.</label>
-                <input type="number" min="1" value={formData.min_items_count} placeholder="0" onChange={(e) => setFormData({...formData, min_items_count: e.target.value})} />
+                <input type="number" min="0" value={formData.min_items_count} placeholder="0" onChange={(e) => setFormData({...formData, min_items_count: e.target.value})} />
              </div>
           </div>
           
