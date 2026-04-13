@@ -20,6 +20,7 @@ import CategoryPage from "./pages/CategoryPage.tsx";
 import RolePage from './pages/RolePage.tsx';
 import UserPage from './pages/UserPage.tsx';
 import UserRolePage from './pages/UserRolePage.tsx';
+import TagPage from './pages/TagPage';
 import TypeClothingPage from './pages/TypeClothingPage.tsx';
 import MasterDesignPage from './pages/MasterDesignPage.tsx';
 import SeasonPage from './pages/SeasonPage.tsx';
@@ -121,7 +122,8 @@ const MainLayout = () => {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/clothing" element={<ClothingPage />} />
-              <Route path="/type-clothing" element={<TypeClothingPage />} />
+              <Route path="/type-clothing" element={<ProtectedRoute permission="catalog.categories.view"><TypeClothingPage/></ProtectedRoute>} />
+              <Route path="/tag" element={<ProtectedRoute permission="catalog.categories.view"><TagPage/></ProtectedRoute>} />
               <Route path="/category" element={<CategoryPage />} />
               <Route path="/season" element={<SeasonPage />} />
               <Route path="/year-production" element={<YearProductionPage />} />

@@ -51,6 +51,7 @@ const menuData = [
       { title: 'Production type', path: '/production-type', permission: 'catalog.categories.view' },
       { title: 'Type Clothing', path: '/type-clothing', permission: 'catalog.categories.view' },
       { title: 'Category', path: '/category', permission: 'catalog.categories.view' },
+      { title: 'Etiquetas', path: '/tag', permission: 'catalog.categories.view' },
       { title: 'Color', path: '/color', permission: 'catalog.colors.view' },
       { title: 'Guia de Tallas', path: '/size-guide', permission: 'catalog.sizes.view' },
       { title: 'Ubicaciones', path: '/locations', permission: 'catalog.categories.view' },

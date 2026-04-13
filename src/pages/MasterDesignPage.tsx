@@ -6,12 +6,14 @@ import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner } from
 import * as masterDesignApi from '../services/masterDesignApi';
 import * as clothingApi from '../services/clothingApi';
 import * as collectionApi from '../services/collectionApi';
+import * as tagApi from '../services/tagApi';
 import { logError } from '../services/errorApi';
 
 const MasterDesignPage = () => {
   const [designs, setDesigns] = useState<any[]>([]);
-  const [clothings, setClothings] = useState<any[]>([]);
-  const [collections, setCollections] = useState<any[]>([]);
+  const [ clothings, setClothings ] = useState<any[]>([]);
+  const [ collections, setCollections ] = useState<any[]>([]);
+  const [ tags, setTags ] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
@@ -25,6 +27,7 @@ const MasterDesignPage = () => {
     description: '',
     id_clothing: '',
     id_collection: '',
+    id_tags: [],
     file: null,
   });
 
@@ -36,14 +39,16 @@ const MasterDesignPage = () => {
     try {
       setLoading(true);
       setError('');
-      const [designsData, clothingsData, collectionsData] = await Promise.all([
+      const [designsData, clothingsData, collectionsData, tagsData] = await Promise.all([
         masterDesignApi.getMasterDesigns(),
         clothingApi.getClothing(),
         collectionApi.getCollections(),
+        tagApi.getTags(),
       ]);
       setDesigns(designsData);
       setClothings(clothingsData);
       setCollections(collectionsData);
+      setTags(tagsData);
     } catch (err: any) {
       logError(err, '/master-design');
       setError('Error al cargar datos.');
@@ -90,7 +95,7 @@ const MasterDesignPage = () => {
 
   const openCreateModal = () => {
     setEditing(null);
-    setForm({ manufactured_cost: '', description: '', id_clothing: '', id_collection: '', file: null });
+    setForm({ manufactured_cost: '', description: '', id_clothing: '', id_collection: '', id_tags: [], file: null });
     setShowModal(true);
   };
 
@@ -102,6 +107,7 @@ const MasterDesignPage = () => {
       description: row.description || '',
       id_clothing: row.id_clothing || '',
       id_collection: row.id_collection || '',
+      id_tags: row.designTags ? row.designTags.map((dt: any) => dt.id_tag) : [],
       file: null,
     });
     setShowModal(true);
@@ -204,6 +210,22 @@ const MasterDesignPage = () => {
       render: (_: any, row: any) => row.collection?.name || 'N/A',
     },
     {
+      key: 'tags',
+      header: 'Etiquetas',
+      render: (_: any, row: any) => {
+        if (!row.designTags || row.designTags.length === 0) return <span style={{ color: '#6b6b7b', fontSize: '0.8rem' }}>Sin etiquetas</span>;
+        return (
+           <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+             {row.designTags.map((dt: any) => (
+                <span key={dt.id_tag} style={{ background: '#3a3a45', padding: '2px 6px', borderRadius: '4px', fontSize: '0.75rem' }}>
+                  {dt.tag?.name}
+                </span>
+             ))}
+           </div>
+        );
+      },
+    },
+    {
       key: 'manufactured_cost',
       header: 'Costo',
       align: 'right' as const,
@@ -281,6 +303,28 @@ const MasterDesignPage = () => {
                 onChange={handleChange}
                 required
               />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#a0a0b0', fontFamily: 'Inter, sans-serif' }}>
+                  Etiquetas (Mayús+Click para múltiples)
+                </label>
+                <select
+                  multiple
+                  name="id_tags"
+                  value={form.id_tags || []}
+                  onChange={(e) => {
+                    const values = Array.from(e.target.selectedOptions, option => option.value);
+                    setForm((prev: any) => ({ ...prev, id_tags: values }));
+                  }}
+                  style={{
+                    padding: '0.5rem', borderRadius: 8,
+                    border: '1px solid #2a2a35', backgroundColor: '#2a2a35',
+                    fontSize: '0.9rem', fontFamily: 'Inter, sans-serif', color: '#f1f1f3',
+                    minHeight: '80px'
+                  }}
+                >
+                  {tags.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+                </select>
+              </div>
               <FormField
                 label="Descripcion"
                 name="description"

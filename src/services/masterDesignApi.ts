@@ -25,6 +25,9 @@ export const createMasterDesign = async (designData) => {
     formData.append('id_clothing', designData.id_clothing);
     formData.append('id_collection', designData.id_collection);
     formData.append('file', designData.file);
+    if (designData.id_tags && designData.id_tags.length > 0) {
+      formData.append('id_tags', designData.id_tags.join(','));
+    }
     body = formData;
     // Don't set Content-Type header for FormData, browser does it with boundary
   } else {
@@ -33,6 +36,7 @@ export const createMasterDesign = async (designData) => {
       manufactured_cost: parseFloat(designData.manufactured_cost),
       id_clothing: parseInt(designData.id_clothing, 10),
       id_collection: parseInt(designData.id_collection, 10),
+      ...(designData.id_tags && designData.id_tags.length > 0 ? { id_tags: designData.id_tags } : {}),
     });
     headers['Content-Type'] = 'application/json';
   }
@@ -56,14 +60,21 @@ export const updateMasterDesign = async (id, designData) => {
     if (designData.id_clothing) formData.append('id_clothing', designData.id_clothing);
     if (designData.id_collection) formData.append('id_collection', designData.id_collection);
     formData.append('file', designData.file);
+    if (designData.id_tags && designData.id_tags.length > 0) {
+      formData.append('id_tags', designData.id_tags.join(','));
+    }
     body = formData;
   } else {
-    body = JSON.stringify({
+    let jsonBody: any = {
       description: designData.description,
       manufactured_cost: parseFloat(designData.manufactured_cost),
       id_clothing: parseInt(designData.id_clothing, 10),
       id_collection: parseInt(designData.id_collection, 10),
-    });
+    };
+    if (designData.id_tags !== undefined) {
+      jsonBody.id_tags = designData.id_tags;
+    }
+    body = JSON.stringify(jsonBody);
     headers['Content-Type'] = 'application/json';
   }
 
