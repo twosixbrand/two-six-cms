@@ -51,6 +51,7 @@ import PickupDashboardPage from './pages/PickupDashboardPage.tsx';
 import CustomerPage from './pages/CustomerPage.tsx';
 import PermissionManagementPage from './pages/PermissionManagementPage.tsx';
 import GoogleMerchantFeedPage from './pages/GoogleMerchantFeedPage.tsx';
+import CouponPage from './pages/CouponPage.tsx';
 
 // Accounting pages
 import PucAccountPage from './pages/accounting/PucAccountPage.tsx';
@@ -158,6 +159,7 @@ const MainLayout = () => {
               <Route path="/customer" element={<CustomerPage />} />
               <Route path="/permissions" element={<PermissionManagementPage />} />
               <Route path="/google-merchant-feed" element={<GoogleMerchantFeedPage />} />
+              <Route path="/coupons" element={<CouponPage />} />
               {/* Accounting routes */}
               <Route path="/accounting/puc" element={<PucAccountPage />} />
               <Route path="/accounting/journal" element={<JournalEntryPage />} />

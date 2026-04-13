@@ -20,6 +20,14 @@ const menuData = [
     ],
   },
   {
+    title: 'Campañas & Cupones',
+    path: '#',
+    permission: 'sales.reports.view',
+    subNav: [
+      { title: 'Gestión de Cupones', path: '/coupons', permission: 'sales.reports.view' },
+    ],
+  },
+  {
     title: 'Admin Prendas',
     path: '#',
     permission: 'inventory',
