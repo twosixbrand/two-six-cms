@@ -15,6 +15,8 @@ const CouponPage = () => {
 
   const [formData, setFormData] = useState({
     code: '',
+    name: '',
+    description: '',
     percentage: 0,
     free_shipping: false,
     valid_from: '',
@@ -48,7 +50,7 @@ const CouponPage = () => {
   const openAddModal = () => {
     setEditingId(null);
     setFormData({
-      code: '', percentage: 0, free_shipping: false, valid_from: '', valid_until: '',
+      code: '', name: '', description: '', percentage: 0, free_shipping: false, valid_from: '', valid_until: '',
       is_single_use_per_client: false, is_active: true, max_uses: '', min_purchase_amount: '', min_items_count: '',
       current_uses: 0
     });
@@ -59,6 +61,8 @@ const CouponPage = () => {
     setEditingId(item.id);
     setFormData({
       code: item.code,
+      name: item.name || '',
+      description: item.description || '',
       percentage: item.percentage || 0,
       free_shipping: item.free_shipping || false,
       valid_from: item.valid_from ? new Date(item.valid_from).toISOString().slice(0, 16) : '',
@@ -79,6 +83,8 @@ const CouponPage = () => {
     try {
       const payload: any = {
         code: formData.code,
+        name: formData.name,
+        description: formData.description,
         percentage: Number(formData.percentage),
         free_shipping: formData.free_shipping,
         valid_from: new Date(formData.valid_from).toISOString(),
@@ -120,6 +126,7 @@ const CouponPage = () => {
   };
 
   const columns = [
+    { key: 'name', header: 'Nombre Campaña' },
     { key: 'code', header: 'Código' },
     { key: 'percentage', header: 'Descuento', render: (val: any) => `${val}%` },
     { key: 'free_shipping', header: 'Envío Gratis', render: (val: any) => val ? 'SI' : 'NO' },
@@ -128,7 +135,7 @@ const CouponPage = () => {
     { key: 'current_uses', header: 'Usos', render: (val: any, row: any) => `${val} ${row.max_uses ? `/ ${row.max_uses}` : ''}` },
     {
       key: 'is_active',
-      header: 'Activo (Kill Switch)',
+      header: 'Activo',
       align: 'center' as const,
       render: (value: any, row: any) => (
         <button
@@ -177,6 +184,27 @@ const CouponPage = () => {
               <strong>Nota:</strong> Esta campaña ya ha sido utilizada {formData.current_uses} veces. El código y el valor del descuento están bloqueados para preservar la integridad de los reportes contables.
             </div>
           )}
+
+          <div className="form-group">
+            <label>Nombre de la Campaña</label>
+            <input 
+              type="text" 
+              placeholder="Ej: Promo Lanzamiento / Black Friday"
+              value={formData.name} 
+              onChange={(e) => setFormData({...formData, name: e.target.value})} 
+              required 
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Descripción (Interna)</label>
+            <textarea 
+              placeholder="Notas sobre el propósito u origen de la campaña..."
+              value={formData.description} 
+              onChange={(e) => setFormData({...formData, description: e.target.value})} 
+              style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', backgroundColor: '#1a1a24', border: '1px solid #333', color: 'white', minHeight: '60px' }}
+            />
+          </div>
 
           <div className="form-group">
             <label>Código Promocional</label>

@@ -11,6 +11,7 @@ const UserManualPage = () => {
         { id: 'gestion-ventas', title: 'Gestion Ventas', icon: <FiShoppingCart /> },
         { id: 'admin-prendas', title: 'Admin Prendas', icon: <FiServer /> },
         { id: 'atencion-cliente', title: 'Atencion Cliente', icon: <FiUserCheck /> },
+        { id: 'campanas-cupones', title: 'Campañas & Cupones', icon: <FiGift /> },
         { id: 'admin-maestros', title: 'Admin Maestros', icon: <FiGrid /> },
         { id: 'users-providers', title: 'Users / Providers', icon: <FiUsers /> },
         { id: 'integraciones-apis', title: 'Integraciones-APIs', icon: <FiRss /> },
@@ -177,41 +178,89 @@ const UserManualPage = () => {
                         </section>
                     )}
 
+                    {activeSection === 'campanas-cupones' && (
+                        <section className="manual-section fade-in">
+                            <h2 className="section-title">Capítulo 4: Campañas y Cupones de Fidelización</h2>
+                            <p className="intro-text">
+                                La estrategia de marketing digital de <strong>Two Six</strong> cobra vida en este módulo. Aquí podrás crear incentivos para atraer nuevos clientes y premiar a los más leales mediante cupones inteligentes.
+                            </p>
+
+                            <h3 className="subsection-title"><FiGift /> 4.1 Gestión de Cupones</h3>
+                            <p>Ubicación: <code>Campañas &amp; Cupones &gt; Gestión de Cupones</code></p>
+                            
+                            <div className="feature-card">
+                                <h4>Pasos para Crear una Campaña de Descuento:</h4>
+                                <ol className="manual-steps">
+                                    <li><strong>Código Promocional:</strong> Define el código que el cliente ingresará (ej: <code>BIENVENIDO10</code>). El sistema lo convertirá automáticamente a mayúsculas para evitar errores.</li>
+                                    <li><strong>Incentivo:</strong> Define el <strong>Porcentaje de Descuento</strong> y si la campaña incluye <strong>Envío Gratis</strong> forzado.</li>
+                                    <li><strong>Vigencia:</strong> Selecciona las fechas y horas exactas de inicio y fin. El cupón dejará de funcionar automáticamente al segundo exacto de la fecha de fin.</li>
+                                    <li><strong>Reglas de Aplicación:</strong>
+                                        <ul>
+                                            <li><em>Un Solo Uso por Cliente:</em> Bloquea el cupón para que cada email registrado solo pueda usarlo una vez.</li>
+                                            <li><em>Límites de Uso Global:</em> Define cuántas veces se puede usar el cupón en total antes de que caduque.</li>
+                                            <li><em>Compra Mínima ($):</em> El cupón solo se activará si el carrito supera este valor.</li>
+                                        </ul>
+                                    </li>
+                                </ol>
+                                <p className="importance-note"><strong>Integridad Contable:</strong> Una vez que un cupón ha sido utilizado al menos una vez, el código y el porcentaje se bloquean. Esto evita alteraciones en los históricos de ventas y reportes financieros.</p>
+                            </div>
+
+                            <div className="callout-info">
+                                <FiCheckCircle className="callout-icon" />
+                                <div>
+                                    <strong>Kill Switch:</strong> El botón de estado (Activo/Pausado) actúa como un interruptor de emergencia. Si detectas una anomalía en una campaña, puedes desactivarla instantáneamente sin borrarla del sistema.
+                                </div>
+                            </div>
+                        </section>
+                    )}
+
                     {activeSection === 'admin-maestros' && (
                         <section className="manual-section fade-in">
-                            <h2 className="section-title">Capítulo 4: Administración de Tablas Maestras (Estructura)</h2>
+                            <h2 className="section-title">Capítulo 5: Administración de Tablas Maestras (Estructura)</h2>
                             <p className="intro-text">
                                 Los "Maestros" son los cimientos sobre los cuales se construye toda la lógica del CMS. Tu precisión aquí garantiza que el catálogo sea coherente y navegable.
                             </p>
 
-                            <h3 className="subsection-title"><FiCalendar /> 4.1 Temporalidad (Year & Season)</h3>
+                            <h3 className="subsection-title"><FiCalendar /> 5.1 Temporalidad (Year & Season)</h3>
                             <p>Ubicación: <code>Admin Maestros &gt; Year Production / Season</code></p>
                             <div className="feature-card">
                                 <p>Define los ciclos de tiempo de la marca. Cada prenda debe pertenecer a un año y una temporada para facilitar reportes históricos.</p>
                             </div>
 
-                            <h3 className="subsection-title"><FiArchive /> 4.2 Colecciones (Collections)</h3>
+                            <h3 className="subsection-title"><FiArchive /> 5.2 Colecciones (Collections)</h3>
                             <p>Ubicación: <code>Admin Maestros &gt; Collection</code></p>
                             <div className="feature-card">
                                 <p>Agrupa diseños bajo un concepto creativo único.</p>
                             </div>
 
-                            <h3 className="subsection-title"><FiAperture /> 4.3 Gestión Cromática (Colors)</h3>
+                            <h3 className="subsection-title"><FiAperture /> 5.3 Gestión Cromática (Colors)</h3>
                             <p>Ubicación: <code>Admin Maestros &gt; Color</code></p>
                             <div className="feature-card">
                                 <p>Control de la paleta de colores oficial. Usa el código Hexadecimal para asegurar la coincidencia visual con la tela física.</p>
+                            </div>
+
+                            <h3 className="subsection-title"><FiGrid /> 5.4 Guía de Tallas (Size Guide)</h3>
+                            <p>Ubicación: <code>Admin Maestros &gt; Guia de Tallas</code></p>
+                            <div className="feature-card">
+                                <p>La herramienta definitiva para reducir devoluciones por talla incorrecta.</p>
+                            </div>
+
+                            <h3 className="subsection-title"><FiMapPin /> 5.5 Ubicaciones (Locations)</h3>
+                            <p>Ubicación: <code>Admin Maestros &gt; Ubicaciones</code></p>
+                            <div className="feature-card">
+                                <p>Define los puntos físicos donde puede existir inventario (Bodega Central, Tienda Física, etc.).</p>
                             </div>
                         </section>
                     )}
 
                     {activeSection === 'users-providers' && (
                         <section className="manual-section fade-in">
-                            <h2 className="section-title">Capítulo 5: Aliados y Control de Acceso</h2>
+                            <h2 className="section-title">Capítulo 6: Aliados y Control de Acceso</h2>
                             <p className="intro-text">
                                 Este módulo gestiona el capital humano y los aliados estratégicos de <strong>Two Six</strong>. Aquí controlarás quién tiene acceso al sistema y con qué proveedores trabajamos.
                             </p>
 
-                            <h3 className="subsection-title"><FiTruck /> 5.1 Gestión de Proveedores (Providers)</h3>
+                            <h3 className="subsection-title"><FiTruck /> 6.1 Gestión de Proveedores (Providers)</h3>
                             <p>Ubicación: <code>Users / providers &gt; Provider</code></p>
                             <div className="feature-card">
                                 <h4>Registro y Legalización de Aliados:</h4>
@@ -227,13 +276,13 @@ const UserManualPage = () => {
                                 <p className="importance-note"><strong>Importancia:</strong> Un proveedor con registro "Incompleto" no podrá recibir pagos del departamento de contabilidad.</p>
                             </div>
 
-                            <h3 className="subsection-title"><FiUserCheck /> 5.2 CRM de Clientes (Customer)</h3>
+                            <h3 className="subsection-title"><FiUserCheck /> 6.2 CRM de Clientes (Customer)</h3>
                             <p>Ubicación: <code>Users / providers &gt; Clientes</code></p>
                             <div className="feature-card">
                                 <p>Administra la base de datos de nuestros compradores. Aunque la mayoría se registra automáticamente en la tienda web, puedes actualizar datos de envío o contacto para corregir problemas de entrega.</p>
                             </div>
 
-                            <h3 className="subsection-title"><FiMail /> 5.3 Suscriptores y Newsletter (Subscriber)</h3>
+                            <h3 className="subsection-title"><FiMail /> 6.3 Suscriptores y Newsletter (Subscriber)</h3>
                             <p>Ubicación: <code>Users / providers &gt; Suscriber</code></p>
                             <div className="feature-card">
                                 <h4>Gestión de Audiencias:</h4>
@@ -244,7 +293,7 @@ const UserManualPage = () => {
                                 </ol>
                             </div>
 
-                            <h3 className="subsection-title"><FiShield /> 5.4 Seguridad y Roles (User & Role)</h3>
+                            <h3 className="subsection-title"><FiShield /> 6.4 Seguridad y Roles (User & Role)</h3>
                             <p>Ubicación: <code>Users / providers &gt; User / Role</code></p>
                             <div className="feature-card">
                                 <h4>Gestión de Identidades:</h4>
@@ -254,7 +303,7 @@ const UserManualPage = () => {
                                 </ul>
                             </div>
 
-                            <h3 className="subsection-title"><FiLink /> 5.5 Asignación de Roles y Permisos</h3>
+                            <h3 className="subsection-title"><FiLink /> 6.5 Asignación de Roles y Permisos</h3>
                             <p>Ubicación: <code>Users / providers &gt; User Roles / Gestion de Permisos</code></p>
                             <div className="feature-card">
                                 <h4>Control Maestro de Acceso:</h4>
@@ -269,12 +318,12 @@ const UserManualPage = () => {
 
                     {activeSection === 'integraciones-apis' && (
                         <section className="manual-section fade-in">
-                            <h2 className="section-title">Capítulo 6: Integraciones y Canales Digitales</h2>
+                            <h2 className="section-title">Capítulo 7: Integraciones y Canales Digitales</h2>
                             <p className="intro-text">
                                 En este capítulo, aprenderás a gestionar las conexiones entre el CMS y plataformas externas como Google, permitiendo que nuestros productos lleguen a millones de personas.
                             </p>
 
-                            <h3 className="subsection-title"><FiRss /> 6.1 Google Merchant Feed (Catálogo Dinámico)</h3>
+                            <h3 className="subsection-title"><FiRss /> 7.1 Google Merchant Feed (Catálogo Dinámico)</h3>
                             <p>Ubicación: <code>Integraciones-APIs &gt; Google Merchant Feed</code></p>
                             
                             <div className="feature-card">
