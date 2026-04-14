@@ -38,6 +38,7 @@ import OrderPage from './pages/OrderPage.tsx';
 import OrderDetailPage from './pages/OrderDetailPage.tsx';
 import LocationPage from './pages/LocationPage.tsx';
 import StockPage from './pages/StockPage.tsx';
+import ReportStockPage from './pages/ReportStockPage.tsx';
 import ImageClothingPage from './pages/ImageClothingPage.tsx';
 import GeneralSalesReportPage from './pages/GeneralSalesReportPage.tsx';
 import SubscriberPage from './pages/SubscriberPage.tsx';
@@ -150,6 +151,7 @@ const MainLayout = () => {
               <Route path="/order/:id" element={<OrderDetailPage />} />
               <Route path="/locations" element={<LocationPage />} />
               <Route path="/stock" element={<StockPage />} />
+              <Route path="/reports/stock" element={<ReportStockPage />} />
               <Route path="/reports/sales/general" element={<GeneralSalesReportPage />} />
               <Route path="/reports/pickup-dashboard" element={<PickupDashboardPage />} />
               <Route path="/subscriber" element={<SubscriberPage />} />

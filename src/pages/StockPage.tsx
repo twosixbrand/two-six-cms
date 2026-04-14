@@ -11,6 +11,7 @@ const StockPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
+    const [pageSize, setPageSize] = useState(15);
     const [formData, setFormData] = useState({
         quantity_produced: 0,
         quantity_available: 0,
@@ -52,12 +53,10 @@ const StockPage = () => {
     }, [currentItem]);
 
     const filteredInventory = useMemo(() => {
-        if (!searchTerm) {
-            return inventoryItems;
-        }
-        return inventoryItems
-            .filter(item => {
-                const searchTermLower = searchTerm.toLowerCase();
+        let items = inventoryItems;
+        if (searchTerm) {
+            const searchTermLower = searchTerm.toLowerCase();
+            items = inventoryItems.filter(item => {
                 const fieldsToSearch = [
                     item.clothingColor?.design?.reference,
                     item.clothingColor?.design?.clothing?.name,
@@ -68,22 +67,16 @@ const StockPage = () => {
                 return fieldsToSearch.some(field =>
                     field?.toLowerCase().includes(searchTermLower)
                 );
-            })
-            .sort((a, b) => {
-                const refA = a.clothingColor?.design?.reference || '';
-                const refB = b.clothingColor?.design?.reference || '';
-                const refComp = refA.localeCompare(refB, undefined, { numeric: true, sensitivity: 'base' });
-                if (refComp !== 0) return refComp;
-
-                const sizeOrder = { 'XS': 1, 'S': 2, 'M': 3, 'L': 4, 'XL': 5, 'XXL': 6 };
-                const sizeA = a.size?.name || '';
-                const sizeB = b.size?.name || '';
-                const orderA = sizeOrder[sizeA.toUpperCase()] || 99;
-                const orderB = sizeOrder[sizeB.toUpperCase()] || 99;
-
-                if (orderA !== orderB) return orderA - orderB;
-                return sizeA.localeCompare(sizeB, undefined, { numeric: true, sensitivity: 'base' });
             });
+        }
+
+        // Add pre-computed sort keys for DataTable internal sorting
+        return items.map(item => ({
+            ...item,
+            sort_reference: item.clothingColor?.design?.reference || '',
+            sort_product: item.clothingColor?.design?.clothing?.name || '',
+            sort_variant: `${item.clothingColor?.color?.name || ''} ${item.size?.name || ''}`,
+        }));
     }, [inventoryItems, searchTerm]);
 
     const handleSave = async () => {
@@ -119,17 +112,33 @@ const StockPage = () => {
 
     const columns = [
         {
-            key: 'reference',
+            key: 'image',
+            header: 'Imagen',
+            render: (_: any, row: any) => {
+                const imageUrl = row.clothingColor?.imageClothing?.[0]?.image_url;
+                return (
+                    <div style={{ width: 40, height: 40, borderRadius: 6, overflow: 'hidden', backgroundColor: '#13131a', border: '1px solid #2a2a35' }}>
+                        {imageUrl ? (
+                            <img src={imageUrl} alt="Prenda" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        ) : (
+                            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, color: '#6b6b7b' }}>N/A</div>
+                        )}
+                    </div>
+                );
+            }
+        },
+        {
+            key: 'sort_reference',
             header: 'Ref',
             render: (_: any, row: any) => row.clothingColor?.design?.reference || '-',
         },
         {
-            key: 'product',
+            key: 'sort_product',
             header: 'Producto',
             render: (_: any, row: any) => row.clothingColor?.design?.clothing?.name || '-',
         },
         {
-            key: 'variant',
+            key: 'sort_variant',
             header: 'Variante',
             render: (_: any, row: any) => (
                 <span style={{
@@ -192,6 +201,8 @@ const StockPage = () => {
                 data={filteredInventory}
                 loading={loading}
                 emptyMessage="No stock records found."
+                pageSize={pageSize}
+                onPageSizeChange={setPageSize}
                 actions={(row) => (
                     <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => handleEdit(row)}>
                         Editar

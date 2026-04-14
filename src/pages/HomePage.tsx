@@ -23,6 +23,7 @@ const homeSections = [
     items: [
       { path: '/order', icon: <FiShoppingCart />, title: 'Pedidos', desc: 'Visualizacion y seguimiento de pedidos cliente.', permission: 'sales.orders.view' },
       { path: '/dian-invoices', icon: <FiSend />, title: 'Facturacion DIAN', desc: 'Gestion y emision de facturas electronicas.', permission: 'sales.dian.view' },
+      { path: '/reports/stock', icon: <FiBox />, title: 'Reporte Stock', desc: 'Reporte detallado de niveles de inventario por diseño y variante.', permission: 'sales.reports.view' },
       { path: '/reports/sales/general', icon: <FiTrendingUp />, title: 'General Sales', desc: 'Reporte general de ventas del sistema.', permission: 'sales.reports.view' },
       { path: '/reports/pickup-dashboard', icon: <FiGift />, title: 'Retiros en Tienda', desc: 'Tablero para gestion de pedidos a entregar en punto fisico.', permission: 'sales.orders.view' },
     ]

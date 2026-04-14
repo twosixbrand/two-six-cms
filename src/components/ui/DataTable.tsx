@@ -18,6 +18,7 @@ interface DataTableProps {
   loading?: boolean;
   actions?: (row: any) => React.ReactNode;
   pageSize?: number;
+  onPageSizeChange?: (newSize: number) => void;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -28,21 +29,42 @@ const DataTable: React.FC<DataTableProps> = ({
   loading = false,
   actions,
   pageSize = 15,
+  onPageSizeChange,
 }) => {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
 
-  const totalPages = Math.ceil(data.length / pageSize);
+  const sortedData = useMemo(() => {
+    let sortableData = [...data];
+    if (sortConfig !== null) {
+      sortableData.sort((a, b) => {
+        let valA = a[sortConfig.key];
+        let valB = b[sortConfig.key];
+
+        if (valA < valB) {
+          return sortConfig.direction === 'asc' ? -1 : 1;
+        }
+        if (valA > valB) {
+          return sortConfig.direction === 'asc' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableData;
+  }, [data, sortConfig]);
+
+  const totalPages = Math.ceil(sortedData.length / pageSize);
 
   const paginatedData = useMemo(() => {
     const start = (currentPage - 1) * pageSize;
-    return data.slice(start, start + pageSize);
-  }, [data, currentPage, pageSize]);
+    return sortedData.slice(start, start + pageSize);
+  }, [sortedData, currentPage, pageSize]);
 
-  // Reset to page 1 when data changes
+  // Reset to page 1 when data or pageSize changes
   React.useEffect(() => {
     setCurrentPage(1);
-  }, [data.length]);
+  }, [data.length, pageSize]);
 
   if (loading) {
     return (
@@ -56,6 +78,14 @@ const DataTable: React.FC<DataTableProps> = ({
     return <EmptyState title={emptyMessage} />;
   }
 
+  const requestSort = (key: string) => {
+    let direction: 'asc' | 'desc' = 'asc';
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
   const allColumns = actions
     ? [...columns, { key: '__actions__', header: 'Acciones', align: 'center' as const }]
     : columns;
@@ -64,7 +94,7 @@ const DataTable: React.FC<DataTableProps> = ({
     padding: '0.65rem 1rem',
     textAlign: (col.align as any) || 'left',
     fontSize: '0.7rem',
-    fontWeight: 500,
+    fontWeight: 600,
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
     color: '#6b6b7b',
@@ -73,6 +103,8 @@ const DataTable: React.FC<DataTableProps> = ({
     whiteSpace: 'nowrap',
     backgroundColor: '#1f1f2a',
     width: (col as Column).width || undefined,
+    cursor: col.key !== '__actions__' ? 'pointer' : 'default',
+    userSelect: 'none',
   });
 
   const tdStyle = (col: Column | { key: string; header: string; align?: string }, rowIdx: number): React.CSSProperties => ({
@@ -108,10 +140,10 @@ const DataTable: React.FC<DataTableProps> = ({
         style={{
           overflowX: 'auto',
           WebkitOverflowScrolling: 'touch',
-          borderRadius: totalPages > 1 ? '8px 8px 0 0' : 8,
+          borderRadius: totalPages > 0 || onPageSizeChange ? '8px 8px 0 0' : 8,
           backgroundColor: '#1a1a24',
           border: '1px solid #2a2a35',
-          borderBottom: totalPages > 1 ? 'none' : '1px solid #2a2a35',
+          borderBottom: (totalPages > 1 || onPageSizeChange) ? 'none' : '1px solid #2a2a35',
         }}
       >
         <table
@@ -124,8 +156,19 @@ const DataTable: React.FC<DataTableProps> = ({
           <thead>
             <tr>
               {allColumns.map((col) => (
-                <th key={col.key} style={thStyle(col)}>
-                  {col.header}
+                <th 
+                  key={col.key} 
+                  style={thStyle(col)} 
+                  onClick={col.key !== '__actions__' ? () => requestSort(col.key) : undefined}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: col.align === 'right' ? 'flex-end' : col.align === 'center' ? 'center' : 'flex-start' }}>
+                    {col.header}
+                    {col.key !== '__actions__' && sortConfig?.key === col.key && (
+                      <span style={{ color: '#f0b429', fontSize: '10px' }}>
+                        {sortConfig.direction === 'asc' ? '▲' : '▼'}
+                      </span>
+                    )}
+                  </div>
                 </th>
               ))}
             </tr>
@@ -159,8 +202,8 @@ const DataTable: React.FC<DataTableProps> = ({
         </table>
       </div>
 
-      {/* Pagination */}
-      {totalPages > 1 && (
+      {/* Pagination & Page Size Control */}
+      {(totalPages > 1 || onPageSizeChange) && (
         <div
           style={{
             display: 'flex',
@@ -173,72 +216,103 @@ const DataTable: React.FC<DataTableProps> = ({
             borderTop: '1px solid #2a2a35',
             fontFamily: 'Inter, sans-serif',
             fontSize: '0.75rem',
+            gap: '1rem',
+            flexWrap: 'wrap',
           }}
         >
-          <span style={{ color: '#6b6b7b' }}>
-            {((currentPage - 1) * pageSize) + 1}–{Math.min(currentPage * pageSize, data.length)} de {data.length}
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <span style={{ color: '#6b6b7b' }}>
+              {data.length > 0 ? ((currentPage - 1) * pageSize) + 1 : 0}–{Math.min(currentPage * pageSize, data.length)} de {data.length}
+            </span>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-            <button
-              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-              disabled={currentPage === 1}
-              style={{
-                padding: '0.3rem 0.6rem',
-                borderRadius: 6,
-                border: '1px solid #2a2a35',
-                backgroundColor: 'transparent',
-                color: currentPage === 1 ? '#3a3a45' : '#a0a0b0',
-                cursor: currentPage === 1 ? 'default' : 'pointer',
-                fontSize: '0.75rem',
-                fontFamily: 'Inter, sans-serif',
-              }}
-            >
-              ←
-            </button>
-
-            {getPageNumbers().map((page, idx) =>
-              page === '...' ? (
-                <span key={`dot-${idx}`} style={{ color: '#6b6b7b', padding: '0 0.25rem' }}>…</span>
-              ) : (
-                <button
-                  key={page}
-                  onClick={() => setCurrentPage(page as number)}
+            {onPageSizeChange && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ color: '#6b6b7b' }}>Por pág:</span>
+                <select
+                  value={pageSize}
+                  onChange={(e) => onPageSizeChange(Number(e.target.value))}
                   style={{
-                    padding: '0.3rem 0.55rem',
-                    borderRadius: 6,
-                    border: currentPage === page ? '1px solid #f0b429' : '1px solid #2a2a35',
-                    backgroundColor: currentPage === page ? 'rgba(240, 180, 41, 0.15)' : 'transparent',
-                    color: currentPage === page ? '#f0b429' : '#a0a0b0',
-                    cursor: 'pointer',
+                    backgroundColor: '#1a1a24',
+                    color: '#f1f1f3',
+                    border: '1px solid #2a2a35',
+                    borderRadius: '4px',
+                    padding: '2px 4px',
+                    outline: 'none',
                     fontSize: '0.75rem',
-                    fontWeight: currentPage === page ? 600 : 400,
-                    fontFamily: 'Inter, sans-serif',
-                    transition: 'all 0.15s ease',
+                    cursor: 'pointer',
                   }}
                 >
-                  {page}
-                </button>
-              )
+                  <option value={15}>15</option>
+                  <option value={50}>50</option>
+                  <option value={100}>100</option>
+                  <option value={200}>200</option>
+                </select>
+              </div>
             )}
-
-            <button
-              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-              disabled={currentPage === totalPages}
-              style={{
-                padding: '0.3rem 0.6rem',
-                borderRadius: 6,
-                border: '1px solid #2a2a35',
-                backgroundColor: 'transparent',
-                color: currentPage === totalPages ? '#3a3a45' : '#a0a0b0',
-                cursor: currentPage === totalPages ? 'default' : 'pointer',
-                fontSize: '0.75rem',
-                fontFamily: 'Inter, sans-serif',
-              }}
-            >
-              →
-            </button>
           </div>
+
+          {totalPages > 1 && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <button
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                style={{
+                  padding: '0.3rem 0.6rem',
+                  borderRadius: 6,
+                  border: '1px solid #2a2a35',
+                  backgroundColor: 'transparent',
+                  color: currentPage === 1 ? '#3a3a45' : '#a0a0b0',
+                  cursor: currentPage === 1 ? 'default' : 'pointer',
+                  fontSize: '0.75rem',
+                  fontFamily: 'Inter, sans-serif',
+                }}
+              >
+                ←
+              </button>
+
+              {getPageNumbers().map((page, idx) =>
+                page === '...' ? (
+                  <span key={`dot-${idx}`} style={{ color: '#6b6b7b', padding: '0 0.25rem' }}>…</span>
+                ) : (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page as number)}
+                    style={{
+                      padding: '0.3rem 0.55rem',
+                      borderRadius: 6,
+                      border: currentPage === page ? '1px solid #f0b429' : '1px solid #2a2a35',
+                      backgroundColor: currentPage === page ? 'rgba(240, 180, 41, 0.15)' : 'transparent',
+                      color: currentPage === page ? '#f0b429' : '#a0a0b0',
+                      cursor: 'pointer',
+                      fontSize: '0.75rem',
+                      fontWeight: currentPage === page ? 600 : 400,
+                      fontFamily: 'Inter, sans-serif',
+                      transition: 'all 0.15s ease',
+                    }}
+                  >
+                    {page}
+                  </button>
+                )
+              )}
+
+              <button
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+                style={{
+                  padding: '0.3rem 0.6rem',
+                  borderRadius: 6,
+                  border: '1px solid #2a2a35',
+                  backgroundColor: 'transparent',
+                  color: currentPage === totalPages ? '#3a3a45' : '#a0a0b0',
+                  cursor: currentPage === totalPages ? 'default' : 'pointer',
+                  fontSize: '0.75rem',
+                  fontFamily: 'Inter, sans-serif',
+                }}
+              >
+                →
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

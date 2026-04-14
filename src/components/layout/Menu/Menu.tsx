@@ -15,6 +15,7 @@ const menuData = [
     subNav: [
       { title: 'Pedidos', path: '/order', permission: 'sales.orders.view' },
       { title: 'Facturacion DIAN', path: '/dian-invoices', permission: 'sales.dian.view' },
+      { title: 'Reporte Stock', path: '/reports/stock', permission: 'sales.reports.view' },
       { title: 'General Sales', path: '/reports/sales/general', permission: 'sales.reports.view' },
       { title: 'Retiros en Tienda', path: '/reports/pickup-dashboard', permission: 'sales.orders.view' },
     ],
