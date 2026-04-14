@@ -89,6 +89,7 @@ import FinancialIndicatorsPage from './pages/accounting/FinancialIndicatorsPage.
 import TaxConfigPage from './pages/accounting/TaxConfigPage.tsx';
 import InventoryAdjustmentPage from './pages/accounting/InventoryAdjustmentPage.tsx';
 import ProfitabilityReportPage from './pages/accounting/ProfitabilityReportPage.tsx';
+import AccountingAlertsPage from './pages/accounting/AccountingAlertsPage.tsx';
 
 /**
  * Componente que hace scroll al inicio de la página
@@ -203,6 +204,7 @@ const MainLayout = () => {
               <Route path="/accounting/reports/indicators" element={<FinancialIndicatorsPage />} />
               <Route path="/accounting/tax-config" element={<TaxConfigPage />} />
               <Route path="/accounting/inventory-adjustments" element={<InventoryAdjustmentPage />} />
+              <Route path="/accounting/alerts" element={<AccountingAlertsPage />} />
               <Route path="/accounting/exogena" element={<ExogenaPage />} />
               <Route path="/manual-contabilidad" element={<ManualContablePage />} />
               <Route path="/user-manual" element={<UserManualPage />} />

@@ -741,3 +741,109 @@ export const getExogenaThirdPartyMovements = async (year: number, nit: string) =
     });
     return await handleResponse(response, 'getExogenaThirdPartyMovements');
 };
+
+// ── Alertas / Reconciliación / Reverso ──────────────────────
+
+export const getAccountingAlerts = async (params: { draftDays?: number; idleMonths?: number } = {}) => {
+    const qs = new URLSearchParams();
+    if (params.draftDays) qs.set('draftDays', String(params.draftDays));
+    if (params.idleMonths) qs.set('idleMonths', String(params.idleMonths));
+    const query = qs.toString();
+    const response = await fetch(`${API_URL}/accounting/alerts${query ? '?' + query : ''}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getAccountingAlerts');
+};
+
+export const getMayorAuxiliarReconciliation = async (endDate?: string) => {
+    const qs = endDate ? `?endDate=${endDate}` : '';
+    const response = await fetch(`${API_URL}/accounting/reconciliation/mayor-auxiliar${qs}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getMayorAuxiliarReconciliation');
+};
+
+export const reverseJournalEntry = async (id: number, reason: string) => {
+    const response = await fetch(`${API_URL}/accounting/journal/${id}/reverse`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ reason }),
+    });
+    return await handleResponse(response, 'reverseJournalEntry');
+};
+
+export const getBalanceSheetCompared = async (
+    year: number,
+    month: number,
+    compareWith: 'PREVIOUS_MONTH' | 'PREVIOUS_YEAR' = 'PREVIOUS_YEAR',
+) => {
+    const qs = new URLSearchParams({ year: String(year), month: String(month), compareWith });
+    const response = await fetch(`${API_URL}/accounting/reports/balance-sheet/compared?${qs}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getBalanceSheetCompared');
+};
+
+export const getIncomeStatementCompared = async (
+    startDate: string,
+    endDate: string,
+    compareWith: 'PREVIOUS_PERIOD' | 'PREVIOUS_YEAR' = 'PREVIOUS_YEAR',
+) => {
+    const qs = new URLSearchParams({ startDate, endDate, compareWith });
+    const response = await fetch(`${API_URL}/accounting/reports/income-statement/compared?${qs}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getIncomeStatementCompared');
+};
+
+export const getStatementOfChangesInEquity = async (year: number) => {
+    const response = await fetch(
+        `${API_URL}/accounting/reports/statement-of-changes-equity?year=${year}`,
+        { method: 'GET', headers: authHeaders() },
+    );
+    return await handleResponse(response, 'getStatementOfChangesInEquity');
+};
+
+// ── Payroll novedades + PILA ────────────────────────────────
+
+export const getPayrollNovedades = async (periodId: number) => {
+    const response = await fetch(`${API_URL}/accounting/payroll/periods/${periodId}/novedades`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getPayrollNovedades');
+};
+
+export const createPayrollNovedad = async (data: any) => {
+    const response = await fetch(`${API_URL}/accounting/payroll/novedades`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify(data),
+    });
+    return await handleResponse(response, 'createPayrollNovedad');
+};
+
+export const deletePayrollNovedad = async (id: number) => {
+    const response = await fetch(`${API_URL}/accounting/payroll/novedades/${id}`, {
+        method: 'DELETE',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'deletePayrollNovedad');
+};
+
+export const downloadPilaFile = async (year: number, month: number, nit?: string) => {
+    const qs = nit ? `?nit=${nit}` : '';
+    const response = await fetch(`${API_URL}/accounting/payroll/pila/${year}/${month}${qs}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || `Error ${response.status}`);
+    }
+    return await response.blob();
+};

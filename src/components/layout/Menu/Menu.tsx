@@ -99,6 +99,7 @@ const menuData = [
     path: '#',
     permission: 'accounting',
     subNav: [
+      { title: 'Alertas Contables', path: '/accounting/alerts', permission: 'accounting' },
       { title: 'PUC (Plan de Cuentas)', path: '/accounting/puc', permission: 'accounting.puc.view' },
       { title: 'Asientos Contables', path: '/accounting/journal', permission: 'accounting.journal.view' },
       { title: 'Gastos / Compras', path: '/accounting/expenses', permission: 'accounting.expenses.view' },
