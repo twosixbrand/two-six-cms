@@ -39,8 +39,17 @@ export const createDispatch = async (data: any) => {
   return handleResponse(response);
 };
 
-export const sendDispatch = async (id: number) => {
-  const response = await fetch(`${ENDPOINT}/${id}/send`, { method: 'POST' });
+export const preSendDispatch = async (id: number) => {
+  const response = await fetch(`${ENDPOINT}/${id}/pre-send`);
+  return handleResponse(response);
+};
+
+export const sendDispatch = async (id: number, opts: { adjust_to_available?: boolean } = {}) => {
+  const response = await fetch(`${ENDPOINT}/${id}/send`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(opts),
+  });
   return handleResponse(response);
 };
 

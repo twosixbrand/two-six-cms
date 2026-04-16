@@ -225,21 +225,75 @@ const ConsignmentDispatchPage = () => {
   };
 
   const handleSend = async (row: Dispatch) => {
-    const result = await Swal.fire({
-      title: '¿Enviar despacho?',
-      html: `Se descontará stock del disponible y se generará el QR para el cliente.<br/><strong>Esta acción no se puede deshacer desde aquí.</strong>`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#f0b429',
-      cancelButtonColor: '#2a2a35',
-      confirmButtonText: 'Sí, enviar',
-      cancelButtonText: 'Cancelar',
-    });
-    if (!result.isConfirmed) return;
     try {
-      await dispatchApi.sendDispatch(row.id);
+      // 1. Pre-send: verifica stock actual vs solicitado
+      const check = await dispatchApi.preSendDispatch(row.id);
+
+      if (check.has_changes) {
+        // Hay diferencias — muestra alerta con detalle
+        const changedRows = check.items
+          .filter((it: any) => it.changed)
+          .map(
+            (it: any) =>
+              `<tr>
+                <td style="padding:4px 8px">${it.reference} ${it.color} ${it.size}</td>
+                <td style="padding:4px 8px;text-align:right"><s>${it.requested}</s></td>
+                <td style="padding:4px 8px;text-align:right;color:#34d399">${it.available}</td>
+                <td style="padding:4px 8px;text-align:right;font-weight:700">${it.adjusted}</td>
+              </tr>`,
+          )
+          .join('');
+
+        const confirm = await Swal.fire({
+          title: 'Stock cambio desde la creacion',
+          html: `
+            <p style="margin-bottom:8px;font-size:13px;color:#666">
+              Algunos productos se vendieron en la web despues de crear este borrador.
+              Las cantidades se ajustarán al stock disponible actual:
+            </p>
+            <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px">
+              <thead>
+                <tr style="border-bottom:2px solid #e2e8f0;color:#888">
+                  <th style="text-align:left;padding:4px 8px">Producto</th>
+                  <th style="text-align:right;padding:4px 8px">Solicitado</th>
+                  <th style="text-align:right;padding:4px 8px">Disponible</th>
+                  <th style="text-align:right;padding:4px 8px">Se enviara</th>
+                </tr>
+              </thead>
+              <tbody>${changedRows}</tbody>
+            </table>
+          `,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#f0b429',
+          cancelButtonColor: '#2a2a35',
+          confirmButtonText: 'Enviar con cantidades ajustadas',
+          cancelButtonText: 'Cancelar',
+          width: 600,
+        });
+
+        if (!confirm.isConfirmed) return;
+
+        // Envía con ajuste automático
+        await dispatchApi.sendDispatch(row.id, { adjust_to_available: true });
+      } else {
+        // Sin cambios — confirma normalmente
+        const confirm = await Swal.fire({
+          title: '¿Enviar despacho?',
+          html: `Stock verificado: todas las cantidades estan disponibles.<br/><strong>Se descontara del inventario y se generara el QR.</strong>`,
+          icon: 'success',
+          showCancelButton: true,
+          confirmButtonColor: '#f0b429',
+          cancelButtonColor: '#2a2a35',
+          confirmButtonText: 'Enviar',
+          cancelButtonText: 'Cancelar',
+        });
+        if (!confirm.isConfirmed) return;
+
+        await dispatchApi.sendDispatch(row.id);
+      }
+
       fetchAll();
-      // Abre el modal con QR
       const fresh = await dispatchApi.getDispatch(row.id);
       setViewingDispatch(fresh);
     } catch (err: any) {
