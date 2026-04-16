@@ -847,3 +847,48 @@ export const downloadPilaFile = async (year: number, month: number, nit?: string
     }
     return await response.blob();
 };
+
+// ── Settings contables ──────────────────────────────────────
+
+export const getAccountingSettings = async () => {
+    const response = await fetch(`${API_URL}/accounting/settings`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getAccountingSettings');
+};
+
+export const updateAccountingSetting = async (key: string, value: string, description?: string) => {
+    const response = await fetch(`${API_URL}/accounting/settings`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ key, value, description }),
+    });
+    return await handleResponse(response, 'updateAccountingSetting');
+};
+
+export const bulkUpdateAccountingSettings = async (
+    updates: Array<{ key: string; value: string }>,
+) => {
+    const response = await fetch(`${API_URL}/accounting/settings/bulk`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ updates }),
+    });
+    return await handleResponse(response, 'bulkUpdateAccountingSettings');
+};
+
+// ── Export IVA ──────────────────────────────────────────────
+
+export const downloadIvaExport = async (startDate: string, endDate: string) => {
+    const qs = new URLSearchParams({ startDate, endDate });
+    const response = await fetch(`${API_URL}/accounting/tax/iva/export?${qs}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || `Error ${response.status}`);
+    }
+    return await response.blob();
+};
