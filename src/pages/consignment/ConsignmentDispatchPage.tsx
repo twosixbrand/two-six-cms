@@ -332,7 +332,7 @@ const ConsignmentDispatchPage = () => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid #cbd5e0' }}
+            style={{ padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
           >
             <option value="">Todos los estados</option>
             <option value="PENDIENTE">Borrador</option>
@@ -376,14 +376,14 @@ const ConsignmentDispatchPage = () => {
         <form onSubmit={handleCreateSubmit}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.25rem', fontWeight: 600 }}>
+              <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.25rem', fontWeight: 600, color: '#f1f1f3' }}>
                 Bodega destino *
               </label>
               <select
                 value={createForm.id_warehouse}
                 onChange={(e) => setCreateForm((p) => ({ ...p, id_warehouse: e.target.value }))}
                 required
-                style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #cbd5e0' }}
+                style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
               >
                 <option value="">Selecciona...</option>
                 {warehouses.map((w: any) => (
@@ -400,14 +400,14 @@ const ConsignmentDispatchPage = () => {
 
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                <strong>Ítems del despacho</strong>
+                <strong style={{ color: '#f1f1f3' }}>Ítems del despacho</strong>
                 <Button variant="ghost" size="sm" icon={<FiPlus />} onClick={addItemRow}>
                   Agregar ítem
                 </Button>
               </div>
 
               {createForm.items.length === 0 && (
-                <p style={{ fontSize: '0.85rem', color: '#a0aec0' }}>Sin ítems todavía.</p>
+                <p style={{ fontSize: '0.85rem', color: '#a0aec0', fontStyle: 'italic' }}>Sin ítems todavía. Pulsa "Agregar ítem" para comenzar.</p>
               )}
 
               {createForm.items.map((it, idx) => (
@@ -417,17 +417,20 @@ const ConsignmentDispatchPage = () => {
                     display: 'grid',
                     gridTemplateColumns: '1fr 100px 40px',
                     gap: '0.5rem',
-                    alignItems: 'end',
+                    alignItems: 'center',
                     marginBottom: '0.5rem',
-                    padding: '0.5rem',
-                    background: '#f7fafc',
-                    borderRadius: '6px',
+                    padding: '0.6rem 0.75rem',
+                    background: '#1a1a24',
+                    borderWidth: 1,
+                    borderStyle: 'solid',
+                    borderColor: '#2a2a35',
+                    borderRadius: '8px',
                   }}
                 >
                   <select
                     value={it.id_clothing_size ? String(products.find((p: any) => (p.id_clothing_size || p.clothingSize?.id) === it.id_clothing_size)?.id || '') : ''}
                     onChange={(e) => handleProductSelect(idx, e.target.value)}
-                    style={{ padding: '0.4rem', borderRadius: '4px', border: '1px solid #cbd5e0' }}
+                    style={{ padding: '0.45rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#12121a', color: '#f1f1f3', fontSize: '0.85rem' }}
                   >
                     <option value="">Selecciona producto...</option>
                     {products.map((p: any) => (
@@ -441,7 +444,8 @@ const ConsignmentDispatchPage = () => {
                     min={1}
                     value={it.quantity}
                     onChange={(e) => updateItemRow(idx, { quantity: parseInt(e.target.value) || 0 })}
-                    style={{ padding: '0.4rem', borderRadius: '4px', border: '1px solid #cbd5e0' }}
+                    placeholder="Cant."
+                    style={{ padding: '0.45rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#12121a', color: '#f1f1f3', textAlign: 'right', fontSize: '0.85rem' }}
                   />
                   <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => removeItemRow(idx)} />
                 </div>
@@ -502,7 +506,7 @@ const ConsignmentDispatchPage = () => {
             </div>
 
             {(viewingDispatch.status === 'EN_TRANSITO' || viewingDispatch.status === 'RECIBIDO') && (
-              <div style={{ textAlign: 'center', padding: '1rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '8px', marginBottom: '1rem' }}>
+              <div style={{ textAlign: 'center', padding: '1rem', background: '#12121a', border: '1px solid #e2e8f0', borderRadius: '8px', marginBottom: '1rem' }}>
                 <p style={{ margin: '0 0 0.5rem', fontSize: '0.9rem', color: '#4a5568' }}>
                   El cliente escanea este QR para confirmar la recepción:
                 </p>

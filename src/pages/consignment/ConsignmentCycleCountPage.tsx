@@ -354,7 +354,7 @@ const ConsignmentCycleCountPage = () => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid #cbd5e0' }}
+            style={{ padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
           >
             <option value="">Todos los estados</option>
             <option value="DRAFT">Borrador</option>
@@ -399,7 +399,7 @@ const ConsignmentCycleCountPage = () => {
                 value={createForm.id_warehouse}
                 onChange={(e) => setCreateForm((p) => ({ ...p, id_warehouse: e.target.value }))}
                 required
-                style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #cbd5e0' }}
+                style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
               >
                 <option value="">Selecciona...</option>
                 {warehouses.map((w: any) => (
@@ -447,7 +447,7 @@ const ConsignmentCycleCountPage = () => {
 
             <div style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid #e2e8f0', borderRadius: '6px' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
-                <thead style={{ position: 'sticky', top: 0, background: '#fff' }}>
+                <thead style={{ position: 'sticky', top: 0, background: '#12121a' }}>
                   <tr style={{ borderBottom: '2px solid #e2e8f0' }}>
                     <th style={{ textAlign: 'left', padding: '0.5rem' }}>Producto</th>
                     <th style={{ textAlign: 'right', padding: '0.5rem' }}>Teórico</th>
@@ -484,7 +484,7 @@ const ConsignmentCycleCountPage = () => {
                             min={0}
                             value={realQtys[it.id] ?? ''}
                             onChange={(e) => setRealQtys((prev) => ({ ...prev, [it.id]: e.target.value }))}
-                            style={{ width: '70px', padding: '0.3rem', borderRadius: '4px', border: '1px solid #cbd5e0', textAlign: 'right' }}
+                            style={{ width: '70px', padding: '0.3rem', borderRadius: '4px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3', textAlign: 'right' }}
                           />
                         ) : (
                           it.real_qty ?? '—'
@@ -531,7 +531,7 @@ const ConsignmentCycleCountPage = () => {
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1rem' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', border: '1px solid #cbd5e0', borderRadius: '6px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3', borderRadius: '6px' }}>
                 <input
                   type="radio"
                   name="price_mode"
@@ -543,7 +543,7 @@ const ConsignmentCycleCountPage = () => {
                   <small style={{ color: '#718096' }}>Usa la lista vigente del cliente, o el precio base del producto si no hay.</small>
                 </div>
               </label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', border: '1px solid #cbd5e0', borderRadius: '6px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3', borderRadius: '6px' }}>
                 <input
                   type="radio"
                   name="price_mode"
@@ -560,7 +560,7 @@ const ConsignmentCycleCountPage = () => {
                       placeholder="Precio unitario (COP)"
                       value={mermaForm.penalty_unit_price}
                       onChange={(e) => setMermaForm((p) => ({ ...p, penalty_unit_price: e.target.value }))}
-                      style={{ width: '100%', padding: '0.4rem', marginTop: '0.5rem', borderRadius: '4px', border: '1px solid #cbd5e0' }}
+                      style={{ width: '100%', padding: '0.4rem', marginTop: '0.5rem', borderRadius: '4px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
                     />
                   )}
                 </div>

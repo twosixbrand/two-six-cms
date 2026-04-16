@@ -195,7 +195,7 @@ const ConsignmentSelloutPage = () => {
       {error && <p className="error-message">{error}</p>}
 
       {/* Paso 1: selección */}
-      <section style={{ padding: '1rem', background: '#f7fafc', borderRadius: '8px', marginBottom: '1rem' }}>
+      <section style={{ padding: '1rem', background: '#1a1a24', border: '1px solid #2a2a35', borderRadius: '8px', marginBottom: '1rem' }}>
         <h3 style={{ marginTop: 0 }}>1. Cliente y bodega</h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
           <div>
@@ -210,7 +210,7 @@ const ConsignmentSelloutPage = () => {
                 setPreview(null);
                 setResult(null);
               }}
-              style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #cbd5e0' }}
+              style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
             >
               <option value="">Selecciona...</option>
               {allyCustomers.map((c) => (
@@ -230,7 +230,7 @@ const ConsignmentSelloutPage = () => {
                 setResult(null);
               }}
               disabled={!idCustomer}
-              style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #cbd5e0' }}
+              style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
             >
               <option value="">Selecciona...</option>
               {warehousesForCustomer.map((w: any) => (
@@ -242,7 +242,7 @@ const ConsignmentSelloutPage = () => {
       </section>
 
       {/* Paso 2: carga de CSV */}
-      <section style={{ padding: '1rem', background: '#f7fafc', borderRadius: '8px', marginBottom: '1rem' }}>
+      <section style={{ padding: '1rem', background: '#1a1a24', border: '1px solid #2a2a35', borderRadius: '8px', marginBottom: '1rem' }}>
         <h3 style={{ marginTop: 0 }}>2. Reporte de ventas</h3>
         <p style={{ fontSize: '0.85rem', color: '#4a5568' }}>
           Columnas aceptadas: <code>sku, reference, color, size, quantity, price_override</code>. Solo <code>quantity</code> es obligatorio junto con <code>sku</code> o la combinación <code>reference + color + size</code>.
@@ -274,7 +274,7 @@ const ConsignmentSelloutPage = () => {
             width: '100%',
             padding: '0.5rem',
             borderRadius: '6px',
-            border: '1px solid #cbd5e0',
+            borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3',
             fontFamily: 'monospace',
             fontSize: '0.85rem',
           }}
@@ -292,7 +292,7 @@ const ConsignmentSelloutPage = () => {
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Ej: Corte mensual marzo 2026"
-            style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #cbd5e0' }}
+            style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
           />
         </div>
 
@@ -305,7 +305,7 @@ const ConsignmentSelloutPage = () => {
 
       {/* Paso 3: preview */}
       {preview && (
-        <section style={{ padding: '1rem', background: '#f7fafc', borderRadius: '8px', marginBottom: '1rem' }}>
+        <section style={{ padding: '1rem', background: '#1a1a24', border: '1px solid #2a2a35', borderRadius: '8px', marginBottom: '1rem' }}>
           <h3 style={{ marginTop: 0 }}>3. Previsualización</h3>
           <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
             <div><strong>Cliente:</strong> {preview.customer.name}</div>
@@ -347,7 +347,7 @@ const ConsignmentSelloutPage = () => {
             </table>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: '#fff', borderRadius: '6px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: '#12121a', borderRadius: '6px' }}>
             <div>
               <div style={{ fontSize: '0.85rem', color: '#4a5568' }}>Subtotal: {currencyCO(preview.summary.subtotal)}</div>
               <div style={{ fontSize: '0.85rem', color: '#4a5568' }}>IVA (19%): {currencyCO(preview.summary.iva)}</div>
