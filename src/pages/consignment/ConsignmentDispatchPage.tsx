@@ -12,7 +12,8 @@ import { logError } from '../../services/errorApi';
 interface DispatchItem {
   id_clothing_size: number;
   quantity: number;
-  label: string; // solo para UI
+  label: string;
+  max_available: number; // stock disponible del producto
 }
 
 interface Dispatch {
@@ -153,7 +154,7 @@ const ConsignmentDispatchPage = () => {
   const addItemRow = () => {
     setCreateForm((prev) => ({
       ...prev,
-      items: [...prev.items, { id_clothing_size: 0, quantity: 1, label: '' }],
+      items: [...prev.items, { id_clothing_size: 0, quantity: 1, label: '', max_available: 0 }],
     }));
   };
 
@@ -171,9 +172,12 @@ const ConsignmentDispatchPage = () => {
   const handleProductSelect = (idx: number, productId: string) => {
     const product = dispatchableProducts.find((p: any) => String(p.id) === productId);
     if (product) {
+      const available = product.clothingSize?.quantity_available ?? product.quantity_available ?? 9999;
       updateItemRow(idx, {
         id_clothing_size: product.id_clothing_size || product.clothingSize?.id,
         label: productLabel(product),
+        max_available: available,
+        quantity: Math.min(1, available),
       });
     }
   };
@@ -451,12 +455,14 @@ const ConsignmentDispatchPage = () => {
                 <p style={{ fontSize: '0.85rem', color: '#a0aec0', fontStyle: 'italic' }}>Sin ítems todavía. Pulsa "Agregar ítem" para comenzar.</p>
               )}
 
-              {createForm.items.map((it, idx) => (
+              {createForm.items.map((it, idx) => {
+                const overMax = it.max_available > 0 && it.quantity > it.max_available;
+                return (
                 <div
                   key={idx}
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: '1fr 100px 40px',
+                    gridTemplateColumns: '1fr 120px 40px',
                     gap: '0.5rem',
                     alignItems: 'center',
                     marginBottom: '0.5rem',
@@ -464,33 +470,47 @@ const ConsignmentDispatchPage = () => {
                     background: '#1a1a24',
                     borderWidth: 1,
                     borderStyle: 'solid',
-                    borderColor: '#2a2a35',
+                    borderColor: overMax ? '#f87171' : '#2a2a35',
                     borderRadius: '8px',
                   }}
                 >
-                  <select
-                    value={it.id_clothing_size ? String(dispatchableProducts.find((p: any) => (p.id_clothing_size || p.clothingSize?.id) === it.id_clothing_size)?.id || '') : ''}
-                    onChange={(e) => handleProductSelect(idx, e.target.value)}
-                    style={{ padding: '0.45rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#12121a', color: '#f1f1f3', fontSize: '0.85rem' }}
-                  >
-                    <option value="">Selecciona producto...</option>
-                    {dispatchableProducts.map((p: any) => (
-                      <option key={p.id} value={p.id}>
-                        {productLabel(p)}
-                      </option>
-                    ))}
-                  </select>
+                  <div>
+                    <select
+                      value={it.id_clothing_size ? String(dispatchableProducts.find((p: any) => (p.id_clothing_size || p.clothingSize?.id) === it.id_clothing_size)?.id || '') : ''}
+                      onChange={(e) => handleProductSelect(idx, e.target.value)}
+                      style={{ width: '100%', padding: '0.45rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#12121a', color: '#f1f1f3', fontSize: '0.85rem' }}
+                    >
+                      <option value="">Selecciona producto...</option>
+                      {dispatchableProducts.map((p: any) => (
+                        <option key={p.id} value={p.id}>
+                          {productLabel(p)} (disp: {p.clothingSize?.quantity_available ?? '?'})
+                        </option>
+                      ))}
+                    </select>
+                    {it.id_clothing_size > 0 && (
+                      <span style={{ fontSize: '0.75rem', color: overMax ? '#f87171' : '#a0aec0', marginTop: '2px', display: 'block' }}>
+                        Stock disponible: <strong>{it.max_available}</strong>
+                        {overMax && ' — excede el disponible'}
+                      </span>
+                    )}
+                  </div>
                   <input
                     type="number"
                     min={1}
+                    max={it.max_available > 0 ? it.max_available : undefined}
                     value={it.quantity}
-                    onChange={(e) => updateItemRow(idx, { quantity: parseInt(e.target.value) || 0 })}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value) || 0;
+                      const capped = it.max_available > 0 ? Math.min(val, it.max_available) : val;
+                      updateItemRow(idx, { quantity: capped });
+                    }}
                     placeholder="Cant."
-                    style={{ padding: '0.45rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#12121a', color: '#f1f1f3', textAlign: 'right', fontSize: '0.85rem' }}
+                    style={{ padding: '0.45rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: overMax ? '#f87171' : '#2a2a35', background: '#12121a', color: '#f1f1f3', textAlign: 'right', fontSize: '0.85rem' }}
                   />
                   <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => removeItemRow(idx)} />
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
