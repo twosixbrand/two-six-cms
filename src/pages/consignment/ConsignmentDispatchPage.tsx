@@ -5,6 +5,7 @@ import PageHeader from '../../components/common/PageHeader';
 import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner } from '../../components/ui';
 import * as dispatchApi from '../../services/consignmentDispatchApi';
 import * as warehouseApi from '../../services/consignmentWarehouseApi';
+import * as priceApi from '../../services/consignmentPriceApi';
 import { getProducts } from '../../services/productApi';
 import { logError } from '../../services/errorApi';
 
@@ -67,6 +68,9 @@ const ConsignmentDispatchPage = () => {
     items: DispatchItem[];
   }>({ id_warehouse: '', notes: '', items: [] });
 
+  // Productos filtrados: solo los que tienen precio vigente para el cliente de la bodega
+  const [allowedProductIds, setAllowedProductIds] = useState<Set<number> | null>(null);
+
   // Detail / QR modal
   const [viewingDispatch, setViewingDispatch] = useState<Dispatch | null>(null);
 
@@ -93,6 +97,37 @@ const ConsignmentDispatchPage = () => {
   useEffect(() => {
     fetchAll();
   }, []);
+
+  // Cuando cambia la bodega, carga los precios vigentes del cliente dueño
+  // y filtra la lista de productos a solo los que tienen precio pactado.
+  useEffect(() => {
+    if (!createForm.id_warehouse || !showCreateModal) {
+      setAllowedProductIds(null);
+      return;
+    }
+    const wh = warehouses.find((w: any) => String(w.id) === createForm.id_warehouse);
+    if (!wh) { setAllowedProductIds(null); return; }
+    let cancelled = false;
+    (async () => {
+      try {
+        const prices = await priceApi.getConsignmentPrices({
+          id_customer: wh.id_customer,
+          only_active: true,
+        });
+        if (cancelled) return;
+        setAllowedProductIds(new Set(prices.map((p: any) => p.id_product)));
+      } catch (err) {
+        logError(err, '/consignment/dispatches/load-prices');
+        setAllowedProductIds(null);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [createForm.id_warehouse, showCreateModal, warehouses]);
+
+  const dispatchableProducts = useMemo(() => {
+    if (!allowedProductIds) return products;
+    return products.filter((p: any) => allowedProductIds.has(p.id));
+  }, [products, allowedProductIds]);
 
   const filteredItems = useMemo(() => {
     let arr = items;
@@ -134,7 +169,7 @@ const ConsignmentDispatchPage = () => {
   };
 
   const handleProductSelect = (idx: number, productId: string) => {
-    const product = products.find((p) => String(p.id) === productId);
+    const product = dispatchableProducts.find((p: any) => String(p.id) === productId);
     if (product) {
       updateItemRow(idx, {
         id_clothing_size: product.id_clothing_size || product.clothingSize?.id,
@@ -381,7 +416,7 @@ const ConsignmentDispatchPage = () => {
               </label>
               <select
                 value={createForm.id_warehouse}
-                onChange={(e) => setCreateForm((p) => ({ ...p, id_warehouse: e.target.value }))}
+                onChange={(e) => setCreateForm((p) => ({ ...p, id_warehouse: e.target.value, items: [] }))}
                 required
                 style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
               >
@@ -406,7 +441,13 @@ const ConsignmentDispatchPage = () => {
                 </Button>
               </div>
 
-              {createForm.items.length === 0 && (
+              {createForm.id_warehouse && allowedProductIds !== null && dispatchableProducts.length === 0 && (
+                <p style={{ fontSize: '0.85rem', color: '#f87171', fontStyle: 'italic', marginBottom: '0.5rem' }}>
+                  No hay productos con precio de consignación vigente para este cliente. Configura precios en "Precios por Cliente" primero.
+                </p>
+              )}
+
+              {createForm.items.length === 0 && dispatchableProducts.length > 0 && (
                 <p style={{ fontSize: '0.85rem', color: '#a0aec0', fontStyle: 'italic' }}>Sin ítems todavía. Pulsa "Agregar ítem" para comenzar.</p>
               )}
 
@@ -428,12 +469,12 @@ const ConsignmentDispatchPage = () => {
                   }}
                 >
                   <select
-                    value={it.id_clothing_size ? String(products.find((p: any) => (p.id_clothing_size || p.clothingSize?.id) === it.id_clothing_size)?.id || '') : ''}
+                    value={it.id_clothing_size ? String(dispatchableProducts.find((p: any) => (p.id_clothing_size || p.clothingSize?.id) === it.id_clothing_size)?.id || '') : ''}
                     onChange={(e) => handleProductSelect(idx, e.target.value)}
                     style={{ padding: '0.45rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#12121a', color: '#f1f1f3', fontSize: '0.85rem' }}
                   >
                     <option value="">Selecciona producto...</option>
-                    {products.map((p: any) => (
+                    {dispatchableProducts.map((p: any) => (
                       <option key={p.id} value={p.id}>
                         {productLabel(p)}
                       </option>
