@@ -141,6 +141,7 @@ const ConsignmentPricePage = () => {
     setForm(emptyForm);
     setSelectedProducts(new Set());
     setProductSearch('');
+    setFormError('');
     setShowModal(true);
   };
 
@@ -202,14 +203,36 @@ const ConsignmentPricePage = () => {
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setForm((prev: any) => ({ ...prev, [name]: value }));
+    setFormError('');
   };
+
+  // Error de validación inline (dentro del modal, sin swal)
+  const [formError, setFormError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError('');
+
+    // Validaciones locales: NO activan saving, muestran error inline
+    const priceNumber = parseFloat(form.price);
+    if (!(priceNumber > 0)) {
+      setFormError('El precio debe ser mayor a 0.');
+      return;
+    }
+    if (!editing) {
+      if (!form.id_customer) {
+        setFormError('Selecciona un cliente aliado.');
+        return;
+      }
+      if (selectedProducts.size === 0) {
+        setFormError('Selecciona al menos un producto.');
+        return;
+      }
+    }
+
+    // Validaciones pasaron — ahora sí llama al backend
     try {
       setSaving(true);
-      const priceNumber = parseFloat(form.price);
-      if (!(priceNumber > 0)) throw new Error('El precio debe ser mayor a 0.');
 
       if (editing) {
         await priceApi.updateConsignmentPrice(editing.id, {
@@ -218,9 +241,6 @@ const ConsignmentPricePage = () => {
           valid_to: form.valid_to ? new Date(form.valid_to).toISOString() : null,
         });
       } else {
-        if (!form.id_customer) throw new Error('Selecciona un cliente aliado.');
-        if (selectedProducts.size === 0) throw new Error('Selecciona al menos un producto.');
-
         const result = await priceApi.bulkCreateConsignmentPrice({
           id_customer: Number(form.id_customer),
           id_products: Array.from(selectedProducts),
@@ -244,12 +264,7 @@ const ConsignmentPricePage = () => {
       fetchAll();
     } catch (err: any) {
       logError(err, '/consignment/prices');
-      await Swal.fire({
-        title: 'Error',
-        text: err.message || 'No se pudo guardar el precio.',
-        icon: 'error',
-        confirmButtonColor: '#f0b429',
-      });
+      setFormError(err.message || 'No se pudo guardar el precio.');
     } finally {
       setSaving(false);
     }
@@ -520,6 +535,19 @@ const ConsignmentPricePage = () => {
               <FormField label="Vigente hasta (opcional)" name="valid_to" type="date" value={form.valid_to} onChange={handleChange} />
             </div>
           </div>
+          {formError && (
+            <p style={{
+              color: '#f87171',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              marginTop: '0.75rem',
+              padding: '0.5rem 0.75rem',
+              background: 'rgba(248,113,113,0.08)',
+              borderRadius: '6px',
+            }}>
+              {formError}
+            </p>
+          )}
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
             <Button variant="ghost" onClick={closeModal}>Cancelar</Button>
             <Button variant="primary" type="submit" loading={saving}>
