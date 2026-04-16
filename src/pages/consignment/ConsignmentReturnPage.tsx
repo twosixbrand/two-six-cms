@@ -352,7 +352,7 @@ const ConsignmentReturnPage = () => {
     {
       key: 'return_type',
       header: 'Tipo',
-      render: (row: any) => {
+      render: (_: any, row: any) => {
         const t = RETURN_TYPE_LABELS[row.return_type];
         return (
           <span style={{
@@ -372,18 +372,18 @@ const ConsignmentReturnPage = () => {
     {
       key: 'warehouse',
       header: 'Cliente / Bodega',
-      render: (row: any) =>
+      render: (_: any, row: any) =>
         row.warehouse ? `${row.warehouse.customer?.name} — ${row.warehouse.name}` : `#${row.id_warehouse}`,
     },
     {
       key: 'order',
       header: 'Orden',
-      render: (row: any) => row.order?.order_reference || '—',
+      render: (_: any, row: any) => row.order?.order_reference || '—',
     },
     {
       key: 'items_count',
       header: 'Ítems',
-      render: (row: any) =>
+      render: (_: any, row: any) =>
         row.items
           ? `${row.items.length} (${row.items.reduce((s: number, i: any) => s + i.quantity, 0)} u.)`
           : '—',
@@ -391,7 +391,7 @@ const ConsignmentReturnPage = () => {
     {
       key: 'status',
       header: 'Estado',
-      render: (row: any) => {
+      render: (_: any, row: any) => {
         const s = STATUS_LABELS[row.status];
         return (
           <span style={{

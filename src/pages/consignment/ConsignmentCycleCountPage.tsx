@@ -282,18 +282,18 @@ const ConsignmentCycleCountPage = () => {
     {
       key: 'warehouse',
       header: 'Cliente / Bodega',
-      render: (row: any) =>
+      render: (_: any, row: any) =>
         row.warehouse ? `${row.warehouse.customer?.name} — ${row.warehouse.name}` : `#${row.id_warehouse}`,
     },
     {
       key: 'items',
       header: 'Referencias',
-      render: (row: any) => row.items?.length ?? 0,
+      render: (_: any, row: any) => row.items?.length ?? 0,
     },
     {
       key: 'status',
       header: 'Estado',
-      render: (row: any) => {
+      render: (_: any, row: any) => {
         const s = STATUS_LABELS[row.status];
         return (
           <span style={{
@@ -311,12 +311,12 @@ const ConsignmentCycleCountPage = () => {
     {
       key: 'merma',
       header: 'Merma',
-      render: (row: any) => (row.merma_order_id ? `✓ Orden #${row.merma_order_id}` : '—'),
+      render: (_: any, row: any) => (row.merma_order_id ? `✓ Orden #${row.merma_order_id}` : '—'),
     },
     {
       key: 'approved_at',
       header: 'Aprobado',
-      render: (row: any) => (row.approved_at ? new Date(row.approved_at).toLocaleDateString() : '—'),
+      render: (_: any, row: any) => (row.approved_at ? new Date(row.approved_at).toLocaleDateString() : '—'),
     },
   ];
 
