@@ -35,6 +35,21 @@ export const createConsignmentPrice = async (data: any) => {
   return handleResponse(response);
 };
 
+export const bulkCreateConsignmentPrice = async (data: {
+  id_customer: number;
+  id_products: number[];
+  price: number;
+  valid_from?: string;
+  valid_to?: string | null;
+}) => {
+  const response = await fetch(`${ENDPOINT}/bulk`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  return handleResponse(response);
+};
+
 export const updateConsignmentPrice = async (id: number, data: any) => {
   const response = await fetch(`${ENDPOINT}/${id}`, {
     method: 'PATCH',

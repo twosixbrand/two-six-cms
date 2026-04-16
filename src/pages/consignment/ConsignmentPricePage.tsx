@@ -51,6 +51,10 @@ const ConsignmentPricePage = () => {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState<any>(emptyForm);
 
+  // Multi-select de productos (modo create bulk)
+  const [selectedProducts, setSelectedProducts] = useState<Set<number>>(new Set());
+  const [productSearch, setProductSearch] = useState('');
+
   const fetchAll = async () => {
     try {
       setLoading(true);
@@ -98,6 +102,8 @@ const ConsignmentPricePage = () => {
   const openCreateModal = () => {
     setEditing(null);
     setForm(emptyForm);
+    setSelectedProducts(new Set());
+    setProductSearch('');
     setShowModal(true);
   };
 
@@ -110,13 +116,44 @@ const ConsignmentPricePage = () => {
       valid_from: row.valid_from.slice(0, 10),
       valid_to: row.valid_to ? row.valid_to.slice(0, 10) : '',
     });
+    setSelectedProducts(new Set([row.id_product]));
     setShowModal(true);
   };
 
   const closeModal = () => {
     setShowModal(false);
     setEditing(null);
+    setSelectedProducts(new Set());
+    setProductSearch('');
   };
+
+  const toggleProduct = (id: number) => {
+    setSelectedProducts((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const filteredProducts = useMemo(() => {
+    if (!productSearch.trim()) return products;
+    const term = productSearch.toLowerCase();
+    return products.filter((p: any) => {
+      const label = productLabel(p).toLowerCase();
+      return label.includes(term) || p.sku?.toLowerCase()?.includes(term);
+    });
+  }, [products, productSearch]);
+
+  const selectAllFiltered = () => {
+    setSelectedProducts((prev) => {
+      const next = new Set(prev);
+      for (const p of filteredProducts) next.add(p.id);
+      return next;
+    });
+  };
+
+  const clearSelection = () => setSelectedProducts(new Set());
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -137,16 +174,27 @@ const ConsignmentPricePage = () => {
           valid_to: form.valid_to ? new Date(form.valid_to).toISOString() : null,
         });
       } else {
-        if (!form.id_customer || !form.id_product) {
-          throw new Error('Selecciona cliente y producto.');
-        }
-        await priceApi.createConsignmentPrice({
+        if (!form.id_customer) throw new Error('Selecciona un cliente aliado.');
+        if (selectedProducts.size === 0) throw new Error('Selecciona al menos un producto.');
+
+        const result = await priceApi.bulkCreateConsignmentPrice({
           id_customer: Number(form.id_customer),
-          id_product: Number(form.id_product),
+          id_products: Array.from(selectedProducts),
           price: priceNumber,
           valid_from: form.valid_from ? new Date(form.valid_from).toISOString() : undefined,
           valid_to: form.valid_to ? new Date(form.valid_to).toISOString() : null,
         });
+        closeModal();
+        fetchAll();
+        await Swal.fire({
+          title: 'Precios creados',
+          text: `${result.created_count} precio(s) creado(s) correctamente.`,
+          icon: 'success',
+          confirmButtonColor: '#f0b429',
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        return;
       }
       closeModal();
       fetchAll();
@@ -275,8 +323,8 @@ const ConsignmentPricePage = () => {
       <Modal
         isOpen={showModal}
         onClose={closeModal}
-        title={editing ? 'Editar Precio de Consignación' : 'Nuevo Precio de Consignación'}
-        size="md"
+        title={editing ? 'Editar Precio de Consignación' : 'Nuevos Precios de Consignación'}
+        size="lg"
       >
         <form onSubmit={handleSubmit}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -302,23 +350,101 @@ const ConsignmentPricePage = () => {
                   </select>
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.25rem', fontWeight: 600 }}>
-                    Producto *
-                  </label>
-                  <select
-                    name="id_product"
-                    value={form.id_product}
-                    onChange={handleChange}
-                    required
-                    style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #cbd5e0' }}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                    <label style={{ fontSize: '0.85rem', fontWeight: 600 }}>
+                      Productos * <span style={{ color: '#f0b429' }}>({selectedProducts.size} seleccionado{selectedProducts.size !== 1 ? 's' : ''})</span>
+                    </label>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <button
+                        type="button"
+                        onClick={selectAllFiltered}
+                        style={{
+                          fontSize: '0.75rem',
+                          padding: '0.25rem 0.6rem',
+                          background: 'transparent',
+                          border: '1px solid #2a2a35',
+                          borderRadius: '4px',
+                          color: '#f0b429',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Seleccionar todos {productSearch ? '(filtrados)' : ''}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={clearSelection}
+                        disabled={selectedProducts.size === 0}
+                        style={{
+                          fontSize: '0.75rem',
+                          padding: '0.25rem 0.6rem',
+                          background: 'transparent',
+                          border: '1px solid #2a2a35',
+                          borderRadius: '4px',
+                          color: selectedProducts.size > 0 ? '#f1f1f3' : '#3a3a48',
+                          cursor: selectedProducts.size > 0 ? 'pointer' : 'not-allowed',
+                        }}
+                      >
+                        Limpiar
+                      </button>
+                    </div>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Buscar por referencia, color, talla o SKU..."
+                    value={productSearch}
+                    onChange={(e) => setProductSearch(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '0.5rem',
+                      borderRadius: '6px',
+                      border: '1px solid #2a2a35',
+                      background: '#1a1a24',
+                      color: '#f1f1f3',
+                      marginBottom: '0.5rem',
+                    }}
+                  />
+                  <div
+                    style={{
+                      maxHeight: '240px',
+                      overflowY: 'auto',
+                      border: '1px solid #2a2a35',
+                      borderRadius: '6px',
+                      background: '#1a1a24',
+                    }}
                   >
-                    <option value="">Selecciona...</option>
-                    {products.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {productLabel(p)}
-                      </option>
-                    ))}
-                  </select>
+                    {filteredProducts.length === 0 ? (
+                      <p style={{ padding: '0.75rem', color: '#a0a0b0', fontSize: '0.85rem', margin: 0 }}>
+                        {productSearch ? 'Sin coincidencias.' : 'No hay productos.'}
+                      </p>
+                    ) : (
+                      filteredProducts.map((p: any) => {
+                        const checked = selectedProducts.has(p.id);
+                        return (
+                          <label
+                            key={p.id}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '0.5rem',
+                              padding: '0.4rem 0.6rem',
+                              borderBottom: '1px solid #2a2a35',
+                              cursor: 'pointer',
+                              background: checked ? 'rgba(240,180,41,0.08)' : 'transparent',
+                              fontSize: '0.85rem',
+                              color: '#f1f1f3',
+                            }}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={checked}
+                              onChange={() => toggleProduct(p.id)}
+                            />
+                            <span>{productLabel(p)}</span>
+                          </label>
+                        );
+                      })
+                    )}
+                  </div>
                 </div>
               </>
             )}
@@ -339,7 +465,11 @@ const ConsignmentPricePage = () => {
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
             <Button variant="ghost" onClick={closeModal}>Cancelar</Button>
             <Button variant="primary" type="submit" loading={saving}>
-              {editing ? 'Actualizar' : 'Crear'}
+              {editing
+                ? 'Actualizar'
+                : selectedProducts.size > 1
+                ? `Crear ${selectedProducts.size} precios`
+                : 'Crear'}
             </Button>
           </div>
         </form>
