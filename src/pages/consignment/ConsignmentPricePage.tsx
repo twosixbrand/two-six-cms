@@ -54,6 +54,9 @@ const ConsignmentPricePage = () => {
   // Multi-select de productos (modo create bulk)
   const [selectedProducts, setSelectedProducts] = useState<Set<number>>(new Set());
   const [productSearch, setProductSearch] = useState('');
+  // Productos que ya tienen precio vigente para el cliente seleccionado —
+  // se excluyen de la lista al crear para evitar duplicados.
+  const [existingProductIds, setExistingProductIds] = useState<Set<number>>(new Set());
 
   const fetchAll = async () => {
     try {
@@ -78,6 +81,40 @@ const ConsignmentPricePage = () => {
   useEffect(() => {
     fetchAll();
   }, [onlyActive]);
+
+  // Al seleccionar cliente en el modal de creación, carga los productos
+  // que ya tienen precio vigente para ese cliente y excluirlos de la lista.
+  useEffect(() => {
+    if (editing || !form.id_customer || !showModal) {
+      setExistingProductIds(new Set());
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const existing = await priceApi.getConsignmentPrices({
+          id_customer: Number(form.id_customer),
+          only_active: true,
+        });
+        if (cancelled) return;
+        const ids = new Set<number>(existing.map((p: any) => p.id_product));
+        setExistingProductIds(ids);
+        // Limpia de la selección cualquier producto que ya esté asignado
+        setSelectedProducts((prev) => {
+          const next = new Set<number>();
+          prev.forEach((id) => {
+            if (!ids.has(id)) next.add(id);
+          });
+          return next;
+        });
+      } catch (err) {
+        logError(err, '/consignment/prices/existing');
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [form.id_customer, editing, showModal]);
 
   const allyCustomers = useMemo(
     () => customers.filter((c) => c.is_consignment_ally),
@@ -136,14 +173,21 @@ const ConsignmentPricePage = () => {
     });
   };
 
+  const availableProducts = useMemo(
+    () => products.filter((p: any) => !existingProductIds.has(p.id)),
+    [products, existingProductIds],
+  );
+
   const filteredProducts = useMemo(() => {
-    if (!productSearch.trim()) return products;
+    if (!productSearch.trim()) return availableProducts;
     const term = productSearch.toLowerCase();
-    return products.filter((p: any) => {
+    return availableProducts.filter((p: any) => {
       const label = productLabel(p).toLowerCase();
-      return label.includes(term) || p.sku?.toLowerCase()?.includes(term);
+      return label.includes(term) || p.sku?.toLowerCase?.()?.includes(term);
     });
-  }, [products, productSearch]);
+  }, [availableProducts, productSearch]);
+
+  const excludedCount = products.length - availableProducts.length;
 
   const selectAllFiltered = () => {
     setSelectedProducts((prev) => {
@@ -403,6 +447,16 @@ const ConsignmentPricePage = () => {
                       marginBottom: '0.5rem',
                     }}
                   />
+                  {form.id_customer && excludedCount > 0 && (
+                    <p style={{
+                      fontSize: '0.75rem',
+                      color: '#a0a0b0',
+                      margin: '0 0 0.5rem',
+                      fontStyle: 'italic',
+                    }}>
+                      ℹ️ {excludedCount} producto{excludedCount !== 1 ? 's' : ''} ocult{excludedCount !== 1 ? 'os' : 'o'} porque ya tiene{excludedCount !== 1 ? 'n' : ''} precio vigente para este cliente. Para cambiarlo{excludedCount !== 1 ? 's' : ''} usa el botón editar en la tabla.
+                    </p>
+                  )}
                   <div
                     style={{
                       maxHeight: '240px',
@@ -414,7 +468,11 @@ const ConsignmentPricePage = () => {
                   >
                     {filteredProducts.length === 0 ? (
                       <p style={{ padding: '0.75rem', color: '#a0a0b0', fontSize: '0.85rem', margin: 0 }}>
-                        {productSearch ? 'Sin coincidencias.' : 'No hay productos.'}
+                        {productSearch
+                          ? 'Sin coincidencias.'
+                          : availableProducts.length === 0 && form.id_customer
+                          ? 'Todos los productos ya tienen precio vigente para este cliente.'
+                          : 'No hay productos.'}
                       </p>
                     ) : (
                       filteredProducts.map((p: any) => {
