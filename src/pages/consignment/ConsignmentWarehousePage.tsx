@@ -211,7 +211,7 @@ const ConsignmentWarehousePage = () => {
           <select
             value={filterCustomer}
             onChange={(e) => setFilterCustomer(e.target.value)}
-            style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid #cbd5e0' }}
+            style={{ padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
           >
             <option value="">Todos los clientes</option>
             {allyCustomers.map((c) => (
@@ -281,7 +281,7 @@ const ConsignmentWarehousePage = () => {
                   value={form.id_customer}
                   onChange={handleChange}
                   required
-                  style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #cbd5e0' }}
+                  style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
                 >
                   <option value="">Selecciona un cliente...</option>
                   {allyCustomers.map((c) => (

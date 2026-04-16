@@ -430,7 +430,7 @@ const ConsignmentReturnPage = () => {
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
-            style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid #cbd5e0' }}
+            style={{ padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
           >
             <option value="">Todos los tipos</option>
             <option value="PORTFOLIO">Portafolio</option>
@@ -477,7 +477,7 @@ const ConsignmentReturnPage = () => {
               <select
                 value={form.return_type}
                 onChange={(e) => setForm((p) => ({ ...p, return_type: e.target.value as any, items: [] }))}
-                style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #cbd5e0' }}
+                style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
               >
                 <option value="PORTFOLIO">Portafolio (obsolescencia) — vuelve al stock disponible</option>
                 <option value="WARRANTY">Garantía (defectuosa) — marca como garantía</option>
@@ -492,7 +492,7 @@ const ConsignmentReturnPage = () => {
                   value={form.id_customer}
                   onChange={(e) => setForm((p) => ({ ...p, id_customer: e.target.value, id_warehouse: '', id_order: '' }))}
                   required
-                  style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #cbd5e0' }}
+                  style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
                 >
                   <option value="">Selecciona...</option>
                   {allyCustomers.map((c) => (
@@ -507,7 +507,7 @@ const ConsignmentReturnPage = () => {
                   onChange={(e) => setForm((p) => ({ ...p, id_warehouse: e.target.value }))}
                   required
                   disabled={!form.id_customer}
-                  style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #cbd5e0' }}
+                  style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
                 >
                   <option value="">Selecciona...</option>
                   {warehousesForCustomer.map((w: any) => (
@@ -525,7 +525,7 @@ const ConsignmentReturnPage = () => {
                   onChange={(e) => setForm((p) => ({ ...p, id_order: e.target.value }))}
                   required
                   disabled={!form.id_customer}
-                  style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #cbd5e0' }}
+                  style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
                 >
                   <option value="">Selecciona...</option>
                   {selloutOrdersForCustomer.map((o: any) => (
@@ -568,14 +568,14 @@ const ConsignmentReturnPage = () => {
                     alignItems: 'end',
                     marginBottom: '0.5rem',
                     padding: '0.5rem',
-                    background: '#f7fafc',
+                    background: '#1a1a24', border: '1px solid #2a2a35',
                     borderRadius: '6px',
                   }}
                 >
                   <select
                     value={it.id_clothing_size ? String(products.find((p: any) => (p.id_clothing_size || p.clothingSize?.id) === it.id_clothing_size)?.id || '') : ''}
                     onChange={(e) => handleProductSelect(idx, e.target.value)}
-                    style={{ padding: '0.4rem', borderRadius: '4px', border: '1px solid #cbd5e0' }}
+                    style={{ padding: '0.4rem', borderRadius: '4px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
                   >
                     <option value="">Producto...</option>
                     {products.map((p: any) => (
@@ -588,7 +588,7 @@ const ConsignmentReturnPage = () => {
                     placeholder="Cant."
                     value={it.quantity}
                     onChange={(e) => updateItemRow(idx, { quantity: parseInt(e.target.value) || 0 })}
-                    style={{ padding: '0.4rem', borderRadius: '4px', border: '1px solid #cbd5e0' }}
+                    style={{ padding: '0.4rem', borderRadius: '4px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
                   />
                   {form.return_type === 'POST_SALE' && (
                     <input
@@ -597,7 +597,7 @@ const ConsignmentReturnPage = () => {
                       placeholder="Precio unitario"
                       value={it.unit_price ?? ''}
                       onChange={(e) => updateItemRow(idx, { unit_price: parseFloat(e.target.value) || 0 })}
-                      style={{ padding: '0.4rem', borderRadius: '4px', border: '1px solid #cbd5e0' }}
+                      style={{ padding: '0.4rem', borderRadius: '4px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
                     />
                   )}
                   <input
@@ -605,7 +605,7 @@ const ConsignmentReturnPage = () => {
                     placeholder="Motivo"
                     value={it.reason || ''}
                     onChange={(e) => updateItemRow(idx, { reason: e.target.value })}
-                    style={{ padding: '0.4rem', borderRadius: '4px', border: '1px solid #cbd5e0' }}
+                    style={{ padding: '0.4rem', borderRadius: '4px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
                   />
                   <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => removeItemRow(idx)} />
                 </div>
