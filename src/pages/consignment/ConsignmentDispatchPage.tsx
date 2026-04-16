@@ -489,12 +489,6 @@ const ConsignmentDispatchPage = () => {
                         </option>
                       ))}
                     </select>
-                    {it.id_clothing_size > 0 && (
-                      <span style={{ fontSize: '0.75rem', color: overMax ? '#f87171' : '#a0aec0', marginTop: '2px', display: 'block' }}>
-                        Stock disponible: <strong>{it.max_available}</strong>
-                        {overMax && ' — excede el disponible'}
-                      </span>
-                    )}
                   </div>
                   <input
                     type="number"
