@@ -318,8 +318,11 @@ const ConsignmentDispatchPage = () => {
     {
       key: 'items_count',
       header: 'Ítems',
-      render: (_: any, row: Dispatch) =>
-        row.items ? `${row.items.length} (${row.items.reduce((s: number, i: any) => s + i.quantity, 0)} u.)` : '—',
+      render: (_: any, row: Dispatch) => {
+        if (!row.items || row.items.length === 0) return '—';
+        const totalQty = row.items.reduce((s: number, i: any) => s + i.quantity, 0);
+        return `${row.items.length} ref. · ${totalQty} uds`;
+      },
     },
     {
       key: 'status',
