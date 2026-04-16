@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner } from '../../components/ui';
 import * as warehouseApi from '../../services/consignmentWarehouseApi';
-import { getCustomers, updateCustomer } from '../../services/customerApi';
+import { getCustomers } from '../../services/customerApi';
 import { logError } from '../../services/errorApi';
 
 interface Customer {
@@ -164,33 +164,23 @@ const ConsignmentWarehousePage = () => {
     }
   };
 
-  const toggleAlly = async (customer: Customer) => {
-    try {
-      await updateCustomer(customer.id, { is_consignment_ally: !customer.is_consignment_ally });
-      fetchAll();
-    } catch (err: any) {
-      logError(err, '/customer/is_consignment_ally');
-      await Swal.fire({ title: 'Error', text: 'No se pudo actualizar el cliente.', icon: 'error', confirmButtonColor: '#f0b429' });
-    }
-  };
-
   const columns = [
     { key: 'id', header: 'ID', width: '70px' },
     {
       key: 'customer',
       header: 'Cliente Aliado',
-      render: (row: Warehouse) => row.customer?.name || `#${row.id_customer}`,
+      render: (_: any, row: Warehouse) => row.customer?.name || `#${row.id_customer}`,
     },
     { key: 'name', header: 'Bodega' },
     {
       key: 'location',
       header: 'Ubicación',
-      render: (row: Warehouse) => [row.city, row.state].filter(Boolean).join(', ') || '—',
+      render: (_: any, row: Warehouse) => [row.city, row.state].filter(Boolean).join(', ') || '—',
     },
     {
       key: 'is_active',
       header: 'Estado',
-      render: (row: Warehouse) => (
+      render: (_: any, row: Warehouse) => (
         <span style={{ color: row.is_active ? '#1f9d55' : '#cbd5e0' }}>
           {row.is_active ? 'Activa' : 'Inactiva'}
         </span>
@@ -228,35 +218,26 @@ const ConsignmentWarehousePage = () => {
         </Button>
       </div>
 
-      <details style={{ marginBottom: '1rem' }}>
-        <summary style={{ cursor: 'pointer', fontWeight: 600 }}>
-          Gestionar clientes aliados ({allyCustomers.length} activos)
-        </summary>
-        <div style={{ padding: '0.75rem', background: '#f7fafc', borderRadius: '6px', marginTop: '0.5rem' }}>
-          <p style={{ marginBottom: '0.5rem' }}>Marca los clientes que participan en consignación:</p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-            {customers.map((c) => (
-              <label
-                key={c.id}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  padding: '0.3rem 0.6rem',
-                  background: c.is_consignment_ally ? '#fef3c7' : '#fff',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontSize: '0.85rem',
-                }}
-              >
-                <input type="checkbox" checked={!!c.is_consignment_ally} onChange={() => toggleAlly(c)} />
-                {c.name}
-              </label>
-            ))}
-          </div>
-        </div>
-      </details>
+      {/* Info: gestión de aliados se hace desde CustomerPage */}
+      <div style={{
+        marginBottom: '1rem',
+        padding: '0.75rem 1rem',
+        background: 'rgba(240,180,41,0.08)',
+        border: '1px solid rgba(240,180,41,0.3)',
+        borderRadius: '8px',
+        fontSize: '0.85rem',
+        color: '#f1f1f3',
+      }}>
+        <strong style={{ color: '#f0b429' }}>ℹ️ {allyCustomers.length} cliente(s) aliado(s) registrados.</strong>{' '}
+        Para marcar un cliente como aliado de consignación ve a{' '}
+        <a
+          href="/customer"
+          style={{ color: '#f0b429', textDecoration: 'underline' }}
+        >
+          Gestión de Clientes
+        </a>{' '}
+        y edita el cliente.
+      </div>
 
       {loading ? (
         <LoadingSpinner text="Cargando bodegas..." />

@@ -197,28 +197,28 @@ const ConsignmentPricePage = () => {
     {
       key: 'customer',
       header: 'Cliente',
-      render: (row: ConsignmentPrice) => row.customer?.name || `#${row.id_customer}`,
+      render: (_: any, row: ConsignmentPrice) => row.customer?.name || `#${row.id_customer}`,
     },
     {
       key: 'product',
       header: 'Producto',
-      render: (row: ConsignmentPrice) => productLabel(row.product),
+      render: (_: any, row: ConsignmentPrice) => productLabel(row.product),
     },
     {
       key: 'price',
       header: 'Precio',
-      render: (row: ConsignmentPrice) =>
+      render: (_: any, row: ConsignmentPrice) =>
         row.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }),
     },
     {
       key: 'valid_from',
       header: 'Desde',
-      render: (row: ConsignmentPrice) => row.valid_from?.slice(0, 10),
+      render: (_: any, row: ConsignmentPrice) => row.valid_from?.slice(0, 10),
     },
     {
       key: 'valid_to',
       header: 'Hasta',
-      render: (row: ConsignmentPrice) => (row.valid_to ? row.valid_to.slice(0, 10) : '—'),
+      render: (_: any, row: ConsignmentPrice) => (row.valid_to ? row.valid_to.slice(0, 10) : '—'),
     },
   ];
 

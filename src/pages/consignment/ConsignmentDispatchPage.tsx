@@ -263,7 +263,7 @@ const ConsignmentDispatchPage = () => {
     {
       key: 'warehouse',
       header: 'Cliente / Bodega',
-      render: (row: Dispatch) =>
+      render: (_: any, row: Dispatch) =>
         row.warehouse
           ? `${row.warehouse.customer?.name || ''} — ${row.warehouse.name}`
           : `#${row.id_warehouse}`,
@@ -271,13 +271,13 @@ const ConsignmentDispatchPage = () => {
     {
       key: 'items_count',
       header: 'Ítems',
-      render: (row: Dispatch) =>
+      render: (_: any, row: Dispatch) =>
         row.items ? `${row.items.length} (${row.items.reduce((s: number, i: any) => s + i.quantity, 0)} u.)` : '—',
     },
     {
       key: 'status',
       header: 'Estado',
-      render: (row: Dispatch) => {
+      render: (_: any, row: Dispatch) => {
         const s = STATUS_LABELS[row.status] || { label: row.status, color: '#000', bg: '#eee' };
         return (
           <span
@@ -299,12 +299,12 @@ const ConsignmentDispatchPage = () => {
     {
       key: 'sent_at',
       header: 'Enviado',
-      render: (row: Dispatch) => (row.sent_at ? new Date(row.sent_at).toLocaleDateString() : '—'),
+      render: (_: any, row: Dispatch) => (row.sent_at ? new Date(row.sent_at).toLocaleDateString() : '—'),
     },
     {
       key: 'received_at',
       header: 'Recibido',
-      render: (row: Dispatch) =>
+      render: (_: any, row: Dispatch) =>
         row.received_at
           ? `${new Date(row.received_at).toLocaleDateString()}${row.received_by ? ' · ' + row.received_by : ''}`
           : '—',
