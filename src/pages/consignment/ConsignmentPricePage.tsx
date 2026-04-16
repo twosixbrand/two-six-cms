@@ -174,6 +174,14 @@ const ConsignmentPricePage = () => {
     });
   };
 
+  const productLabel = (p: any) => {
+    if (!p) return '—';
+    const ref = p.clothingSize?.clothingColor?.design?.reference || '';
+    const color = p.clothingSize?.clothingColor?.color?.name || '';
+    const size = p.clothingSize?.size?.name || '';
+    return `${ref} ${color} ${size}`.trim() || p.sku || `#${p.id}`;
+  };
+
   const availableProducts = useMemo(
     () => products.filter((p: any) => !existingProductIds.has(p.id)),
     [products, existingProductIds],
@@ -291,13 +299,7 @@ const ConsignmentPricePage = () => {
     }
   };
 
-  const productLabel = (p: any) => {
-    if (!p) return '—';
-    const ref = p.clothingSize?.clothingColor?.design?.reference || '';
-    const color = p.clothingSize?.clothingColor?.color?.name || '';
-    const size = p.clothingSize?.size?.name || '';
-    return `${ref} ${color} ${size}`.trim() || p.sku || `#${p.id}`;
-  };
+
 
   const columns = [
     { key: 'id', header: 'ID', width: '70px' },
