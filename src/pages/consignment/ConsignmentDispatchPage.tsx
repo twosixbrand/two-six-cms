@@ -45,10 +45,12 @@ const WEB_PUBLIC_URL = import.meta.env.VITE_WEB_PUBLIC_URL || 'http://localhost:
 
 const productLabel = (p: any) => {
   if (!p) return '—';
-  const ref = p.clothingSize?.clothingColor?.design?.reference || '';
-  const color = p.clothingSize?.clothingColor?.color?.name || '';
-  const size = p.clothingSize?.size?.name || '';
-  return `${ref} ${color} ${size}`.trim() || p.sku || `#${p.id}`;
+  // El admin endpoint devuelve campos planos (reference, color_name, size_name)
+  // y el include anidado (clothingSize.clothingColor...) como fallback.
+  const ref = p.reference || p.clothingSize?.clothingColor?.design?.reference || '';
+  const color = p.color_name || p.clothingSize?.clothingColor?.color?.name || '';
+  const size = p.size_name || p.clothingSize?.size?.name || '';
+  return `${ref}-${color}-${size}`.trim() || p.sku || `#${p.id}`;
 };
 
 const ConsignmentDispatchPage = () => {
@@ -172,7 +174,7 @@ const ConsignmentDispatchPage = () => {
   const handleProductSelect = (idx: number, productId: string) => {
     const product = dispatchableProducts.find((p: any) => String(p.id) === productId);
     if (product) {
-      const available = product.clothingSize?.quantity_available ?? product.quantity_available ?? 9999;
+      const available = product.quantity_available ?? product.clothingSize?.quantity_available ?? 0;
       updateItemRow(idx, {
         id_clothing_size: product.id_clothing_size || product.clothingSize?.id,
         label: productLabel(product),
@@ -483,7 +485,7 @@ const ConsignmentDispatchPage = () => {
                       <option value="">Selecciona producto...</option>
                       {dispatchableProducts.map((p: any) => (
                         <option key={p.id} value={p.id}>
-                          {productLabel(p)} (disp: {p.clothingSize?.quantity_available ?? '?'})
+                          {productLabel(p)} (disp: {p.quantity_available ?? 0})
                         </option>
                       ))}
                     </select>
