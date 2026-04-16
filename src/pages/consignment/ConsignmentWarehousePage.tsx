@@ -115,8 +115,17 @@ const ConsignmentWarehousePage = () => {
     setForm((prev: any) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
+  const [formError, setFormError] = useState('');
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError('');
+
+    if (!editing && !form.id_customer) {
+      setFormError('Selecciona un cliente aliado.');
+      return;
+    }
+
     try {
       setSaving(true);
       const payload: any = {
@@ -129,7 +138,6 @@ const ConsignmentWarehousePage = () => {
       if (editing) {
         await warehouseApi.updateWarehouse(editing.id, payload);
       } else {
-        if (!form.id_customer) throw new Error('Selecciona un cliente aliado.');
         payload.id_customer = Number(form.id_customer);
         await warehouseApi.createWarehouse(payload);
       }
@@ -137,7 +145,7 @@ const ConsignmentWarehousePage = () => {
       fetchAll();
     } catch (err: any) {
       logError(err, '/consignment/warehouses');
-      await Swal.fire({ title: 'Error', text: err.message || 'No se pudo guardar la bodega.', icon: 'error', confirmButtonColor: '#f0b429' });
+      setFormError(err.message || 'No se pudo guardar la bodega.');
     } finally {
       setSaving(false);
     }
@@ -300,6 +308,11 @@ const ConsignmentWarehousePage = () => {
               Bodega activa
             </label>
           </div>
+          {formError && (
+            <p style={{ color: '#f87171', fontSize: '0.85rem', fontWeight: 600, marginTop: '0.75rem', padding: '0.5rem 0.75rem', background: 'rgba(248,113,113,0.08)', borderRadius: '6px' }}>
+              {formError}
+            </p>
+          )}
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
             <Button variant="ghost" onClick={closeModal}>Cancelar</Button>
             <Button variant="primary" type="submit" loading={saving}>

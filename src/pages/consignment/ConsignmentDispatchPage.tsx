@@ -143,15 +143,21 @@ const ConsignmentDispatchPage = () => {
     }
   };
 
+  const [createError, setCreateError] = useState('');
+
   const handleCreateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setCreateError('');
+
+    // Validaciones locales — error inline, sin loading
+    if (!createForm.id_warehouse) { setCreateError('Selecciona una bodega destino.'); return; }
+    if (createForm.items.length === 0) { setCreateError('Agrega al menos un ítem.'); return; }
+    for (const it of createForm.items) {
+      if (!it.id_clothing_size) { setCreateError('Selecciona producto en todos los ítems.'); return; }
+      if (!(it.quantity > 0)) { setCreateError('Todas las cantidades deben ser mayores a 0.'); return; }
+    }
+
     try {
-      if (!createForm.id_warehouse) throw new Error('Selecciona una bodega destino.');
-      if (createForm.items.length === 0) throw new Error('Agrega al menos un ítem.');
-      for (const it of createForm.items) {
-        if (!it.id_clothing_size) throw new Error('Selecciona producto en todos los ítems.');
-        if (!(it.quantity > 0)) throw new Error('Todas las cantidades deben ser mayores a 0.');
-      }
       setSaving(true);
       await dispatchApi.createDispatch({
         id_warehouse: Number(createForm.id_warehouse),
@@ -171,7 +177,7 @@ const ConsignmentDispatchPage = () => {
       });
     } catch (err: any) {
       logError(err, '/consignment/dispatches');
-      await Swal.fire({ title: 'Error', text: err.message, icon: 'error', confirmButtonColor: '#f0b429' });
+      setCreateError(err.message || 'Error al crear el despacho.');
     } finally {
       setSaving(false);
     }
@@ -443,6 +449,11 @@ const ConsignmentDispatchPage = () => {
             </div>
           </div>
 
+          {createError && (
+            <p style={{ color: '#f87171', fontSize: '0.85rem', fontWeight: 600, marginTop: '0.75rem', padding: '0.5rem 0.75rem', background: 'rgba(248,113,113,0.08)', borderRadius: '6px' }}>
+              {createError}
+            </p>
+          )}
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
             <Button variant="ghost" onClick={closeCreateModal}>Cancelar</Button>
             <Button variant="primary" type="submit" loading={saving}>Crear borrador</Button>
