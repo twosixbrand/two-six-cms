@@ -408,6 +408,11 @@ const ConsignmentPricePage = () => {
                     ))}
                   </select>
                 </div>
+                {!form.id_customer ? (
+                  <p style={{ fontSize: '0.85rem', color: '#a0a0b0', fontStyle: 'italic', margin: 0 }}>
+                    Selecciona un cliente aliado para ver los productos disponibles.
+                  </p>
+                ) : (
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
                     <label style={{ fontSize: '0.85rem', fontWeight: 600 }}>
@@ -519,6 +524,7 @@ const ConsignmentPricePage = () => {
                     )}
                   </div>
                 </div>
+                )}
               </>
             )}
             <FormField
