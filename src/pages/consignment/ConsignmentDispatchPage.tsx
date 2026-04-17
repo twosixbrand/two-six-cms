@@ -9,6 +9,9 @@ import * as priceApi from '../../services/consignmentPriceApi';
 import { getProducts } from '../../services/productApi';
 import { logError } from '../../services/errorApi';
 
+const getItemImage = (it: any): string | null =>
+  it?.clothingSize?.clothingColor?.imageClothing?.[0]?.image_url ?? it?.image_url ?? it?.product?.image_url ?? null;
+
 interface DispatchItem {
   id_clothing_size: number;
   quantity: number;
@@ -658,6 +661,7 @@ const ConsignmentDispatchPage = () => {
                   {(viewingDispatch.items || []).map((it: any) => (
                     <tr key={it.id} style={{ borderBottom: '1px solid #edf2f7' }}>
                       <td style={{ padding: '0.5rem', fontSize: '0.9rem' }}>
+                        <img src={getItemImage(it) || ""} alt="" style={{ width: 32, height: 32, borderRadius: 4, objectFit: 'cover', background: '#2a2a35', marginRight: 6, verticalAlign: 'middle' }} />
                         {it.clothingSize?.clothingColor?.design?.reference}{' '}
                         {it.clothingSize?.clothingColor?.color?.name}{' '}
                         {it.clothingSize?.size?.name}
