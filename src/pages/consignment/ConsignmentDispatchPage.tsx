@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FiTruck, FiPlus, FiTrash2, FiSend, FiX, FiEye, FiPrinter } from 'react-icons/fi';
+import { FiTruck, FiPlus, FiTrash2, FiSend, FiX, FiEye } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner } from '../../components/ui';
@@ -485,9 +485,6 @@ const ConsignmentDispatchPage = () => {
                   <Button variant="ghost" size="sm" icon={<FiX />} onClick={() => handleCancel(row)} />
                   <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} />
                 </>
-              )}
-              {(row.status === 'EN_TRANSITO' || row.status === 'RECIBIDO') && (
-                <Button variant="ghost" size="sm" icon={<FiPrinter />} onClick={() => openDetail(row)} />
               )}
             </>
           )}
