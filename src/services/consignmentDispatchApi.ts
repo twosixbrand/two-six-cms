@@ -62,3 +62,16 @@ export const deleteDispatch = async (id: number) => {
   const response = await fetch(`${ENDPOINT}/${id}`, { method: 'DELETE' });
   return handleResponse(response);
 };
+
+export const resolveReceptionItem = async (
+  itemId: number,
+  action: 'ACCEPT' | 'REJECT',
+  resolved_by: string,
+) => {
+  const response = await fetch(`${ENDPOINT}/items/${itemId}/resolve`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action, resolved_by }),
+  });
+  return handleResponse(response);
+};
