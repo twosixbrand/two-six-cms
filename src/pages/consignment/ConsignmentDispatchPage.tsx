@@ -386,20 +386,42 @@ const ConsignmentDispatchPage = () => {
       header: 'Estado',
       render: (_: any, row: Dispatch) => {
         const s = STATUS_LABELS[row.status] || { label: row.status, color: '#000', bg: '#eee' };
+        const pendingCount = (row.items || []).filter((i: any) => i.resolution_status === 'PENDING_REVIEW').length;
         return (
-          <span
-            style={{
-              display: 'inline-block',
-              padding: '2px 10px',
-              borderRadius: '12px',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              color: s.color,
-              background: s.bg,
-            }}
-          >
-            {s.label}
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <span
+              style={{
+                display: 'inline-block',
+                padding: '2px 10px',
+                borderRadius: '12px',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                color: s.color,
+                background: s.bg,
+              }}
+            >
+              {s.label}
+            </span>
+            {pendingCount > 0 && (
+              <span
+                title={`${pendingCount} novedad${pendingCount > 1 ? 'es' : ''} pendiente${pendingCount > 1 ? 's' : ''}`}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 20,
+                  height: 20,
+                  borderRadius: '50%',
+                  fontSize: '0.7rem',
+                  fontWeight: 700,
+                  color: '#fff',
+                  background: '#dc2626',
+                }}
+              >
+                {pendingCount}
+              </span>
+            )}
+          </div>
         );
       },
     },
