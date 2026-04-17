@@ -148,6 +148,9 @@ const ConsignmentReportsPage = () => {
                       <th style={{ textAlign: 'right', padding: '0.4rem' }}>Pendiente recep.</th>
                       <th style={{ textAlign: 'right', padding: '0.4rem' }}>En consignación</th>
                       <th style={{ textAlign: 'right', padding: '0.4rem' }}>Despachado (hist.)</th>
+                      <th style={{ textAlign: 'right', padding: '0.4rem' }}>Faltantes</th>
+                      <th style={{ textAlign: 'right', padding: '0.4rem' }}>Sobrantes</th>
+                      <th style={{ textAlign: 'right', padding: '0.4rem' }}>Pendientes</th>
                       <th style={{ textAlign: 'right', padding: '0.4rem' }}>Dev. portafolio</th>
                       <th style={{ textAlign: 'right', padding: '0.4rem' }}>Garantía</th>
                       <th style={{ textAlign: 'right', padding: '0.4rem' }}>Dev. post-venta</th>
@@ -156,7 +159,7 @@ const ConsignmentReportsPage = () => {
                   <tbody>
                     {c.warehouses.length === 0 ? (
                       <tr>
-                        <td colSpan={7} style={{ padding: '0.5rem', color: '#718096' }}>
+                        <td colSpan={10} style={{ padding: '0.5rem', color: '#718096' }}>
                           Sin bodegas.
                         </td>
                       </tr>
@@ -174,6 +177,21 @@ const ConsignmentReportsPage = () => {
                           </td>
                           <td style={{ padding: '0.4rem', textAlign: 'right' }}>
                             {w.total_dispatched_received}
+                          </td>
+                          <td style={{ padding: '0.4rem', textAlign: 'right', color: w.reception_shortage > 0 ? '#f87171' : '#6b6b7b' }}>
+                            {w.reception_shortage || 0}
+                          </td>
+                          <td style={{ padding: '0.4rem', textAlign: 'right', color: w.reception_surplus > 0 ? '#f0b429' : '#6b6b7b' }}>
+                            {w.reception_surplus || 0}
+                          </td>
+                          <td style={{ padding: '0.4rem', textAlign: 'right' }}>
+                            {w.reception_pending > 0 ? (
+                              <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minWidth: 20, height: 20, borderRadius: '50%', fontSize: '0.7rem', fontWeight: 700, color: '#fff', background: '#dc2626' }}>
+                                {w.reception_pending}
+                              </span>
+                            ) : (
+                              <span style={{ color: '#6b6b7b' }}>0</span>
+                            )}
                           </td>
                           <td style={{ padding: '0.4rem', textAlign: 'right' }}>{w.total_returned.PORTFOLIO}</td>
                           <td style={{ padding: '0.4rem', textAlign: 'right' }}>{w.total_returned.WARRANTY}</td>
