@@ -8,6 +8,9 @@ import * as warehouseApi from '../../services/consignmentWarehouseApi';
 import * as selloutApi from '../../services/consignmentSelloutApi';
 import { logError } from '../../services/errorApi';
 
+const getItemImage = (it: any): string | null =>
+  it?.clothingSize?.clothingColor?.imageClothing?.[0]?.image_url ?? it?.image_url ?? it?.product?.image_url ?? null;
+
 const STATUS_LABELS: Record<string, { label: string; color: string; bg: string }> = {
   DRAFT: { label: 'Borrador', color: '#92400e', bg: '#fef3c7' },
   APPROVED: { label: 'Aprobado', color: '#065f46', bg: '#d1fae5' },
@@ -472,6 +475,7 @@ const ConsignmentCycleCountPage = () => {
                       }}
                     >
                       <td style={{ padding: '0.5rem' }}>
+                        <img src={getItemImage(it) || ""} alt="" style={{ width: 32, height: 32, borderRadius: 4, objectFit: 'cover', background: '#2a2a35', marginRight: 6, verticalAlign: 'middle' }} />
                         {it.clothingSize?.clothingColor?.design?.reference}{' '}
                         {it.clothingSize?.clothingColor?.color?.name}{' '}
                         {it.clothingSize?.size?.name}
