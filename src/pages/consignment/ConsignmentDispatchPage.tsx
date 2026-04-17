@@ -652,25 +652,76 @@ const ConsignmentDispatchPage = () => {
               <strong>Ítems:</strong>
               <table style={{ width: '100%', marginTop: '0.5rem', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ borderBottom: '1px solid #e2e8f0' }}>
-                    <th style={{ textAlign: 'left', padding: '0.5rem', fontSize: '0.85rem' }}>Producto</th>
-                    <th style={{ textAlign: 'right', padding: '0.5rem', fontSize: '0.85rem' }}>Cantidad</th>
+                  <tr style={{ borderBottom: '1px solid #2a2a35' }}>
+                    <th style={{ textAlign: 'left', padding: '0.5rem', fontSize: '0.8rem', color: '#a0a0b0' }}>Producto</th>
+                    <th style={{ textAlign: 'right', padding: '0.5rem', fontSize: '0.8rem', color: '#a0a0b0' }}>Enviado</th>
+                    {viewingDispatch.status === 'RECIBIDO' && (
+                      <>
+                        <th style={{ textAlign: 'right', padding: '0.5rem', fontSize: '0.8rem', color: '#a0a0b0' }}>Recibido</th>
+                        <th style={{ textAlign: 'center', padding: '0.5rem', fontSize: '0.8rem', color: '#a0a0b0' }}>Estado</th>
+                      </>
+                    )}
                   </tr>
                 </thead>
                 <tbody>
-                  {(viewingDispatch.items || []).map((it: any) => (
-                    <tr key={it.id} style={{ borderBottom: '1px solid #edf2f7' }}>
-                      <td style={{ padding: '0.5rem', fontSize: '0.9rem' }}>
-                        <img src={getItemImage(it) || ""} alt="" style={{ width: 32, height: 32, borderRadius: 4, objectFit: 'cover', background: '#2a2a35', marginRight: 6, verticalAlign: 'middle' }} />
-                        {it.clothingSize?.clothingColor?.design?.reference}{' '}
-                        {it.clothingSize?.clothingColor?.color?.name}{' '}
-                        {it.clothingSize?.size?.name}
+                  {(viewingDispatch.items || []).map((it: any) => {
+                    const hasDiff = it.received_qty != null && it.received_qty !== it.quantity;
+                    return (
+                    <tr key={it.id} style={{ borderBottom: '1px solid #2a2a35', background: hasDiff ? 'rgba(248,113,113,0.06)' : 'transparent' }}>
+                      <td style={{ padding: '0.5rem', fontSize: '0.85rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                          <img src={getItemImage(it) || ""} alt="" style={{ width: 28, height: 28, borderRadius: 4, objectFit: 'cover', background: '#2a2a35' }} />
+                          <div>
+                            <span>
+                              {it.clothingSize?.clothingColor?.design?.reference}{' '}
+                              {it.clothingSize?.clothingColor?.color?.name}{' '}
+                              {it.clothingSize?.size?.name}
+                            </span>
+                            {it.observation && (
+                              <div style={{ fontSize: '0.75rem', color: '#f0b429', fontStyle: 'italic', marginTop: 1 }}>
+                                {it.observation}
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       </td>
-                      <td style={{ padding: '0.5rem', textAlign: 'right', fontSize: '0.9rem' }}>{it.quantity}</td>
+                      <td style={{ padding: '0.5rem', textAlign: 'right', fontSize: '0.85rem' }}>{it.quantity}</td>
+                      {viewingDispatch.status === 'RECIBIDO' && (
+                        <>
+                          <td style={{ padding: '0.5rem', textAlign: 'right', fontSize: '0.85rem', fontWeight: 600, color: hasDiff ? '#f87171' : '#34d399' }}>
+                            {it.received_qty ?? it.quantity}
+                          </td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center' }}>
+                            <span style={{
+                              display: 'inline-block',
+                              padding: '1px 8px',
+                              borderRadius: '10px',
+                              fontSize: '0.7rem',
+                              fontWeight: 600,
+                              color: it.received_ok ? '#065f46' : '#92400e',
+                              background: it.received_ok ? '#d1fae5' : '#fef3c7',
+                            }}>
+                              {it.received_ok ? 'OK' : 'Novedad'}
+                            </span>
+                          </td>
+                        </>
+                      )}
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
+              {viewingDispatch.status === 'RECIBIDO' && (() => {
+                const totalSent = (viewingDispatch.items || []).reduce((s: number, i: any) => s + i.quantity, 0);
+                const totalReceived = (viewingDispatch.items || []).reduce((s: number, i: any) => s + (i.received_qty ?? i.quantity), 0);
+                const diff = totalSent - totalReceived;
+                if (diff === 0) return null;
+                return (
+                  <p style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#f87171', fontWeight: 600 }}>
+                    Diferencia: {diff} unidad{diff !== 1 ? 'es' : ''} no recibida{diff !== 1 ? 's' : ''} (devuelta{diff !== 1 ? 's' : ''} al stock de Two Six)
+                  </p>
+                );
+              })()}
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
