@@ -311,7 +311,15 @@ const ConsignmentPricePage = () => {
     {
       key: 'product',
       header: 'Producto',
-      render: (_: any, row: ConsignmentPrice) => productLabel(row.product),
+      render: (_: any, row: ConsignmentPrice) => {
+        const img = row.product?.clothingSize?.clothingColor?.imageClothing?.[0]?.image_url ?? row.product?.image_url;
+        return (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            {img && <img src={img} alt="" style={{ width: 28, height: 28, borderRadius: 4, objectFit: 'cover', background: '#2a2a35' }} />}
+            <span>{productLabel(row.product)}</span>
+          </div>
+        );
+      },
     },
     {
       key: 'price',
@@ -519,6 +527,9 @@ const ConsignmentPricePage = () => {
                               checked={checked}
                               onChange={() => toggleProduct(p.id)}
                             />
+                            {p.image_url && (
+                              <img src={p.image_url} alt="" style={{ width: 28, height: 28, borderRadius: 4, objectFit: 'cover', background: '#2a2a35', flexShrink: 0 }} />
+                            )}
                             <span>{productLabel(p)}</span>
                           </label>
                         );
