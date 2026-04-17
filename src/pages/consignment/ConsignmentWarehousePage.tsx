@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FiHome, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { FiHome, FiPlus, FiEdit2, FiTrash2, FiPackage } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner } from '../../components/ui';
@@ -44,6 +44,11 @@ const ConsignmentWarehousePage = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<Warehouse | null>(null);
+
+  // Stock modal
+  const [stockWarehouse, setStockWarehouse] = useState<Warehouse | null>(null);
+  const [stockItems, setStockItems] = useState<any[]>([]);
+  const [loadingStock, setLoadingStock] = useState(false);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState<any>(emptyForm);
 
@@ -148,6 +153,20 @@ const ConsignmentWarehousePage = () => {
       setFormError(err.message || 'No se pudo guardar la bodega.');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const openStockModal = async (row: Warehouse) => {
+    try {
+      setStockWarehouse(row);
+      setLoadingStock(true);
+      const data = await warehouseApi.getWarehouseStock(row.id);
+      setStockItems(data);
+    } catch (err: any) {
+      logError(err, '/consignment/warehouses/stock');
+      await Swal.fire({ title: 'Error', text: err.message, icon: 'error', confirmButtonColor: '#f0b429' });
+    } finally {
+      setLoadingStock(false);
     }
   };
 
@@ -256,6 +275,7 @@ const ConsignmentWarehousePage = () => {
           emptyMessage="No hay bodegas registradas"
           actions={(row) => (
             <>
+              <Button variant="ghost" size="sm" icon={<FiPackage />} onClick={() => openStockModal(row)} />
               <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} />
               <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} />
             </>
@@ -320,6 +340,88 @@ const ConsignmentWarehousePage = () => {
             </Button>
           </div>
         </form>
+      </Modal>
+
+      {/* Stock modal */}
+      <Modal
+        isOpen={!!stockWarehouse}
+        onClose={() => { setStockWarehouse(null); setStockItems([]); }}
+        title={stockWarehouse ? `Stock — ${stockWarehouse.customer?.name} / ${stockWarehouse.name}` : ''}
+        size="lg"
+      >
+        {loadingStock ? (
+          <LoadingSpinner text="Cargando stock..." />
+        ) : stockItems.length === 0 ? (
+          <p style={{ color: '#a0aec0', textAlign: 'center', padding: '2rem 0' }}>
+            Esta bodega no tiene stock en consignación.
+          </p>
+        ) : (
+          <>
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', fontSize: '0.85rem' }}>
+              <div>
+                <span style={{ color: '#f0b429', fontWeight: 600 }}>
+                  {stockItems.filter((s: any) => s.status === 'PENDIENTE_RECEPCION').reduce((a: number, s: any) => a + s.quantity, 0)}
+                </span>{' '}
+                uds pendientes de recepción
+              </div>
+              <div>
+                <span style={{ color: '#34d399', fontWeight: 600 }}>
+                  {stockItems.filter((s: any) => s.status === 'EN_CONSIGNACION').reduce((a: number, s: any) => a + s.quantity, 0)}
+                </span>{' '}
+                uds en consignación
+              </div>
+            </div>
+            <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
+                <thead style={{ position: 'sticky', top: 0, background: '#1f1f2a' }}>
+                  <tr style={{ borderBottom: '1px solid #2a2a35' }}>
+                    <th style={{ textAlign: 'left', padding: '0.5rem', color: '#a0a0b0' }}>Producto</th>
+                    <th style={{ textAlign: 'center', padding: '0.5rem', color: '#a0a0b0' }}>Estado</th>
+                    <th style={{ textAlign: 'right', padding: '0.5rem', color: '#a0a0b0' }}>Cantidad</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {stockItems.map((s: any) => {
+                    const img = s.clothingSize?.clothingColor?.imageClothing?.[0]?.image_url;
+                    const ref = s.clothingSize?.clothingColor?.design?.reference || '';
+                    const color = s.clothingSize?.clothingColor?.color?.name || '';
+                    const size = s.clothingSize?.size?.name || '';
+                    const isPending = s.status === 'PENDIENTE_RECEPCION';
+                    return (
+                      <tr key={s.id} style={{ borderBottom: '1px solid #2a2a35' }}>
+                        <td style={{ padding: '0.5rem' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                            {img && <img src={img} alt="" style={{ width: 28, height: 28, borderRadius: 4, objectFit: 'cover', background: '#2a2a35' }} />}
+                            <span>{ref} {color} {size}</span>
+                          </div>
+                        </td>
+                        <td style={{ padding: '0.5rem', textAlign: 'center' }}>
+                          <span style={{
+                            display: 'inline-block',
+                            padding: '2px 10px',
+                            borderRadius: '12px',
+                            fontSize: '0.7rem',
+                            fontWeight: 600,
+                            color: isPending ? '#92400e' : '#065f46',
+                            background: isPending ? '#fef3c7' : '#d1fae5',
+                          }}>
+                            {isPending ? 'Pendiente recepción' : 'En consignación'}
+                          </span>
+                        </td>
+                        <td style={{ padding: '0.5rem', textAlign: 'right', fontWeight: 600, color: '#f1f1f3' }}>
+                          {s.quantity}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
+          <Button variant="primary" onClick={() => { setStockWarehouse(null); setStockItems([]); }}>Cerrar</Button>
+        </div>
       </Modal>
     </div>
   );
