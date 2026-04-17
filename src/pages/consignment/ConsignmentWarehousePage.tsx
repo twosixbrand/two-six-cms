@@ -48,7 +48,9 @@ const ConsignmentWarehousePage = () => {
   // Stock modal
   const [stockWarehouse, setStockWarehouse] = useState<Warehouse | null>(null);
   const [stockItems, setStockItems] = useState<any[]>([]);
+  const [kardexItems, setKardexItems] = useState<any[]>([]);
   const [loadingStock, setLoadingStock] = useState(false);
+  const [stockTab, setStockTab] = useState<'stock' | 'kardex'>('stock');
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState<any>(emptyForm);
 
@@ -159,9 +161,14 @@ const ConsignmentWarehousePage = () => {
   const openStockModal = async (row: Warehouse) => {
     try {
       setStockWarehouse(row);
+      setStockTab('stock');
       setLoadingStock(true);
-      const data = await warehouseApi.getWarehouseStock(row.id);
-      setStockItems(data);
+      const [stockData, kardexData] = await Promise.all([
+        warehouseApi.getWarehouseStock(row.id),
+        warehouseApi.getWarehouseKardex(row.id),
+      ]);
+      setStockItems(stockData);
+      setKardexItems(kardexData);
     } catch (err: any) {
       logError(err, '/consignment/warehouses/stock');
       await Swal.fire({ title: 'Error', text: err.message, icon: 'error', confirmButtonColor: '#f0b429' });
@@ -345,18 +352,42 @@ const ConsignmentWarehousePage = () => {
       {/* Stock modal */}
       <Modal
         isOpen={!!stockWarehouse}
-        onClose={() => { setStockWarehouse(null); setStockItems([]); }}
+        onClose={() => { setStockWarehouse(null); setStockItems([]); setKardexItems([]); }}
         title={stockWarehouse ? `Stock — ${stockWarehouse.customer?.name} / ${stockWarehouse.name}` : ''}
         size="lg"
       >
         {loadingStock ? (
           <LoadingSpinner text="Cargando stock..." />
-        ) : stockItems.length === 0 ? (
-          <p style={{ color: '#a0aec0', textAlign: 'center', padding: '2rem 0' }}>
-            Esta bodega no tiene stock en consignación.
-          </p>
         ) : (
           <>
+            {/* Tabs */}
+            <div style={{ display: 'flex', borderBottom: '1px solid #2a2a35', marginBottom: '1rem' }}>
+              {(['stock', 'kardex'] as const).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setStockTab(t)}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    background: 'transparent',
+                    border: 'none',
+                    borderBottom: stockTab === t ? '2px solid #f0b429' : '2px solid transparent',
+                    color: stockTab === t ? '#f0b429' : '#a0a0b0',
+                    fontWeight: 600,
+                    fontSize: '0.85rem',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {t === 'stock' ? `Stock actual (${stockItems.length})` : `Movimientos (${kardexItems.length})`}
+                </button>
+              ))}
+            </div>
+
+            {stockTab === 'stock' && stockItems.length === 0 ? (
+              <p style={{ color: '#a0aec0', textAlign: 'center', padding: '2rem 0' }}>
+                Esta bodega no tiene stock en consignación.
+              </p>
+            ) : stockTab === 'stock' ? (
+            <>
             <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', fontSize: '0.85rem' }}>
               <div>
                 <span style={{ color: '#f0b429', fontWeight: 600 }}>
@@ -417,10 +448,90 @@ const ConsignmentWarehousePage = () => {
                 </tbody>
               </table>
             </div>
+            </>
+            ) : null}
+
+            {/* Tab Kardex */}
+            {stockTab === 'kardex' && (
+              kardexItems.length === 0 ? (
+                <p style={{ color: '#a0aec0', textAlign: 'center', padding: '2rem 0' }}>
+                  No hay movimientos registrados para esta bodega.
+                </p>
+              ) : (
+                <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
+                    <thead style={{ position: 'sticky', top: 0, background: '#1f1f2a' }}>
+                      <tr style={{ borderBottom: '1px solid #2a2a35' }}>
+                        <th style={{ textAlign: 'left', padding: '0.4rem 0.5rem', color: '#a0a0b0' }}>Fecha</th>
+                        <th style={{ textAlign: 'left', padding: '0.4rem 0.5rem', color: '#a0a0b0' }}>Tipo</th>
+                        <th style={{ textAlign: 'left', padding: '0.4rem 0.5rem', color: '#a0a0b0' }}>Producto</th>
+                        <th style={{ textAlign: 'center', padding: '0.4rem 0.5rem', color: '#a0a0b0' }}>E/S</th>
+                        <th style={{ textAlign: 'right', padding: '0.4rem 0.5rem', color: '#a0a0b0' }}>Cant</th>
+                        <th style={{ textAlign: 'left', padding: '0.4rem 0.5rem', color: '#a0a0b0' }}>Descripcion</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {kardexItems.map((k: any) => {
+                        const img = k.clothingSize?.clothingColor?.imageClothing?.[0]?.image_url;
+                        const ref = k.clothingSize?.clothingColor?.design?.reference || '';
+                        const color = k.clothingSize?.clothingColor?.color?.name || '';
+                        const size = k.clothingSize?.size?.name || '';
+                        const isIn = k.type === 'IN';
+                        return (
+                          <tr key={k.id} style={{ borderBottom: '1px solid #2a2a35' }}>
+                            <td style={{ padding: '0.4rem 0.5rem', whiteSpace: 'nowrap', color: '#a0aec0' }}>
+                              {new Date(k.date || k.createdAt).toLocaleDateString()}
+                            </td>
+                            <td style={{ padding: '0.4rem 0.5rem' }}>
+                              <span style={{
+                                display: 'inline-block',
+                                padding: '1px 6px',
+                                borderRadius: '4px',
+                                fontSize: '0.7rem',
+                                fontWeight: 600,
+                                color: '#f1f1f3',
+                                background: k.source_type.includes('DISPATCH') ? '#1e40af'
+                                  : k.source_type.includes('SELLOUT') ? '#065f46'
+                                  : k.source_type.includes('RETURN') ? '#92400e'
+                                  : k.source_type.includes('CYCLE') ? '#7c3aed'
+                                  : k.source_type.includes('MERMA') ? '#991b1b'
+                                  : '#4a5568',
+                              }}>
+                                {k.source_type.replace('CONSIGNMENT_', '').replace('_', ' ')}
+                              </span>
+                            </td>
+                            <td style={{ padding: '0.4rem 0.5rem' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                                {img && <img src={img} alt="" style={{ width: 22, height: 22, borderRadius: 3, objectFit: 'cover', background: '#2a2a35' }} />}
+                                <span>{ref} {color} {size}</span>
+                              </div>
+                            </td>
+                            <td style={{ padding: '0.4rem 0.5rem', textAlign: 'center' }}>
+                              <span style={{
+                                fontWeight: 700,
+                                color: isIn ? '#34d399' : '#f87171',
+                              }}>
+                                {isIn ? 'IN' : 'OUT'}
+                              </span>
+                            </td>
+                            <td style={{ padding: '0.4rem 0.5rem', textAlign: 'right', fontWeight: 600, color: '#f1f1f3' }}>
+                              {k.quantity}
+                            </td>
+                            <td style={{ padding: '0.4rem 0.5rem', color: '#a0aec0', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {k.description || '—'}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )
+            )}
           </>
         )}
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
-          <Button variant="primary" onClick={() => { setStockWarehouse(null); setStockItems([]); }}>Cerrar</Button>
+          <Button variant="primary" onClick={() => { setStockWarehouse(null); setStockItems([]); setKardexItems([]); }}>Cerrar</Button>
         </div>
       </Modal>
     </div>

@@ -54,3 +54,8 @@ export const deleteWarehouse = async (id: number) => {
   const response = await fetch(`${ENDPOINT}/${id}`, { method: 'DELETE' });
   return handleResponse(response);
 };
+
+export const getWarehouseKardex = async (id: number, limit = 50) => {
+  const response = await fetch(`${ENDPOINT}/${id}/kardex?limit=${limit}`);
+  return handleResponse(response);
+};
