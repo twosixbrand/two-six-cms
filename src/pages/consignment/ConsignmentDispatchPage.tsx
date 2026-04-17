@@ -692,17 +692,60 @@ const ConsignmentDispatchPage = () => {
                             {it.received_qty ?? it.quantity}
                           </td>
                           <td style={{ padding: '0.5rem', textAlign: 'center' }}>
-                            <span style={{
-                              display: 'inline-block',
-                              padding: '1px 8px',
-                              borderRadius: '10px',
-                              fontSize: '0.7rem',
-                              fontWeight: 600,
-                              color: it.received_ok ? '#065f46' : '#92400e',
-                              background: it.received_ok ? '#d1fae5' : '#fef3c7',
-                            }}>
-                              {it.received_ok ? 'OK' : 'Novedad'}
-                            </span>
+                            {it.resolution_status === 'PENDING_REVIEW' ? (
+                              <div style={{ display: 'flex', gap: '0.3rem', justifyContent: 'center' }}>
+                                <button
+                                  onClick={async () => {
+                                    try {
+                                      await dispatchApi.resolveReceptionItem(it.id, 'ACCEPT', 'Operador CMS');
+                                      const fresh = await dispatchApi.getDispatch(viewingDispatch.id);
+                                      setViewingDispatch(fresh);
+                                      fetchAll();
+                                    } catch (err: any) {
+                                      await Swal.fire({ title: 'Error', text: err.message, icon: 'error', confirmButtonColor: '#f0b429' });
+                                    }
+                                  }}
+                                  title="Aceptar: ajustar stock según lo reportado"
+                                  style={{ padding: '2px 8px', fontSize: '0.7rem', fontWeight: 600, borderRadius: 4, border: 'none', cursor: 'pointer', background: '#d1fae5', color: '#065f46' }}
+                                >
+                                  Aceptar
+                                </button>
+                                <button
+                                  onClick={async () => {
+                                    try {
+                                      await dispatchApi.resolveReceptionItem(it.id, 'REJECT', 'Operador CMS');
+                                      const fresh = await dispatchApi.getDispatch(viewingDispatch.id);
+                                      setViewingDispatch(fresh);
+                                      fetchAll();
+                                    } catch (err: any) {
+                                      await Swal.fire({ title: 'Error', text: err.message, icon: 'error', confirmButtonColor: '#f0b429' });
+                                    }
+                                  }}
+                                  title="Rechazar: no ajustar stock, el reporte del cliente fue un error"
+                                  style={{ padding: '2px 8px', fontSize: '0.7rem', fontWeight: 600, borderRadius: 4, border: 'none', cursor: 'pointer', background: '#fee2e2', color: '#991b1b' }}
+                                >
+                                  Rechazar
+                                </button>
+                              </div>
+                            ) : (
+                              <span style={{
+                                display: 'inline-block',
+                                padding: '1px 8px',
+                                borderRadius: '10px',
+                                fontSize: '0.7rem',
+                                fontWeight: 600,
+                                color: it.resolution_status === 'ACCEPTED' ? '#065f46'
+                                  : it.resolution_status === 'REJECTED' ? '#991b1b'
+                                  : it.received_ok ? '#065f46' : '#a0a0b0',
+                                background: it.resolution_status === 'ACCEPTED' ? '#d1fae5'
+                                  : it.resolution_status === 'REJECTED' ? '#fee2e2'
+                                  : it.received_ok ? '#d1fae5' : '#1a1a24',
+                              }}>
+                                {it.resolution_status === 'ACCEPTED' ? 'Aceptado'
+                                  : it.resolution_status === 'REJECTED' ? 'Rechazado'
+                                  : 'OK'}
+                              </span>
+                            )}
                           </td>
                         </>
                       )}
@@ -712,14 +755,23 @@ const ConsignmentDispatchPage = () => {
                 </tbody>
               </table>
               {viewingDispatch.status === 'RECIBIDO' && (() => {
+                const pendingCount = (viewingDispatch.items || []).filter((i: any) => i.resolution_status === 'PENDING_REVIEW').length;
                 const totalSent = (viewingDispatch.items || []).reduce((s: number, i: any) => s + i.quantity, 0);
                 const totalReceived = (viewingDispatch.items || []).reduce((s: number, i: any) => s + (i.received_qty ?? i.quantity), 0);
                 const diff = totalSent - totalReceived;
-                if (diff === 0) return null;
                 return (
-                  <p style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#f87171', fontWeight: 600 }}>
-                    Diferencia: {diff} unidad{diff !== 1 ? 'es' : ''} no recibida{diff !== 1 ? 's' : ''} (devuelta{diff !== 1 ? 's' : ''} al stock de Two Six)
-                  </p>
+                  <div style={{ marginTop: '0.5rem' }}>
+                    {pendingCount > 0 && (
+                      <p style={{ fontSize: '0.85rem', color: '#f0b429', fontWeight: 600, marginBottom: '0.25rem' }}>
+                        ⚠ {pendingCount} novedad{pendingCount !== 1 ? 'es' : ''} pendiente{pendingCount !== 1 ? 's' : ''} de revisión
+                      </p>
+                    )}
+                    {diff !== 0 && (
+                      <p style={{ fontSize: '0.8rem', color: '#a0aec0' }}>
+                        Diferencia reportada: {Math.abs(diff)} unidad{Math.abs(diff) !== 1 ? 'es' : ''} {diff > 0 ? 'de menos' : 'de más'}
+                      </p>
+                    )}
+                  </div>
                 );
               })()}
             </div>
