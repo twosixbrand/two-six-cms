@@ -795,7 +795,8 @@ const ConsignmentDispatchPage = () => {
               })()}
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem' }}>
+              <Button variant="ghost" onClick={() => window.print()}>Imprimir</Button>
               <Button variant="primary" onClick={() => setViewingDispatch(null)}>Cerrar</Button>
             </div>
           </div>
