@@ -82,14 +82,75 @@ const ManualSaleRegularizationPage: React.FC = () => {
     });
     const [ivaIncluded, setIvaIncluded] = useState(false);
     const [createdInvoice, setCreatedInvoice] = useState<any>(null);
+    const [pendingReceipts, setPendingReceipts] = useState<any[]>([]);
     const submittingRef = useRef(false);
+
+    const emptyReceipt = (): ReceiptData => ({
+        consignment_date: '',
+        bank_puc_code: '112005',
+        advance_puc_code: '280505',
+        amount: 0,
+        customer_nit: '',
+        customer_name: '',
+        reference: '',
+        notes: '',
+    });
+
+    const loadPending = () => {
+        accountingApi.listPendingCashReceipts(receipt.advance_puc_code)
+            .then((data) => setPendingReceipts(Array.isArray(data) ? data : []))
+            .catch((err) => logError(err, '/accounting/regularization/manual-sale/pending'));
+    };
 
     useEffect(() => {
         accountingApi.getAccounts().then((data) => {
             const list = Array.isArray(data) ? data : data?.data || [];
             setAccounts(list);
         }).catch((err) => logError(err, '/accounting/regularization/manual-sale'));
+        loadPending();
     }, []);
+
+    const clearForm = () => {
+        setReceipt(emptyReceipt());
+        setCreatedReceipt(null);
+        setCreatedInvoice(null);
+        setInvoice({
+            revenue_puc_code: '413524',
+            iva_puc_code: '240801',
+            operation_date: '',
+            doc_type: '13',
+            doc_number: '',
+            customer_name: '',
+            customer_email: '',
+            items: [emptyItem()],
+            notes: '',
+        });
+        setStep(1);
+    };
+
+    const resumeReceipt = (pending: any) => {
+        setCreatedReceipt({
+            journal_entry_id: pending.journal_entry_id,
+            entry_number: pending.entry_number,
+            entry_date: pending.entry_date,
+            total: pending.available_balance,
+        });
+        setReceipt((prev) => ({
+            ...prev,
+            consignment_date: typeof pending.entry_date === 'string'
+                ? pending.entry_date.slice(0, 10)
+                : new Date(pending.entry_date).toISOString().slice(0, 10),
+            amount: pending.available_balance,
+            reference: pending.entry_number,
+        }));
+        setInvoice((prev) => ({
+            ...prev,
+            operation_date: typeof pending.entry_date === 'string'
+                ? pending.entry_date.slice(0, 10)
+                : new Date(pending.entry_date).toISOString().slice(0, 10),
+        }));
+        setStep(2);
+    };
 
     const subtotal = useMemo(() => {
         return invoice.items.reduce((s, it) => {
@@ -205,6 +266,7 @@ const ManualSaleRegularizationPage: React.FC = () => {
                 notes: invoice.notes || undefined,
             });
             setCreatedInvoice(result);
+            loadPending();
             setStep(3);
         } catch (err: any) {
             await Swal.fire({ icon: 'error', title: 'Error emitiendo factura', text: err?.message || String(err) });
@@ -256,6 +318,45 @@ const ManualSaleRegularizationPage: React.FC = () => {
                 ))}
             </div>
 
+            {step === 1 && pendingReceipts.length > 0 && (
+                <div style={{ background: '#1a1a24', border: '1px solid #f0b429', borderRadius: 12, padding: 20, marginBottom: 16 }}>
+                    <h4 style={{ color: '#f0b429', marginTop: 0, marginBottom: 8 }}>
+                        Recibos de caja con saldo pendiente de cruce ({pendingReceipts.length})
+                    </h4>
+                    <p style={{ color: '#a0a0b0', fontSize: 12, marginTop: 0 }}>
+                        Si uno de estos corresponde a la consignación que estás legalizando, continúa desde ahí en vez de crear uno nuevo (evita duplicar el anticipo en la cuenta {receipt.advance_puc_code}).
+                    </p>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 8 }}>
+                        <thead>
+                            <tr>
+                                <th style={{ textAlign: 'left', color: '#6b6b7b', fontSize: 11, padding: 6 }}># Asiento</th>
+                                <th style={{ textAlign: 'left', color: '#6b6b7b', fontSize: 11, padding: 6 }}>Fecha</th>
+                                <th style={{ textAlign: 'left', color: '#6b6b7b', fontSize: 11, padding: 6 }}>Descripción</th>
+                                <th style={{ textAlign: 'right', color: '#6b6b7b', fontSize: 11, padding: 6 }}>Saldo</th>
+                                <th style={{ width: 120 }}></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {pendingReceipts.map((p) => (
+                                <tr key={p.journal_entry_id} style={{ borderTop: '1px solid #2a2a35' }}>
+                                    <td style={{ padding: 6, color: '#f1f1f3', fontSize: 13 }}>{p.entry_number}</td>
+                                    <td style={{ padding: 6, color: '#a0a0b0', fontSize: 13 }}>
+                                        {new Date(p.entry_date).toLocaleDateString('es-CO')}
+                                    </td>
+                                    <td style={{ padding: 6, color: '#a0a0b0', fontSize: 12 }}>{p.description}</td>
+                                    <td style={{ padding: 6, color: '#34d399', fontSize: 13, textAlign: 'right', fontWeight: 600 }}>
+                                        {formatCurrency(p.available_balance)}
+                                    </td>
+                                    <td style={{ padding: 6, textAlign: 'right' }}>
+                                        <Button variant="secondary" onClick={() => resumeReceipt(p)}>Continuar aquí</Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+
             {step === 1 && (
                 <div style={{ background: '#1a1a24', border: '1px solid #2a2a35', borderRadius: 12, padding: 20 }}>
                     <h3 style={{ color: '#f0b429', marginTop: 0 }}>Paso 1 — Recibo de caja por consignación</h3>
@@ -276,7 +377,7 @@ const ManualSaleRegularizationPage: React.FC = () => {
                         <Button variant="primary" icon={<FiSave />} onClick={handleCreateReceipt} disabled={saving} loading={saving}>
                             Guardar recibo y continuar
                         </Button>
-                        <Button variant="ghost" onClick={() => navigate('/accounting/journal')}>Cancelar</Button>
+                        <Button variant="ghost" onClick={clearForm}>Limpiar</Button>
                     </div>
                 </div>
             )}
@@ -384,7 +485,7 @@ const ManualSaleRegularizationPage: React.FC = () => {
                     </div>
                     <div style={{ marginTop: 16, display: 'flex', gap: 10 }}>
                         <Button variant="primary" onClick={() => navigate(`/accounting/journal`)}>Ver asientos</Button>
-                        <Button variant="secondary" onClick={() => { setStep(1); setCreatedReceipt(null); setCreatedInvoice(null); }}>Nueva regularización</Button>
+                        <Button variant="secondary" onClick={() => { clearForm(); loadPending(); }}>Nueva regularización</Button>
                     </div>
                 </div>
             )}

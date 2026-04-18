@@ -910,6 +910,15 @@ export const getCashReceiptBalance = async (journalEntryId: number, advancePucCo
     return await handleResponse(response, 'getCashReceiptBalance');
 };
 
+export const listPendingCashReceipts = async (advancePucCode: string = '280505') => {
+    const qs = new URLSearchParams({ advance_puc_code: advancePucCode });
+    const response = await fetch(`${API_URL}/accounting/cash-receipt/pending?${qs}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'listPendingCashReceipts');
+};
+
 // ── Factura DIAN Manual (cruce anticipo) ────────────────────
 
 export interface ManualInvoiceItem {
