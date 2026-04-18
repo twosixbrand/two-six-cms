@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { FiCheckCircle, FiFileText, FiPlus, FiSave, FiTrash2 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -82,6 +82,7 @@ const ManualSaleRegularizationPage: React.FC = () => {
     });
     const [ivaIncluded, setIvaIncluded] = useState(false);
     const [createdInvoice, setCreatedInvoice] = useState<any>(null);
+    const submittingRef = useRef(false);
 
     useEffect(() => {
         accountingApi.getAccounts().then((data) => {
@@ -113,6 +114,7 @@ const ManualSaleRegularizationPage: React.FC = () => {
     const findAccount = (code: string) => accounts.find((a) => a.code === code);
 
     const handleCreateReceipt = async () => {
+        if (submittingRef.current || createdReceipt) return;
         if (!receipt.consignment_date || !receipt.amount || !receipt.reference) {
             await Swal.fire({ icon: 'warning', title: 'Faltan datos', text: 'Fecha, monto y referencia son obligatorios.' });
             return;
@@ -127,6 +129,7 @@ const ManualSaleRegularizationPage: React.FC = () => {
         }
 
         try {
+            submittingRef.current = true;
             setSaving(true);
             const result = await accountingApi.createCashReceipt({
                 consignment_date: receipt.consignment_date,
@@ -150,10 +153,12 @@ const ManualSaleRegularizationPage: React.FC = () => {
             await Swal.fire({ icon: 'error', title: 'Error creando recibo', text: err?.message || String(err) });
         } finally {
             setSaving(false);
+            submittingRef.current = false;
         }
     };
 
     const handleCreateInvoice = async () => {
+        if (submittingRef.current || createdInvoice) return;
         if (!createdReceipt) return;
         if (!invoice.operation_date || !invoice.doc_number || !invoice.customer_name || invoice.items.length === 0) {
             await Swal.fire({ icon: 'warning', title: 'Faltan datos', text: 'Completa cliente, fecha e ítems antes de emitir.' });
@@ -172,6 +177,7 @@ const ManualSaleRegularizationPage: React.FC = () => {
         }
 
         try {
+            submittingRef.current = true;
             setSaving(true);
             const result = await accountingApi.createManualDianInvoice({
                 cash_receipt_journal_id: createdReceipt.journal_entry_id,
@@ -204,6 +210,7 @@ const ManualSaleRegularizationPage: React.FC = () => {
             await Swal.fire({ icon: 'error', title: 'Error emitiendo factura', text: err?.message || String(err) });
         } finally {
             setSaving(false);
+            submittingRef.current = false;
         }
     };
 
