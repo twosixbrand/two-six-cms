@@ -958,6 +958,20 @@ export const createManualDianInvoice = async (payload: ManualInvoicePayload) => 
     return await handleResponse(response, 'createManualDianInvoice');
 };
 
+export const listManualDianInvoices = async (params?: { startDate?: string; endDate?: string; status?: string; search?: string }) => {
+    const qs = new URLSearchParams();
+    if (params?.startDate) qs.append('startDate', params.startDate);
+    if (params?.endDate) qs.append('endDate', params.endDate);
+    if (params?.status) qs.append('status', params.status);
+    if (params?.search) qs.append('search', params.search);
+    const suffix = qs.toString() ? `?${qs.toString()}` : '';
+    const response = await fetch(`${API_URL}/accounting/manual-invoice${suffix}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'listManualDianInvoices');
+};
+
 // ── Export IVA ──────────────────────────────────────────────
 
 export const downloadIvaExport = async (startDate: string, endDate: string) => {
