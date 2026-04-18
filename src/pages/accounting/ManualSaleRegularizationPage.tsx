@@ -6,6 +6,7 @@ import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
 import FormField from '../../components/ui/FormField';
 import * as accountingApi from '../../services/accountingApi';
+import * as customerApi from '../../services/customerApi';
 import { logError } from '../../services/errorApi';
 
 type PucAccount = {
@@ -83,7 +84,9 @@ const ManualSaleRegularizationPage: React.FC = () => {
     const [ivaIncluded, setIvaIncluded] = useState(false);
     const [createdInvoice, setCreatedInvoice] = useState<any>(null);
     const [pendingReceipts, setPendingReceipts] = useState<any[]>([]);
+    const [customerLookup, setCustomerLookup] = useState<{ status: 'idle' | 'loading' | 'found' | 'not_found' | 'error'; message?: string }>({ status: 'idle' });
     const submittingRef = useRef(false);
+    const lastLookupRef = useRef<string>('');
 
     const emptyReceipt = (): ReceiptData => ({
         consignment_date: '',
@@ -109,6 +112,42 @@ const ManualSaleRegularizationPage: React.FC = () => {
         }).catch((err) => logError(err, '/accounting/regularization/manual-sale'));
         loadPending();
     }, []);
+
+    // Lookup cliente por NIT/CC con debounce al cambiar el campo en el paso 1.
+    // Autocompleta nombre, email, tipo y documento para que fluyan al paso 2.
+    useEffect(() => {
+        const doc = receipt.customer_nit.trim();
+        if (doc.length < 5) {
+            setCustomerLookup({ status: 'idle' });
+            return;
+        }
+        const handle = setTimeout(() => {
+            if (lastLookupRef.current === doc) return;
+            lastLookupRef.current = doc;
+            setCustomerLookup({ status: 'loading' });
+            customerApi.getCustomerByDocument(doc)
+                .then((customer: any) => {
+                    if (!customer) {
+                        setCustomerLookup({ status: 'not_found', message: 'No existe en la base. Registra los datos manualmente.' });
+                        return;
+                    }
+                    setCustomerLookup({ status: 'found', message: `Cliente encontrado: ${customer.name}` });
+                    setReceipt((prev) => ({ ...prev, customer_name: customer.name || prev.customer_name }));
+                    setInvoice((prev) => ({
+                        ...prev,
+                        doc_number: customer.document_number || doc,
+                        doc_type: customer.identificationType?.code || prev.doc_type,
+                        customer_name: customer.name || prev.customer_name,
+                        customer_email: customer.email || prev.customer_email,
+                    }));
+                })
+                .catch((err) => {
+                    setCustomerLookup({ status: 'error', message: 'Error consultando cliente' });
+                    logError(err, '/customer/by-document');
+                });
+        }, 500);
+        return () => clearTimeout(handle);
+    }, [receipt.customer_nit]);
 
     const clearForm = () => {
         setReceipt(emptyReceipt());
@@ -368,7 +407,21 @@ const ManualSaleRegularizationPage: React.FC = () => {
                         <FormField label="Monto (COP)" name="amount" type="number" value={receipt.amount || ''} onChange={(e) => setReceipt({ ...receipt, amount: Number(e.target.value) })} required />
                         <FormField label="Cuenta banco (PUC)" name="bank_puc_code" type="text" value={receipt.bank_puc_code} onChange={(e) => setReceipt({ ...receipt, bank_puc_code: e.target.value })} required />
                         <FormField label="Cuenta anticipo (PUC)" name="advance_puc_code" type="text" value={receipt.advance_puc_code} onChange={(e) => setReceipt({ ...receipt, advance_puc_code: e.target.value })} required />
-                        <FormField label="NIT/CC cliente" name="customer_nit" type="text" value={receipt.customer_nit} onChange={(e) => setReceipt({ ...receipt, customer_nit: e.target.value })} />
+                        <div>
+                            <FormField label="NIT/CC cliente" name="customer_nit" type="text" value={receipt.customer_nit} onChange={(e) => setReceipt({ ...receipt, customer_nit: e.target.value })} />
+                            {customerLookup.status !== 'idle' && (
+                                <div style={{
+                                    fontSize: 11,
+                                    marginTop: 4,
+                                    color: customerLookup.status === 'found' ? '#34d399'
+                                        : customerLookup.status === 'not_found' ? '#f59e0b'
+                                        : customerLookup.status === 'error' ? '#f87171'
+                                        : '#a0a0b0',
+                                }}>
+                                    {customerLookup.status === 'loading' ? 'Buscando…' : customerLookup.message}
+                                </div>
+                            )}
+                        </div>
                         <FormField label="Nombre cliente" name="customer_name" type="text" value={receipt.customer_name} onChange={(e) => setReceipt({ ...receipt, customer_name: e.target.value })} />
                         <FormField label="Referencia consignación" name="reference" type="text" value={receipt.reference} onChange={(e) => setReceipt({ ...receipt, reference: e.target.value })} required placeholder="# transferencia, banco, etc." />
                         <FormField label="Notas" name="notes" type="text" value={receipt.notes} onChange={(e) => setReceipt({ ...receipt, notes: e.target.value })} />

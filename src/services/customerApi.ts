@@ -9,6 +9,15 @@ export const getCustomers = async () => {
   return response.json();
 };
 
+export const getCustomerByDocument = async (document: string) => {
+  const response = await fetch(`${API_ENDPOINT}/by-document/${encodeURIComponent(document)}`);
+  if (!response.ok) {
+    if (response.status === 404) return null;
+    throw new Error(`Failed to fetch customer by document (status ${response.status})`);
+  }
+  return response.json();
+};
+
 export const updateCustomer = async (id: number, data: any) => {
   const response = await fetch(`${API_ENDPOINT}/${id}`, {
     method: 'PATCH',
