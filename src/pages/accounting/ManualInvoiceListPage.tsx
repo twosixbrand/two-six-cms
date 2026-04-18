@@ -38,6 +38,46 @@ const formatDate = (val: string | null) => {
     return isNaN(d.getTime()) ? '—' : d.toLocaleDateString('es-CO');
 };
 
+const NoteTooltip: React.FC<{ text: string }> = ({ text }) => {
+    const [visible, setVisible] = useState(false);
+    const truncated = text.length > 40 ? text.slice(0, 40) + '…' : text;
+    return (
+        <div
+            style={{ position: 'relative', display: 'inline-block', marginTop: 4 }}
+            onMouseEnter={() => setVisible(true)}
+            onMouseLeave={() => setVisible(false)}
+        >
+            <div style={{ color: '#a0a0b0', fontSize: 11, fontStyle: 'italic', cursor: 'help', textDecoration: 'underline', textDecorationStyle: 'dotted', textDecorationColor: '#6b6b7b' }}>
+                Nota: {truncated}
+            </div>
+            {visible && (
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: 0,
+                        marginTop: 6,
+                        padding: '8px 10px',
+                        background: '#0f0f16',
+                        border: '1px solid #f0b429',
+                        borderRadius: 6,
+                        color: '#f1f1f3',
+                        fontSize: 12,
+                        fontStyle: 'normal',
+                        whiteSpace: 'pre-wrap',
+                        maxWidth: 360,
+                        width: 'max-content',
+                        zIndex: 1000,
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+                    }}
+                >
+                    {text}
+                </div>
+            )}
+        </div>
+    );
+};
+
 const statusBadgeColor = (status: string) => {
     switch (status) {
         case 'AUTHORIZED': return { bg: '#134e2a', fg: '#34d399' };
@@ -161,11 +201,7 @@ const ManualInvoiceListPage: React.FC = () => {
                                         <td style={{ padding: '10px 12px', color: '#f1f1f3', fontSize: 13 }}>
                                             {r.customer?.name || '—'}
                                             {r.customer?.email && <div style={{ color: '#6b6b7b', fontSize: 11 }}>{r.customer.email}</div>}
-                                            {r.notes && (
-                                                <div style={{ color: '#a0a0b0', fontSize: 11, fontStyle: 'italic', marginTop: 4 }} title={r.notes}>
-                                                    Nota: {r.notes.length > 40 ? r.notes.slice(0, 40) + '…' : r.notes}
-                                                </div>
-                                            )}
+                                            {r.notes && <NoteTooltip text={r.notes} />}
                                         </td>
                                         <td style={{ padding: '10px 12px', color: '#a0a0b0', fontSize: 12 }}>{r.customer?.doc_number || '—'}</td>
                                         <td style={{ padding: '10px 12px', color: '#a0a0b0', fontSize: 12 }}>
