@@ -197,7 +197,11 @@ const ManualSaleRegularizationPage: React.FC = () => {
         setStep(1);
     };
 
-    const resumeReceipt = (pending: any) => {
+    const resumeReceipt = async (pending: any) => {
+        const dateISO = typeof pending.entry_date === 'string'
+            ? pending.entry_date.slice(0, 10)
+            : new Date(pending.entry_date).toISOString().slice(0, 10);
+
         setCreatedReceipt({
             journal_entry_id: pending.journal_entry_id,
             entry_number: pending.entry_number,
@@ -206,17 +210,41 @@ const ManualSaleRegularizationPage: React.FC = () => {
         });
         setReceipt((prev) => ({
             ...prev,
-            consignment_date: typeof pending.entry_date === 'string'
-                ? pending.entry_date.slice(0, 10)
-                : new Date(pending.entry_date).toISOString().slice(0, 10),
+            consignment_date: dateISO,
             amount: pending.available_balance,
-            reference: pending.entry_number,
+            reference: pending.reference || pending.entry_number,
+            customer_nit: pending.customer_nit || '',
+            customer_name: pending.customer_name || '',
+            notes: pending.notes || '',
         }));
+
+        // Si el recibo guardó el NIT, intentamos completar email/tipo-doc
+        // consultando el cliente de la DB. Si no está, usamos lo que haya en metadata.
+        let docType = '13';
+        let customerName = pending.customer_name || '';
+        let customerEmail = '';
+        let docNumber = pending.customer_nit || '';
+        if (pending.customer_nit) {
+            try {
+                const customer: any = await customerApi.getCustomerByDocument(pending.customer_nit);
+                if (customer) {
+                    customerName = customer.name || customerName;
+                    customerEmail = customer.email || '';
+                    docType = customer.identificationType?.code || '13';
+                    docNumber = customer.document_number || docNumber;
+                }
+            } catch {
+                // silencioso: seguimos con los valores del metadata
+            }
+        }
+
         setInvoice((prev) => ({
             ...prev,
-            operation_date: typeof pending.entry_date === 'string'
-                ? pending.entry_date.slice(0, 10)
-                : new Date(pending.entry_date).toISOString().slice(0, 10),
+            operation_date: dateISO,
+            doc_type: docType,
+            doc_number: docNumber,
+            customer_name: customerName,
+            customer_email: customerEmail,
         }));
         setStep(2);
     };
