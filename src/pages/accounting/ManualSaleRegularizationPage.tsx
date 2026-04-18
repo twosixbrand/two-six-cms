@@ -7,7 +7,27 @@ import Button from '../../components/ui/Button';
 import FormField from '../../components/ui/FormField';
 import * as accountingApi from '../../services/accountingApi';
 import * as customerApi from '../../services/customerApi';
+import { getProducts } from '../../services/productApi';
 import { logError } from '../../services/errorApi';
+
+type CatalogProduct = {
+    id: number;
+    id_clothing_size?: number;
+    price: number;
+    label: string; // nombre legible construido en frontend
+    sku?: string | null;
+};
+
+const buildProductLabel = (p: any): string => {
+    const design = p.clothingSize?.clothingColor?.design;
+    const clothing = design?.clothing?.name;
+    const ref = design?.reference || p.reference || '';
+    const designName = design?.name || '';
+    const color = p.clothingSize?.clothingColor?.color?.name || p.color_name || '';
+    const size = p.clothingSize?.size?.name || p.size_name || '';
+    const parts = [clothing, designName, ref, color, size ? `Talla ${size}` : ''].filter(Boolean);
+    return parts.join(' ').replace(/\s+/g, ' ').trim() || `Producto #${p.id}`;
+};
 
 type ReceiptData = {
     consignment_date: string;
@@ -76,6 +96,9 @@ const ManualSaleRegularizationPage: React.FC = () => {
     const [createdInvoice, setCreatedInvoice] = useState<any>(null);
     const [pendingReceipts, setPendingReceipts] = useState<any[]>([]);
     const [customerLookup, setCustomerLookup] = useState<{ status: 'idle' | 'loading' | 'found' | 'not_found' | 'error'; message?: string }>({ status: 'idle' });
+    const [products, setProducts] = useState<CatalogProduct[]>([]);
+    const [productSearch, setProductSearch] = useState<Record<number, string>>({});
+    const [activeProductDropdown, setActiveProductDropdown] = useState<number | null>(null);
     const submittingRef = useRef(false);
     const lastLookupRef = useRef<string>('');
 
@@ -99,6 +122,26 @@ const ManualSaleRegularizationPage: React.FC = () => {
     useEffect(() => {
         loadPending();
     }, []);
+
+    // Carga catálogo de productos al entrar al paso 2 (solo una vez)
+    useEffect(() => {
+        if (step !== 2 || products.length > 0) return;
+        getProducts()
+            .then((data: any) => {
+                const list = Array.isArray(data) ? data : data?.data || [];
+                const mapped: CatalogProduct[] = list
+                    .filter((p: any) => p.active !== false)
+                    .map((p: any) => ({
+                        id: p.id,
+                        id_clothing_size: p.id_clothing_size ?? p.clothingSize?.id,
+                        price: Number(p.price) || 0,
+                        label: buildProductLabel(p),
+                        sku: p.sku ?? null,
+                    }));
+                setProducts(mapped);
+            })
+            .catch((err) => logError(err, '/accounting/regularization/manual-sale/products'));
+    }, [step]);
 
     // Lookup cliente por NIT/CC con debounce al cambiar el campo en el paso 1.
     // Autocompleta nombre, email, tipo y documento para que fluyan al paso 2.
@@ -457,8 +500,71 @@ const ManualSaleRegularizationPage: React.FC = () => {
                         <tbody>
                             {invoice.items.map((it, i) => (
                                 <tr key={i}>
-                                    <td style={{ padding: 4 }}>
-                                        <input type="text" value={it.description} onChange={(e) => updateItem(i, 'description', e.target.value)} style={{ width: '100%', padding: 6, background: '#1f1f2a', border: '1px solid #2a2a35', borderRadius: 6, color: '#f1f1f3' }} placeholder="Camiseta Two Six..." />
+                                    <td style={{ padding: 4, position: 'relative' }}>
+                                        <input
+                                            type="text"
+                                            value={activeProductDropdown === i ? (productSearch[i] ?? it.description) : it.description}
+                                            onChange={(e) => {
+                                                setProductSearch({ ...productSearch, [i]: e.target.value });
+                                                updateItem(i, 'description', e.target.value);
+                                                setActiveProductDropdown(i);
+                                            }}
+                                            onFocus={() => setActiveProductDropdown(i)}
+                                            onBlur={() => setTimeout(() => setActiveProductDropdown((prev) => (prev === i ? null : prev)), 150)}
+                                            style={{ width: '100%', padding: 6, background: '#1f1f2a', border: '1px solid #2a2a35', borderRadius: 6, color: '#f1f1f3' }}
+                                            placeholder="Buscar producto del catálogo o escribir descripción libre…"
+                                        />
+                                        {activeProductDropdown === i && products.length > 0 && (() => {
+                                            const term = (productSearch[i] ?? it.description ?? '').toLowerCase();
+                                            const filtered = term
+                                                ? products.filter((p) => p.label.toLowerCase().includes(term) || (p.sku || '').toLowerCase().includes(term)).slice(0, 15)
+                                                : products.slice(0, 15);
+                                            if (filtered.length === 0) return null;
+                                            return (
+                                                <div style={{
+                                                    position: 'absolute',
+                                                    top: '100%',
+                                                    left: 4,
+                                                    right: 4,
+                                                    background: '#1f1f2a',
+                                                    border: '1px solid #2a2a35',
+                                                    borderRadius: 6,
+                                                    maxHeight: 220,
+                                                    overflow: 'auto',
+                                                    zIndex: 200,
+                                                    boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+                                                }}>
+                                                    {filtered.map((p) => (
+                                                        <div
+                                                            key={p.id}
+                                                            onMouseDown={(e) => {
+                                                                e.preventDefault();
+                                                                const items = [...invoice.items];
+                                                                items[i] = { ...items[i], description: p.label, unit_price: p.price };
+                                                                setInvoice({ ...invoice, items });
+                                                                setProductSearch({ ...productSearch, [i]: '' });
+                                                                setActiveProductDropdown(null);
+                                                            }}
+                                                            style={{
+                                                                padding: '6px 10px',
+                                                                cursor: 'pointer',
+                                                                fontSize: 12,
+                                                                borderBottom: '1px solid #2a2a35',
+                                                                color: '#f1f1f3',
+                                                                display: 'flex',
+                                                                justifyContent: 'space-between',
+                                                                gap: 8,
+                                                            }}
+                                                            onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(240, 180, 41, 0.1)')}
+                                                            onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                                                        >
+                                                            <span>{p.label}{p.sku ? <span style={{ color: '#6b6b7b' }}> · {p.sku}</span> : null}</span>
+                                                            <strong style={{ color: '#f0b429' }}>{formatCurrency(p.price)}</strong>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            );
+                                        })()}
                                     </td>
                                     <td style={{ padding: 4 }}>
                                         <input type="number" value={it.quantity || ''} onChange={(e) => updateItem(i, 'quantity', Number(e.target.value))} style={{ width: '100%', padding: 6, background: '#1f1f2a', border: '1px solid #2a2a35', borderRadius: 6, color: '#f1f1f3', textAlign: 'right' }} />
