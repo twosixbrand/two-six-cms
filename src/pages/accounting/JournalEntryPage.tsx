@@ -217,6 +217,8 @@ const JournalEntryPage = () => {
                                                             {meta.customer_name && <div style={{ color: '#f1f1f3' }}><span style={{ color: '#a0a0b0' }}>Cliente:</span> {meta.customer_name}</div>}
                                                             {meta.customer_nit && <div style={{ color: '#f1f1f3' }}><span style={{ color: '#a0a0b0' }}>NIT/CC:</span> {meta.customer_nit}</div>}
                                                             {meta.reference && <div style={{ color: '#f1f1f3' }}><span style={{ color: '#a0a0b0' }}>Referencia:</span> {meta.reference}</div>}
+                                                            {meta.invoice_number && <div style={{ color: '#f1f1f3' }}><span style={{ color: '#a0a0b0' }}>Factura DIAN:</span> {meta.invoice_number}</div>}
+                                                            {meta.operation_date && <div style={{ color: '#f1f1f3' }}><span style={{ color: '#a0a0b0' }}>Fecha operación:</span> {new Date(meta.operation_date).toLocaleDateString('es-CO')}</div>}
                                                             {meta.notes && <div style={{ color: '#f1f1f3', marginTop: 4 }}><span style={{ color: '#a0a0b0' }}>Notas:</span> {meta.notes}</div>}
                                                         </div>
                                                     );
