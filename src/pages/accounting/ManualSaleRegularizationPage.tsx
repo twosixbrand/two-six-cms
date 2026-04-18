@@ -9,14 +9,6 @@ import * as accountingApi from '../../services/accountingApi';
 import * as customerApi from '../../services/customerApi';
 import { logError } from '../../services/errorApi';
 
-type PucAccount = {
-    id: number;
-    code: string;
-    name: string;
-    accepts_movements?: boolean;
-    is_active?: boolean;
-};
-
 type ReceiptData = {
     consignment_date: string;
     bank_puc_code: string;
@@ -56,7 +48,6 @@ const ManualSaleRegularizationPage: React.FC = () => {
     const navigate = useNavigate();
     const [step, setStep] = useState<1 | 2 | 3>(1);
     const [saving, setSaving] = useState(false);
-    const [accounts, setAccounts] = useState<PucAccount[]>([]);
 
     const [receipt, setReceipt] = useState<ReceiptData>({
         consignment_date: '',
@@ -106,10 +97,6 @@ const ManualSaleRegularizationPage: React.FC = () => {
     };
 
     useEffect(() => {
-        accountingApi.getAccounts().then((data) => {
-            const list = Array.isArray(data) ? data : data?.data || [];
-            setAccounts(list);
-        }).catch((err) => logError(err, '/accounting/regularization/manual-sale'));
         loadPending();
     }, []);
 
@@ -211,20 +198,10 @@ const ManualSaleRegularizationPage: React.FC = () => {
 
     const total = useMemo(() => subtotal + ivaTotal, [subtotal, ivaTotal]);
 
-    const findAccount = (code: string) => accounts.find((a) => a.code === code);
-
     const handleCreateReceipt = async () => {
         if (submittingRef.current || createdReceipt) return;
         if (!receipt.consignment_date || !receipt.amount || !receipt.reference) {
             await Swal.fire({ icon: 'warning', title: 'Faltan datos', text: 'Fecha, monto y referencia son obligatorios.' });
-            return;
-        }
-        if (!findAccount(receipt.bank_puc_code)) {
-            await Swal.fire({ icon: 'error', title: 'Cuenta banco inexistente', text: `La cuenta PUC ${receipt.bank_puc_code} no existe. Revisa el plan de cuentas.` });
-            return;
-        }
-        if (!findAccount(receipt.advance_puc_code)) {
-            await Swal.fire({ icon: 'error', title: 'Cuenta anticipo inexistente', text: `La cuenta PUC ${receipt.advance_puc_code} no existe.` });
             return;
         }
 
