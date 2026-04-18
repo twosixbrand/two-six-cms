@@ -104,6 +104,7 @@ const menuData = [
       { title: 'Configuración', path: '/accounting/settings', permission: 'accounting' },
       { title: 'PUC (Plan de Cuentas)', path: '/accounting/puc', permission: 'accounting.puc.view' },
       { title: 'Asientos Contables', path: '/accounting/journal', permission: 'accounting.journal.view' },
+      { title: 'Regularizar venta (cruce anticipo)', path: '/accounting/regularization/manual-sale', permission: 'accounting.journal.view' },
       { title: 'Gastos / Compras', path: '/accounting/expenses', permission: 'accounting.expenses.view' },
       { title: 'Balance General', path: '/accounting/balance-sheet', permission: 'accounting.reports.view' },
       { title: 'Estado de Resultados', path: '/accounting/income-statement', permission: 'accounting.reports.view' },

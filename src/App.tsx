@@ -66,6 +66,7 @@ import ConsignmentReportsPage from './pages/consignment/ConsignmentReportsPage.t
 import PucAccountPage from './pages/accounting/PucAccountPage.tsx';
 import JournalEntryPage from './pages/accounting/JournalEntryPage.tsx';
 import JournalEntryFormPage from './pages/accounting/JournalEntryFormPage.tsx';
+import ManualSaleRegularizationPage from './pages/accounting/ManualSaleRegularizationPage.tsx';
 import ExpensePage from './pages/accounting/ExpensePage.tsx';
 import ExpenseFormPage from './pages/accounting/ExpenseFormPage.tsx';
 import BalanceSheetPage from './pages/accounting/BalanceSheetPage.tsx';
@@ -185,6 +186,7 @@ const MainLayout = () => {
               <Route path="/accounting/puc" element={<PucAccountPage />} />
               <Route path="/accounting/journal" element={<JournalEntryPage />} />
               <Route path="/accounting/journal/new" element={<JournalEntryFormPage />} />
+              <Route path="/accounting/regularization/manual-sale" element={<ManualSaleRegularizationPage />} />
               <Route path="/accounting/expenses" element={<ExpensePage />} />
               <Route path="/accounting/expenses/new" element={<ExpenseFormPage />} />
               <Route path="/accounting/expenses/:id" element={<ExpenseFormPage />} />
