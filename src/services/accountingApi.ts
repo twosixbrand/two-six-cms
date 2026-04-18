@@ -878,6 +878,77 @@ export const bulkUpdateAccountingSettings = async (
     return await handleResponse(response, 'bulkUpdateAccountingSettings');
 };
 
+// ── Recibo de Caja (Anticipos) ──────────────────────────────
+
+export interface CashReceiptPayload {
+    consignment_date: string;
+    bank_puc_code: string;
+    advance_puc_code: string;
+    amount: number;
+    customer_nit?: string;
+    customer_name?: string;
+    reference: string;
+    notes?: string;
+    created_by?: number;
+}
+
+export const createCashReceipt = async (payload: CashReceiptPayload) => {
+    const response = await fetch(`${API_URL}/accounting/cash-receipt`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify(payload),
+    });
+    return await handleResponse(response, 'createCashReceipt');
+};
+
+export const getCashReceiptBalance = async (journalEntryId: number, advancePucCode: string) => {
+    const qs = new URLSearchParams({ advance_puc_code: advancePucCode });
+    const response = await fetch(`${API_URL}/accounting/cash-receipt/${journalEntryId}/balance?${qs}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getCashReceiptBalance');
+};
+
+// ── Factura DIAN Manual (cruce anticipo) ────────────────────
+
+export interface ManualInvoiceItem {
+    description: string;
+    quantity: number;
+    unit_price: number;
+    iva_rate?: number;
+}
+
+export interface ManualInvoiceCustomer {
+    doc_type: string;
+    doc_number: string;
+    name: string;
+    email?: string;
+    address?: string;
+    city?: string;
+}
+
+export interface ManualInvoicePayload {
+    cash_receipt_journal_id: number;
+    advance_puc_code: string;
+    revenue_puc_code: string;
+    iva_puc_code: string;
+    operation_date: string;
+    customer: ManualInvoiceCustomer;
+    items: ManualInvoiceItem[];
+    notes?: string;
+    created_by?: number;
+}
+
+export const createManualDianInvoice = async (payload: ManualInvoicePayload) => {
+    const response = await fetch(`${API_URL}/accounting/manual-invoice`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify(payload),
+    });
+    return await handleResponse(response, 'createManualDianInvoice');
+};
+
 // ── Export IVA ──────────────────────────────────────────────
 
 export const downloadIvaExport = async (startDate: string, endDate: string) => {
