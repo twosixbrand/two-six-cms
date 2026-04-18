@@ -18,15 +18,20 @@ type CatalogProduct = {
     sku?: string | null;
 };
 
+// Replica el formato que usa la web al crear una orden:
+//   product_name = clothing.name   (ej. "Camiseta Estampada Espalda")
+// y el PDF representativo de DIAN le agrega " - Talla {size}" al renderizar.
+// Para alinearnos al 100% con las facturas reales, emitimos la descripción
+// con la talla ya incluida ("Camiseta Estampada Espalda - Talla M").
 const buildProductLabel = (p: any): string => {
-    const design = p.clothingSize?.clothingColor?.design;
-    const clothing = design?.clothing?.name;
-    const ref = design?.reference || p.reference || '';
-    const designName = design?.name || '';
-    const color = p.clothingSize?.clothingColor?.color?.name || p.color_name || '';
+    const clothingName =
+        p.clothingSize?.clothingColor?.design?.clothing?.name ||
+        p.name ||
+        p.clothingSize?.clothingColor?.design?.name ||
+        '';
     const size = p.clothingSize?.size?.name || p.size_name || '';
-    const parts = [clothing, designName, ref, color, size ? `Talla ${size}` : ''].filter(Boolean);
-    return parts.join(' ').replace(/\s+/g, ' ').trim() || `Producto #${p.id}`;
+    if (!clothingName && !size) return `Producto #${p.id}`;
+    return size ? `${clothingName} - Talla ${size}` : clothingName;
 };
 
 type ReceiptData = {
