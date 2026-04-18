@@ -156,7 +156,7 @@ const JournalEntryPage = () => {
                                             <strong>{entry.entry_number}</strong>
                                         </td>
                                         <td style={{ padding: '0.65rem 1rem', borderBottom: '1px solid #1f1f2a', color: '#f1f1f3' }}>
-                                            {new Date(entry.date).toLocaleDateString('es-CO')}
+                                            {new Date(entry.entry_date).toLocaleDateString('es-CO')}
                                         </td>
                                         <td style={{ padding: '0.65rem 1rem', borderBottom: '1px solid #1f1f2a', color: '#f1f1f3' }}>
                                             {entry.description}
