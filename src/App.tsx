@@ -59,6 +59,7 @@ import ConsignmentDispatchPage from './pages/consignment/ConsignmentDispatchPage
 import ConsignmentSelloutPage from './pages/consignment/ConsignmentSelloutPage.tsx';
 import ConsignmentReturnPage from './pages/consignment/ConsignmentReturnPage.tsx';
 import ConsignmentCycleCountPage from './pages/consignment/ConsignmentCycleCountPage.tsx';
+import ConsignmentSellReportsPage from './pages/consignment/ConsignmentSellReportsPage.tsx';
 import ConsignmentReportsPage from './pages/consignment/ConsignmentReportsPage.tsx';
 
 // Accounting pages
@@ -176,6 +177,7 @@ const MainLayout = () => {
               <Route path="/consignment/prices" element={<ConsignmentPricePage />} />
               <Route path="/consignment/dispatches" element={<ConsignmentDispatchPage />} />
               <Route path="/consignment/sellout" element={<ConsignmentSelloutPage />} />
+              <Route path="/consignment/sell-reports" element={<ConsignmentSellReportsPage />} />
               <Route path="/consignment/returns" element={<ConsignmentReturnPage />} />
               <Route path="/consignment/cycle-counts" element={<ConsignmentCycleCountPage />} />
               <Route path="/consignment/reports" element={<ConsignmentReportsPage />} />
