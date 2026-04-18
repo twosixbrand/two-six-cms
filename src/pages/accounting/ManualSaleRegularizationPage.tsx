@@ -80,6 +80,7 @@ const ManualSaleRegularizationPage: React.FC = () => {
         items: [emptyItem()],
         notes: '',
     });
+    const [ivaIncluded, setIvaIncluded] = useState(false);
     const [createdInvoice, setCreatedInvoice] = useState<any>(null);
 
     useEffect(() => {
@@ -89,18 +90,24 @@ const ManualSaleRegularizationPage: React.FC = () => {
         }).catch((err) => logError(err, '/accounting/regularization/manual-sale'));
     }, []);
 
-    const subtotal = useMemo(
-        () => invoice.items.reduce((s, it) => s + (it.quantity || 0) * (it.unit_price || 0), 0),
-        [invoice.items],
-    );
-    const ivaTotal = useMemo(
-        () =>
-            invoice.items.reduce(
-                (s, it) => s + (it.quantity || 0) * (it.unit_price || 0) * ((it.iva_rate || 0) / 100),
-                0,
-            ),
-        [invoice.items],
-    );
+    const subtotal = useMemo(() => {
+        return invoice.items.reduce((s, it) => {
+            const gross = (it.quantity || 0) * (it.unit_price || 0);
+            const rate = (it.iva_rate || 0) / 100;
+            const lineSubtotal = ivaIncluded ? gross / (1 + rate) : gross;
+            return s + lineSubtotal;
+        }, 0);
+    }, [invoice.items, ivaIncluded]);
+
+    const ivaTotal = useMemo(() => {
+        return invoice.items.reduce((s, it) => {
+            const gross = (it.quantity || 0) * (it.unit_price || 0);
+            const rate = (it.iva_rate || 0) / 100;
+            const lineSubtotal = ivaIncluded ? gross / (1 + rate) : gross;
+            return s + lineSubtotal * rate;
+        }, 0);
+    }, [invoice.items, ivaIncluded]);
+
     const total = useMemo(() => subtotal + ivaTotal, [subtotal, ivaTotal]);
 
     const findAccount = (code: string) => accounts.find((a) => a.code === code);
@@ -178,12 +185,17 @@ const ManualSaleRegularizationPage: React.FC = () => {
                     name: invoice.customer_name,
                     email: invoice.customer_email || undefined,
                 },
-                items: invoice.items.map((it) => ({
-                    description: it.description,
-                    quantity: Number(it.quantity),
-                    unit_price: Number(it.unit_price),
-                    iva_rate: Number(it.iva_rate),
-                })),
+                items: invoice.items.map((it) => {
+                    const rate = Number(it.iva_rate) || 0;
+                    const rawPrice = Number(it.unit_price);
+                    const netPrice = ivaIncluded ? rawPrice / (1 + rate / 100) : rawPrice;
+                    return {
+                        description: it.description,
+                        quantity: Number(it.quantity),
+                        unit_price: Number(netPrice.toFixed(2)),
+                        iva_rate: rate,
+                    };
+                }),
                 notes: invoice.notes || undefined,
             });
             setCreatedInvoice(result);
@@ -282,7 +294,18 @@ const ManualSaleRegularizationPage: React.FC = () => {
                         <FormField label="Cuenta IVA (PUC)" name="iva_puc_code" type="text" value={invoice.iva_puc_code} onChange={(e) => setInvoice({ ...invoice, iva_puc_code: e.target.value })} required />
                     </div>
 
-                    <h4 style={{ color: '#f1f1f3', marginTop: 20 }}>Ítems</h4>
+                    <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <h4 style={{ color: '#f1f1f3', margin: 0 }}>Ítems</h4>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#a0a0b0', fontSize: 13, cursor: 'pointer' }}>
+                            <input
+                                type="checkbox"
+                                checked={ivaIncluded}
+                                onChange={(e) => setIvaIncluded(e.target.checked)}
+                                style={{ cursor: 'pointer' }}
+                            />
+                            Precio unit. incluye IVA (calcular al revés)
+                        </label>
+                    </div>
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                         <thead>
                             <tr>
