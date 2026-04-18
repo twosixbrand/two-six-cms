@@ -205,6 +205,22 @@ const JournalEntryPage = () => {
                                                         ))}
                                                     </tbody>
                                                 </table>
+                                                {entry.metadata && (() => {
+                                                    let meta: any = null;
+                                                    try { meta = JSON.parse(entry.metadata); } catch { meta = null; }
+                                                    if (!meta) return null;
+                                                    const hasContent = meta.customer_nit || meta.customer_name || meta.notes || meta.reference;
+                                                    if (!hasContent) return null;
+                                                    return (
+                                                        <div style={{ marginTop: 10, padding: '8px 12px', background: '#1a1a24', borderRadius: 6, border: '1px solid #2a2a35', fontSize: 12 }}>
+                                                            <div style={{ color: '#6b6b7b', fontSize: 10, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 4 }}>Metadata</div>
+                                                            {meta.customer_name && <div style={{ color: '#f1f1f3' }}><span style={{ color: '#a0a0b0' }}>Cliente:</span> {meta.customer_name}</div>}
+                                                            {meta.customer_nit && <div style={{ color: '#f1f1f3' }}><span style={{ color: '#a0a0b0' }}>NIT/CC:</span> {meta.customer_nit}</div>}
+                                                            {meta.reference && <div style={{ color: '#f1f1f3' }}><span style={{ color: '#a0a0b0' }}>Referencia:</span> {meta.reference}</div>}
+                                                            {meta.notes && <div style={{ color: '#f1f1f3', marginTop: 4 }}><span style={{ color: '#a0a0b0' }}>Notas:</span> {meta.notes}</div>}
+                                                        </div>
+                                                    );
+                                                })()}
                                             </td>
                                         </tr>
                                     )}

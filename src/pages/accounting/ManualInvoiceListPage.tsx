@@ -23,6 +23,7 @@ type ManualInvoiceRow = {
     subtotal: number | null;
     iva_total: number | null;
     total: number | null;
+    notes: string | null;
     items_count: number;
     cash_receipt: { id: number; entry_number: string; entry_date: string } | null;
     journal_entry: { id: number; entry_number: string } | null;
@@ -160,6 +161,11 @@ const ManualInvoiceListPage: React.FC = () => {
                                         <td style={{ padding: '10px 12px', color: '#f1f1f3', fontSize: 13 }}>
                                             {r.customer?.name || '—'}
                                             {r.customer?.email && <div style={{ color: '#6b6b7b', fontSize: 11 }}>{r.customer.email}</div>}
+                                            {r.notes && (
+                                                <div style={{ color: '#a0a0b0', fontSize: 11, fontStyle: 'italic', marginTop: 4 }} title={r.notes}>
+                                                    Nota: {r.notes.length > 40 ? r.notes.slice(0, 40) + '…' : r.notes}
+                                                </div>
+                                            )}
                                         </td>
                                         <td style={{ padding: '10px 12px', color: '#a0a0b0', fontSize: 12 }}>{r.customer?.doc_number || '—'}</td>
                                         <td style={{ padding: '10px 12px', color: '#a0a0b0', fontSize: 12 }}>
