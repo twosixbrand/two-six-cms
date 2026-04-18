@@ -540,7 +540,7 @@ const ManualSaleRegularizationPage: React.FC = () => {
                                                             onMouseDown={(e) => {
                                                                 e.preventDefault();
                                                                 const items = [...invoice.items];
-                                                                items[i] = { ...items[i], description: p.label, unit_price: p.price };
+                                                                items[i] = { ...items[i], description: p.label };
                                                                 setInvoice({ ...invoice, items });
                                                                 setProductSearch({ ...productSearch, [i]: '' });
                                                                 setActiveProductDropdown(null);
@@ -559,7 +559,6 @@ const ManualSaleRegularizationPage: React.FC = () => {
                                                             onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                                                         >
                                                             <span>{p.label}{p.sku ? <span style={{ color: '#6b6b7b' }}> · {p.sku}</span> : null}</span>
-                                                            <strong style={{ color: '#f0b429' }}>{formatCurrency(p.price)}</strong>
                                                         </div>
                                                     ))}
                                                 </div>
