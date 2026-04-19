@@ -131,6 +131,7 @@ const menuData = [
     permission: 'sales.reports.view',
     subNav: [
       { title: 'Google Merchant Feed', path: '/google-merchant-feed', permission: 'sales.reports.view' },
+      { title: 'Facebook Feed', path: '/facebook-feed', permission: 'sales.reports.view' },
     ],
   },
   {
