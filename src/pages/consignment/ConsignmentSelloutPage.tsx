@@ -16,8 +16,8 @@ interface Customer {
 }
 
 const SAMPLE_CSV = `sku,reference,color,size,quantity
-,CAM-001,Azul,M,3
-,CAM-001,Negro,L,2
+,Q4A11,Negro,XL,2
+,Q4A11,Chocolate,S,1
 `;
 
 const currencyCO = (n: number) =>
