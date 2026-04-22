@@ -100,9 +100,23 @@ const homeSections = [
     ]
   },
   {
+    title: 'Consignación', icon: <FiTruck />, permission: 'sales',
+    items: [
+      { path: '/consignment/warehouses', icon: <FiHome />, title: 'Bodegas por Cliente', desc: 'Bodegas virtuales de aliados comerciales.', permission: 'sales.reports.view' },
+      { path: '/consignment/prices', icon: <FiDollarSign />, title: 'Precios por Cliente', desc: 'Lista de precios diferenciados para sell-out.', permission: 'sales.reports.view' },
+      { path: '/consignment/dispatches', icon: <FiSend />, title: 'Despachos (QR)', desc: 'Envio de prendas con validacion QR.', permission: 'sales.reports.view' },
+      { path: '/consignment/sellout', icon: <FiTrendingUp />, title: 'Procesar Sell-out', desc: 'Carga de ventas, descuento de stock y facturacion DIAN.', permission: 'sales.reports.view' },
+      { path: '/consignment/sell-reports', icon: <FiClipboard />, title: 'Ventas del Cliente', desc: 'Reportes de venta enviados por aliados.', permission: 'sales.reports.view' },
+      { path: '/consignment/returns', icon: <FiRepeat />, title: 'Devoluciones / Garantias', desc: 'Devoluciones por portafolio, garantia o post-venta.', permission: 'sales.reports.view' },
+      { path: '/consignment/cycle-counts', icon: <FiCheckSquare />, title: 'Conteos Ciclicos / Merma', desc: 'Conciliacion de inventario y facturacion de merma.', permission: 'sales.reports.view' },
+      { path: '/consignment/reports', icon: <FiBarChart2 />, title: 'Reportes', desc: 'Inventario por cliente, mermas y conciliacion pendiente.', permission: 'sales.reports.view' },
+    ]
+  },
+  {
     title: 'Integraciones-APIs', icon: <FiCode />, permission: 'sales',
     items: [
       { path: '/google-merchant-feed', icon: <FiGrid />, title: 'Google Merchant Feed', desc: 'Dashboard del feed XML para Google Merchant Center.', permission: 'sales.reports.view' },
+      { path: '/facebook-feed', icon: <FiLink />, title: 'Facebook Feed', desc: 'Dashboard del feed para Facebook Commerce.', permission: 'sales.reports.view' },
     ]
   },
   {
