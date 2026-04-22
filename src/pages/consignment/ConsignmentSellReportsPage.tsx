@@ -74,23 +74,15 @@ const ConsignmentSellReportsPage = () => {
     }
   };
 
-  const handleApprove = async (report: any) => {
-    const confirm = await Swal.fire({
-      title: '¿Aprobar este reporte?',
-      html: `Se procesará el sell-out de <strong>${report.items.length} ref.</strong>
-             (${report.items.reduce((s: number, i: any) => s + i.quantity, 0)} uds)
-             y se generará la factura DIAN.`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#f0b429',
-      cancelButtonColor: '#2a2a35',
-      confirmButtonText: 'Aprobar y facturar',
-      cancelButtonText: 'Cancelar',
-    });
-    if (!confirm.isConfirmed) return;
+  const [approving, setApproving] = useState(false);
+  const [approveError, setApproveError] = useState('');
 
+  const handleApprove = async (report: any) => {
+    setApproveError('');
     try {
-      // Construir rows para el sellout existente usando los items del reporte
+      setApproving(true);
+
+      // Construir rows para el sellout existente
       const rows = report.items.map((it: any) => ({
         reference: it.clothingSize?.clothingColor?.design?.reference,
         color: it.clothingSize?.clothingColor?.color?.name,
@@ -98,7 +90,7 @@ const ConsignmentSellReportsPage = () => {
         quantity: it.quantity,
       }));
 
-      // Marcar como aprobado primero
+      // Marcar como aprobado
       await reportApi.approveSellReport(report.id);
 
       // Procesar sell-out
@@ -107,13 +99,6 @@ const ConsignmentSellReportsPage = () => {
         id_warehouse: report.id_warehouse,
         rows,
       });
-
-      // Marcar el reporte como aprobado
-      // (El backend de sell-reports no tiene un endpoint approve porque
-      //  la aprobación se maneja vía el flujo de sell-out existente.
-      //  Actualizamos el status directamente.)
-      // Por ahora usamos un PATCH genérico o dejamos el status como PENDING
-      // y lo manejamos por la existencia de la orden.
 
       // Disparar DIAN
       let dianResult: any = null;
@@ -125,10 +110,11 @@ const ConsignmentSellReportsPage = () => {
       }
 
       setViewing(null);
+      setApproving(false);
       fetchAll();
 
       await Swal.fire({
-        title: dianError ? 'Sell-out procesado (DIAN pendiente)' : '¡Aprobado y facturado!',
+        title: dianError ? 'Sell-out procesado (DIAN pendiente)' : 'Aprobado y facturado',
         html: dianError
           ? `Orden <strong>${order.order_reference}</strong> creada. DIAN falló: <code>${dianError}</code>`
           : `Orden <strong>${order.order_reference}</strong> · DIAN CUFE: <code>${dianResult?.cufe?.slice(0, 16)}...</code>`,
@@ -137,7 +123,8 @@ const ConsignmentSellReportsPage = () => {
       });
     } catch (err: any) {
       logError(err, '/consignment/sell-reports/approve');
-      await Swal.fire({ title: 'Error', text: err.message, icon: 'error', confirmButtonColor: '#f0b429' });
+      setApproveError(err.message || 'Error al aprobar.');
+      setApproving(false);
     }
   };
 
@@ -314,14 +301,19 @@ const ConsignmentSellReportsPage = () => {
               </tbody>
             </table>
 
+            {approveError && (
+              <p style={{ color: '#f87171', fontSize: '0.85rem', fontWeight: 600, marginTop: '0.75rem', padding: '0.5rem 0.75rem', background: 'rgba(248,113,113,0.08)', borderRadius: '6px' }}>
+                {approveError}
+              </p>
+            )}
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
               {viewing.status === 'PENDING' && (
                 <>
-                  <Button variant="destructive" icon={<FiX />} onClick={() => handleReject(viewing)}>
+                  <Button variant="destructive" icon={<FiX />} onClick={() => handleReject(viewing)} disabled={approving}>
                     Rechazar
                   </Button>
-                  <Button variant="primary" icon={<FiCheck />} onClick={() => handleApprove(viewing)}>
-                    Aprobar y facturar
+                  <Button variant="primary" icon={<FiCheck />} onClick={() => handleApprove(viewing)} loading={approving}>
+                    {approving ? 'Procesando...' : 'Aprobar y facturar'}
                   </Button>
                 </>
               )}
