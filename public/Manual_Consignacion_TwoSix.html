@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual del Módulo de Consignación — TWO SIX S.A.S.</title>
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #d4af37;
+  --gold-light: #f5e6b8;
+  --gold-dark: #b8960e;
+  --black: #1a1a1a;
+  --white: #ffffff;
+  --gray-50: #fafafa;
+  --gray-100: #f5f5f5;
+  --gray-200: #e5e5e5;
+  --gray-300: #d4d4d4;
+  --gray-500: #737373;
+  --gray-700: #404040;
+  --gray-800: #262626;
+  --blue-info: #1e40af;
+  --blue-bg: #eff6ff;
+  --green-tip: #166534;
+  --green-bg: #f0fdf4;
+  --amber-warn: #92400e;
+  --amber-bg: #fffbeb;
+  --red-danger: #991b1b;
+  --red-bg: #fef2f2;
+}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--black);
+  background: var(--white);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== COVER PAGE ===== */
+.cover-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(160deg, var(--black) 0%, #2a2a2a 50%, var(--black) 100%);
+  color: var(--white);
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover-page::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 30% 50%, rgba(212,175,55,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.cover-logo {
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.cover-logo-sub {
+  font-size: 1rem;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gray-300);
+  margin-bottom: 4rem;
+}
+
+.cover-divider {
+  width: 120px;
+  height: 2px;
+  background: var(--gold);
+  margin: 0 auto 3rem;
+}
+
+.cover-title {
+  font-size: 2.2rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+}
+
+.cover-subtitle {
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--gray-300);
+  margin-bottom: 4rem;
+  letter-spacing: 0.02em;
+}
+
+.cover-meta {
+  font-size: 0.9rem;
+  color: var(--gray-500);
+  letter-spacing: 0.1em;
+}
+
+.cover-meta span { color: var(--gold); }
+
+/* ===== TABLE OF CONTENTS ===== */
+.toc-page {
+  min-height: 100vh;
+  padding: 4rem 3rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.toc-page h2 {
+  font-size: 2rem;
+  color: var(--black);
+  border-bottom: 3px solid var(--gold);
+  padding-bottom: 0.75rem;
+  margin-bottom: 2rem;
+  letter-spacing: 0.05em;
+}
+
+.toc-list { list-style: none; }
+
+.toc-list li {
+  border-bottom: 1px dotted var(--gray-300);
+  padding: 0.5rem 0;
+}
+
+.toc-list li a {
+  text-decoration: none;
+  color: var(--black);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  transition: color 0.2s;
+}
+
+.toc-list li a:hover { color: var(--gold-dark); }
+
+.toc-list .toc-chapter {
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding-top: 0.8rem;
+}
+
+.toc-list .toc-section {
+  font-weight: 400;
+  font-size: 0.95rem;
+  padding-left: 1.5rem;
+  color: var(--gray-700);
+}
+
+.toc-list .toc-appendix {
+  font-weight: 600;
+  font-size: 1rem;
+  padding-top: 0.8rem;
+  color: var(--gray-700);
+}
+
+/* ===== CHAPTER LAYOUT ===== */
+.chapter {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 3rem 4rem;
+}
+
+.chapter-header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 3px solid var(--gold);
+  margin-bottom: 2.5rem;
+}
+
+.chapter-number {
+  display: inline-block;
+  background: var(--black);
+  color: var(--gold);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  padding: 0.4rem 1.5rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.chapter-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--black);
+  letter-spacing: 0.02em;
+}
+
+/* ===== HEADINGS ===== */
+h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--black);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--gold-light);
+}
+
+h4 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+h5 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ===== TEXT ===== */
+p { margin-bottom: 1rem; }
+strong { font-weight: 600; }
+
+code {
+  background: var(--gray-100);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+  font-family: "SF Mono", "Fira Code", "Fira Mono", Menlo, Consolas, monospace;
+  color: var(--gray-800);
+}
+
+/* ===== LISTS ===== */
+ul, ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin-bottom: 0.4rem; }
+li ul, li ol { margin-top: 0.4rem; margin-bottom: 0.4rem; }
+
+/* ===== TABLES ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.92rem;
+}
+
+thead th {
+  background: var(--black);
+  color: var(--gold);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.7rem 0.8rem;
+  letter-spacing: 0.03em;
+  border: 1px solid var(--gray-700);
+}
+
+tbody td {
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--gray-200);
+  vertical-align: top;
+}
+
+tbody tr:nth-child(even) { background: var(--gray-50); }
+tbody tr:hover { background: var(--gold-light); }
+
+/* ===== CALLOUT BOXES ===== */
+.callout {
+  padding: 1rem 1.25rem;
+  border-radius: 6px;
+  margin: 1.5rem 0;
+  border-left: 4px solid;
+  font-size: 0.95rem;
+}
+
+.callout-title {
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.callout-info { background: var(--blue-bg); border-color: var(--blue-info); color: var(--blue-info); }
+.callout-tip { background: var(--green-bg); border-color: var(--green-tip); color: var(--green-tip); }
+.callout-warning { background: var(--amber-bg); border-color: var(--amber-warn); color: var(--amber-warn); }
+.callout-danger { background: var(--red-bg); border-color: var(--red-danger); color: var(--red-danger); }
+
+/* ===== STEP LISTS ===== */
+.steps {
+  counter-reset: step;
+  list-style: none;
+  padding-left: 0;
+}
+
+.steps li {
+  counter-increment: step;
+  padding: 0.75rem 0 0.75rem 3.5rem;
+  position: relative;
+  border-left: 2px solid var(--gray-200);
+  margin-left: 1rem;
+  margin-bottom: 0;
+}
+
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: -1rem;
+  top: 0.65rem;
+  width: 2rem;
+  height: 2rem;
+  background: var(--gold);
+  color: var(--black);
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.steps li:last-child { border-left-color: transparent; }
+
+/* ===== FORMULA ===== */
+.formula {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  font-family: "SF Mono", "Fira Code", Menlo, Consolas, monospace;
+  font-size: 0.95rem;
+  text-align: center;
+  color: var(--black);
+  letter-spacing: 0.02em;
+}
+
+/* ===== INDICATOR COLORS ===== */
+.ind-green { color: #166534; font-weight: 600; }
+.ind-yellow { color: #a16207; font-weight: 600; }
+.ind-red { color: #dc2626; font-weight: 600; }
+
+/* ===== STATUS BADGES ===== */
+.badge {
+  display: inline-block;
+  padding: 0.15em 0.6em;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.badge-posted { background: #dcfce7; color: #166534; }
+.badge-draft { background: #fef9c3; color: #854d0e; }
+.badge-voided { background: #fee2e2; color: #991b1b; }
+.badge-pending { background: #e0e7ff; color: #3730a3; }
+.badge-sent { background: #dbeafe; color: #1e40af; }
+.badge-received { background: #dcfce7; color: #166534; }
+.badge-cancelled { background: #fee2e2; color: #991b1b; }
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  html { font-size: 11pt; }
+  body { background: white; color: black; }
+
+  .cover-page {
+    min-height: auto;
+    height: 100vh;
+    background: white !important;
+    color: black !important;
+    border: 3px solid var(--gold);
+    padding: 4cm 2cm;
+  }
+
+  .cover-page::before { display: none; }
+  .cover-logo { color: var(--gold) !important; font-size: 2.5rem; }
+  .cover-logo-sub { color: var(--gray-500) !important; }
+  .cover-title { color: black !important; }
+  .cover-subtitle { color: var(--gray-500) !important; }
+
+  .toc-page { page-break-before: always; min-height: auto; }
+  .chapter { page-break-before: always; padding: 1.5cm 0; }
+  .chapter-header { padding-top: 0; }
+
+  h3 { page-break-after: avoid; }
+  h4 { page-break-after: avoid; }
+  table { page-break-inside: avoid; }
+  .callout { page-break-inside: avoid; }
+  .steps li { page-break-inside: avoid; }
+
+  thead th {
+    background: var(--gray-100) !important;
+    color: black !important;
+    border: 1px solid #999;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  tbody tr:nth-child(even) {
+    background: #f5f5f5 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  tbody tr:hover { background: inherit; }
+
+  .callout, .chapter-number, .badge {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  a { color: inherit !important; text-decoration: none !important; }
+  @page { margin: 2cm; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- COVER PAGE                                                    -->
+<!-- ============================================================ -->
+<div class="cover-page">
+  <div class="cover-logo">TWO SIX</div>
+  <div class="cover-logo-sub">S.A.S.</div>
+  <div class="cover-divider"></div>
+  <div class="cover-title">Manual del Módulo de Consignación</div>
+  <div class="cover-subtitle">Control de Inventario en Poder de Aliados Comerciales</div>
+  <div class="cover-meta">Versión 1.0 &mdash; <span>Abril 2026</span></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TABLE OF CONTENTS                                             -->
+<!-- ============================================================ -->
+<div class="toc-page" id="toc">
+  <h2>Tabla de Contenido</h2>
+  <ul class="toc-list">
+    <li class="toc-chapter"><a href="#cap1">Capítulo 1: Introducción a la Consignación</a></li>
+    <li class="toc-section"><a href="#cap1-1">1.1 Qué es la consignación comercial</a></li>
+    <li class="toc-section"><a href="#cap1-2">1.2 Flujo general del módulo</a></li>
+    <li class="toc-section"><a href="#cap1-3">1.3 Requisitos previos y acceso</a></li>
+
+    <li class="toc-chapter"><a href="#cap2">Capítulo 2: Clientes Aliados</a></li>
+    <li class="toc-section"><a href="#cap2-1">2.1 Habilitar un cliente como aliado de consignación</a></li>
+    <li class="toc-section"><a href="#cap2-2">2.2 Filtrar aliados en la tabla de clientes</a></li>
+
+    <li class="toc-chapter"><a href="#cap3">Capítulo 3: Bodegas Virtuales</a></li>
+    <li class="toc-section"><a href="#cap3-1">3.1 Crear una bodega virtual</a></li>
+    <li class="toc-section"><a href="#cap3-2">3.2 Consultar stock y movimientos Kardex</a></li>
+    <li class="toc-section"><a href="#cap3-3">3.3 Activar y desactivar bodegas</a></li>
+
+    <li class="toc-chapter"><a href="#cap4">Capítulo 4: Precios Pactados</a></li>
+    <li class="toc-section"><a href="#cap4-1">4.1 Asignar precios de consignación</a></li>
+    <li class="toc-section"><a href="#cap4-2">4.2 Precios masivos (multi-selección)</a></li>
+    <li class="toc-section"><a href="#cap4-3">4.3 Vigencia y exclusión automática</a></li>
+
+    <li class="toc-chapter"><a href="#cap5">Capítulo 5: Despachos</a></li>
+    <li class="toc-section"><a href="#cap5-1">5.1 Crear un despacho borrador</a></li>
+    <li class="toc-section"><a href="#cap5-2">5.2 Verificación pre-envío de stock</a></li>
+    <li class="toc-section"><a href="#cap5-3">5.3 Enviar despacho y código QR</a></li>
+    <li class="toc-section"><a href="#cap5-4">5.4 Recepción con confirmación prenda a prenda</a></li>
+    <li class="toc-section"><a href="#cap5-5">5.5 Resolución de discrepancias</a></li>
+
+    <li class="toc-chapter"><a href="#cap6">Capítulo 6: Reportes de Venta del Aliado</a></li>
+    <li class="toc-section"><a href="#cap6-1">6.1 Aprobar un reporte de venta</a></li>
+    <li class="toc-section"><a href="#cap6-2">6.2 Rechazar un reporte de venta</a></li>
+    <li class="toc-section"><a href="#cap6-3">6.3 Facturación DIAN automática</a></li>
+
+    <li class="toc-chapter"><a href="#cap7">Capítulo 7: Pagos de Consignación</a></li>
+    <li class="toc-section"><a href="#cap7-1">7.1 Verificar pagos del aliado</a></li>
+    <li class="toc-section"><a href="#cap7-2">7.2 Aprobar y rechazar comprobantes</a></li>
+    <li class="toc-section"><a href="#cap7-3">7.3 Pagos parciales y saldo pendiente</a></li>
+
+    <li class="toc-chapter"><a href="#cap8">Capítulo 8: Conteo Cíclico y Mermas</a></li>
+    <li class="toc-section"><a href="#cap8-1">8.1 Crear un conteo cíclico</a></li>
+    <li class="toc-section"><a href="#cap8-2">8.2 Registrar cantidades reales</a></li>
+    <li class="toc-section"><a href="#cap8-3">8.3 Aprobar conteo y facturar faltantes</a></li>
+    <li class="toc-section"><a href="#cap8-4">8.4 Sobrantes</a></li>
+
+    <li class="toc-chapter"><a href="#cap9">Capítulo 9: Reportes de Consignación</a></li>
+    <li class="toc-section"><a href="#cap9-1">9.1 Inventario por cliente</a></li>
+    <li class="toc-section"><a href="#cap9-2">9.2 Mermas y garantías</a></li>
+    <li class="toc-section"><a href="#cap9-3">9.3 Conciliación pendiente</a></li>
+
+    <li class="toc-chapter"><a href="#cap10">Capítulo 10: Portal del Aliado (Sitio Web)</a></li>
+    <li class="toc-section"><a href="#cap10-1">10.1 Mi Stock</a></li>
+    <li class="toc-section"><a href="#cap10-2">10.2 Reportar una venta</a></li>
+    <li class="toc-section"><a href="#cap10-3">10.3 Historial de reportes</a></li>
+    <li class="toc-section"><a href="#cap10-4">10.4 Realizar un pago</a></li>
+    <li class="toc-section"><a href="#cap10-5">10.5 Confirmación de recepción por QR</a></li>
+
+    <li class="toc-appendix"><a href="#apA">Apéndice A: Cuentas PUC de Consignación</a></li>
+    <li class="toc-appendix"><a href="#apB">Apéndice B: Impacto Contable por Operación</a></li>
+    <li class="toc-appendix"><a href="#apC">Apéndice C: Glosario de Consignación</a></li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 1: INTRODUCCIÓN                                       -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap1">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 1</div>
+    <h2 class="chapter-title">Introducción a la Consignación</h2>
+  </div>
+
+  <h3 id="cap1-1">1.1 Qué es la consignación comercial</h3>
+  <p>La consignación es un modelo de distribución en el cual Two Six entrega mercancía a un <strong>aliado comercial</strong> (tienda, boutique o punto de venta de terceros) sin que este la compre de inmediato. El aliado exhibe y vende las prendas en su establecimiento, y solo se factura al aliado la mercancía efectivamente vendida o las pérdidas detectadas en inventario.</p>
+  <p>Este modelo ofrece ventajas significativas:</p>
+  <ul>
+    <li><strong>Para Two Six:</strong> Mayor cobertura geográfica sin inversión en puntos de venta propios, control total sobre los precios y el inventario.</li>
+    <li><strong>Para el aliado:</strong> Cero inversión inicial en inventario, solo paga lo que vende, reduce su riesgo financiero.</li>
+  </ul>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Nota</div>
+    Durante todo el ciclo de consignación, la mercancía sigue siendo <strong>propiedad de Two Six</strong>. Solo al momento de la venta se transfiere la propiedad y se genera la factura electrónica DIAN correspondiente.
+  </div>
+
+  <h3 id="cap1-2">1.2 Flujo general del módulo</h3>
+  <p>El ciclo de vida de la mercancía en consignación sigue estos pasos:</p>
+  <ol class="steps">
+    <li><strong>Configuración:</strong> Se habilita al cliente como aliado de consignación, se crean sus bodegas virtuales y se pactan los precios de venta.</li>
+    <li><strong>Despacho:</strong> Se crea un despacho con las prendas a enviar. Al enviar, se genera un código QR para la recepción y se registra el asiento contable de reclasificación de inventario.</li>
+    <li><strong>Recepción:</strong> El aliado escanea el QR y confirma prenda por prenda la mercancía recibida, reportando discrepancias si las hay.</li>
+    <li><strong>Venta (Sell-out):</strong> El aliado reporta las ventas realizadas desde su portal web. Two Six aprueba el reporte, lo que genera la factura DIAN y los asientos contables de ingreso y costo.</li>
+    <li><strong>Pago:</strong> El aliado realiza el pago de la mercancía vendida, adjuntando comprobante. Two Six verifica y aprueba el pago.</li>
+    <li><strong>Conteo cíclico:</strong> Periódicamente se realiza un inventario físico para detectar faltantes o sobrantes. Los faltantes se pueden facturar como merma.</li>
+    <li><strong>Devoluciones:</strong> La mercancía no vendida puede ser devuelta a Two Six, reingresando al inventario principal.</li>
+  </ol>
+
+  <h3 id="cap1-3">1.3 Requisitos previos y acceso</h3>
+  <p>Para utilizar el módulo de consignación es necesario contar con:</p>
+  <ul>
+    <li><strong>Permisos:</strong> El administrador debe haber asignado los permisos del grupo <strong>"Consignación"</strong> al usuario en la sección de Roles y Permisos del CMS.</li>
+    <li><strong>Clientes registrados:</strong> Los aliados deben existir como clientes en el sistema con sus datos completos (documento, correo, teléfono), ya que estos se usan para la facturación DIAN.</li>
+    <li><strong>Productos con costo:</strong> Los productos deben tener definido su costo de manufactura para la generación correcta de asientos contables.</li>
+  </ul>
+  <p>Acceda al módulo desde el menú lateral izquierdo del CMS, sección <strong>Consignación</strong>, que despliega las opciones: Bodegas, Precios, Despachos, Reportes de Venta, Pagos, Conteo Cíclico y Reportes.</p>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    La página de inicio del CMS incluye una sección de <strong>Consignación</strong> con tarjetas de acceso rápido a cada funcionalidad. Los números en cada tarjeta indican la cantidad de registros o acciones pendientes.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 2: CLIENTES ALIADOS                                   -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap2">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 2</div>
+    <h2 class="chapter-title">Clientes Aliados</h2>
+  </div>
+
+  <h3 id="cap2-1">2.1 Habilitar un cliente como aliado de consignación</h3>
+  <p>Para que un cliente pueda participar en el programa de consignación, primero debe ser habilitado como aliado. Este paso es fundamental porque desbloquea la creación de bodegas, precios pactados y despachos para ese cliente.</p>
+  <ol class="steps">
+    <li>Navegue a <strong>Clientes</strong> en el menú lateral del CMS.</li>
+    <li>Localice al cliente usando el buscador (puede buscar por nombre, documento, email o teléfono).</li>
+    <li>Haga clic en el botón de <strong>edición</strong> (ícono de lápiz) del cliente.</li>
+    <li>En el formulario de edición, desplácese hasta la sección destacada con borde dorado: <strong>"Cliente aliado de consignación"</strong>.</li>
+    <li>Active la casilla de verificación. Al hacerlo, el sistema habilitará todas las funcionalidades de consignación para este cliente.</li>
+    <li>Haga clic en <strong>"Guardar cambios"</strong>.</li>
+  </ol>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Nota</div>
+    La descripción bajo la casilla indica: <em>"Habilita la creación de bodegas virtuales, precios pactados y despachos a este cliente."</em> Asegúrese de que el cliente tenga toda su información completa (documento, correo y teléfono) antes de habilitarlo, ya que estos datos se utilizan para la facturación DIAN.
+  </div>
+
+  <p>Una vez habilitado, el cliente aparecerá con un badge <span class="badge" style="background: #fef9c3; color: #854d0e;">Consignación</span> en la columna "Aliado" de la tabla de clientes.</p>
+
+  <h3 id="cap2-2">2.2 Filtrar aliados en la tabla de clientes</h3>
+  <p>Para ver únicamente los clientes que son aliados de consignación:</p>
+  <ul>
+    <li>Active la casilla <strong>"Solo aliados de consignación"</strong> ubicada sobre la tabla de clientes.</li>
+    <li>La tabla se filtrará mostrando solo los clientes con el indicador activo.</li>
+  </ul>
+  <p>La página de Bodegas también muestra un banner informativo con la cantidad de aliados registrados y un enlace directo a la página de Clientes para gestionar aliados.</p>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">Importante</div>
+    Desactivar a un cliente como aliado de consignación <strong>no elimina</strong> sus bodegas, precios ni stock existente. Solo impide la creación de nuevos registros. Para cerrar completamente la relación, primero asegúrese de que todas las bodegas estén vacías y todos los pagos estén al día.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 3: BODEGAS VIRTUALES                                  -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap3">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 3</div>
+    <h2 class="chapter-title">Bodegas Virtuales</h2>
+  </div>
+
+  <h3 id="cap3-1">3.1 Crear una bodega virtual</h3>
+  <p>Cada aliado puede tener una o más bodegas virtuales que representan sus puntos de venta o almacenamiento. Esto permite llevar un control detallado del inventario por ubicación. Para crear una bodega:</p>
+  <ol class="steps">
+    <li>Navegue a <strong>Consignación &rarr; Bodegas</strong>.</li>
+    <li>Haga clic en <strong>"Nueva Bodega"</strong>.</li>
+    <li>Seleccione el <strong>Cliente Aliado</strong> en el desplegable. Solo aparecen los clientes habilitados como aliados de consignación.</li>
+    <li>Ingrese el <strong>Nombre de la bodega</strong> (campo obligatorio). Utilice un nombre descriptivo, por ejemplo: "Tienda Centro Comercial Andino" o "Bodega Norte Medellín".</li>
+    <li>Opcionalmente, complete:
+      <ul>
+        <li><strong>Dirección:</strong> Dirección física de la bodega.</li>
+        <li><strong>Ciudad y Departamento:</strong> Ubicación geográfica.</li>
+      </ul>
+    </li>
+    <li>La casilla <strong>"Bodega activa"</strong> viene marcada por defecto. Solo desactívela si desea crear la bodega sin que esté disponible para despachos.</li>
+    <li>Haga clic en <strong>"Crear"</strong>.</li>
+  </ol>
+
+  <table>
+    <thead>
+      <tr><th>Campo</th><th>Obligatorio</th><th>Descripción</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Cliente Aliado</td><td>Sí</td><td>Solo clientes con <code>is_consignment_ally = true</code></td></tr>
+      <tr><td>Nombre de Bodega</td><td>Sí</td><td>Nombre descriptivo del punto de venta o almacén</td></tr>
+      <tr><td>Dirección</td><td>No</td><td>Dirección física</td></tr>
+      <tr><td>Ciudad</td><td>No</td><td>Ciudad de ubicación</td></tr>
+      <tr><td>Departamento</td><td>No</td><td>Departamento de ubicación</td></tr>
+      <tr><td>Bodega activa</td><td>&mdash;</td><td>Activa por defecto. Desactivar oculta la bodega en nuevos despachos</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">Advertencia</div>
+    No es posible eliminar una bodega que contenga stock. Primero debe asegurarse de que toda la mercancía haya sido vendida, devuelta o trasladada antes de intentar eliminarla.
+  </div>
+
+  <h3 id="cap3-2">3.2 Consultar stock y movimientos Kardex</h3>
+  <p>Para verificar el inventario actual de una bodega y su historial de movimientos:</p>
+  <ol class="steps">
+    <li>En la tabla de bodegas, haga clic en el botón de <strong>Stock/Kardex</strong> (ícono de paquete) de la bodega deseada.</li>
+    <li>Se abrirá un modal con <strong>dos pestañas</strong>:</li>
+  </ol>
+
+  <h4>Pestaña: Stock Actual</h4>
+  <p>Muestra un resumen con el total de unidades en la bodega, dividido en dos estados:</p>
+  <ul>
+    <li><span class="badge badge-draft">Pendiente recepción</span> &mdash; Prendas despachadas que aún no han sido confirmadas por el aliado.</li>
+    <li><span class="badge badge-posted">En consignación</span> &mdash; Prendas confirmadas y disponibles para la venta.</li>
+  </ul>
+  <p>La tabla detallada muestra para cada prenda: imagen del producto, referencia, color, talla, estado y cantidad.</p>
+
+  <h4>Pestaña: Kardex</h4>
+  <p>Muestra el historial cronológico de todos los movimientos de inventario de la bodega. Cada registro incluye:</p>
+  <table>
+    <thead>
+      <tr><th>Campo</th><th>Descripción</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Fecha</td><td>Fecha y hora del movimiento</td></tr>
+      <tr><td>Tipo</td><td>Origen del movimiento, con colores distintivos: <strong>Despacho</strong>, <strong>Sell-out</strong>, <strong>Devolución</strong>, <strong>Conteo cíclico</strong>, <strong>Merma</strong></td></tr>
+      <tr><td>Producto</td><td>Imagen, referencia, color y talla de la prenda</td></tr>
+      <tr><td>E/S</td><td><span class="ind-green">IN</span> (entrada a la bodega) o <span class="ind-red">OUT</span> (salida de la bodega)</td></tr>
+      <tr><td>Cantidad</td><td>Número de unidades del movimiento</td></tr>
+      <tr><td>Descripción</td><td>Detalle automático generado por el sistema</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="cap3-3">3.3 Activar y desactivar bodegas</h3>
+  <p>Para desactivar temporalmente una bodega sin eliminarla, edite la bodega y desmarque la casilla <strong>"Bodega activa"</strong>. Las bodegas inactivas:</p>
+  <ul>
+    <li>No aparecen como opción al crear nuevos despachos.</li>
+    <li>Conservan su stock e historial intactos.</li>
+    <li>Se muestran en la tabla con indicador <span class="badge" style="background: #e5e5e5; color: #737373;">Inactiva</span>.</li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 4: PRECIOS PACTADOS                                   -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap4">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 4</div>
+    <h2 class="chapter-title">Precios Pactados</h2>
+  </div>
+
+  <h3 id="cap4-1">4.1 Asignar precios de consignación</h3>
+  <p>Los precios pactados definen el valor al cual se facturarán las ventas realizadas por el aliado. Cada aliado puede tener precios distintos para cada producto, lo que permite una negociación flexible según el volumen, la ubicación o las condiciones comerciales acordadas.</p>
+  <ol class="steps">
+    <li>Navegue a <strong>Consignación &rarr; Precios</strong>.</li>
+    <li>Haga clic en <strong>"Nuevo Precio"</strong>.</li>
+    <li>Seleccione el <strong>Cliente Aliado</strong> en el desplegable.</li>
+    <li>Una vez seleccionado el aliado, aparecerá la lista de productos disponibles. Los productos que ya tienen un precio activo para este aliado se excluyen automáticamente.</li>
+    <li>Seleccione uno o más <strong>productos</strong> usando las casillas de verificación. Puede buscar por referencia o nombre en el campo de búsqueda.</li>
+    <li>Ingrese el <strong>Precio (COP)</strong>: valor unitario de venta en pesos colombianos. Debe ser mayor a cero.</li>
+    <li>Seleccione <strong>"Vigente desde"</strong>: fecha a partir de la cual aplica el precio (obligatorio).</li>
+    <li>Opcionalmente, ingrese <strong>"Vigente hasta"</strong>: fecha de expiración del precio. Si se deja vacío, el precio no tiene fecha de vencimiento.</li>
+    <li>Haga clic en <strong>"Crear"</strong> (o "Crear N precios" si seleccionó varios productos).</li>
+  </ol>
+
+  <h3 id="cap4-2">4.2 Precios masivos (multi-selección)</h3>
+  <p>El sistema facilita la creación masiva de precios cuando desea aplicar el mismo valor a múltiples productos de un aliado:</p>
+  <ul>
+    <li>Utilice el buscador de productos para filtrar por referencia o nombre.</li>
+    <li>Haga clic en <strong>"Seleccionar todos los filtrados"</strong> para marcar todos los productos visibles de una vez.</li>
+    <li>Use <strong>"Limpiar"</strong> para desmarcar toda la selección.</li>
+    <li>El botón de creación mostrará la cantidad de precios que se crearán, por ejemplo: <strong>"Crear 15 precios"</strong>.</li>
+    <li>Al guardar, se creará un registro de precio individual por cada producto seleccionado, todos con el mismo valor y vigencia.</li>
+  </ul>
+
+  <h3 id="cap4-3">4.3 Vigencia y exclusión automática</h3>
+  <p>El sistema implementa una lógica inteligente para evitar duplicados:</p>
+  <ul>
+    <li>Los productos que <strong>ya tienen un precio activo</strong> (sin fecha de vencimiento o con fecha futura) para el aliado seleccionado se excluyen automáticamente de la lista de selección.</li>
+    <li>Se muestra un mensaje informativo: <em>"N productos ya tienen precio activo y no aparecen en la lista."</em></li>
+    <li>Para modificar un precio existente, utilice el botón de edición en la tabla principal.</li>
+  </ul>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    Use el filtro <strong>"Solo vigentes"</strong> en la tabla principal para visualizar únicamente los precios actualmente en vigor. Los filtros de búsqueda permiten buscar por nombre del aliado, SKU o referencia del diseño.
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Cascada de precios</div>
+    Al procesar un sell-out, el sistema busca el precio en este orden: (1) precio pactado para el aliado y producto específico, (2) precio base del producto. Si no existe ninguno, la operación no se puede procesar.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 5: DESPACHOS                                          -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap5">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 5</div>
+    <h2 class="chapter-title">Despachos</h2>
+  </div>
+
+  <h3 id="cap5-1">5.1 Crear un despacho borrador</h3>
+  <p>Un despacho representa el envío físico de mercancía desde la bodega principal de Two Six hacia una bodega del aliado. El proceso comienza con un borrador que puede ser editado antes de confirmar el envío:</p>
+  <ol class="steps">
+    <li>Navegue a <strong>Consignación &rarr; Despachos</strong>.</li>
+    <li>Haga clic en <strong>"Nuevo Despacho"</strong>.</li>
+    <li>Seleccione la <strong>Bodega</strong> destino en el desplegable. Solo aparecen bodegas activas de aliados con precios configurados.</li>
+    <li>Agregue productos al despacho:
+      <ul>
+        <li>Seleccione el <strong>producto</strong> en el desplegable. Solo se muestran productos que tienen precio pactado con el aliado de esa bodega.</li>
+        <li>Ingrese la <strong>cantidad</strong>. El sistema limita automáticamente al stock disponible en la bodega principal.</li>
+        <li>Junto a cada producto se muestra <strong>"(disp: N)"</strong> indicando las unidades disponibles.</li>
+      </ul>
+    </li>
+    <li>Agregue más líneas con el botón <strong>"+ Agregar ítem"</strong> si es necesario.</li>
+    <li>Haga clic en <strong>"Crear"</strong>. El despacho se guarda en estado <span class="badge badge-draft">BORRADOR</span>.</li>
+  </ol>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Nota</div>
+    En estado borrador, el despacho <strong>no afecta el inventario</strong>. Puede editar las cantidades, agregar o quitar productos, o eliminarlo completamente. El inventario solo se compromete al momento del envío.
+  </div>
+
+  <h3 id="cap5-2">5.2 Verificación pre-envío de stock</h3>
+  <p>Entre la creación del borrador y el envío pueden pasar horas o días, durante los cuales otras ventas u otros despachos pueden reducir el stock disponible. Por esta razón, al hacer clic en <strong>"Enviar"</strong>, el sistema ejecuta una <strong>verificación pre-envío</strong>:</p>
+  <ul>
+    <li>Se muestra una tabla comparativa con cada producto del despacho, la cantidad solicitada y el stock actual disponible.</li>
+    <li>Si algún producto tiene <strong>stock insuficiente</strong>, se resalta en rojo y el sistema ofrece ajustar automáticamente las cantidades al stock disponible.</li>
+    <li>Puede <strong>cancelar</strong> para volver y ajustar manualmente, o <strong>confirmar</strong> para enviar con las cantidades ajustadas.</li>
+  </ul>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">Importante</div>
+    La verificación pre-envío es una medida de seguridad crítica que previene despachos con cantidades superiores al stock real. Nunca envíe un despacho sin revisarla, especialmente si el borrador fue creado hace varios días.
+  </div>
+
+  <h3 id="cap5-3">5.3 Enviar despacho y código QR</h3>
+  <p>Una vez confirmado el envío, se ejecutan las siguientes acciones automáticas:</p>
+  <ol class="steps">
+    <li>El estado del despacho cambia a <span class="badge badge-sent">ENVIADO</span>.</li>
+    <li>El inventario se descuenta de la bodega principal y se registra como <strong>"Pendiente de recepción"</strong> en la bodega del aliado.</li>
+    <li>Se genera un <strong>código QR único</strong> que contiene un enlace a la página pública de confirmación de recepción.</li>
+    <li>Se genera automáticamente el <strong>asiento contable</strong> de reclasificación de inventario:
+      <div class="formula">DB 143505 Mercancías en consignación &nbsp;/&nbsp; CR 143501 Inventario en bodega</div>
+    </li>
+  </ol>
+  <p>El código QR debe ser impreso y adjuntado a la mercancía, o compartido digitalmente con el aliado.</p>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    Use el botón de <strong>impresión</strong> en el modal de detalle del despacho para generar un documento físico con el QR, la lista de productos y las cantidades enviadas. Este documento acompaña la mercancía durante el transporte.
+  </div>
+
+  <h4>Estados del despacho</h4>
+  <table>
+    <thead>
+      <tr><th>Estado</th><th>Significado</th><th>Acciones disponibles</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="badge badge-draft">BORRADOR</span></td><td>Creado pero no enviado. No afecta inventario.</td><td>Editar, Enviar, Cancelar, Eliminar</td></tr>
+      <tr><td><span class="badge badge-sent">ENVIADO</span></td><td>En tránsito. Inventario descontado de bodega principal.</td><td>Ver detalle, Imprimir</td></tr>
+      <tr><td><span class="badge badge-received">RECIBIDO</span></td><td>Confirmado por el aliado. Stock en consignación.</td><td>Ver detalle</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="cap5-4">5.4 Recepción con confirmación prenda a prenda</h3>
+  <p>La recepción es el proceso en el que el aliado verifica físicamente cada prenda recibida. Se realiza a través de la <strong>página pública de confirmación QR</strong> (ver Capítulo 10.5). El proceso funciona así:</p>
+  <ol class="steps">
+    <li>El aliado escanea el código QR con su dispositivo móvil.</li>
+    <li>Se abre una página web que muestra la lista de prendas enviadas.</li>
+    <li>El aliado debe verificar <strong>cada prenda individualmente</strong>:
+      <ul>
+        <li>Si la prenda está en perfecto estado y la cantidad es correcta, marca la casilla de verificación. Se registra automáticamente la cantidad recibida igual a la enviada.</li>
+        <li>Si hay algún problema (faltantes, daño, diferencia de cantidad), deja la casilla sin marcar, ajusta la <strong>cantidad recibida</strong> y registra una <strong>observación</strong> describiendo la novedad.</li>
+      </ul>
+    </li>
+    <li>El progreso se muestra como <strong>"X de Y prendas verificadas"</strong>. El botón de confirmación solo se habilita cuando <strong>todas</strong> las prendas han sido verificadas.</li>
+    <li>Ingresa su nombre en el campo <strong>"Tu nombre"</strong> (obligatorio).</li>
+    <li>Haga clic en <strong>"Confirmar recepción"</strong>.</li>
+  </ol>
+
+  <h3 id="cap5-5">5.5 Resolución de discrepancias</h3>
+  <p>Si durante la recepción se reportaron diferencias, el despacho queda marcado con un badge de discrepancia en la tabla de despachos del CMS. El operador de Two Six debe revisar cada ítem con novedad y tomar una decisión:</p>
+  <ul>
+    <li><strong>Aceptar:</strong> Se acepta la observación del aliado. El stock se ajusta según la cantidad realmente recibida. La diferencia queda registrada.</li>
+    <li><strong>Rechazar:</strong> Se rechaza la observación. El stock se mantiene según la cantidad originalmente despachada.</li>
+  </ul>
+  <p>Las resoluciones quedan registradas en el historial del despacho para fines de auditoría y trazabilidad.</p>
+
+  <div class="callout callout-danger">
+    <div class="callout-title">Atención</div>
+    Las discrepancias no resueltas afectan la precisión del inventario. Se recomienda resolver todas las discrepancias dentro de las <strong>48 horas</strong> siguientes a la recepción para mantener datos confiables.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 6: REPORTES DE VENTA DEL ALIADO                       -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap6">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 6</div>
+    <h2 class="chapter-title">Reportes de Venta del Aliado</h2>
+  </div>
+
+  <p>Los reportes de venta (sell reports) son la forma en que los aliados informan a Two Six sobre las prendas vendidas en sus puntos de venta. Cada reporte pasa por un proceso de aprobación antes de generar la facturación y los movimientos de inventario.</p>
+
+  <h3 id="cap6-1">6.1 Aprobar un reporte de venta</h3>
+  <ol class="steps">
+    <li>Navegue a <strong>Consignación &rarr; Reportes de Venta</strong>.</li>
+    <li>Utilice el filtro de estado para mostrar solo los reportes <span class="badge badge-draft">PENDIENTE</span>. El sistema muestra la cantidad de reportes pendientes junto al filtro.</li>
+    <li>Haga clic en el botón de <strong>ver detalle</strong> (ícono de ojo) para revisar el contenido del reporte.</li>
+    <li>En el modal de detalle verifique:
+      <ul>
+        <li>Información del aliado y la bodega.</li>
+        <li>Lista de productos vendidos con imagen, precio unitario pactado, cantidad y total por línea.</li>
+        <li>Subtotal general del reporte (cantidad total de unidades y monto total en COP).</li>
+        <li>Notas del aliado (si las hay).</li>
+      </ul>
+    </li>
+    <li>Si todo es correcto, haga clic en <strong>"Aprobar"</strong> (ícono de check verde).</li>
+    <li>El sistema ejecuta automáticamente tres acciones en secuencia:
+      <ul>
+        <li>Marca el reporte como <span class="badge badge-posted">APROBADO</span>.</li>
+        <li>Procesa el sell-out: descuenta el stock de la bodega del aliado, genera los movimientos Kardex y los asientos contables (ingreso + costo).</li>
+        <li>Genera la <strong>factura electrónica DIAN</strong> con el CUFE correspondiente.</li>
+      </ul>
+    </li>
+    <li>Se muestra un mensaje de éxito con el CUFE de la factura generada.</li>
+  </ol>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">Importante</div>
+    Si la factura DIAN no se puede generar (por ejemplo, por problemas de conexión con los servidores de la DIAN), el sell-out se procesa igualmente y se muestra una advertencia. La factura quedará pendiente y se enviará automáticamente cuando el cron de facturación la procese.
+  </div>
+
+  <h3 id="cap6-2">6.2 Rechazar un reporte de venta</h3>
+  <ol class="steps">
+    <li>Haga clic en el botón de <strong>rechazo</strong> (ícono de X roja) del reporte.</li>
+    <li>Ingrese el <strong>motivo del rechazo</strong> en el campo de texto que aparece. Este campo es obligatorio.</li>
+    <li>Confirme el rechazo.</li>
+    <li>El reporte cambia a estado <span class="badge badge-voided">RECHAZADO</span> y el motivo queda visible tanto en el CMS como en el portal del aliado.</li>
+  </ol>
+  <p>Los reportes rechazados <strong>no generan ningún movimiento</strong> de inventario ni contable. El aliado puede ver el motivo del rechazo en su portal y crear un nuevo reporte corregido.</p>
+
+  <h3 id="cap6-3">6.3 Facturación DIAN automática</h3>
+  <p>Al aprobar un reporte de venta, la factura electrónica se emite con los siguientes datos:</p>
+  <ul>
+    <li><strong>Cliente:</strong> Datos del aliado (NIT, razón social, dirección, correo electrónico).</li>
+    <li><strong>Productos:</strong> Cada línea del reporte con referencia, descripción, cantidad y valor unitario pactado.</li>
+    <li><strong>Impuestos:</strong> IVA según la configuración del producto.</li>
+    <li><strong>Resolución:</strong> Numeración según la resolución DIAN vigente configurada en el sistema.</li>
+  </ul>
+  <p>La factura se envía automáticamente al correo electrónico del aliado una vez que la DIAN la autoriza (estado AUTHORIZED). Este proceso ocurre mediante un cron job que verifica periódicamente las facturas pendientes de autorización.</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 7: PAGOS DE CONSIGNACIÓN                              -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap7">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 7</div>
+    <h2 class="chapter-title">Pagos de Consignación</h2>
+  </div>
+
+  <h3 id="cap7-1">7.1 Verificar pagos del aliado</h3>
+  <p>Los aliados realizan los pagos de la mercancía vendida a través de su portal web, donde pueden adjuntar comprobantes de pago (imágenes o PDF). Estos pagos llegan al CMS para su verificación por parte del equipo administrativo.</p>
+  <ol class="steps">
+    <li>Navegue a <strong>Consignación &rarr; Pagos</strong>.</li>
+    <li>Filtre por estado <span class="badge badge-draft">PENDIENTE</span> para ver los pagos que requieren verificación.</li>
+    <li>Haga clic en el botón de <strong>ver detalle</strong> (ícono de ojo).</li>
+    <li>En el modal de detalle verifique:
+      <ul>
+        <li><strong>Monto del pago</strong> vs. <strong>Total de la orden:</strong> Compruebe que el monto sea razonable.</li>
+        <li><strong>Medio de pago:</strong> Transferencia bancaria, efectivo u otro.</li>
+        <li><strong>Referencia:</strong> Número de referencia de la transacción bancaria (para transferencias).</li>
+        <li><strong>Comprobante:</strong> Imagen o PDF del soporte de pago. Haga clic para ampliar.</li>
+        <li><strong>Notas:</strong> Comentarios adicionales del aliado.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h3 id="cap7-2">7.2 Aprobar y rechazar comprobantes</h3>
+  <h4>Para aprobar un pago:</h4>
+  <ol class="steps">
+    <li>Revise el comprobante y verifique que los datos coincidan con la transferencia real.</li>
+    <li>Haga clic en <strong>"Aprobar"</strong> (ícono de check verde).</li>
+    <li>El sistema registra el pago y actualiza el saldo de la orden.</li>
+    <li>Si la suma de todos los pagos aprobados cubre el total de la orden, esta se marca automáticamente como <span class="badge badge-posted">PAGADA</span>.</li>
+  </ol>
+
+  <h4>Para rechazar un pago:</h4>
+  <ol class="steps">
+    <li>Haga clic en <strong>"Rechazar"</strong> (ícono de X roja).</li>
+    <li>Ingrese el <strong>motivo del rechazo</strong> (obligatorio).</li>
+    <li>El pago queda en estado <span class="badge badge-voided">RECHAZADO</span> con el motivo visible para el aliado en su portal.</li>
+  </ol>
+
+  <h3 id="cap7-3">7.3 Pagos parciales y saldo pendiente</h3>
+  <p>El sistema soporta <strong>pagos parciales</strong>. Un aliado puede realizar múltiples pagos para cubrir una sola factura:</p>
+  <ul>
+    <li>Cada pago aprobado se suma al total abonado de la orden.</li>
+    <li>El saldo pendiente se calcula como: <strong>Total facturado - Suma de pagos aprobados</strong>.</li>
+    <li>Solo cuando la suma de pagos aprobados es <strong>mayor o igual</strong> al total facturado, la orden se marca como pagada.</li>
+    <li>Los pagos rechazados no se cuentan en la suma.</li>
+  </ul>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    Los medios de pago se muestran con etiquetas claras: <strong>Transferencia</strong> (requiere comprobante obligatorio), <strong>Efectivo</strong> y <strong>Otro</strong>. Para transferencias bancarias, siempre verifique que el número de referencia coincida con el extracto bancario antes de aprobar.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 8: CONTEO CÍCLICO Y MERMAS                            -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap8">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 8</div>
+    <h2 class="chapter-title">Conteo Cíclico y Mermas</h2>
+  </div>
+
+  <p>El conteo cíclico es el proceso mediante el cual se verifica periódicamente el inventario físico que tiene el aliado en su bodega, comparándolo con el inventario teórico registrado en el sistema. Este proceso es fundamental para detectar faltantes (mermas) y sobrantes, y mantener la integridad de los datos de inventario.</p>
+
+  <h3 id="cap8-1">8.1 Crear un conteo cíclico</h3>
+  <ol class="steps">
+    <li>Navegue a <strong>Consignación &rarr; Conteo Cíclico</strong>.</li>
+    <li>Haga clic en <strong>"Nuevo Conteo"</strong>.</li>
+    <li>Seleccione la <strong>Bodega</strong> a inventariar. Solo aparecen bodegas activas.</li>
+    <li>Opcionalmente, agregue <strong>notas</strong> (por ejemplo: "Conteo trimestral Q2 2026").</li>
+    <li>Haga clic en <strong>"Crear"</strong>.</li>
+    <li>El sistema genera automáticamente una <strong>instantánea del inventario teórico</strong> actual de esa bodega, creando una línea por cada producto con stock.</li>
+  </ol>
+
+  <h3 id="cap8-2">8.2 Registrar cantidades reales</h3>
+  <ol class="steps">
+    <li>Abra el conteo creado haciendo clic en el botón de edición.</li>
+    <li>Se muestra una tabla con todos los productos del inventario teórico, cada uno con imagen, referencia, color y talla.</li>
+    <li>Para cada producto, ingrese la <strong>cantidad real</strong> encontrada físicamente en el campo "Cant. Real".</li>
+    <li>El sistema calcula automáticamente la <strong>diferencia</strong> y la muestra con código de colores:
+      <ul>
+        <li><span class="ind-green">0</span> &mdash; Sin diferencia (stock correcto).</li>
+        <li><span class="ind-red">-N</span> &mdash; Faltante (hay menos mercancía de la esperada).</li>
+        <li><span style="color: #1e40af; font-weight: 600;">+N</span> &mdash; Sobrante (hay más mercancía de la esperada).</li>
+      </ul>
+    </li>
+    <li>El resumen superior muestra en tiempo real: Total referencias, Contadas, Coincidencias, Faltantes y Sobrantes.</li>
+    <li>Guarde el progreso con <strong>"Guardar"</strong>. Puede volver a editar mientras el conteo esté en estado <span class="badge badge-draft">BORRADOR</span>.</li>
+  </ol>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Nota</div>
+    <strong>Todas</strong> las líneas deben ser contadas (tener un valor en "Cant. Real") antes de poder aprobar el conteo. Las líneas sin contar se identifican fácilmente porque no tienen valor en la columna de diferencia.
+  </div>
+
+  <h3 id="cap8-3">8.3 Aprobar conteo y facturar faltantes</h3>
+  <ol class="steps">
+    <li>Una vez que todas las líneas tengan cantidad real registrada, haga clic en <strong>"Aprobar"</strong>.</li>
+    <li>El sistema ajusta el stock de la bodega según las cantidades reales reportadas.</li>
+    <li>Se generan los asientos contables correspondientes (faltantes como gasto, sobrantes como ingreso).</li>
+    <li>Si se detectan <strong>faltantes</strong>, el sistema ofrece facturar la merma al aliado:
+      <ul>
+        <li>Se abre un modal de <strong>"Facturar Merma"</strong>.</li>
+        <li>Seleccione el <strong>modo de precio</strong>:
+          <ul>
+            <li><strong>Consignación:</strong> Usa el precio pactado del aliado para cada producto (o el precio base si no hay precio pactado).</li>
+            <li><strong>Penalización:</strong> Permite ingresar un precio unitario personalizado que se aplica a todos los faltantes por igual.</li>
+          </ul>
+        </li>
+        <li>Opcionalmente, agregue notas para la factura.</li>
+        <li>Confirme para generar la orden de merma y la factura electrónica DIAN.</li>
+      </ul>
+    </li>
+    <li>Se muestra un mensaje de éxito con el CUFE de la factura generada.</li>
+  </ol>
+
+  <div class="callout callout-danger">
+    <div class="callout-title">Atención</div>
+    La aprobación del conteo cíclico es una acción <strong>irreversible</strong>. Una vez aprobado, no se pueden modificar las cantidades ni revertir los ajustes de stock. Verifique cuidadosamente todos los valores antes de aprobar.
+  </div>
+
+  <h3 id="cap8-4">8.4 Sobrantes</h3>
+  <p>Los sobrantes (más mercancía de la esperada) se registran como ingreso extraordinario y el stock de la bodega se ajusta al alza automáticamente. No se genera factura para los sobrantes, únicamente el asiento contable correspondiente:</p>
+  <div class="formula">DB 143505 Mercancías en consignación &nbsp;/&nbsp; CR 429581 Ingresos diversos</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 9: REPORTES DE CONSIGNACIÓN                           -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap9">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 9</div>
+    <h2 class="chapter-title">Reportes de Consignación</h2>
+  </div>
+
+  <p>La página de reportes ofrece una visión consolidada del estado del programa de consignación, organizada en tres pestañas especializadas que permiten monitorear el inventario, las pérdidas y la frecuencia de conciliación.</p>
+
+  <h3 id="cap9-1">9.1 Inventario por cliente</h3>
+  <p>La primera pestaña muestra un resumen del inventario en consignación agrupado por aliado. Para cada aliado se presenta:</p>
+  <ul>
+    <li><strong>Nombre del aliado</strong> y NIT.</li>
+    <li>Resumen de sell-out acumulado.</li>
+    <li>Tabla por bodega con las siguientes columnas:</li>
+  </ul>
+  <table>
+    <thead>
+      <tr><th>Columna</th><th>Descripción</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Bodega</td><td>Nombre de la bodega virtual</td></tr>
+      <tr><td>Pend. recep.</td><td>Unidades despachadas aún no confirmadas por el aliado</td></tr>
+      <tr><td>En consignación</td><td>Unidades confirmadas y disponibles para venta</td></tr>
+      <tr><td>Despachado (hist.)</td><td>Total acumulado de unidades despachadas históricamente</td></tr>
+      <tr><td>Faltantes</td><td>Unidades faltantes detectadas en conteos. <span class="ind-red">Rojo si &gt; 0</span></td></tr>
+      <tr><td>Sobrantes</td><td>Unidades sobrantes detectadas. <span class="ind-yellow">Dorado si &gt; 0</span></td></tr>
+      <tr><td>Pendientes</td><td>Acciones pendientes de resolver. <span class="ind-red">Badge rojo si &gt; 0</span></td></tr>
+      <tr><td>Dev. portafolio</td><td>Unidades devueltas por no venderse</td></tr>
+      <tr><td>Garantía</td><td>Unidades en proceso de garantía</td></tr>
+      <tr><td>Dev. post-venta</td><td>Devoluciones de prendas ya vendidas</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="cap9-2">9.2 Mermas y garantías</h3>
+  <p>La segunda pestaña permite consultar las mermas facturadas y las garantías procesadas en un rango de fechas:</p>
+  <ol class="steps">
+    <li>Ingrese las fechas <strong>"Desde"</strong> y <strong>"Hasta"</strong>.</li>
+    <li>Haga clic en <strong>"Consultar"</strong>.</li>
+    <li>Se muestran tres tarjetas resumen:
+      <ul>
+        <li><strong>Mermas facturadas:</strong> Cantidad de órdenes de merma.</li>
+        <li><strong>Monto merma:</strong> Total facturado en COP.</li>
+        <li><strong>Garantías procesadas:</strong> Cantidad de unidades en garantía.</li>
+      </ul>
+    </li>
+    <li>Debajo, dos tablas de detalle:
+      <ul>
+        <li><strong>Detalle Mermas:</strong> Fecha, Orden, Cliente, Unidades, Total en COP.</li>
+        <li><strong>Detalle Garantías:</strong> Fecha, Cliente/Bodega, Unidades, Notas.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h3 id="cap9-3">9.3 Conciliación pendiente</h3>
+  <p>La tercera pestaña identifica las bodegas que no han sido inventariadas recientemente, ayudando a priorizar los conteos cíclicos:</p>
+  <ul>
+    <li>Ingrese el <strong>umbral de días</strong> (por ejemplo, 60) y haga clic en <strong>"Consultar"</strong>.</li>
+    <li>Se muestra una tabla con las bodegas que superan el umbral:</li>
+  </ul>
+  <table>
+    <thead>
+      <tr><th>Columna</th><th>Descripción</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Cliente</td><td>Nombre del aliado</td></tr>
+      <tr><td>Bodega</td><td>Nombre de la bodega</td></tr>
+      <tr><td>Último conteo</td><td>Fecha del último conteo cíclico. <span class="ind-red">"Nunca" en rojo si no hay conteo previo</span></td></tr>
+      <tr><td>Días</td><td>Días transcurridos desde el último conteo. <span class="ind-red">Rojo si &gt; 60</span>, <span class="ind-yellow">dorado si &le; 60</span></td></tr>
+      <tr><td>Stock actual</td><td>Unidades totales actualmente en la bodega</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    Se recomienda realizar conteos cíclicos al menos cada <strong>60 días</strong> para mantener un control adecuado del inventario y detectar discrepancias a tiempo. Si el reporte indica "Todo al día", significa que todas las bodegas han sido inventariadas dentro del umbral definido.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 10: PORTAL DEL ALIADO                                 -->
+<!-- ============================================================ -->
+<div class="chapter" id="cap10">
+  <div class="chapter-header">
+    <div class="chapter-number">Capítulo 10</div>
+    <h2 class="chapter-title">Portal del Aliado (Sitio Web)</h2>
+  </div>
+
+  <p>El portal del aliado es la interfaz web a la que acceden los clientes habilitados como aliados de consignación. Desde este portal pueden consultar su stock, reportar ventas, realizar pagos y confirmar recepciones de mercancía.</p>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Acceso al portal</div>
+    El aliado accede ingresando al sitio web de Two Six con su cuenta de cliente. Si tiene habilitada la opción de aliado de consignación, en su menú de usuario aparece el enlace <strong>"Consignación"</strong> (resaltado en color ámbar). La autenticación se realiza mediante OTP (código de un solo uso enviado al correo electrónico).
+  </div>
+
+  <h3 id="cap10-1">10.1 Mi Stock</h3>
+  <p>La primera pestaña del portal muestra el inventario actual del aliado, organizado por bodega:</p>
+  <ul>
+    <li>Cada bodega se muestra como una sección con su nombre y ubicación.</li>
+    <li>Dentro de cada bodega se listan los productos con: imagen, referencia, color, talla, <strong>precio unitario</strong> (el pactado con Two Six), cantidad en stock y <strong>valor total</strong> (precio &times; cantidad).</li>
+    <li>Si el aliado no tiene stock, se muestra el mensaje: <em>"No tienes stock en consignación."</em></li>
+  </ul>
+
+  <h3 id="cap10-2">10.2 Reportar una venta</h3>
+  <p>La segunda pestaña permite al aliado informar las prendas que ha vendido en su punto de venta:</p>
+  <ol class="steps">
+    <li>Seleccione la <strong>Bodega</strong> en el desplegable. Al cambiar de bodega se limpia el formulario.</li>
+    <li>Se muestran los productos disponibles en esa bodega como <strong>botones seleccionables</strong>. Cada botón muestra la imagen, referencia y cantidad disponible.</li>
+    <li>Haga clic en un producto para agregarlo al reporte de venta. El botón se atenúa para indicar que ya fue seleccionado.</li>
+    <li>Para cada producto seleccionado, ajuste la <strong>cantidad vendida</strong>. El sistema no permite ingresar más unidades de las que tiene en stock.</li>
+    <li>Se muestra en tiempo real:
+      <ul>
+        <li>El <strong>subtotal por línea</strong> (precio pactado &times; cantidad).</li>
+        <li>El <strong>total general</strong> del reporte.</li>
+      </ul>
+    </li>
+    <li>Opcionalmente, agregue <strong>notas</strong> al reporte.</li>
+    <li>Para quitar un producto del reporte, haga clic en el botón <strong>&times;</strong> junto al producto.</li>
+    <li>Haga clic en <strong>"Enviar Reporte"</strong>. El reporte queda en estado <span class="badge badge-draft">PENDIENTE</span> hasta que Two Six lo apruebe.</li>
+  </ol>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">Importante</div>
+    El reporte de venta <strong>no descuenta automáticamente el stock</strong>. Solo después de que Two Six apruebe el reporte se procesan los movimientos de inventario y se genera la factura DIAN. Si el reporte es rechazado, puede ver el motivo y crear uno nuevo.
+  </div>
+
+  <h3 id="cap10-3">10.3 Historial de reportes</h3>
+  <p>La tercera pestaña muestra todos los reportes de venta enviados con su estado:</p>
+  <ul>
+    <li><span class="badge badge-draft">PENDIENTE</span> &mdash; En espera de aprobación por Two Six.</li>
+    <li><span class="badge badge-posted">APROBADO</span> &mdash; Procesado exitosamente. Se generó factura y movimientos de inventario.</li>
+    <li><span class="badge badge-voided">RECHAZADO</span> &mdash; No aprobado. Se muestra el motivo del rechazo para que pueda corregir y reenviar.</li>
+  </ul>
+  <p>Cada reporte muestra: bodega, fecha, estado, número de referencias, total de unidades y notas. Los reportes se pueden expandir para ver el detalle de productos con su imagen.</p>
+
+  <h3 id="cap10-4">10.4 Realizar un pago</h3>
+  <p>La cuarta pestaña del portal gestiona los pagos de mercancía vendida:</p>
+
+  <h4>Facturas pendientes de pago</h4>
+  <p>Se listan las órdenes con saldo pendiente, mostrando: referencia de la orden, tipo (Sell-out o Merma), fecha, monto pendiente y monto total. Haga clic en <strong>"Pagar"</strong> para iniciar el proceso.</p>
+
+  <h4>Formulario de pago</h4>
+  <ol class="steps">
+    <li>El sistema pre-carga el monto pendiente de la orden seleccionada. Puede modificar el valor si desea realizar un <strong>pago parcial</strong>.</li>
+    <li>Seleccione el <strong>medio de pago</strong>:
+      <ul>
+        <li><strong>Transferencia bancaria:</strong> Requiere adjuntar un comprobante (imagen o PDF) y opcionalmente un número de referencia.</li>
+        <li><strong>Efectivo:</strong> No requiere comprobante.</li>
+        <li><strong>Otro:</strong> No requiere comprobante.</li>
+      </ul>
+    </li>
+    <li>Si es transferencia, haga clic en el área de carga para <strong>subir el comprobante</strong>. Se aceptan imágenes y archivos PDF. Se muestra el nombre y tamaño del archivo seleccionado.</li>
+    <li>Opcionalmente, agregue <strong>notas</strong>.</li>
+    <li>Haga clic en <strong>"Enviar Pago"</strong>.</li>
+    <li>El pago queda en estado <span class="badge badge-draft">PENDIENTE</span> hasta que Two Six lo verifique y apruebe.</li>
+  </ol>
+
+  <h4>Historial de pagos</h4>
+  <p>Debajo del formulario se muestra el historial completo de pagos realizados con su estado, monto, medio de pago y fecha. Los pagos rechazados muestran el motivo para que pueda corregir y reenviar.</p>
+
+  <h3 id="cap10-5">10.5 Confirmación de recepción por QR</h3>
+  <p>La página de confirmación QR es una <strong>página pública</strong> (no requiere iniciar sesión) a la que el aliado accede escaneando el código QR impreso en el documento de despacho.</p>
+
+  <h4>Estados de la página según el despacho</h4>
+  <table>
+    <thead>
+      <tr><th>Estado del despacho</th><th>Lo que ve el aliado</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Pendiente (no enviado)</td><td>Banner ámbar: <em>"Este despacho aún no ha sido enviado por Two Six."</em> Sin formulario disponible.</td></tr>
+      <tr><td>En tránsito</td><td>Formulario completo de verificación prenda a prenda.</td></tr>
+      <tr><td>Recibido</td><td>Banner verde: <em>"Recepción confirmada"</em> con la fecha y hora, y el nombre de quien confirmó. Solo lectura.</td></tr>
+      <tr><td>Cancelado</td><td>Banner rojo: <em>"Este despacho fue cancelado y no puede confirmarse."</em></td></tr>
+    </tbody>
+  </table>
+
+  <h4>Proceso de verificación (estado En tránsito)</h4>
+  <ol class="steps">
+    <li>Se muestra la información del despacho: número, cliente, bodega y fecha de envío.</li>
+    <li>Se lista cada prenda enviada con:
+      <ul>
+        <li><strong>Casilla de verificación:</strong> Viene <strong>desmarcada</strong> por defecto. El aliado debe verificar físicamente cada prenda antes de marcarla.</li>
+        <li><strong>Imagen</strong> del producto.</li>
+        <li><strong>Detalle:</strong> Referencia, color y talla.</li>
+        <li><strong>Cantidad enviada.</strong></li>
+      </ul>
+    </li>
+    <li>Al marcar la casilla, se registra que la cantidad recibida es igual a la enviada (todo OK).</li>
+    <li>Si hay diferencias, deje la casilla sin marcar e ingrese:
+      <ul>
+        <li><strong>Cantidad recibida:</strong> El número real de prendas recibidas.</li>
+        <li><strong>Observación:</strong> Descripción de la novedad (faltante, daño, etc.).</li>
+      </ul>
+    </li>
+    <li>El indicador de progreso muestra <strong>"X de Y prendas verificadas"</strong>:
+      <ul>
+        <li><span class="ind-yellow">Ámbar:</span> No todas las prendas han sido verificadas. Botón de confirmar deshabilitado.</li>
+        <li><span class="ind-green">Verde:</span> Todas las prendas están verificadas. Botón habilitado.</li>
+      </ul>
+    </li>
+    <li>Ingrese su <strong>nombre</strong> en el campo "Tu nombre" (obligatorio).</li>
+    <li>El botón <strong>"Confirmar recepción"</strong> solo se habilita cuando todas las prendas están verificadas y el nombre está completo.</li>
+    <li>Al confirmar, se muestra el banner de éxito y la página pasa a modo de solo lectura. Las prendas con diferencias se resaltan en rojo.</li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Consejo</div>
+    El aliado debe verificar <strong>físicamente cada prenda</strong> antes de marcar la casilla. Las prendas con diferencias quedan registradas como discrepancias y serán revisadas por el equipo de Two Six desde el CMS.
+  </div>
+
+  <div class="callout callout-danger">
+    <div class="callout-title">Errores comunes</div>
+    <ul style="margin-bottom: 0;">
+      <li>Si la URL del QR es incorrecta o el token no existe: <em>"Despacho no encontrado. Verifica que el enlace sea correcto."</em></li>
+      <li>Si hay problemas de conexión: <em>"No se pudo cargar el despacho. Intenta de nuevo más tarde."</em></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- APPENDIX A: CUENTAS PUC DE CONSIGNACIÓN                       -->
+<!-- ============================================================ -->
+<div class="chapter" id="apA">
+  <div class="chapter-header">
+    <div class="chapter-number">Apéndice A</div>
+    <h2 class="chapter-title">Cuentas PUC de Consignación</h2>
+  </div>
+
+  <p>Las siguientes cuentas del Plan Único de Cuentas son utilizadas por el módulo de consignación. Son creadas automáticamente por el sistema durante el despliegue inicial.</p>
+
+  <table>
+    <thead>
+      <tr><th>Código</th><th>Nombre</th><th>Naturaleza</th><th>Uso</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>143505</code></td><td>Mercancías en consignación</td><td>Débito</td><td>Registra el valor del inventario que se encuentra en bodegas de aliados. Se debita al enviar un despacho y se acredita al procesar ventas, mermas o devoluciones.</td></tr>
+      <tr><td><code>143510</code></td><td>CxC Mermas consignación</td><td>Débito</td><td>Cuenta por cobrar generada cuando se factura una merma al aliado. Se debita al facturar y se acredita cuando el aliado paga.</td></tr>
+      <tr><td><code>429505</code></td><td>Ingresos por merma consignación</td><td>Crédito</td><td>Ingreso reconocido al facturar faltantes al aliado.</td></tr>
+      <tr><td><code>143501</code></td><td>Inventario en bodega</td><td>Débito</td><td>Inventario principal de Two Six. Se acredita al despachar y se debita al recibir devoluciones de portafolio.</td></tr>
+      <tr><td><code>130505</code></td><td>CxC Clientes</td><td>Débito</td><td>Cuenta por cobrar generada al aprobar un sell-out.</td></tr>
+      <tr><td><code>6135</code></td><td>Costo de ventas</td><td>Débito</td><td>Costo real de manufactura de las prendas vendidas en consignación.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Nota</div>
+    Las cuentas 143505, 143510 y 429505 son específicas de consignación y se crean automáticamente. Las demás son cuentas estándar del PUC que ya existen en el sistema. Para más detalle sobre el PUC, consulte el <strong>Manual del Módulo de Contabilidad</strong>, Capítulo 2.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- APPENDIX B: IMPACTO CONTABLE POR OPERACIÓN                    -->
+<!-- ============================================================ -->
+<div class="chapter" id="apB">
+  <div class="chapter-header">
+    <div class="chapter-number">Apéndice B</div>
+    <h2 class="chapter-title">Impacto Contable por Operación</h2>
+  </div>
+
+  <p>Resumen de los asientos contables automáticos generados por cada operación del módulo de consignación:</p>
+
+  <table>
+    <thead>
+      <tr><th>Operación</th><th>Débito</th><th>Crédito</th><th>Descripción</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Despacho enviado</td><td>143505</td><td>143501</td><td>Reclasificación de inventario al ser enviado al aliado</td></tr>
+      <tr><td>Sell-out (ingreso)</td><td>130505</td><td>4135</td><td>Reconocimiento del ingreso al precio pactado</td></tr>
+      <tr><td>Sell-out (costo)</td><td>6135</td><td>143505</td><td>Baja del inventario al costo real de manufactura</td></tr>
+      <tr><td>Merma facturada</td><td>143510</td><td>429505</td><td>CxC al aliado por mercancía faltante</td></tr>
+      <tr><td>Devolución portafolio</td><td>143501</td><td>143505</td><td>Reingreso al inventario principal</td></tr>
+      <tr><td>Devolución garantía</td><td>Gasto</td><td>143505</td><td>Gasto operacional por garantía</td></tr>
+      <tr><td>Conteo: faltante</td><td>519995</td><td>143505</td><td>Gasto por diferencia negativa en inventario</td></tr>
+      <tr><td>Conteo: sobrante</td><td>143505</td><td>429581</td><td>Ingreso por diferencia positiva en inventario</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-info">
+    <div class="callout-title">Nota</div>
+    Todos los asientos se generan automáticamente con estado <span class="badge badge-posted">POSTED</span> y no pueden ser editados ni anulados. Si se requiere un ajuste, debe crearse un asiento manual de corrección desde el módulo de Contabilidad.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- APPENDIX C: GLOSARIO                                          -->
+<!-- ============================================================ -->
+<div class="chapter" id="apC">
+  <div class="chapter-header">
+    <div class="chapter-number">Apéndice C</div>
+    <h2 class="chapter-title">Glosario de Consignación</h2>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Término</th><th>Definición</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Aliado comercial</strong></td><td>Cliente de Two Six habilitado para recibir mercancía en consignación. Puede ser una tienda, boutique o punto de venta de terceros.</td></tr>
+      <tr><td><strong>Bodega virtual</strong></td><td>Representación en el sistema de un punto de almacenamiento o venta del aliado. Permite llevar control individual del inventario por ubicación.</td></tr>
+      <tr><td><strong>Consignación</strong></td><td>Modelo de distribución donde la mercancía se entrega al aliado sin compra inmediata. Solo se factura lo vendido o lo perdido.</td></tr>
+      <tr><td><strong>Conteo cíclico</strong></td><td>Verificación periódica del inventario físico vs. el teórico registrado en el sistema. Permite detectar faltantes y sobrantes.</td></tr>
+      <tr><td><strong>CUFE</strong></td><td>Código Único de Factura Electrónica. Identificador único asignado por la DIAN a cada factura electrónica válida.</td></tr>
+      <tr><td><strong>Despacho</strong></td><td>Envío de mercancía desde la bodega principal de Two Six hacia una bodega del aliado.</td></tr>
+      <tr><td><strong>DIAN</strong></td><td>Dirección de Impuestos y Aduanas Nacionales de Colombia. Entidad que regula la facturación electrónica.</td></tr>
+      <tr><td><strong>Kardex</strong></td><td>Registro cronológico de todos los movimientos de entrada y salida de inventario en una bodega.</td></tr>
+      <tr><td><strong>Merma</strong></td><td>Pérdida de mercancía detectada en un conteo cíclico (faltante). Se factura al aliado como cuenta por cobrar.</td></tr>
+      <tr><td><strong>OTP</strong></td><td>One-Time Password. Código de un solo uso enviado al correo del aliado para autenticación en el portal web.</td></tr>
+      <tr><td><strong>Precio pactado</strong></td><td>Valor unitario de venta acordado entre Two Six y el aliado para cada producto. Se usa para facturación de sell-out y mermas.</td></tr>
+      <tr><td><strong>PUC</strong></td><td>Plan Único de Cuentas. Catálogo oficial de cuentas contables establecido por la normatividad colombiana.</td></tr>
+      <tr><td><strong>QR de recepción</strong></td><td>Código QR único generado al enviar un despacho. Permite al aliado acceder a la página de confirmación de recepción.</td></tr>
+      <tr><td><strong>Sell-out</strong></td><td>Venta realizada por el aliado al consumidor final. El aliado reporta la venta y Two Six la aprueba para facturación.</td></tr>
+      <tr><td><strong>Sell report</strong></td><td>Reporte de venta enviado por el aliado desde su portal web. Requiere aprobación de Two Six.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!-- FOOTER                                                        -->
+<!-- ============================================================ -->
+  <div style="text-align: center; padding: 4rem 0 2rem; color: var(--gray-500); font-size: 0.9rem;">
+    <div style="width: 60px; height: 2px; background: var(--gold); margin: 0 auto 1.5rem;"></div>
+    <strong style="color: var(--gold); letter-spacing: 0.2em;">TWO SIX S.A.S.</strong><br>
+    Manual del Módulo de Consignación &mdash; Versión 1.0<br>
+    Abril 2026<br><br>
+    <em>Este documento es propiedad de Two Six S.A.S. y es de uso interno.<br>
+    Prohibida su reproducción total o parcial sin autorización expresa.</em>
+  </div>
+
+</body>
+</html>

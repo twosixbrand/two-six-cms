@@ -63,6 +63,7 @@ import ConsignmentCycleCountPage from './pages/consignment/ConsignmentCycleCount
 import ConsignmentSellReportsPage from './pages/consignment/ConsignmentSellReportsPage.tsx';
 import ConsignmentPaymentsPage from './pages/consignment/ConsignmentPaymentsPage.tsx';
 import ConsignmentReportsPage from './pages/consignment/ConsignmentReportsPage.tsx';
+import ManualConsignacionPage from './pages/consignment/ManualConsignacionPage.tsx';
 
 // Accounting pages
 import PucAccountPage from './pages/accounting/PucAccountPage.tsx';
@@ -219,6 +220,7 @@ const MainLayout = () => {
               <Route path="/accounting/settings" element={<AccountingSettingsPage />} />
               <Route path="/accounting/exogena" element={<ExogenaPage />} />
               <Route path="/manual-contabilidad" element={<ManualContablePage />} />
+              <Route path="/manual-consignacion" element={<ManualConsignacionPage />} />
               <Route path="/user-manual" element={<UserManualPage />} />
             </Routes>
           </main>
