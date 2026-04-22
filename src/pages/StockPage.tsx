@@ -176,6 +176,16 @@ const StockPage = () => {
             align: 'right' as const,
         },
         {
+            key: 'quantity_on_consignment',
+            header: 'Consignacion',
+            align: 'right' as const,
+            render: (val: any) => (
+                <span style={{ color: val > 0 ? '#f0b429' : '#6b6b7b' }}>
+                    {val ?? 0}
+                </span>
+            ),
+        },
+        {
             key: 'quantity_minimum_alert',
             header: 'Alerta',
             align: 'right' as const,

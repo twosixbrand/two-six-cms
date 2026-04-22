@@ -52,7 +52,17 @@ import PickupDashboardPage from './pages/PickupDashboardPage.tsx';
 import CustomerPage from './pages/CustomerPage.tsx';
 import PermissionManagementPage from './pages/PermissionManagementPage.tsx';
 import GoogleMerchantFeedPage from './pages/GoogleMerchantFeedPage.tsx';
+import FacebookFeedPage from './pages/FacebookFeedPage.tsx';
 import CouponPage from './pages/CouponPage.tsx';
+import ConsignmentWarehousePage from './pages/consignment/ConsignmentWarehousePage.tsx';
+import ConsignmentPricePage from './pages/consignment/ConsignmentPricePage.tsx';
+import ConsignmentDispatchPage from './pages/consignment/ConsignmentDispatchPage.tsx';
+import ConsignmentSelloutPage from './pages/consignment/ConsignmentSelloutPage.tsx';
+import ConsignmentReturnPage from './pages/consignment/ConsignmentReturnPage.tsx';
+import ConsignmentCycleCountPage from './pages/consignment/ConsignmentCycleCountPage.tsx';
+import ConsignmentSellReportsPage from './pages/consignment/ConsignmentSellReportsPage.tsx';
+import ConsignmentPaymentsPage from './pages/consignment/ConsignmentPaymentsPage.tsx';
+import ConsignmentReportsPage from './pages/consignment/ConsignmentReportsPage.tsx';
 
 // Accounting pages
 import PucAccountPage from './pages/accounting/PucAccountPage.tsx';
@@ -161,7 +171,18 @@ const MainLayout = () => {
               <Route path="/customer" element={<CustomerPage />} />
               <Route path="/permissions" element={<PermissionManagementPage />} />
               <Route path="/google-merchant-feed" element={<GoogleMerchantFeedPage />} />
+              <Route path="/facebook-feed" element={<FacebookFeedPage />} />
               <Route path="/coupons" element={<CouponPage />} />
+              {/* Consignment routes (Fase 1: F01, F02) */}
+              <Route path="/consignment/warehouses" element={<ConsignmentWarehousePage />} />
+              <Route path="/consignment/prices" element={<ConsignmentPricePage />} />
+              <Route path="/consignment/dispatches" element={<ConsignmentDispatchPage />} />
+              <Route path="/consignment/sellout" element={<ConsignmentSelloutPage />} />
+              <Route path="/consignment/sell-reports" element={<ConsignmentSellReportsPage />} />
+              <Route path="/consignment/payments" element={<ConsignmentPaymentsPage />} />
+              <Route path="/consignment/returns" element={<ConsignmentReturnPage />} />
+              <Route path="/consignment/cycle-counts" element={<ConsignmentCycleCountPage />} />
+              <Route path="/consignment/reports" element={<ConsignmentReportsPage />} />
               {/* Accounting routes */}
               <Route path="/accounting/puc" element={<PucAccountPage />} />
               <Route path="/accounting/journal" element={<JournalEntryPage />} />

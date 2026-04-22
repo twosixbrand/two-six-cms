@@ -29,6 +29,22 @@ const menuData = [
     ],
   },
   {
+    title: 'Consignación',
+    path: '#',
+    permission: 'sales.reports.view',
+    subNav: [
+      { title: 'Bodegas por Cliente', path: '/consignment/warehouses', permission: 'sales.reports.view' },
+      { title: 'Precios por Cliente', path: '/consignment/prices', permission: 'sales.reports.view' },
+      { title: 'Despachos (QR)', path: '/consignment/dispatches', permission: 'sales.reports.view' },
+      { title: 'Procesar Sell-out', path: '/consignment/sellout', permission: 'sales.reports.view' },
+      { title: 'Ventas del Cliente', path: '/consignment/sell-reports', permission: 'sales.reports.view' },
+      { title: 'Pagos', path: '/consignment/payments', permission: 'sales.reports.view' },
+      { title: 'Devoluciones / Garantías', path: '/consignment/returns', permission: 'sales.reports.view' },
+      { title: 'Conteos Cíclicos / Merma', path: '/consignment/cycle-counts', permission: 'sales.reports.view' },
+      { title: 'Reportes', path: '/consignment/reports', permission: 'sales.reports.view' },
+    ],
+  },
+  {
     title: 'Admin Prendas',
     path: '#',
     permission: 'inventory',
@@ -116,6 +132,7 @@ const menuData = [
     permission: 'sales.reports.view',
     subNav: [
       { title: 'Google Merchant Feed', path: '/google-merchant-feed', permission: 'sales.reports.view' },
+      { title: 'Facebook Feed', path: '/facebook-feed', permission: 'sales.reports.view' },
     ],
   },
   {

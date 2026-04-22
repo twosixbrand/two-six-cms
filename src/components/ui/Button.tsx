@@ -19,41 +19,58 @@ const sizeStyles: Record<string, React.CSSProperties> = {
   lg: { padding: '0.65rem 1.5rem', fontSize: '0.875rem', minHeight: 44 },
 };
 
+// Nota: usamos longhand (borderWidth/borderStyle/borderColor) en vez del
+// shorthand `border` para poder mutar sólo borderColor en hover sin que
+// React nos advierta por mezclar shorthand y longhand en el mismo elemento.
 const variantBaseStyles: Record<string, React.CSSProperties> = {
   primary: {
     background: '#f0b429',
     color: '#0a0a0f',
-    border: '1px solid #f0b429',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#f0b429',
   },
   secondary: {
     background: 'transparent',
     color: '#f1f1f3',
-    border: '1px solid #2a2a35',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#2a2a35',
   },
   destructive: {
     background: 'rgba(248, 113, 113, 0.1)',
     color: '#f87171',
-    border: '1px solid rgba(248, 113, 113, 0.2)',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: 'rgba(248, 113, 113, 0.2)',
   },
   ghost: {
     background: 'transparent',
     color: '#a0a0b0',
-    border: '1px solid transparent',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: 'transparent',
   },
   outline: {
     background: 'transparent',
     color: '#f0b429',
-    border: '1px solid #2a2a35',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#2a2a35',
   },
   edit: {
     background: 'rgba(240, 180, 41, 0.1)',
     color: '#f0b429',
-    border: '1px solid rgba(240, 180, 41, 0.2)',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: 'rgba(240, 180, 41, 0.2)',
   },
   info: {
     background: 'rgba(59, 130, 246, 0.1)',
     color: '#60a5fa',
-    border: '1px solid rgba(59, 130, 246, 0.2)',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: 'rgba(59, 130, 246, 0.2)',
   },
 };
 

@@ -11,14 +11,20 @@ const CustomerPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
+  const [onlyAllies, setOnlyAllies] = useState(false);
 
   // Modal state
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<any>(null);
   const [saving, setSaving] = useState(false);
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    name: string; email: string; current_phone_number: string; shipping_address: string;
+    city: string; state: string; postal_code: string; country: string;
+    is_consignment_ally: boolean;
+  }>({
     name: '', email: '', current_phone_number: '', shipping_address: '',
     city: '', state: '', postal_code: '', country: '',
+    is_consignment_ally: false,
   });
 
   // Location state
@@ -71,16 +77,18 @@ const CustomerPage = () => {
   }, [selectedDeptId]);
 
   const filteredItems = useMemo(() => {
-    if (!search) return items;
+    let arr = items;
+    if (onlyAllies) arr = arr.filter((i) => !!i.is_consignment_ally);
+    if (!search) return arr;
     const term = search.toLowerCase();
-    return items.filter(
+    return arr.filter(
       (item) =>
         item.name?.toLowerCase().includes(term) ||
         item.email?.toLowerCase().includes(term) ||
         item.document_number?.toLowerCase().includes(term) ||
         item.current_phone_number?.toLowerCase().includes(term)
     );
-  }, [items, search]);
+  }, [items, search, onlyAllies]);
 
   const openEditModal = (row: any) => {
     setEditing(row);
@@ -93,6 +101,7 @@ const CustomerPage = () => {
       state: row.state || '',
       postal_code: row.postal_code || '',
       country: row.country || '',
+      is_consignment_ally: !!row.is_consignment_ally,
     });
     // Find matching department
     if (row.state && departments.length > 0) {
@@ -166,6 +175,13 @@ const CustomerPage = () => {
         <StatusBadge status={value ? 'Registrado' : 'Invitado'} variant={value ? 'success' : 'warning'} size="sm" />
       ),
     },
+    {
+      key: 'is_consignment_ally',
+      header: 'Aliado',
+      render: (value: any) => value
+        ? <StatusBadge status="Consignación" variant="success" size="sm" />
+        : <span style={{ color: '#6b6b7b', fontSize: '0.75rem' }}>—</span>,
+    },
   ];
 
   return (
@@ -176,6 +192,20 @@ const CustomerPage = () => {
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
         <SearchInput value={search} onChange={setSearch} placeholder="Buscar por nombre, email o documento..." />
+        <label style={{
+          display: 'flex', alignItems: 'center', gap: '0.45rem',
+          fontSize: '0.85rem', color: '#f1f1f3', cursor: 'pointer',
+          padding: '0.5rem 0.9rem',
+          background: onlyAllies ? 'rgba(240,180,41,0.15)' : 'transparent',
+          border: '1px solid #2a2a35', borderRadius: '6px',
+        }}>
+          <input
+            type="checkbox"
+            checked={onlyAllies}
+            onChange={(e) => setOnlyAllies(e.target.checked)}
+          />
+          Solo aliados de consignación
+        </label>
       </div>
 
       {loading ? (
@@ -235,6 +265,33 @@ const CustomerPage = () => {
               <div style={{ flex: 1 }}>
                 <FormField label="Pais" name="country" value={form.country} onChange={handleChange} />
               </div>
+            </div>
+
+            {/* Aliado de consignación */}
+            <div style={{
+              padding: '0.9rem 1rem',
+              background: form.is_consignment_ally ? 'rgba(240,180,41,0.1)' : '#1a1a24',
+              border: `1px solid ${form.is_consignment_ally ? '#f0b429' : '#2a2a35'}`,
+              borderRadius: 10,
+            }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={form.is_consignment_ally}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, is_consignment_ally: e.target.checked }))
+                  }
+                  style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                />
+                <div>
+                  <div style={{ fontWeight: 600, color: '#f1f1f3', fontSize: '0.9rem' }}>
+                    Cliente aliado de consignación
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#a0a0b0', marginTop: '0.2rem' }}>
+                    Habilita la creación de bodegas virtuales, precios pactados y despachos a este cliente.
+                  </div>
+                </div>
+              </label>
             </div>
           </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
