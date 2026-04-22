@@ -38,6 +38,7 @@ const menuData = [
       { title: 'Despachos (QR)', path: '/consignment/dispatches', permission: 'sales.reports.view' },
       { title: 'Procesar Sell-out', path: '/consignment/sellout', permission: 'sales.reports.view' },
       { title: 'Ventas del Cliente', path: '/consignment/sell-reports', permission: 'sales.reports.view' },
+      { title: 'Pagos', path: '/consignment/payments', permission: 'sales.reports.view' },
       { title: 'Devoluciones / Garantías', path: '/consignment/returns', permission: 'sales.reports.view' },
       { title: 'Conteos Cíclicos / Merma', path: '/consignment/cycle-counts', permission: 'sales.reports.view' },
       { title: 'Reportes', path: '/consignment/reports', permission: 'sales.reports.view' },
