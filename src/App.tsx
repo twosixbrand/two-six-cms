@@ -68,6 +68,8 @@ import ConsignmentReportsPage from './pages/consignment/ConsignmentReportsPage.t
 import PucAccountPage from './pages/accounting/PucAccountPage.tsx';
 import JournalEntryPage from './pages/accounting/JournalEntryPage.tsx';
 import JournalEntryFormPage from './pages/accounting/JournalEntryFormPage.tsx';
+import ManualSaleRegularizationPage from './pages/accounting/ManualSaleRegularizationPage.tsx';
+import ManualInvoiceListPage from './pages/accounting/ManualInvoiceListPage.tsx';
 import ExpensePage from './pages/accounting/ExpensePage.tsx';
 import ExpenseFormPage from './pages/accounting/ExpenseFormPage.tsx';
 import BalanceSheetPage from './pages/accounting/BalanceSheetPage.tsx';
@@ -92,6 +94,8 @@ import FinancialIndicatorsPage from './pages/accounting/FinancialIndicatorsPage.
 import TaxConfigPage from './pages/accounting/TaxConfigPage.tsx';
 import InventoryAdjustmentPage from './pages/accounting/InventoryAdjustmentPage.tsx';
 import ProfitabilityReportPage from './pages/accounting/ProfitabilityReportPage.tsx';
+import AccountingAlertsPage from './pages/accounting/AccountingAlertsPage.tsx';
+import AccountingSettingsPage from './pages/accounting/AccountingSettingsPage.tsx';
 
 /**
  * Componente que hace scroll al inicio de la página
@@ -187,6 +191,8 @@ const MainLayout = () => {
               <Route path="/accounting/puc" element={<PucAccountPage />} />
               <Route path="/accounting/journal" element={<JournalEntryPage />} />
               <Route path="/accounting/journal/new" element={<JournalEntryFormPage />} />
+              <Route path="/accounting/regularization/manual-sale" element={<ManualSaleRegularizationPage />} />
+              <Route path="/accounting/regularization/list" element={<ManualInvoiceListPage />} />
               <Route path="/accounting/expenses" element={<ExpensePage />} />
               <Route path="/accounting/expenses/new" element={<ExpenseFormPage />} />
               <Route path="/accounting/expenses/:id" element={<ExpenseFormPage />} />
@@ -209,6 +215,8 @@ const MainLayout = () => {
               <Route path="/accounting/reports/indicators" element={<FinancialIndicatorsPage />} />
               <Route path="/accounting/tax-config" element={<TaxConfigPage />} />
               <Route path="/accounting/inventory-adjustments" element={<InventoryAdjustmentPage />} />
+              <Route path="/accounting/alerts" element={<AccountingAlertsPage />} />
+              <Route path="/accounting/settings" element={<AccountingSettingsPage />} />
               <Route path="/accounting/exogena" element={<ExogenaPage />} />
               <Route path="/manual-contabilidad" element={<ManualContablePage />} />
               <Route path="/user-manual" element={<UserManualPage />} />

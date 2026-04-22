@@ -66,10 +66,14 @@ const JournalEntryFormPage = () => {
 
     const getFilteredAccounts = (index: number) => {
         const term = (accountSearch[index] || '').toLowerCase();
-        if (!term) return accounts.slice(0, 20);
-        return accounts.filter(
-            a => a.code.toLowerCase().includes(term) || a.name.toLowerCase().includes(term)
-        ).slice(0, 20);
+        // Solo cuentas auxiliares activas (que aceptan movimientos)
+        const movementAccounts = accounts.filter(
+            (a: any) => a.accepts_movements !== false && a.is_active !== false,
+        );
+        if (!term) return movementAccounts.slice(0, 20);
+        return movementAccounts
+            .filter((a: any) => a.code.toLowerCase().includes(term) || a.name.toLowerCase().includes(term))
+            .slice(0, 20);
     };
 
     const handleSave = async () => {

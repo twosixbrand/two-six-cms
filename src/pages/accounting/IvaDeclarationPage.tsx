@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiPercent, FiRefreshCcw, FiPrinter } from 'react-icons/fi';
+import { FiPercent, FiRefreshCcw, FiPrinter, FiDownload } from 'react-icons/fi';
 import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
 import FormField from '../../components/ui/FormField';
@@ -63,6 +63,26 @@ const IvaDeclarationPage = () => {
 
     const handlePrint = () => window.print();
 
+    const handleExportCsv = async () => {
+        try {
+            const b = bimesters[bimester];
+            const startDate = new Date(year, b.startMonth, 1).toISOString().split('T')[0];
+            const endDate = new Date(year, b.endMonth + 1, 0).toISOString().split('T')[0];
+            const blob = await accountingApi.downloadIvaExport(startDate, endDate);
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `iva-${startDate}-a-${endDate}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } catch (err: any) {
+            logError(err, '/accounting/tax/iva/export');
+            setError('Error al descargar el CSV de IVA.');
+        }
+    };
+
     const renderEntryTable = (entries: any[], title: string) => (
         <div style={{ marginTop: '16px' }}>
             <h4 style={{ marginBottom: '8px', color: '#f1f1f3', fontFamily: 'Inter, sans-serif' }}>{title}</h4>
@@ -124,6 +144,7 @@ const IvaDeclarationPage = () => {
                 </div>
                 <Button variant="primary" icon={<FiRefreshCcw />} onClick={fetchReport}>Generar</Button>
                 <Button variant="secondary" icon={<FiPrinter />} onClick={handlePrint}>Imprimir</Button>
+                <Button variant="secondary" icon={<FiDownload />} onClick={handleExportCsv}>Exportar CSV</Button>
             </div>
 
             {error && <p style={{ color: '#f87171', fontSize: '13px', fontWeight: 600 }}>{error}</p>}

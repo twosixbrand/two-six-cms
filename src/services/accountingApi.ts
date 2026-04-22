@@ -741,3 +741,248 @@ export const getExogenaThirdPartyMovements = async (year: number, nit: string) =
     });
     return await handleResponse(response, 'getExogenaThirdPartyMovements');
 };
+
+// ── Alertas / Reconciliación / Reverso ──────────────────────
+
+export const getAccountingAlerts = async (params: { draftDays?: number; idleMonths?: number } = {}) => {
+    const qs = new URLSearchParams();
+    if (params.draftDays) qs.set('draftDays', String(params.draftDays));
+    if (params.idleMonths) qs.set('idleMonths', String(params.idleMonths));
+    const query = qs.toString();
+    const response = await fetch(`${API_URL}/accounting/alerts${query ? '?' + query : ''}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getAccountingAlerts');
+};
+
+export const getMayorAuxiliarReconciliation = async (endDate?: string) => {
+    const qs = endDate ? `?endDate=${endDate}` : '';
+    const response = await fetch(`${API_URL}/accounting/reconciliation/mayor-auxiliar${qs}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getMayorAuxiliarReconciliation');
+};
+
+export const reverseJournalEntry = async (id: number, reason: string) => {
+    const response = await fetch(`${API_URL}/accounting/journal/${id}/reverse`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ reason }),
+    });
+    return await handleResponse(response, 'reverseJournalEntry');
+};
+
+export const getBalanceSheetCompared = async (
+    year: number,
+    month: number,
+    compareWith: 'PREVIOUS_MONTH' | 'PREVIOUS_YEAR' = 'PREVIOUS_YEAR',
+) => {
+    const qs = new URLSearchParams({ year: String(year), month: String(month), compareWith });
+    const response = await fetch(`${API_URL}/accounting/reports/balance-sheet/compared?${qs}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getBalanceSheetCompared');
+};
+
+export const getIncomeStatementCompared = async (
+    startDate: string,
+    endDate: string,
+    compareWith: 'PREVIOUS_PERIOD' | 'PREVIOUS_YEAR' = 'PREVIOUS_YEAR',
+) => {
+    const qs = new URLSearchParams({ startDate, endDate, compareWith });
+    const response = await fetch(`${API_URL}/accounting/reports/income-statement/compared?${qs}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getIncomeStatementCompared');
+};
+
+export const getStatementOfChangesInEquity = async (year: number) => {
+    const response = await fetch(
+        `${API_URL}/accounting/reports/statement-of-changes-equity?year=${year}`,
+        { method: 'GET', headers: authHeaders() },
+    );
+    return await handleResponse(response, 'getStatementOfChangesInEquity');
+};
+
+// ── Payroll novedades + PILA ────────────────────────────────
+
+export const getPayrollNovedades = async (periodId: number) => {
+    const response = await fetch(`${API_URL}/accounting/payroll/periods/${periodId}/novedades`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getPayrollNovedades');
+};
+
+export const createPayrollNovedad = async (data: any) => {
+    const response = await fetch(`${API_URL}/accounting/payroll/novedades`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify(data),
+    });
+    return await handleResponse(response, 'createPayrollNovedad');
+};
+
+export const deletePayrollNovedad = async (id: number) => {
+    const response = await fetch(`${API_URL}/accounting/payroll/novedades/${id}`, {
+        method: 'DELETE',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'deletePayrollNovedad');
+};
+
+export const downloadPilaFile = async (year: number, month: number, nit?: string) => {
+    const qs = nit ? `?nit=${nit}` : '';
+    const response = await fetch(`${API_URL}/accounting/payroll/pila/${year}/${month}${qs}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || `Error ${response.status}`);
+    }
+    return await response.blob();
+};
+
+// ── Settings contables ──────────────────────────────────────
+
+export const getAccountingSettings = async () => {
+    const response = await fetch(`${API_URL}/accounting/settings`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getAccountingSettings');
+};
+
+export const updateAccountingSetting = async (key: string, value: string, description?: string) => {
+    const response = await fetch(`${API_URL}/accounting/settings`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ key, value, description }),
+    });
+    return await handleResponse(response, 'updateAccountingSetting');
+};
+
+export const bulkUpdateAccountingSettings = async (
+    updates: Array<{ key: string; value: string }>,
+) => {
+    const response = await fetch(`${API_URL}/accounting/settings/bulk`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ updates }),
+    });
+    return await handleResponse(response, 'bulkUpdateAccountingSettings');
+};
+
+// ── Recibo de Caja (Anticipos) ──────────────────────────────
+
+export interface CashReceiptPayload {
+    consignment_date: string;
+    bank_puc_code: string;
+    advance_puc_code: string;
+    amount: number;
+    customer_nit?: string;
+    customer_name?: string;
+    reference: string;
+    notes?: string;
+    created_by?: number;
+}
+
+export const createCashReceipt = async (payload: CashReceiptPayload) => {
+    const response = await fetch(`${API_URL}/accounting/cash-receipt`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify(payload),
+    });
+    return await handleResponse(response, 'createCashReceipt');
+};
+
+export const getCashReceiptBalance = async (journalEntryId: number, advancePucCode: string) => {
+    const qs = new URLSearchParams({ advance_puc_code: advancePucCode });
+    const response = await fetch(`${API_URL}/accounting/cash-receipt/${journalEntryId}/balance?${qs}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getCashReceiptBalance');
+};
+
+export const listPendingCashReceipts = async (advancePucCode: string = '280505') => {
+    const qs = new URLSearchParams({ advance_puc_code: advancePucCode });
+    const response = await fetch(`${API_URL}/accounting/cash-receipt/pending?${qs}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'listPendingCashReceipts');
+};
+
+// ── Factura DIAN Manual (cruce anticipo) ────────────────────
+
+export interface ManualInvoiceItem {
+    description: string;
+    quantity: number;
+    unit_price: number;
+    iva_rate?: number;
+}
+
+export interface ManualInvoiceCustomer {
+    doc_type: string;
+    doc_number: string;
+    name: string;
+    email?: string;
+    address?: string;
+    city?: string;
+}
+
+export interface ManualInvoicePayload {
+    cash_receipt_journal_id: number;
+    advance_puc_code: string;
+    revenue_puc_code: string;
+    iva_puc_code: string;
+    operation_date: string;
+    customer: ManualInvoiceCustomer;
+    items: ManualInvoiceItem[];
+    notes?: string;
+    created_by?: number;
+}
+
+export const createManualDianInvoice = async (payload: ManualInvoicePayload) => {
+    const response = await fetch(`${API_URL}/accounting/manual-invoice`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify(payload),
+    });
+    return await handleResponse(response, 'createManualDianInvoice');
+};
+
+export const listManualDianInvoices = async (params?: { startDate?: string; endDate?: string; status?: string; search?: string }) => {
+    const qs = new URLSearchParams();
+    if (params?.startDate) qs.append('startDate', params.startDate);
+    if (params?.endDate) qs.append('endDate', params.endDate);
+    if (params?.status) qs.append('status', params.status);
+    if (params?.search) qs.append('search', params.search);
+    const suffix = qs.toString() ? `?${qs.toString()}` : '';
+    const response = await fetch(`${API_URL}/accounting/manual-invoice${suffix}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'listManualDianInvoices');
+};
+
+// ── Export IVA ──────────────────────────────────────────────
+
+export const downloadIvaExport = async (startDate: string, endDate: string) => {
+    const qs = new URLSearchParams({ startDate, endDate });
+    const response = await fetch(`${API_URL}/accounting/tax/iva/export?${qs}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || `Error ${response.status}`);
+    }
+    return await response.blob();
+};
