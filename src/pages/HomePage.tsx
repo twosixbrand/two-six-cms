@@ -121,13 +121,14 @@ const homeSections = [
     ]
   },
   {
-    title: 'Documentación', icon: <FiBook />, permission: 'sales',
+    title: 'Documentación', icon: <FiBook />, permission: 'docs',
     items: [
-      { path: '/architecture-docs', icon: <FiServer />, title: 'Doc. Arquitectura', desc: 'Topografía Cloud, DevSecOps y costos de ecosistema.', permission: 'admin.users.view' },
-      { path: '/database-docs', icon: <FiDatabase />, title: 'Doc. Base de Datos', desc: 'Diagramas visuales de la arquitectura de datos del sistema.', permission: 'admin.users.view' },
-      { path: '/dian-documentation', icon: <FiCode />, title: 'Documentacion DIAN', desc: 'Arquitectura y flujos de Facturacion Electronica DIAN.', permission: 'sales.dian.view' },
-      { path: '/manual-contabilidad', icon: <FiBookOpen />, title: 'Manual Contable', desc: 'Manual completo del modulo contable.', permission: 'accounting.reports.view' },
-      { path: '/plan-estrategico', icon: <FiCompass />, title: 'Plan Estrategico', desc: 'Visualizacion del plan estrategico anual.', permission: 'sales.orders.view' },
+      { path: '/architecture-docs', icon: <FiServer />, title: 'Doc. Arquitectura', desc: 'Topografía Cloud, DevSecOps y costos de ecosistema.', permission: 'docs.architecture.view' },
+      { path: '/database-docs', icon: <FiDatabase />, title: 'Doc. Base de Datos', desc: 'Diagramas visuales de la arquitectura de datos del sistema.', permission: 'docs.database.view' },
+      { path: '/dian-documentation', icon: <FiCode />, title: 'Documentacion DIAN', desc: 'Arquitectura y flujos de Facturacion Electronica DIAN.', permission: 'docs.dian.view' },
+      { path: '/manual-contabilidad', icon: <FiBookOpen />, title: 'Manual Contable', desc: 'Manual completo del modulo contable.', permission: 'docs.accounting.view' },
+      { path: '/manual-consignacion', icon: <FiBookOpen />, title: 'Manual Consignación', desc: 'Manual del modulo de consignacion e inventario en aliados.', permission: 'docs.consignment.view' },
+      { path: '/plan-estrategico', icon: <FiCompass />, title: 'Plan Estrategico', desc: 'Visualizacion del plan estrategico anual.', permission: 'docs.strategic-plan.view' },
     ]
   },
   {

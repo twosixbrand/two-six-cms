@@ -142,14 +142,15 @@ const menuData = [
   {
     title: 'Documentación',
     path: '#',
-    permission: 'sales.orders.view',
+    permission: 'docs',
     subNav: [
-      { title: 'Manual de Usuario', path: '/user-manual', permission: 'sales.orders.view' },
-      { title: 'Doc. Arquitectura', path: '/architecture-docs', permission: 'admin.users.view' },
-      { title: 'Doc. Base de Datos', path: '/database-docs', permission: 'sales.orders.view' },
-      { title: 'Documentación DIAN', path: '/dian-documentation', permission: 'sales.dian.view' },
-      { title: 'Manual Contable', path: '/manual-contabilidad', permission: 'accounting.reports.view' },
-      { title: 'Plan Estratégico', path: '/plan-estrategico', permission: 'sales.orders.view' },
+      { title: 'Manual de Usuario', path: '/user-manual', permission: 'docs.user-manual.view' },
+      { title: 'Doc. Arquitectura', path: '/architecture-docs', permission: 'docs.architecture.view' },
+      { title: 'Doc. Base de Datos', path: '/database-docs', permission: 'docs.database.view' },
+      { title: 'Documentación DIAN', path: '/dian-documentation', permission: 'docs.dian.view' },
+      { title: 'Manual Contable', path: '/manual-contabilidad', permission: 'docs.accounting.view' },
+      { title: 'Manual Consignación', path: '/manual-consignacion', permission: 'docs.consignment.view' },
+      { title: 'Plan Estratégico', path: '/plan-estrategico', permission: 'docs.strategic-plan.view' },
     ],
   },
   {
