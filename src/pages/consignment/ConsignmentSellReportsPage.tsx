@@ -13,6 +13,12 @@ const STATUS_LABELS: Record<string, { label: string; color: string; bg: string }
   REJECTED: { label: 'Rechazado', color: '#991b1b', bg: '#fee2e2' },
 };
 
+const formatCOP = (n: number) =>
+  (n ?? 0).toLocaleString('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
+
+const getItemPrice = (it: any): number =>
+  it?.clothingSize?.product?.price ?? 0;
+
 const getItemImage = (it: any): string | null =>
   it?.clothingSize?.clothingColor?.imageClothing?.[0]?.image_url ?? null;
 
@@ -176,6 +182,15 @@ const ConsignmentSellReportsPage = () => {
           : '—',
     },
     {
+      key: 'total',
+      header: 'Valor',
+      render: (_: any, row: any) => {
+        if (!row.items) return '—';
+        const total = row.items.reduce((s: number, i: any) => s + (getItemPrice(i) * i.quantity), 0);
+        return formatCOP(total);
+      },
+    },
+    {
       key: 'status',
       header: 'Estado',
       render: (_: any, row: any) => {
@@ -279,11 +294,15 @@ const ConsignmentSellReportsPage = () => {
               <thead>
                 <tr style={{ borderBottom: '1px solid #2a2a35' }}>
                   <th style={{ textAlign: 'left', padding: '0.5rem', color: '#a0a0b0' }}>Producto</th>
-                  <th style={{ textAlign: 'right', padding: '0.5rem', color: '#a0a0b0' }}>Vendidos</th>
+                  <th style={{ textAlign: 'right', padding: '0.5rem', color: '#a0a0b0' }}>Precio</th>
+                  <th style={{ textAlign: 'right', padding: '0.5rem', color: '#a0a0b0' }}>Cant.</th>
+                  <th style={{ textAlign: 'right', padding: '0.5rem', color: '#a0a0b0' }}>Total</th>
                 </tr>
               </thead>
               <tbody>
-                {(viewing.items || []).map((it: any) => (
+                {(viewing.items || []).map((it: any) => {
+                  const price = getItemPrice(it);
+                  return (
                   <tr key={it.id} style={{ borderBottom: '1px solid #2a2a35' }}>
                     <td style={{ padding: '0.5rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
@@ -293,12 +312,24 @@ const ConsignmentSellReportsPage = () => {
                         <span>{getItemLabel(it)}</span>
                       </div>
                     </td>
-                    <td style={{ padding: '0.5rem', textAlign: 'right', fontWeight: 600, color: '#f1f1f3' }}>
-                      {it.quantity}
-                    </td>
+                    <td style={{ padding: '0.5rem', textAlign: 'right', color: '#a0aec0' }}>{formatCOP(price)}</td>
+                    <td style={{ padding: '0.5rem', textAlign: 'right', fontWeight: 600, color: '#f1f1f3' }}>{it.quantity}</td>
+                    <td style={{ padding: '0.5rem', textAlign: 'right', fontWeight: 600, color: '#f0b429' }}>{formatCOP(price * it.quantity)}</td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
+              <tfoot>
+                <tr style={{ borderTop: '2px solid #f0b429' }}>
+                  <td colSpan={2}></td>
+                  <td style={{ padding: '0.5rem', textAlign: 'right', fontWeight: 700, color: '#f1f1f3' }}>
+                    {(viewing.items || []).reduce((s: number, i: any) => s + i.quantity, 0)}
+                  </td>
+                  <td style={{ padding: '0.5rem', textAlign: 'right', fontWeight: 700, color: '#f0b429', fontSize: '1rem' }}>
+                    {formatCOP((viewing.items || []).reduce((s: number, i: any) => s + getItemPrice(i) * i.quantity, 0))}
+                  </td>
+                </tr>
+              </tfoot>
             </table>
 
             {approveError && (
