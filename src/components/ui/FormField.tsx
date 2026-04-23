@@ -80,6 +80,7 @@ const FormField: React.FC<FormFieldProps> = ({
   if (type === 'select') {
     input = (
       <select
+        id={name}
         name={name}
         value={value}
         onChange={onChange}
@@ -102,6 +103,7 @@ const FormField: React.FC<FormFieldProps> = ({
   } else if (type === 'textarea') {
     input = (
       <textarea
+        id={name}
         name={name}
         value={value}
         onChange={onChange}
@@ -115,6 +117,7 @@ const FormField: React.FC<FormFieldProps> = ({
   } else {
     input = (
       <input
+        id={name}
         type={type}
         name={name}
         value={value}
