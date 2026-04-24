@@ -4,6 +4,7 @@ import PageHeader from '../components/common/PageHeader';
 import { DataTable, Modal, FormField, Button, LoadingSpinner } from '../components/ui';
 import { getLogs } from '../services/errorLogApi';
 import { logError } from '../services/errorApi';
+import { formatDateTime } from '../utils/dateFormat';
 
 const ErrorLogPage = () => {
   const [logs, setLogs] = useState<any[]>([]);
@@ -65,7 +66,7 @@ const ErrorLogPage = () => {
     {
       key: 'createdAt',
       header: 'Fecha',
-      render: (value: any) => new Date(value).toLocaleString(),
+      render: (value: any) => formatDateTime(value),
     },
   ];
 
@@ -126,7 +127,7 @@ const ErrorLogPage = () => {
               </div>
               <div style={{ flex: 1 }}>
                 <span style={{ fontSize: '0.75rem', color: '#a0a0b0', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600 }}>Fecha</span>
-                <p style={{ margin: '0.25rem 0 0', fontWeight: 600 }}>{new Date(selectedLog.createdAt).toLocaleString()}</p>
+                <p style={{ margin: '0.25rem 0 0', fontWeight: 600 }}>{formatDateTime(selectedLog.createdAt)}</p>
               </div>
             </div>
             <div>

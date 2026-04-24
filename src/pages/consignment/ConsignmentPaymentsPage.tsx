@@ -5,6 +5,7 @@ import PageHeader from '../../components/common/PageHeader';
 import { DataTable, Modal, Button, SearchInput, LoadingSpinner } from '../../components/ui';
 import * as paymentApi from '../../services/consignmentPaymentApi';
 import { logError } from '../../services/errorApi';
+import { formatDate, formatDateTime } from '../../utils/dateFormat';
 
 const STATUS_LABELS: Record<string, { label: string; color: string; bg: string }> = {
   PENDING: { label: 'Pendiente', color: '#92400e', bg: '#fef3c7' },
@@ -155,7 +156,7 @@ const ConsignmentPaymentsPage = () => {
     {
       key: 'createdAt',
       header: 'Fecha',
-      render: (_: any, row: any) => new Date(row.createdAt).toLocaleDateString(),
+      render: (_: any, row: any) => formatDate(row.createdAt),
     },
   ];
 
@@ -220,7 +221,7 @@ const ConsignmentPaymentsPage = () => {
             {viewing.notes && (
               <p style={{ margin: '0.25rem 0', fontStyle: 'italic', color: '#a0aec0' }}>"{viewing.notes}"</p>
             )}
-            <p style={{ margin: '0.25rem 0' }}><strong>Fecha:</strong> {new Date(viewing.createdAt).toLocaleString()}</p>
+            <p style={{ margin: '0.25rem 0' }}><strong>Fecha:</strong> {formatDateTime(viewing.createdAt)}</p>
             <p style={{ margin: '0.25rem 0' }}>
               <strong>Estado:</strong>{' '}
               <span style={{ padding: '1px 8px', borderRadius: '10px', fontSize: '0.75rem', fontWeight: 600, color: STATUS_LABELS[viewing.status]?.color, background: STATUS_LABELS[viewing.status]?.bg }}>

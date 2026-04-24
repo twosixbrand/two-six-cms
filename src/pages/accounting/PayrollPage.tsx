@@ -5,6 +5,8 @@ import PageHeader from '../../components/common/PageHeader';
 import { DataTable, Button, StatusBadge, LoadingSpinner, Modal } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
+import { formatDate } from '../../utils/dateFormat';
+
 
 const periodTypeLabels: Record<string, string> = {
     QUINCENAL_1: 'Quincenal 1ra',
@@ -541,8 +543,8 @@ const PayrollPage = () => {
         { key: 'year', header: 'Año' },
         { key: 'month', header: 'Mes' },
         { key: 'period_type', header: 'Tipo', render: (val: any) => periodTypeLabels[val] || val },
-        { key: 'start_date', header: 'Inicio', render: (val: any) => new Date(val).toLocaleDateString('es-CO') },
-        { key: 'end_date', header: 'Fin', render: (val: any) => new Date(val).toLocaleDateString('es-CO') },
+        { key: 'start_date', header: 'Inicio', render: (val: any) => formatDate() },
+        { key: 'end_date', header: 'Fin', render: (val: any) => formatDate() },
         { key: '_count', header: 'Empleados', render: (_val: any, row: any) => row._count?.entries || 0 },
         {
             key: 'status',

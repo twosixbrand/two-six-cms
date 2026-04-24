@@ -7,6 +7,7 @@ import * as ccApi from '../../services/consignmentCycleCountApi';
 import * as warehouseApi from '../../services/consignmentWarehouseApi';
 import * as selloutApi from '../../services/consignmentSelloutApi';
 import { logError } from '../../services/errorApi';
+import { formatDate } from '../../utils/dateFormat';
 
 const getItemImage = (it: any): string | null =>
   it?.clothingSize?.clothingColor?.imageClothing?.[0]?.image_url ?? it?.image_url ?? it?.product?.image_url ?? null;
@@ -319,7 +320,7 @@ const ConsignmentCycleCountPage = () => {
     {
       key: 'approved_at',
       header: 'Aprobado',
-      render: (_: any, row: any) => (row.approved_at ? new Date(row.approved_at).toLocaleDateString() : '—'),
+      render: (_: any, row: any) => (row.approved_at ? formatDate(row.approved_at) : '—'),
     },
   ];
 

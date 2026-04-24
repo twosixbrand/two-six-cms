@@ -7,6 +7,8 @@ import FormField from '../../components/ui/FormField';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
+import { formatDate } from '../../utils/dateFormat';
+
 
 const monthNames = [
     '', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -111,13 +113,6 @@ const PeriodClosingPage = () => {
         } finally {
             setProcessing(false);
         }
-    };
-
-    const formatDate = (dateStr: string) => {
-        return new Date(dateStr).toLocaleString('es-CO', {
-            year: 'numeric', month: '2-digit', day: '2-digit',
-            hour: '2-digit', minute: '2-digit',
-        });
     };
 
     const formatCurrency = (amount: number) => {

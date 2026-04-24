@@ -8,6 +8,7 @@ import {
 import PageHeader from '../components/common/PageHeader';
 import { getGeneralSalesReport } from '../services/reportApi';
 import { Button, DataTable, StatusBadge, LoadingSpinner } from '../components/ui';
+import { formatDate } from '../utils/dateFormat';
 import './GeneralSalesReportPage.css';
 
 const COLORS = ['#f0b429', '#e8c468', '#c29b2b', '#9b781a', '#7a6215', '#a0a0b0'];
@@ -144,7 +145,7 @@ const GeneralSalesReportPage = () => {
         {
             key: 'order_date',
             header: 'Fecha',
-            render: (val: any) => new Date(val).toLocaleDateString(),
+            render: (val: any) => formatDate(val),
         },
         {
             key: 'customer',

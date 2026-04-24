@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
+import { formatDateTime } from '../../../utils/dateFormat';
 import './Header.css';
 import logoUrl from '../../../assets/logo-gorilla.png';
 
@@ -12,20 +13,7 @@ const getInitials = (email) => {
   return (localPart[0] + localPart[1]).toUpperCase();
 };
 
-const formatDateTime = (date) => {
-  const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-  const month = months[date.getMonth()];
-  const day = String(date.getDate()).padStart(2, '0');
-  const year = date.getFullYear();
 
-  let hours = date.getHours();
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12;
-  hours = hours ? hours : 12;
-
-  return `${month} ${day}, ${year} | ${hours}:${minutes} ${ampm}`;
-};
 
 const Header = ({ toggleMenu }) => {
   const { userEmail } = useContext(AuthContext);

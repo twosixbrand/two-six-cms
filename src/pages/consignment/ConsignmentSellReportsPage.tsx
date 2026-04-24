@@ -6,6 +6,7 @@ import { DataTable, Modal, Button, SearchInput, LoadingSpinner } from '../../com
 import * as reportApi from '../../services/consignmentSellReportApi';
 import * as selloutApi from '../../services/consignmentSelloutApi';
 import { logError } from '../../services/errorApi';
+import { formatDate, formatDateTime } from '../../utils/dateFormat';
 
 const STATUS_LABELS: Record<string, { label: string; color: string; bg: string }> = {
   PENDING: { label: 'Pendiente', color: '#92400e', bg: '#fef3c7' },
@@ -208,7 +209,7 @@ const ConsignmentSellReportsPage = () => {
     {
       key: 'createdAt',
       header: 'Fecha',
-      render: (_: any, row: any) => row.createdAt ? new Date(row.createdAt).toLocaleDateString() : '—',
+      render: (_: any, row: any) => row.createdAt ? formatDate(row.createdAt) : '—',
     },
   ];
 
@@ -274,7 +275,7 @@ const ConsignmentSellReportsPage = () => {
           <div>
             <p style={{ margin: '0.25rem 0' }}><strong>Cliente:</strong> {viewing.customer?.name}</p>
             <p style={{ margin: '0.25rem 0' }}><strong>Bodega:</strong> {viewing.warehouse?.name}</p>
-            <p style={{ margin: '0.25rem 0' }}><strong>Fecha:</strong> {new Date(viewing.createdAt).toLocaleString()}</p>
+            <p style={{ margin: '0.25rem 0' }}><strong>Fecha:</strong> {formatDateTime(viewing.createdAt)}</p>
             <p style={{ margin: '0.25rem 0' }}>
               <strong>Estado:</strong>{' '}
               <span style={{
