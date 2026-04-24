@@ -132,7 +132,7 @@ describe('PickupDashboardPage', () => {
         );
 
         await waitFor(() => {
-            expect(screen.getByText('Pendiente de Preparación')).toBeInTheDocument();
+            expect(screen.getByText('Pendiente de Revisión')).toBeInTheDocument();
         });
 
         expect(screen.getByText('Listo para Recoger')).toBeInTheDocument();
@@ -203,8 +203,8 @@ describe('PickupDashboardPage', () => {
             expect(screen.getByText(/ORD-001/)).toBeInTheDocument();
         });
 
-        expect(screen.getAllByText(/Marcar: Listo para Recoger/).length).toBeGreaterThan(0);
-        expect(screen.getAllByText(/Entregado a Cliente/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/Notificar Listo/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/Entregar a Cliente/).length).toBeGreaterThan(0);
     });
 
     it('renders refresh button', () => {

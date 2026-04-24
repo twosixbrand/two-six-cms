@@ -28,19 +28,7 @@ vi.mock('../services/errorApi', () => ({
     logError: vi.fn(),
 }));
 
-vi.mock('../components/subscriber/SubscriberList', () => ({
-    default: ({ subscribers, onToggleStatus, onToggleUnsubscribed }: any) => (
-        <div data-testid="subscriber-list">
-            {subscribers.map((sub: any) => (
-                <div key={sub.id} data-testid={`subscriber-${sub.id}`}>
-                    <span>{sub.email}</span>
-                    <button onClick={() => onToggleStatus(sub.id, sub.status)}>Toggle Status</button>
-                    <button onClick={() => onToggleUnsubscribed(sub.id, sub.unsubscribed)}>Toggle Unsub</button>
-                </div>
-            ))}
-        </div>
-    ),
-}));
+// Removed SubscriberList mock since it uses DataTable
 
 import * as subscriberApi from '../services/subscriberApi';
 
@@ -74,7 +62,7 @@ describe('SubscriberPage', () => {
             </BrowserRouter>
         );
 
-        expect(screen.getByText('Gestión de Suscriptores')).toBeInTheDocument();
+        expect(screen.getByText('Gestion de Suscriptores')).toBeInTheDocument();
     });
 
     it('shows loading state initially', () => {
@@ -117,7 +105,7 @@ describe('SubscriberPage', () => {
         });
     });
 
-    it('renders the subscriber list component', async () => {
+    it('renders the DataTable component for subscribers', async () => {
         render(
             <BrowserRouter>
                 <SubscriberPage />
@@ -125,7 +113,7 @@ describe('SubscriberPage', () => {
         );
 
         await waitFor(() => {
-            expect(screen.getByTestId('subscriber-list')).toBeInTheDocument();
+            expect(screen.getByText('test1@example.com')).toBeInTheDocument();
         });
     });
 
