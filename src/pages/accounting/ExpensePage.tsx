@@ -6,6 +6,8 @@ import PageHeader from '../../components/common/PageHeader';
 import { DataTable, Button, StatusBadge, LoadingSpinner } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
+import { formatDate } from '../../utils/dateFormat';
+
 
 const ExpensePage = () => {
     const navigate = useNavigate();
@@ -127,7 +129,7 @@ const ExpensePage = () => {
         {
             key: 'expense_date',
             header: 'Fecha',
-            render: (_val: any, row: any) => new Date(row.expense_date || row.date).toLocaleDateString('es-CO'),
+            render: (_val: any, row: any) => formatDate(),
         },
         { key: 'category', header: 'Categoría' },
         {

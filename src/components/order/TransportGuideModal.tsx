@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiPrinter } from 'react-icons/fi';
 import logoImg from '../../assets/logo-gorilla.png';
+import { formatDate } from '../../utils/dateFormat';
 import './TransportGuideModal.css';
 
 const TransportGuideModal = ({ order, onClose }) => {
@@ -8,7 +9,7 @@ const TransportGuideModal = ({ order, onClose }) => {
 
     const totalItems = order.orderItems?.reduce((acc, item) => acc + item.quantity, 0) || 0;
     const guideNumber = `TS-${String(order.id).padStart(6, '0')}`;
-    const today = new Date().toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const today = formatDate(new Date());
 
     const handlePrint = () => {
         const guideEl = document.getElementById('transport-guide-print');

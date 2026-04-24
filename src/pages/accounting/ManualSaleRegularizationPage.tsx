@@ -9,6 +9,8 @@ import * as accountingApi from '../../services/accountingApi';
 import * as customerApi from '../../services/customerApi';
 import { getProducts } from '../../services/productApi';
 import { logError } from '../../services/errorApi';
+import { formatDate } from '../../utils/dateFormat';
+
 
 type CatalogProduct = {
     id: number;
@@ -433,7 +435,7 @@ const ManualSaleRegularizationPage: React.FC = () => {
                                 <tr key={p.journal_entry_id} style={{ borderTop: '1px solid #2a2a35' }}>
                                     <td style={{ padding: 6, color: '#f1f1f3', fontSize: 13 }}>{p.entry_number}</td>
                                     <td style={{ padding: 6, color: '#a0a0b0', fontSize: 13 }}>
-                                        {new Date(p.entry_date).toLocaleDateString('es-CO')}
+                                        {formatDate()}
                                     </td>
                                     <td style={{ padding: 6, color: '#a0a0b0', fontSize: 12 }}>{p.description}</td>
                                     <td style={{ padding: 6, color: '#34d399', fontSize: 13, textAlign: 'right', fontWeight: 600 }}>

@@ -4,6 +4,7 @@ import PageHeader from '../../components/common/PageHeader';
 import { Button, LoadingSpinner } from '../../components/ui';
 import * as reportsApi from '../../services/consignmentReportsApi';
 import { logError } from '../../services/errorApi';
+import { formatDate } from '../../utils/dateFormat';
 
 type Tab = 'inventory' | 'losses' | 'pending';
 
@@ -303,7 +304,7 @@ const ConsignmentReportsPage = () => {
                   ) : (
                     lossData.merma_orders.map((o: any) => (
                       <tr key={o.id} style={{ borderBottom: '1px solid #2a2a35' }}>
-                        <td style={{ padding: '0.4rem' }}>{new Date(o.date).toLocaleDateString()}</td>
+                        <td style={{ padding: '0.4rem' }}>{formatDate(o.date)}</td>
                         <td style={{ padding: '0.4rem' }}>{o.order_reference}</td>
                         <td style={{ padding: '0.4rem' }}>{o.customer}</td>
                         <td style={{ padding: '0.4rem', textAlign: 'right' }}>{o.units}</td>
@@ -330,7 +331,7 @@ const ConsignmentReportsPage = () => {
                   ) : (
                     lossData.warranty_returns.map((r: any) => (
                       <tr key={r.id} style={{ borderBottom: '1px solid #2a2a35' }}>
-                        <td style={{ padding: '0.4rem' }}>{r.date ? new Date(r.date).toLocaleDateString() : '—'}</td>
+                        <td style={{ padding: '0.4rem' }}>{r.date ? formatDate(r.date) : '—'}</td>
                         <td style={{ padding: '0.4rem' }}>{r.customer} / {r.warehouse}</td>
                         <td style={{ padding: '0.4rem', textAlign: 'right' }}>{r.units}</td>
                         <td style={{ padding: '0.4rem', color: '#a0aec0' }}>{r.notes || '—'}</td>
@@ -393,7 +394,7 @@ const ConsignmentReportsPage = () => {
                           {w.never_counted ? (
                             <span style={{ color: '#dc2626' }}>Nunca</span>
                           ) : (
-                            new Date(w.last_count_date).toLocaleDateString()
+                            formatDate(w.last_count_date)
                           )}
                         </td>
                         <td style={{ padding: '0.4rem', textAlign: 'right', color: w.days_since_last_count > 60 ? '#dc2626' : '#f0b429', fontWeight: 600 }}>

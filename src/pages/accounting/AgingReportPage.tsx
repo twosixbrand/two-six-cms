@@ -6,6 +6,8 @@ import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import StatusBadge from '../../components/ui/StatusBadge';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
+import { formatDate, formatDateTime } from '../../utils/dateFormat';
+
 
 // ─── Shared Styles ──────────────────────────────────────────────
 
@@ -114,7 +116,7 @@ const CxCTab = ({ data }: { data: any }) => {
                                 <tr key={i}>
                                     <td style={{ ...tdStyle, fontWeight: 600 }}>{o.orderReference || `#${o.orderId}`}</td>
                                     <td style={tdStyle}>{o.customerName}</td>
-                                    <td style={tdStyle}>{new Date(o.orderDate).toLocaleDateString('es-CO')}</td>
+                                    <td style={tdStyle}>{formatDate()}</td>
                                     <td style={tdStyle}>
                                         <StatusBadge status={o.status} size="sm" />
                                     </td>
@@ -135,7 +137,7 @@ const CxCTab = ({ data }: { data: any }) => {
                 Cuentas por Cobrar (CxC)
             </h2>
             <p style={{ textAlign: 'center', color: '#a0a0b0', marginBottom: '24px', fontFamily: 'Inter, sans-serif' }}>
-                Generado: {new Date(data.generatedAt).toLocaleString('es-CO')} | Total pedidos: {data.totalOrders}
+                Generado: {formatDateTime()} | Total pedidos: {data.totalOrders}
             </p>
 
             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '24px' }}>
@@ -215,8 +217,8 @@ const CxPTab = ({ data }: { data: any }) => {
                                             {item.category}
                                         </span>
                                     </td>
-                                    <td style={tdStyle}>{new Date(item.expenseDate).toLocaleDateString('es-CO')}</td>
-                                    <td style={tdStyle}>{item.dueDate ? new Date(item.dueDate).toLocaleDateString('es-CO') : 'Sin fecha'}</td>
+                                    <td style={tdStyle}>{formatDate()}</td>
+                                    <td style={tdStyle}>{item.dueDate ? formatDate() : 'Sin fecha'}</td>
                                     <td style={{ ...tdStyle, textAlign: 'center', fontWeight: 600, color: item.daysOutstanding > 60 ? '#f87171' : '#f1f1f3' }}>
                                         {item.daysOutstanding}
                                     </td>
@@ -236,7 +238,7 @@ const CxPTab = ({ data }: { data: any }) => {
                 Cuentas por Pagar (CxP)
             </h2>
             <p style={{ textAlign: 'center', color: '#a0a0b0', marginBottom: '24px', fontFamily: 'Inter, sans-serif' }}>
-                Generado: {new Date(data.generatedAt).toLocaleString('es-CO')} | Total gastos pendientes: {data.totalExpenses}
+                Generado: {formatDateTime()} | Total gastos pendientes: {data.totalExpenses}
             </p>
 
             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '24px' }}>
@@ -290,7 +292,7 @@ const InventoryTab = ({ data }: { data: any }) => {
                 Valoracion de Inventario
             </h2>
             <p style={{ textAlign: 'center', color: '#a0a0b0', marginBottom: '8px', fontFamily: 'Inter, sans-serif' }}>
-                Generado: {new Date(data.generatedAt).toLocaleString('es-CO')} | Metodo: Costo de Produccion (NIC 2 / NIIF)
+                Generado: {formatDateTime()} | Metodo: Costo de Produccion (NIC 2 / NIIF)
             </p>
             <p style={{ textAlign: 'center', color: '#6b6b7b', marginBottom: '24px', fontFamily: 'Inter, sans-serif', fontSize: '0.75rem' }}>
                 Valorado al costo de manufactura (manufactured_cost) conforme a NIC 2: menor entre costo y valor neto realizable

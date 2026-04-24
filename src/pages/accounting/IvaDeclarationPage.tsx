@@ -6,6 +6,8 @@ import FormField from '../../components/ui/FormField';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
+import { formatDate } from '../../utils/dateFormat';
+
 
 const currentYear = new Date().getFullYear();
 
@@ -101,7 +103,7 @@ const IvaDeclarationPage = () => {
                         <tbody>
                             {entries.map((e: any, i: number) => (
                                 <tr key={i}>
-                                    <td style={tdStyle}>{new Date(e.date).toLocaleDateString('es-CO')}</td>
+                                    <td style={tdStyle}>{formatDate()}</td>
                                     <td style={tdStyle}>{e.entry_number}</td>
                                     <td style={tdStyle}>{e.description}</td>
                                     <td style={{ ...tdStyle, textAlign: 'right' }}>{formatCurrency(e.debit)}</td>

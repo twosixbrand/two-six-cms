@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { formatDate } from '../../utils/dateFormat';
 import './SubscriberList.css';
 
 interface Subscriber {
@@ -45,7 +46,7 @@ const SubscriberList: React.FC<SubscriberListProps> = ({ subscribers, onToggleSt
                                 <tr className={expandedRowId === sub.id ? 'expanded-parent-row' : ''}>
                                     <td>{sub.id}</td>
                                     <td>{sub.email}</td>
-                                    <td>{new Date(sub.registeredAt).toLocaleDateString()}</td>
+                                    <td>{formatDate(sub.registeredAt)}</td>
                                     <td>
                                         <button
                                             className={`action-btn ${expandedRowId === sub.id ? 'active-expansion' : ''}`}

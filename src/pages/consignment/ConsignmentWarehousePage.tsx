@@ -6,6 +6,7 @@ import { DataTable, Modal, FormField, Button, SearchInput, LoadingSpinner } from
 import * as warehouseApi from '../../services/consignmentWarehouseApi';
 import { getCustomers } from '../../services/customerApi';
 import { logError } from '../../services/errorApi';
+import { formatDate } from '../../utils/dateFormat';
 
 interface Customer {
   id: number;
@@ -480,7 +481,7 @@ const ConsignmentWarehousePage = () => {
                         return (
                           <tr key={k.id} style={{ borderBottom: '1px solid #2a2a35' }}>
                             <td style={{ padding: '0.4rem 0.5rem', whiteSpace: 'nowrap', color: '#a0aec0' }}>
-                              {new Date(k.date || k.createdAt).toLocaleDateString()}
+                              {formatDate(k.date || k.createdAt)}
                             </td>
                             <td style={{ padding: '0.4rem 0.5rem' }}>
                               <span style={{

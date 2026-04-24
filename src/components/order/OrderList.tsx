@@ -4,6 +4,7 @@ import { FaEye } from 'react-icons/fa';
 import { FiTruck } from 'react-icons/fi';
 import TransportGuideModal from './TransportGuideModal';
 import * as orderApi from '../../services/orderApi';
+import { formatDate } from '../../utils/dateFormat';
 import './OrderList.css';
 
 const OrderList = ({ orders }) => {
@@ -111,7 +112,7 @@ const OrderList = ({ orders }) => {
                                     </div>
                                 </td>
                                 <td>{order.customer?.name || 'N/A'}</td>
-                                <td>{new Date(order.order_date).toLocaleDateString()}</td>
+                                <td>{formatDate(order.order_date)}</td>
                                 <td>
                                     <span className={`status-badge ${order.status.toLowerCase().replace(' ', '-')}`}>
                                         {order.status}

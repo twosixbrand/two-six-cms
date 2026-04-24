@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as accountingApi from '../../services/accountingApi';
+import { formatDate } from '../../utils/dateFormat';
+
 
 const formatCurrency = (value: number) =>
     new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(value);
@@ -164,7 +166,7 @@ const AccountingDashboardWidget = () => {
                                     }}>{a.action}</span>
                                     <span style={{ color: '#f1f1f3' }}>{a.entity_type} #{a.entity_id}</span>
                                     <span style={{ marginLeft: 'auto', color: '#6b6b7b', fontSize: '0.7rem' }}>
-                                        {new Date(a.createdAt).toLocaleDateString('es-CO')}
+                                        {formatDate()}
                                     </span>
                                 </li>
                             ))}

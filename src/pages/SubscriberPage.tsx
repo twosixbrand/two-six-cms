@@ -4,6 +4,7 @@ import PageHeader from '../components/common/PageHeader';
 import { DataTable, Modal, Button, SearchInput, StatusBadge, LoadingSpinner } from '../components/ui';
 import * as subscriberApi from '../services/subscriberApi';
 import { logError } from '../services/errorApi';
+import { formatDate } from '../utils/dateFormat';
 
 const SubscriberPage = () => {
   const [subscribers, setSubscribers] = useState<any[]>([]);
@@ -76,7 +77,7 @@ const SubscriberPage = () => {
     {
       key: 'registeredAt',
       header: 'Fecha Registro',
-      render: (value: any) => new Date(value).toLocaleDateString(),
+      render: (value: any) => formatDate(value),
     },
     {
       key: 'status',

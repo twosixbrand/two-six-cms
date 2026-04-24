@@ -6,6 +6,8 @@ import { DataTable, Button, StatusBadge, LoadingSpinner } from '../../components
 import * as accountingApi from '../../services/accountingApi';
 import { getProviders } from '../../services/providerApi';
 import { logError } from '../../services/errorApi';
+import { formatDate } from '../../utils/dateFormat';
+
 
 const WithholdingCertificatePage = () => {
     const [certificates, setCertificates] = useState<any[]>([]);
@@ -181,7 +183,7 @@ const WithholdingCertificatePage = () => {
         {
             key: 'issue_date',
             header: 'Fecha Expedici\u00f3n',
-            render: (val: any) => new Date(val).toLocaleDateString('es-CO'),
+            render: (val: any) => formatDate(),
         },
     ];
 
