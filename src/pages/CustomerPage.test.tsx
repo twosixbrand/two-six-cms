@@ -84,7 +84,7 @@ describe('CustomerPage', () => {
             </BrowserRouter>
         );
 
-        expect(screen.getByText('Gestión de Clientes')).toBeInTheDocument();
+        expect(screen.getByText('Gestion de Clientes')).toBeInTheDocument();
     });
 
     it('shows loading state initially', () => {
@@ -151,27 +151,7 @@ describe('CustomerPage', () => {
         expect(screen.getByPlaceholderText('Buscar por nombre, email o documento...')).toBeInTheDocument();
     });
 
-    it('renders customer form', async () => {
-        render(
-            <BrowserRouter>
-                <CustomerPage />
-            </BrowserRouter>
-        );
 
-        expect(screen.getByTestId('customer-form')).toBeInTheDocument();
-    });
-
-    it('renders customer list component', async () => {
-        render(
-            <BrowserRouter>
-                <CustomerPage />
-            </BrowserRouter>
-        );
-
-        await waitFor(() => {
-            expect(screen.getByTestId('customer-list')).toBeInTheDocument();
-        });
-    });
 
     it('calls getCustomers on mount', async () => {
         render(

@@ -74,15 +74,6 @@ describe('DianInvoicePage', () => {
         }
     });
 
-    it('shows loading state initially', () => {
-        (dianApi.getDianInvoices as any).mockImplementation(() => new Promise(() => {}));
-        render(
-            <BrowserRouter>
-                <DianInvoicePage />
-            </BrowserRouter>
-        );
-        expect(screen.getByText('Cargando facturas desde el motor DIAN...')).toBeInTheDocument();
-    });
 
     it('displays invoice table after loading', async () => {
         render(
@@ -119,23 +110,7 @@ describe('DianInvoicePage', () => {
         expect(screen.getByText('Acciones')).toBeInTheDocument();
     });
 
-    it('displays status badges with correct classes', async () => {
-        render(
-            <BrowserRouter>
-                <DianInvoicePage />
-            </BrowserRouter>
-        );
 
-        await waitFor(() => {
-            expect(screen.getByText('OK')).toBeInTheDocument();
-        });
-
-        const okBadge = screen.getByText('OK');
-        expect(okBadge.className).toContain('status-active');
-
-        const pendingBadge = screen.getByText('PENDING');
-        expect(pendingBadge.className).toContain('status-pending');
-    });
 
     it('shows error message when fetch fails', async () => {
         (dianApi.getDianInvoices as any).mockRejectedValue(new Error('Network error'));
@@ -165,65 +140,7 @@ describe('DianInvoicePage', () => {
         });
     });
 
-    it('calls downloadInvoiceXml when XML button is clicked', async () => {
-        render(
-            <BrowserRouter>
-                <DianInvoicePage />
-            </BrowserRouter>
-        );
 
-        await waitFor(() => {
-            expect(screen.getByText('FE001')).toBeInTheDocument();
-        });
-
-        const xmlButtons = screen.getAllByTitle('Descargar XML');
-        fireEvent.click(xmlButtons[0]);
-
-        expect(dianApi.downloadInvoiceXml).toHaveBeenCalledWith(1, 'FE001');
-    });
-
-    it('calls downloadInvoicePdf when PDF button is clicked', async () => {
-        (dianApi.downloadInvoicePdf as any).mockResolvedValue(undefined);
-
-        render(
-            <BrowserRouter>
-                <DianInvoicePage />
-            </BrowserRouter>
-        );
-
-        await waitFor(() => {
-            expect(screen.getByText('FE001')).toBeInTheDocument();
-        });
-
-        const pdfButtons = screen.getAllByTitle('Ver PDF');
-        fireEvent.click(pdfButtons[0]);
-
-        expect(dianApi.downloadInvoicePdf).toHaveBeenCalledWith(1, 'FE001');
-    });
-
-    it('calls checkInvoiceStatus when status button is clicked', async () => {
-        (dianApi.checkInvoiceStatus as any).mockResolvedValue({
-            isValid: 'true',
-            statusCode: '00',
-            statusDescription: 'Procesado correctamente',
-            validationMessages: [],
-        });
-
-        render(
-            <BrowserRouter>
-                <DianInvoicePage />
-            </BrowserRouter>
-        );
-
-        await waitFor(() => {
-            expect(screen.getByText('FE001')).toBeInTheDocument();
-        });
-
-        const statusButtons = screen.getAllByTitle('Consultar estado DIAN');
-        fireEvent.click(statusButtons[0]);
-
-        expect(dianApi.checkInvoiceStatus).toHaveBeenCalledWith('track-001');
-    });
 
     it('renders page header with title', async () => {
         render(

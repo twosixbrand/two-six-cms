@@ -4,7 +4,7 @@ test.describe('Authentication Flow', () => {
 
     test('should display login page', async ({ page }) => {
         await page.goto('/login');
-        await expect(page).toHaveTitle(/cms-react/i);
+        await expect(page).toHaveTitle(/cms - two six/i);
         await expect(page.locator('h1').first()).toContainText('Two Six CMS');
         await expect(page.getByRole('button', { name: /Send Code/i })).toBeVisible();
     });

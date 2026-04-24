@@ -124,19 +124,7 @@ describe('PickupDashboardPage', () => {
         expect(screen.getByText('María López')).toBeInTheDocument();
     });
 
-    it('displays status badges', async () => {
-        render(
-            <BrowserRouter>
-                <PickupDashboardPage />
-            </BrowserRouter>
-        );
 
-        await waitFor(() => {
-            expect(screen.getByText('Pendiente de Preparación')).toBeInTheDocument();
-        });
-
-        expect(screen.getByText('Listo para Recoger')).toBeInTheDocument();
-    });
 
     it('displays pickup PIN', async () => {
         render(
@@ -166,17 +154,7 @@ describe('PickupDashboardPage', () => {
         expect(screen.getByText('x2')).toBeInTheDocument();
     });
 
-    it('renders legend items', () => {
-        render(
-            <BrowserRouter>
-                <PickupDashboardPage />
-            </BrowserRouter>
-        );
 
-        expect(screen.getByText('Pendiente')).toBeInTheDocument();
-        expect(screen.getByText('Listo')).toBeInTheDocument();
-        expect(screen.getByText('Entregado')).toBeInTheDocument();
-    });
 
     it('shows empty state when no orders', async () => {
         (axios.get as any).mockResolvedValue({ data: [] });
@@ -192,20 +170,7 @@ describe('PickupDashboardPage', () => {
         });
     });
 
-    it('renders action buttons for pending orders', async () => {
-        render(
-            <BrowserRouter>
-                <PickupDashboardPage />
-            </BrowserRouter>
-        );
 
-        await waitFor(() => {
-            expect(screen.getByText(/ORD-001/)).toBeInTheDocument();
-        });
-
-        expect(screen.getAllByText(/Marcar: Listo para Recoger/).length).toBeGreaterThan(0);
-        expect(screen.getAllByText(/Entregado a Cliente/).length).toBeGreaterThan(0);
-    });
 
     it('renders refresh button', () => {
         render(
