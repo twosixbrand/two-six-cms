@@ -1,0 +1,3249 @@
+
+> cms-react@0.0.0 test
+> vitest --run
+
+
+ RUN  v4.0.18 /Users/jmanrique/Documents/apps/two-six-cms
+
+stderr | src/pages/accounting/BudgetPage.test.tsx > BudgetPage > renders and allows year selection
+An update to BudgetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BudgetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BudgetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/PickupDashboardPage.test.tsx > PickupDashboardPage > renders without crashing
+An update to PickupDashboardPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PickupDashboardPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DianInvoicePage.test.tsx > DianInvoicePage > renders without crashing
+An update to DianInvoicePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to DianInvoicePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/SubscriberPage.test.tsx > SubscriberPage > renders without crashing
+An update to SubscriberPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to SubscriberPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/SubscriberPage.test.tsx > SubscriberPage > renders page header with title
+An update to SubscriberPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to SubscriberPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/PickupDashboardPage.test.tsx > PickupDashboardPage > renders page header with title
+An update to PickupDashboardPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PickupDashboardPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/CustomerPage.test.tsx > CustomerPage > renders without crashing
+An update to CustomerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CustomerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/CustomerPage.test.tsx > CustomerPage > renders page header with title
+An update to CustomerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CustomerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/accounting/BalanceSheetPage.test.tsx > BalanceSheetPage > updates when clicking Generar button
+An update to BalanceSheetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BalanceSheetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BalanceSheetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BalanceSheetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/accounting/IncomeStatementPage.test.tsx > IncomeStatementPage > calls exportToExcel when export button clicked
+An update to IncomeStatementPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to IncomeStatementPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/IncomeStatementPage.test.tsx (3 tests) 1763ms
+     ✓ renders and fetches income statement data  672ms
+     ✓ calls exportToExcel when export button clicked  962ms
+stderr | src/pages/CustomerPage.test.tsx > CustomerPage > renders search input
+An update to CustomerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CustomerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/CustomerPage.test.tsx > CustomerPage > renders customer form
+An update to CustomerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CustomerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/accounting/BalanceSheetPage.test.tsx > BalanceSheetPage > calls exportToExcel on button click
+An update to BalanceSheetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BalanceSheetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/BalanceSheetPage.test.tsx (3 tests) 2118ms
+     ✓ renders and fetches data on load  641ms
+     ✓ updates when clicking Generar button  1057ms
+     ✓ calls exportToExcel on button click  417ms
+stderr | src/pages/DianInvoicePage.test.tsx > DianInvoicePage > renders page header with title
+An update to DianInvoicePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to DianInvoicePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ❯ src/pages/SubscriberPage.test.tsx (7 tests | 2 failed) 2062ms
+     ✓ renders without crashing 277ms
+     × renders page header with title 69ms
+     ✓ shows loading state initially 59ms
+     ✓ displays subscriber list after loading  449ms
+     ✓ shows error message when fetch fails 60ms
+     × renders the subscriber list component 1069ms
+     ✓ calls getSubscribers on mount 73ms
+stderr | src/pages/DianInvoicePage.test.tsx > DianInvoicePage > renders action buttons (Actualizar)
+An update to DianInvoicePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to DianInvoicePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ❯ src/pages/DianInvoicePage.test.tsx (12 tests | 5 failed) 2105ms
+     ✓ renders without crashing 286ms
+     × shows loading state initially 205ms
+     ✓ displays invoice table after loading  565ms
+     ✓ displays table headers 238ms
+     × displays status badges with correct classes 163ms
+     ✓ shows error message when fetch fails 62ms
+     ✓ shows empty state when no invoices 38ms
+     × calls downloadInvoiceXml when XML button is clicked 172ms
+     × calls downloadInvoicePdf when PDF button is clicked 144ms
+     × calls checkInvoiceStatus when status button is clicked 75ms
+     ✓ renders page header with title 99ms
+     ✓ renders action buttons (Actualizar) 46ms
+stderr | src/pages/PickupDashboardPage.test.tsx > PickupDashboardPage > renders legend items
+An update to PickupDashboardPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PickupDashboardPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/BudgetPage.test.tsx (3 tests) 2777ms
+     ✓ navigates to monthly comparison  1464ms
+     ✓ navigates to annual comparison  1015ms
+stderr | src/pages/PickupDashboardPage.test.tsx > PickupDashboardPage > renders refresh button
+An update to PickupDashboardPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PickupDashboardPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ❯ src/pages/PickupDashboardPage.test.tsx (11 tests | 2 failed) 2978ms
+     ✓ renders without crashing  321ms
+     ✓ renders page header with title 95ms
+     ✓ displays pickup orders after loading  460ms
+     ✓ displays customer information 145ms
+     × displays status badges 1067ms
+     ✓ displays pickup PIN 157ms
+     ✓ displays product items in order 229ms
+     ✓ renders legend items 199ms
+     ✓ shows empty state when no orders 64ms
+     × renders action buttons for pending orders 191ms
+     ✓ renders refresh button 36ms
+ ❯ src/pages/CustomerPage.test.tsx (10 tests | 3 failed) 2573ms
+     ✓ renders without crashing  505ms
+     × renders page header with title 186ms
+     ✓ shows loading state initially 97ms
+     ✓ displays customer list after loading 213ms
+     ✓ displays customer emails 186ms
+     ✓ shows error message when fetch fails 57ms
+     ✓ renders search input 97ms
+     × renders customer form 34ms
+     × renders customer list component 1072ms
+     ✓ calls getCustomers on mount 121ms
+stderr | src/pages/consignment/ConsignmentReportsPage.test.tsx > ConsignmentReportsPage > renders title
+An update to ConsignmentReportsPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentReportsPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/components/color/ColorForm.test.tsx (2 tests) 206ms
+ ✓ src/pages/consignment/ConsignmentReportsPage.test.tsx (5 tests) 899ms
+     ✓ renders title  389ms
+stderr | src/pages/consignment/ConsignmentCycleCountPage.test.tsx > ConsignmentCycleCountPage > renders title
+An update to ConsignmentCycleCountPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentCycleCountPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentCycleCountPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentCycleCountPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/consignment/ConsignmentSelloutPage.test.tsx (5 tests) 559ms
+ ✓ src/pages/DianDocumentationPage.test.tsx (10 tests) 1050ms
+ ✓ src/pages/consignment/ConsignmentCycleCountPage.test.tsx (5 tests) 362ms
+ ✓ src/pages/ClothingColorPage.test.tsx (1 test) 215ms
+stderr | src/pages/GeneralSalesReportPage.test.tsx > GeneralSalesReportPage > renders without crashing
+An update to GeneralSalesReportPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to GeneralSalesReportPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/GeneralSalesReportPage.test.tsx (1 test) 395ms
+     ✓ renders without crashing  391ms
+stderr | src/pages/consignment/ConsignmentPricePage.test.tsx > ConsignmentPricePage > renders title
+An update to ConsignmentPricePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentPricePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentPricePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentPricePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentPricePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/consignment/ConsignmentWarehousePage.test.tsx > ConsignmentWarehousePage > renders page title
+An update to ConsignmentWarehousePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentWarehousePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentWarehousePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentWarehousePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/consignment/ConsignmentPricePage.test.tsx (5 tests) 420ms
+stderr | src/pages/StockPage.test.tsx > StockPage > renders without crashing
+An update to StockPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StockPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/ColorPage.test.tsx > ColorPage > renders without crashing
+An update to ColorPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ColorPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/ColorPage.test.tsx (1 test) 196ms
+ ✓ src/pages/StockPage.test.tsx (1 test) 273ms
+ ✓ src/pages/consignment/ConsignmentWarehousePage.test.tsx (5 tests) 431ms
+ ✓ src/pages/MasterDesignPage.test.tsx (1 test) 105ms
+stderr | src/pages/OrderPage.test.tsx > OrderPage > renders without crashing
+An update to OrderPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to OrderPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/OrderPage.test.tsx (1 test) 227ms
+ ✓ src/components/season/SeasonList.test.tsx (2 tests) 115ms
+ ✓ src/components/design-provider/DesignProviderForm.test.tsx (2 tests) 45ms
+stderr | src/pages/ErrorLogPage.test.tsx > ErrorLogPage > renders without crashing
+An update to ErrorLogPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ErrorLogPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/ErrorLogPage.test.tsx (1 test) 331ms
+     ✓ renders without crashing  329ms
+stderr | src/pages/consignment/ConsignmentReturnPage.test.tsx > ConsignmentReturnPage > renders title
+An update to ConsignmentReturnPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentReturnPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentReturnPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentReturnPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentReturnPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentReturnPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentReturnPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/consignment/ConsignmentReturnPage.test.tsx (5 tests) 517ms
+     ✓ renders title  336ms
+stderr | src/pages/UserPage.test.tsx > UserPage > renders without crashing
+An update to UserPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to UserPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/UserPage.test.tsx (1 test) 267ms
+ ✓ src/pages/LocationPage.test.tsx (1 test) 486ms
+     ✓ renders without crashing  485ms
+stderr | src/pages/SeasonPage.test.tsx > SeasonPage > renders without crashing
+An update to SeasonPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to SeasonPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to SeasonPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/SeasonPage.test.tsx (1 test) 195ms
+stderr | src/pages/consignment/ConsignmentDispatchPage.test.tsx > ConsignmentDispatchPage > renders title
+An update to ConsignmentDispatchPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentDispatchPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentDispatchPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentDispatchPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConsignmentDispatchPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/consignment/ConsignmentDispatchPage.test.tsx (5 tests) 333ms
+ ✓ src/components/year-production/YearProductionForm.test.tsx (2 tests) 263ms
+ ✓ src/pages/CollectionPage.test.tsx (1 test) 130ms
+ ✓ src/components/type-clothing/TypeClothingForm.test.tsx (2 tests) 136ms
+ ✓ src/pages/UserRolePage.test.tsx (1 test) 108ms
+stderr | src/pages/ImageClothingPage.test.tsx > ImageClothingPage > renders without crashing
+An update to ImageClothingPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ImageClothingPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/ImageClothingPage.test.tsx (1 test) 119ms
+stderr | src/pages/YearProductionPage.test.tsx > YearProductionPage > renders without crashing
+An update to YearProductionPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to YearProductionPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to YearProductionPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/YearProductionPage.test.tsx (1 test) 267ms
+ ✓ src/pages/PlanEstrategicoPage.test.tsx (1 test) 201ms
+ ✓ src/components/layout/ErrorBoundary.test.tsx (2 tests) 98ms
+stderr | src/pages/RolePage.test.tsx > RolePage > renders without crashing
+An update to RolePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to RolePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/RolePage.test.tsx (1 test) 205ms
+stderr | src/pages/ProviderPage.test.tsx > ProviderPage > renders without crashing
+An update to ProviderPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ProviderPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/ProviderPage.test.tsx (1 test) 224ms
+ ✓ src/pages/DesignProviderPage.test.tsx (1 test) 157ms
+ ✓ src/pages/ClothingPage.test.tsx (1 test) 175ms
+ ✓ src/components/user/UserList.test.tsx (2 tests) 192ms
+stderr | src/pages/ProductionTypePage.test.tsx > ProductionTypePage > renders without crashing
+An update to ProductionTypePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ProductionTypePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/ProductionTypePage.test.tsx (1 test) 159ms
+ ✓ src/components/color/ColorList.test.tsx (2 tests) 76ms
+ ✓ src/components/season/SeasonForm.test.tsx (2 tests) 100ms
+ ✓ src/components/provider/ProviderForm.test.tsx (2 tests) 136ms
+ ✓ src/components/production-type/ProductionTypeForm.test.tsx (2 tests) 84ms
+ ✓ src/components/layout/Menu/Header.test.tsx (2 tests) 59ms
+ ✓ src/components/clothing-color/ClothingColorList.test.tsx (2 tests) 138ms
+ ✓ src/components/collection/CollectionList.test.tsx (2 tests) 90ms
+ ✓ src/components/product/ProductList.test.tsx (2 tests) 154ms
+ ✓ src/components/user-role/UserRoleList.test.tsx (2 tests) 163ms
+ ✓ src/components/layout/Menu/SubMenu.test.tsx (2 tests) 22ms
+ ✓ src/components/category/CategoryForm.test.tsx (2 tests) 138ms
+stderr | src/pages/TypeClothingPage.test.tsx > TypeClothingPage > renders without crashing
+An update to TypeClothingPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TypeClothingPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TypeClothingPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/TypeClothingPage.test.tsx (1 test) 203ms
+stderr | src/pages/App.test.tsx > App > renders without crashing
+Error: You cannot render a <Router> inside another <Router>. You should never have more than one in your app.
+    at invariant (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-router/dist/development/chunk-4WY6JWTD.mjs:188:11)
+    at Router (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-router/dist/development/chunk-4WY6JWTD.mjs:6470:3)
+    at Object.react_stack_bottom_frame (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:25904:20)
+    at renderWithHooks (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:7662:22)
+    at updateFunctionComponent (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:10166:19)
+    at beginWork (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:11778:18)
+    at runWithFiberInDEV (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+    at performUnitOfWork (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:17641:22)
+    at workLoopSync (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:17469:41)
+    at renderRootSync (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:17450:11) {
+  [stack]: [Getter/Setter],
+  [message]: 'You cannot render a <Router> inside another <Router>. You should never have more than one in your app.'
+}
+
+The above error occurred in the <Router> component.
+
+React will try to recreate this component tree from scratch using the error boundary you provided, ErrorBoundary.
+
+Error capturado por ErrorBoundary: Error: You cannot render a <Router> inside another <Router>. You should never have more than one in your app.
+    at invariant (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-router/dist/development/chunk-4WY6JWTD.mjs:188:11)
+    at Router (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-router/dist/development/chunk-4WY6JWTD.mjs:6470:3)
+    at Object.react_stack_bottom_frame (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:25904:20)
+    at renderWithHooks (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:7662:22)
+    at updateFunctionComponent (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:10166:19)
+    at beginWork (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:11778:18)
+    at runWithFiberInDEV (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+    at performUnitOfWork (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:17641:22)
+    at workLoopSync (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:17469:41)
+    at renderRootSync (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:17450:11) {
+  componentStack: '\n' +
+    '    at Router (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-router/dist/development/chunk-4WY6JWTD.mjs:6463:13)\n' +
+    '    at BrowserRouter (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-router/dist/development/chunk-4WY6JWTD.mjs:9623:3)\n' +
+    '    at ErrorBoundary (/Users/jmanrique/Documents/apps/two-six-cms/src/components/layout/ErrorBoundary.tsx:12:5)\n' +
+    '    at App (<anonymous>)\n' +
+    '    at Router (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-router/dist/development/chunk-4WY6JWTD.mjs:6463:13)\n' +
+    '    at BrowserRouter (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-router/dist/development/chunk-4WY6JWTD.mjs:9623:3)'
+}
+
+ ✓ src/pages/App.test.tsx (1 test) 57ms
+ ✓ src/components/protectedRoute/ProtectedRoute.test.tsx (2 tests) 24ms
+ ✓ src/components/layout/ErrorModal.test.tsx (2 tests) 54ms
+ ✓ src/components/role/RoleForm.test.tsx (2 tests) 158ms
+ ✓ src/pages/ProductPage.test.tsx (1 test) 131ms
+ ✓ src/components/stock/StockForm.test.tsx (2 tests) 176ms
+stderr | src/pages/CategoryPage.test.tsx > CategoryPage > renders without crashing
+An update to CategoryPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CategoryPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CategoryPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/CategoryPage.test.tsx (1 test) 128ms
+ ✓ src/components/clothing/ClothingForm.test.tsx (2 tests) 99ms
+ ✓ src/components/provider/ProviderList.test.tsx (2 tests) 162ms
+ ✓ src/components/year-production/YearProductionList.test.tsx (2 tests) 100ms
+ ✓ src/components/layout/Header/Header.test.tsx (2 tests) 176ms
+ ✓ src/components/category/CategoryList.test.tsx (2 tests) 135ms
+ ✓ src/components/role/RoleList.test.tsx (2 tests) 130ms
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+ ✓ src/App.test.tsx (1 test) 53ms
+ ✓ src/components/year-production/Icons.test.tsx (2 tests) 58ms
+ ✓ src/components/master-design/MasterDesignList.test.tsx (2 tests) 54ms
+ ✓ src/components/type-clothing/TypeClothingList.test.tsx (2 tests) 109ms
+ ✓ src/components/collection/CollectionForm.test.tsx (2 tests) 36ms
+ ✓ src/components/layout/Footer/Footer.test.tsx (2 tests) 76ms
+ ✓ src/components/common/ActionButton.test.tsx (2 tests) 88ms
+ ✓ src/components/clothing/ClothingList.test.tsx (2 tests) 97ms
+ ✓ src/components/order/OrderList.test.tsx (2 tests) 123ms
+ ✓ src/pages/Footer.test.tsx (1 test) 48ms
+ ✓ src/components/user-role/UserRoleForm.test.tsx (2 tests) 26ms
+ ✓ src/components/layout/Menu/AuthContext.test.tsx (2 tests) 39ms
+ ✓ src/components/clothing-color/ClothingColorForm.test.tsx (2 tests) 36ms
+ ✓ src/components/product/ProductForm.test.tsx (2 tests) 43ms
+ ✓ src/pages/HomePage.test.tsx (1 test) 30ms
+ ✓ src/components/master-design/Icons.test.tsx (2 tests) 74ms
+ ✓ src/services/errorApi.test.ts (3 tests) 14ms
+ ✓ src/components/user/UserForm.test.tsx (2 tests) 67ms
+stderr | src/pages/OrderDetailPage.test.tsx > OrderDetailPage > renders without crashing
+An update to OrderDetailPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to OrderDetailPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to OrderDetailPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/OrderDetailPage.test.tsx (1 test) 109ms
+ ✓ src/components/production-type/ProductionTypeList.test.tsx (2 tests) 49ms
+ ✓ src/components/layout/Menu/Menu.test.tsx (2 tests) 43ms
+ ✓ src/pages/Login.test.tsx (1 test) 26ms
+ ✓ src/components/common/Icons.test.tsx (2 tests) 109ms
+ ✓ src/services/productionTypeApi.test.ts (8 tests) 11ms
+ ✓ src/components/stock/StockList.test.tsx (2 tests) 119ms
+ ✓ src/components/design-provider/DesignProviderList.test.tsx (2 tests) 174ms
+ ✓ src/services/apiUtils.test.ts (7 tests) 32ms
+ ✓ src/services/dianApi.test.ts (20 tests) 55ms
+stderr | src/services/clothingApi.test.ts > clothingApi.ts > getClothing: should throw error on failure
+Request failed with status: 500 undefined
+
+stderr | src/services/clothingApi.test.ts > clothingApi.ts > getClothing: should throw error on failure
+Error data (JSON): { message: 'Server Error' }
+
+stderr | src/services/clothingApi.test.ts > clothingApi.ts > deleteClothing: should throw error on failure
+Request failed with status: 404 undefined
+
+stderr | src/services/clothingApi.test.ts > clothingApi.ts > deleteClothing: should throw error on failure
+Error data (text): Not Found
+
+ ✓ src/services/clothingApi.test.ts (7 tests) 34ms
+ ✓ src/services/categoryApi.test.ts (8 tests) 36ms
+ ✓ src/services/imageClothingApi.test.ts (8 tests) 37ms
+ ✓ src/services/seasonApi.test.ts (8 tests) 16ms
+ ✓ src/services/productApi.test.ts (6 tests) 37ms
+ ✓ src/services/roleApi.test.ts (8 tests) 14ms
+ ✓ src/services/stockApi.test.ts (4 tests) 42ms
+ ✓ src/services/orderApi.test.ts (10 tests) 23ms
+ ✓ src/services/clothingSizeApi.test.ts (4 tests) 7ms
+ ✓ src/services/userApi.test.ts (10 tests) 9ms
+ ✓ src/services/colorApi.test.ts (8 tests) 18ms
+ ✓ src/services/collectionApi.test.ts (8 tests) 24ms
+ ✓ src/services/genderApi.test.ts (2 tests) 2ms
+ ✓ src/services/designApi.test.ts (10 tests) 4ms
+ ✓ src/services/masterDesignApi.test.ts (10 tests) 4ms
+ ✓ src/services/sizeApi.test.ts (2 tests) 2ms
+ ✓ src/services/designProviderApi.test.ts (6 tests) 11ms
+ ✓ src/services/providerApi.test.ts (8 tests) 25ms
+ ✓ src/services/returnItemApi.test.ts (2 tests) 8ms
+ ✓ src/services/orderItemApi.test.ts (2 tests) 5ms
+ ✓ src/services/userRoleApi.test.ts (6 tests) 10ms
+ ✓ src/services/accountingApi.test.ts (5 tests) 3ms
+ ✓ src/services/errorLogApi.test.ts (2 tests) 4ms
+ ✓ src/services/clothingColorApi.test.ts (12 tests) 10ms
+ ✓ src/services/typeClothingApi.test.ts (8 tests) 8ms
+ ✓ src/services/yearProductionApi.test.ts (8 tests) 4ms
+ ✓ src/services/reportApi.test.ts (2 tests) 2ms
+ ↓ src/components/master-design/MasterDesignForm.test.tsx (2 tests | 2 skipped)
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 12 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/pages/CustomerPage.test.tsx > CustomerPage > renders page header with title
+TestingLibraryElementError: Unable to find an element with the text: Gestión de Clientes. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-container"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.75rem;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"background: rgba(240, 180, 41, 0.1); color: rgb(240, 180, 41); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; box-shadow: 0 0 12px rgba(240, 180, 41, 0.08);"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"1em"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"1em"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"[39m
+                [36m/>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"8.5"[39m
+                  [33mcy[39m=[32m"7"[39m
+                  [33mr[39m=[32m"4"[39m
+                [36m/>[39m
+                [36m<polyline[39m
+                  [33mpoints[39m=[32m"17 11 19 13 23 9"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</div>[39m
+            [36m<h1[39m
+              [33mstyle[39m=[32m"margin: 0px; border: medium; padding: 0px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; color: rgb(241, 241, 243);"[39m
+            [36m>[39m
+              [0mGestion de Clientes[0m
+            [36m</h1>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"position: relative; display: flex; align-items: center; flex: 1 1 0%; min-width: 0px;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: rgb(107, 107, 123); pointer-events: none; display: flex; align-items: center;"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"15"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"15"[39m
+            [36m>[39m
+              [36m<circle[39m
+                [33mcx[39m=[32m"11"[39m
+                [33mcy[39m=[32m"11"[39m
+                [33mr[39m=[32m"8"[39m
+              [36m/>[39m
+              [36m<line[39m
+                [33mx1[39m=[32m"21"[39m
+                [33mx2[39m=[32m"16.65"[39m
+                [33my1[39m=[32m"21"[39m
+                [33my2[39m=[32m"16.65"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</div>[39m
+          [36m<input[39m
+            [33mplaceholder[39m=[32m"Buscar por nombre, email o documento..."[39m
+            [33mstyle[39m=[32m"width: 100%; padding: 0.55rem 2.25rem; background-color: rgb(26, 26, 36); border: 1px solid rgb(42, 42, 53); border-radius: 8px; color: rgb(241, 241, 243); font-family: Inter, sans-serif; font-size: 0.8125rem; transition: border-color 0.15s ease, box-shadow 0.15s ease; outline: none; box-shadow: none; height: 40px;"[39m
+            [33mtype[39m=[32m"text"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<label[39m
+          [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.45rem; font-size: 0.85rem; color: rgb(241, 241, 243); cursor: pointer; padding: 0.5rem 0.9rem; background: transparent; border: 1px solid rgb(42, 42, 53); border-radius: 6px;"[39m
+        [36m>[39m
+          [36m<input[39m
+            [33mtype[39m=[32m"checkbox"[39m
+          [36m/>[39m
+          [0mSolo aliados de consignación[0m
+        [36m</label>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"width: 32px; height: 32px; border-width: 2.5px; border-style: solid; border-color: rgb(240, 180, 41) rgb(42, 42, 53) rgb(42, 42, 53); border-image: none; border-radius: 50%; animation: ts-spinner-rotate 0.7s linear infinite;"[39m
+        [36m/>[39m
+        [36m<span[39m
+          [33mstyle[39m=[32m"font-size: 0.8125rem; color: rgb(160, 160, 176); font-family: Inter, sans-serif;"[39m
+        [36m>[39m
+          [0mCargando clientes...[0m
+        [36m</span>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/pages/CustomerPage.test.tsx:87:23
+     85|         );
+     86| 
+     87|         expect(screen.getByText('Gestión de Clientes')).toBeInTheDocum…
+       |                       ^
+     88|     });
+     89| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL  src/pages/CustomerPage.test.tsx > CustomerPage > renders customer form
+TestingLibraryElementError: Unable to find an element by: [data-testid="customer-form"]
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-container"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.75rem;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"background: rgba(240, 180, 41, 0.1); color: rgb(240, 180, 41); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; box-shadow: 0 0 12px rgba(240, 180, 41, 0.08);"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"1em"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"1em"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"[39m
+                [36m/>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"8.5"[39m
+                  [33mcy[39m=[32m"7"[39m
+                  [33mr[39m=[32m"4"[39m
+                [36m/>[39m
+                [36m<polyline[39m
+                  [33mpoints[39m=[32m"17 11 19 13 23 9"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</div>[39m
+            [36m<h1[39m
+              [33mstyle[39m=[32m"margin: 0px; border: medium; padding: 0px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; color: rgb(241, 241, 243);"[39m
+            [36m>[39m
+              [0mGestion de Clientes[0m
+            [36m</h1>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"position: relative; display: flex; align-items: center; flex: 1 1 0%; min-width: 0px;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: rgb(107, 107, 123); pointer-events: none; display: flex; align-items: center;"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"15"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"15"[39m
+            [36m>[39m
+              [36m<circle[39m
+                [33mcx[39m=[32m"11"[39m
+                [33mcy[39m=[32m"11"[39m
+                [33mr[39m=[32m"8"[39m
+              [36m/>[39m
+              [36m<line[39m
+                [33mx1[39m=[32m"21"[39m
+                [33mx2[39m=[32m"16.65"[39m
+                [33my1[39m=[32m"21"[39m
+                [33my2[39m=[32m"16.65"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</div>[39m
+          [36m<input[39m
+            [33mplaceholder[39m=[32m"Buscar por nombre, email o documento..."[39m
+            [33mstyle[39m=[32m"width: 100%; padding: 0.55rem 2.25rem; background-color: rgb(26, 26, 36); border: 1px solid rgb(42, 42, 53); border-radius: 8px; color: rgb(241, 241, 243); font-family: Inter, sans-serif; font-size: 0.8125rem; transition: border-color 0.15s ease, box-shadow 0.15s ease; outline: none; box-shadow: none; height: 40px;"[39m
+            [33mtype[39m=[32m"text"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<label[39m
+          [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.45rem; font-size: 0.85rem; color: rgb(241, 241, 243); cursor: pointer; padding: 0.5rem 0.9rem; background: transparent; border: 1px solid rgb(42, 42, 53); border-radius: 6px;"[39m
+        [36m>[39m
+          [36m<input[39m
+            [33mtype[39m=[32m"checkbox"[39m
+          [36m/>[39m
+          [0mSolo aliados de consignación[0m
+        [36m</label>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"width: 32px; height: 32px; border-width: 2.5px; border-style: solid; border-color: rgb(240, 180, 41) rgb(42, 42, 53) rgb(42, 42, 53); border-image: none; border-radius: 50%; animation: ts-spinner-rotate 0.7s linear infinite;"[39m
+        [36m/>[39m
+        [36m<span[39m
+          [33mstyle[39m=[32m"font-size: 0.8125rem; color: rgb(160, 160, 176); font-family: Inter, sans-serif;"[39m
+        [36m>[39m
+          [0mCargando clientes...[0m
+        [36m</span>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/pages/CustomerPage.test.tsx:161:23
+    159|         );
+    160| 
+    161|         expect(screen.getByTestId('customer-form')).toBeInTheDocument(…
+       |                       ^
+    162|     });
+    163| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL  src/pages/CustomerPage.test.tsx > CustomerPage > renders customer list component
+TestingLibraryElementError: Unable to find an element by: [data-testid="customer-list"]
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-container"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.75rem;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"background: rgba(240, 180, 41, 0.1); color: rgb(240, 180, 41); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; box-shadow: 0 0 12px rgba(240, 180, 41, 0.08);"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"1em"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"1em"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"[39m
+                [36m/>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"8.5"[39m
+                  [33mcy[39m=[32m"7"[39m
+                  [33mr[39m=[32m"4"[39m
+                [36m/>[39m
+                [36m<polyline[39m
+                  [33mpoints[39m=[32m"17 11 19 13 23 9"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</div>[39m
+            [36m<h1[39m
+              [33mstyle[39m=[32m"margin: 0px; border: medium; padding: 0px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; color: rgb(241, 241, 243);"[39m
+            [36m>[39m
+              [0mGestion de Clientes[0m
+            [36m</h1>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"position: relative; display: flex; align-items: center; flex: 1 1 0%; min-width: 0px;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: rgb(107, 107, 123); pointer-events: none; display: flex; align-items: center;"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"15"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"15"[39m
+            [36m>[39m
+              [36m<circle[39m
+                [33mcx[39m=[32m"11"[39m
+                [33mcy[39m=[32m"11"[39m
+                [33mr[39m=[32m"8"[39m
+              [36m/>[39m
+              [36m<line[39m
+                [33mx1[39m=[32m"21"[39m
+                [33mx2[39m=[32m"16.65"[39m
+                [33my1[39m=[32m"21"[39m
+                [33my2[39m=[32m"16.65"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</div>[39m
+          [36m<input[39m
+            [33mplaceholder[39m=[32m"Buscar por nombre, email o documento..."[39m
+            [33mstyle[39m=[32m"width: 100%; padding: 0.55rem 2.25rem; background-color: rgb(26, 26, 36); border: 1px solid rgb(42, 42, 53); border-radius: 8px; color: rgb(241, 241, 243); font-family: Inter, sans-serif; font-size: 0.8125rem; transition: border-color 0.15s ease, box-shadow 0.15s ease; outline: none; box-shadow: none; height: 40px;"[39m
+            [33mtype[39m=[32m"text"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<label[39m
+          [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.45rem; font-size: 0.85rem; color: rgb(241, 241, 243); cursor: pointer; padding: 0.5rem 0.9rem; background: transparent; border: 1px solid rgb(42, 42, 53); border-radius: 6px;"[39m
+        [36m>[39m
+          [36m<input[39m
+            [33mtype[39m=[32m"checkbox"[39m
+          [36m/>[39m
+          [0mSolo aliados de consignación[0m
+        [36m</label>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"overflow-x: auto; border-radius: 8px 8px 0 0; background-color: rgb(26, 26, 36); border-width: 1px; border-style: solid; border-color: rgb(42, 42, 53); border-image: none;"[39m
+        [36m>[39m
+          [36m<table[39m
+            [33mstyle[39m=[32m"width: 100%; border-collapse: collapse; min-width: 500px;"[39m
+          [36m>[39m
+            [36m<thead>[39m
+              [36m<tr>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); width: 60px; cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mID[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mDocumento[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th...
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"page-container"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.75rem;"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mstyle[39m=[32m"background: rgba(240, 180, 41, 0.1); color: rgb(240, 180, 41); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; box-shadow: 0 0 12px rgba(240, 180, 41, 0.08);"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"1em"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"1em"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"[39m
+                  [36m/>[39m
+                  [36m<circle[39m
+                    [33mcx[39m=[32m"8.5"[39m
+                    [33mcy[39m=[32m"7"[39m
+                    [33mr[39m=[32m"4"[39m
+                  [36m/>[39m
+                  [36m<polyline[39m
+                    [33mpoints[39m=[32m"17 11 19 13 23 9"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</div>[39m
+              [36m<h1[39m
+                [33mstyle[39m=[32m"margin: 0px; border: medium; padding: 0px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; color: rgb(241, 241, 243);"[39m
+              [36m>[39m
+                [0mGestion de Clientes[0m
+              [36m</h1>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"position: relative; display: flex; align-items: center; flex: 1 1 0%; min-width: 0px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: rgb(107, 107, 123); pointer-events: none; display: flex; align-items: center;"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"15"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"15"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"11"[39m
+                  [33mcy[39m=[32m"11"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<line[39m
+                  [33mx1[39m=[32m"21"[39m
+                  [33mx2[39m=[32m"16.65"[39m
+                  [33my1[39m=[32m"21"[39m
+                  [33my2[39m=[32m"16.65"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</div>[39m
+            [36m<input[39m
+              [33mplaceholder[39m=[32m"Buscar por nombre, email o documento..."[39m
+              [33mstyle[39m=[32m"width: 100%; padding: 0.55rem 2.25rem; background-color: rgb(26, 26, 36); border: 1px solid rgb(42, 42, 53); border-radius: 8px; color: rgb(241, 241, 243); font-family: Inter, sans-serif; font-size: 0.8125rem; transition: border-color 0.15s ease, box-shadow 0.15s ease; outline: none; box-shadow: none; height: 40px;"[39m
+              [33mtype[39m=[32m"text"[39m
+              [33mvalue[39m=[32m""[39m
+            [36m/>[39m
+          [36m</div>[39m
+          [36m<label[39m
+            [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.45rem; font-size: 0.85rem; color: rgb(241, 241, 243); cursor: pointer; padding: 0.5rem 0.9rem; background: transparent; border: 1px solid rgb(42, 42, 53); border-radius: 6px;"[39m
+          [36m>[39m
+            [36m<input[39m
+              [33mtype[39m=[32m"checkbox"[39m
+            [36m/>[39m
+            [0mSolo aliados de consignación[0m
+          [36m</label>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"overflow-x: auto; border-radius: 8px 8px 0 0; background-color: rgb(26, 26, 36); border-width: 1px; border-style: solid; border-color: rgb(42, 42, 53); border-image: none;"[39m
+          [36m>[39m
+            [36m<table[39m
+              [33mstyle[39m=[32m"width: 100%; border-collapse: collapse; min-width: 500px;"[39m
+            [36m>[39m
+              [36m<thead>[39m
+                [36m<tr>[39m
+                  [36m<th[39m
+                    [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); width: 60px; cursor: pointer; user-select: none;"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                    [36m>[39m
+                      [0mID[0m
+                    [36m</div>[39m
+                  [36m</th>[39m
+                  [36m<th[39m
+                    [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                  [36m>[39m
+                    [36m<div[39m
+          ...
+ ❯ Proxy.waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ src/pages/CustomerPage.test.tsx:171:15
+    169|         );
+    170| 
+    171|         await waitFor(() => {
+       |               ^
+    172|             expect(screen.getByTestId('customer-list')).toBeInTheDocum…
+    173|         });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL  src/pages/DianInvoicePage.test.tsx > DianInvoicePage > shows loading state initially
+TestingLibraryElementError: Unable to find an element with the text: Cargando facturas desde el motor DIAN.... This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-container"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.75rem;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"background: rgba(240, 180, 41, 0.1); color: rgb(240, 180, 41); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; box-shadow: 0 0 12px rgba(240, 180, 41, 0.08);"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"1em"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"1em"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<line[39m
+                  [33mx1[39m=[32m"22"[39m
+                  [33mx2[39m=[32m"11"[39m
+                  [33my1[39m=[32m"2"[39m
+                  [33my2[39m=[32m"13"[39m
+                [36m/>[39m
+                [36m<polygon[39m
+                  [33mpoints[39m=[32m"22 2 15 22 11 13 2 9 22 2"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</div>[39m
+            [36m<h1[39m
+              [33mstyle[39m=[32m"margin: 0px; border: medium; padding: 0px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; color: rgb(241, 241, 243);"[39m
+            [36m>[39m
+              [0mFacturación DIAN - Historial[0m
+            [36m</h1>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"margin-bottom: 15px; display: flex; gap: 10px;"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mstyle[39m=[32m"display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 8px; font-family: \"Inter\", sans-serif; font-weight: 500; cursor: pointer; transition: all 0.15s ease; outline: none; white-space: nowrap; opacity: 1; padding: 0.5rem 1rem; font-size: 0.8125rem; min-height: 44px; background: rgb(240, 180, 41); color: rgb(10, 10, 15); border-width: 1px; border-style: solid; border-color: rgb(240, 180, 41);"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mstyle[39m=[32m"display: inline-flex; font-size: 1em;"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"1em"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"1em"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<polyline[39m
+                [33mpoints[39m=[32m"1 4 1 10 7 10"[39m
+              [36m/>[39m
+              [36m<polyline[39m
+                [33mpoints[39m=[32m"23 20 23 14 17 14"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</span>[39m
+          [0mActualizar[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"padding: 2rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"width: 32px; height: 32px; border-width: 2.5px; border-style: solid; border-color: rgb(240, 180, 41) rgb(42, 42, 53) rgb(42, 42, 53); border-image: none; border-radius: 50%; animation: ts-spinner-rotate 0.7s linear infinite;"[39m
+          [36m/>[39m
+          [36m<span[39m
+            [33mstyle[39m=[32m"font-size: 0.8125rem; color: rgb(160, 160, 176); font-family: Inter, sans-serif;"[39m
+          [36m>[39m
+            [0mCargando datos...[0m
+          [36m</span>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/pages/DianInvoicePage.test.tsx:84:23
+     82|             </BrowserRouter>
+     83|         );
+     84|         expect(screen.getByText('Cargando facturas desde el motor DIAN…
+       |                       ^
+     85|     });
+     86| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL  src/pages/DianInvoicePage.test.tsx > DianInvoicePage > displays status badges with correct classes
+AssertionError: expected '' to contain 'status-active'
+
+- Expected
++ Received
+
+- status-active
+
+ ❯ src/pages/DianInvoicePage.test.tsx:134:35
+    132| 
+    133|         const okBadge = screen.getByText('OK');
+    134|         expect(okBadge.className).toContain('status-active');
+       |                                   ^
+    135| 
+    136|         const pendingBadge = screen.getByText('PENDING');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+ FAIL  src/pages/DianInvoicePage.test.tsx > DianInvoicePage > calls downloadInvoiceXml when XML button is clicked
+TestingLibraryElementError: Unable to find an element with the title: Descargar XML.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-container"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.75rem;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"background: rgba(240, 180, 41, 0.1); color: rgb(240, 180, 41); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; box-shadow: 0 0 12px rgba(240, 180, 41, 0.08);"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"1em"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"1em"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<line[39m
+                  [33mx1[39m=[32m"22"[39m
+                  [33mx2[39m=[32m"11"[39m
+                  [33my1[39m=[32m"2"[39m
+                  [33my2[39m=[32m"13"[39m
+                [36m/>[39m
+                [36m<polygon[39m
+                  [33mpoints[39m=[32m"22 2 15 22 11 13 2 9 22 2"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</div>[39m
+            [36m<h1[39m
+              [33mstyle[39m=[32m"margin: 0px; border: medium; padding: 0px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; color: rgb(241, 241, 243);"[39m
+            [36m>[39m
+              [0mFacturación DIAN - Historial[0m
+            [36m</h1>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"margin-bottom: 15px; display: flex; gap: 10px;"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mstyle[39m=[32m"display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 8px; font-family: \"Inter\", sans-serif; font-weight: 500; cursor: pointer; transition: all 0.15s ease; outline: none; white-space: nowrap; opacity: 1; padding: 0.5rem 1rem; font-size: 0.8125rem; min-height: 44px; background: rgb(240, 180, 41); color: rgb(10, 10, 15); border-width: 1px; border-style: solid; border-color: rgb(240, 180, 41);"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mstyle[39m=[32m"display: inline-flex; font-size: 1em;"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"1em"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"1em"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<polyline[39m
+                [33mpoints[39m=[32m"1 4 1 10 7 10"[39m
+              [36m/>[39m
+              [36m<polyline[39m
+                [33mpoints[39m=[32m"23 20 23 14 17 14"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</span>[39m
+          [0mActualizar[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m""[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"overflow-x: auto; border-radius: 8px 8px 0 0; background-color: rgb(26, 26, 36); border-width: 1px; border-style: solid; border-color: rgb(42, 42, 53); border-image: none;"[39m
+        [36m>[39m
+          [36m<table[39m
+            [33mstyle[39m=[32m"width: 100%; border-collapse: collapse; min-width: 500px;"[39m
+          [36m>[39m
+            [36m<thead>[39m
+              [36m<tr>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mFactura #[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mFecha Emisión[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mCUFE[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-ali...
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:109:15
+ ❯ src/pages/DianInvoicePage.test.tsx:179:35
+    177|         });
+    178| 
+    179|         const xmlButtons = screen.getAllByTitle('Descargar XML');
+       |                                   ^
+    180|         fireEvent.click(xmlButtons[0]);
+    181| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯
+
+ FAIL  src/pages/DianInvoicePage.test.tsx > DianInvoicePage > calls downloadInvoicePdf when PDF button is clicked
+TestingLibraryElementError: Unable to find an element with the title: Ver PDF.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-container"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.75rem;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"background: rgba(240, 180, 41, 0.1); color: rgb(240, 180, 41); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; box-shadow: 0 0 12px rgba(240, 180, 41, 0.08);"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"1em"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"1em"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<line[39m
+                  [33mx1[39m=[32m"22"[39m
+                  [33mx2[39m=[32m"11"[39m
+                  [33my1[39m=[32m"2"[39m
+                  [33my2[39m=[32m"13"[39m
+                [36m/>[39m
+                [36m<polygon[39m
+                  [33mpoints[39m=[32m"22 2 15 22 11 13 2 9 22 2"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</div>[39m
+            [36m<h1[39m
+              [33mstyle[39m=[32m"margin: 0px; border: medium; padding: 0px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; color: rgb(241, 241, 243);"[39m
+            [36m>[39m
+              [0mFacturación DIAN - Historial[0m
+            [36m</h1>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"margin-bottom: 15px; display: flex; gap: 10px;"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mstyle[39m=[32m"display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 8px; font-family: \"Inter\", sans-serif; font-weight: 500; cursor: pointer; transition: all 0.15s ease; outline: none; white-space: nowrap; opacity: 1; padding: 0.5rem 1rem; font-size: 0.8125rem; min-height: 44px; background: rgb(240, 180, 41); color: rgb(10, 10, 15); border-width: 1px; border-style: solid; border-color: rgb(240, 180, 41);"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mstyle[39m=[32m"display: inline-flex; font-size: 1em;"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"1em"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"1em"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<polyline[39m
+                [33mpoints[39m=[32m"1 4 1 10 7 10"[39m
+              [36m/>[39m
+              [36m<polyline[39m
+                [33mpoints[39m=[32m"23 20 23 14 17 14"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</span>[39m
+          [0mActualizar[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m""[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"overflow-x: auto; border-radius: 8px 8px 0 0; background-color: rgb(26, 26, 36); border-width: 1px; border-style: solid; border-color: rgb(42, 42, 53); border-image: none;"[39m
+        [36m>[39m
+          [36m<table[39m
+            [33mstyle[39m=[32m"width: 100%; border-collapse: collapse; min-width: 500px;"[39m
+          [36m>[39m
+            [36m<thead>[39m
+              [36m<tr>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mFactura #[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mFecha Emisión[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mCUFE[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-ali...
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:109:15
+ ❯ src/pages/DianInvoicePage.test.tsx:198:35
+    196|         });
+    197| 
+    198|         const pdfButtons = screen.getAllByTitle('Ver PDF');
+       |                                   ^
+    199|         fireEvent.click(pdfButtons[0]);
+    200| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯
+
+ FAIL  src/pages/DianInvoicePage.test.tsx > DianInvoicePage > calls checkInvoiceStatus when status button is clicked
+TestingLibraryElementError: Unable to find an element with the title: Consultar estado DIAN.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-container"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.75rem;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"background: rgba(240, 180, 41, 0.1); color: rgb(240, 180, 41); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; box-shadow: 0 0 12px rgba(240, 180, 41, 0.08);"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"1em"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"1em"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<line[39m
+                  [33mx1[39m=[32m"22"[39m
+                  [33mx2[39m=[32m"11"[39m
+                  [33my1[39m=[32m"2"[39m
+                  [33my2[39m=[32m"13"[39m
+                [36m/>[39m
+                [36m<polygon[39m
+                  [33mpoints[39m=[32m"22 2 15 22 11 13 2 9 22 2"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</div>[39m
+            [36m<h1[39m
+              [33mstyle[39m=[32m"margin: 0px; border: medium; padding: 0px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; color: rgb(241, 241, 243);"[39m
+            [36m>[39m
+              [0mFacturación DIAN - Historial[0m
+            [36m</h1>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"margin-bottom: 15px; display: flex; gap: 10px;"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mstyle[39m=[32m"display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 8px; font-family: \"Inter\", sans-serif; font-weight: 500; cursor: pointer; transition: all 0.15s ease; outline: none; white-space: nowrap; opacity: 1; padding: 0.5rem 1rem; font-size: 0.8125rem; min-height: 44px; background: rgb(240, 180, 41); color: rgb(10, 10, 15); border-width: 1px; border-style: solid; border-color: rgb(240, 180, 41);"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mstyle[39m=[32m"display: inline-flex; font-size: 1em;"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"1em"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"1em"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<polyline[39m
+                [33mpoints[39m=[32m"1 4 1 10 7 10"[39m
+              [36m/>[39m
+              [36m<polyline[39m
+                [33mpoints[39m=[32m"23 20 23 14 17 14"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</span>[39m
+          [0mActualizar[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m""[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"overflow-x: auto; border-radius: 8px 8px 0 0; background-color: rgb(26, 26, 36); border-width: 1px; border-style: solid; border-color: rgb(42, 42, 53); border-image: none;"[39m
+        [36m>[39m
+          [36m<table[39m
+            [33mstyle[39m=[32m"width: 100%; border-collapse: collapse; min-width: 500px;"[39m
+          [36m>[39m
+            [36m<thead>[39m
+              [36m<tr>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mFactura #[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mFecha Emisión[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mCUFE[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-ali...
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:109:15
+ ❯ src/pages/DianInvoicePage.test.tsx:222:38
+    220|         });
+    221| 
+    222|         const statusButtons = screen.getAllByTitle('Consultar estado D…
+       |                                      ^
+    223|         fireEvent.click(statusButtons[0]);
+    224| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/12]⎯
+
+ FAIL  src/pages/PickupDashboardPage.test.tsx > PickupDashboardPage > displays status badges
+TestingLibraryElementError: Unable to find an element with the text: Pendiente de Preparación. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-container pickup-dashboard"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.75rem;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"background: rgba(240, 180, 41, 0.1); color: rgb(240, 180, 41); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; box-shadow: 0 0 12px rgba(240, 180, 41, 0.08);"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"1em"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"1em"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<polyline[39m
+                  [33mpoints[39m=[32m"20 12 20 22 4 22 4 12"[39m
+                [36m/>[39m
+                [36m<rect[39m
+                  [33mheight[39m=[32m"5"[39m
+                  [33mwidth[39m=[32m"20"[39m
+                  [33mx[39m=[32m"2"[39m
+                  [33my[39m=[32m"7"[39m
+                [36m/>[39m
+                [36m<line[39m
+                  [33mx1[39m=[32m"12"[39m
+                  [33mx2[39m=[32m"12"[39m
+                  [33my1[39m=[32m"22"[39m
+                  [33my2[39m=[32m"7"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</div>[39m
+            [36m<h1[39m
+              [33mstyle[39m=[32m"margin: 0px; border: medium; padding: 0px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; color: rgb(241, 241, 243);"[39m
+            [36m>[39m
+              [0mTablero de Retiros en Tienda[0m
+            [36m</h1>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"pickup-filters"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mstyle[39m=[32m"display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 8px; font-family: \"Inter\", sans-serif; font-weight: 500; cursor: pointer; transition: all 0.15s ease; outline: none; white-space: nowrap; opacity: 1; padding: 0.5rem 1rem; font-size: 0.8125rem; min-height: 44px; background: rgb(240, 180, 41); color: rgb(10, 10, 15); border-width: 1px; border-style: solid; border-color: rgb(240, 180, 41);"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mstyle[39m=[32m"display: inline-flex; font-size: 1em;"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"1em"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"1em"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<polyline[39m
+                [33mpoints[39m=[32m"1 4 1 10 7 10"[39m
+              [36m/>[39m
+              [36m<polyline[39m
+                [33mpoints[39m=[32m"23 20 23 14 17 14"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</span>[39m
+          [0mActualizar Listado[0m
+        [36m</button>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"pickup-legend"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"legend-item pending"[39m
+          [36m>[39m
+            [0mPendiente[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"legend-item ready"[39m
+          [36m>[39m
+            [0mListo[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"legend-item collected"[39m
+          [36m>[39m
+            [0mEntregado[0m
+          [36m</span>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"pickup-board"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"pickup-card pickup-card-pending"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"pickup-card-header"[39m
+          [36m>[39m
+            [36m<h2>[39m
+              [0mReferencia: [0m
+              [0mORD-001[0m
+            [36m</h2>[39m
+            [36m<span[39m
+              [33mstyle[39m=[32m"display: inline-flex; align-items: center; padding: 0.2rem 0.6rem; font-size: 0.72rem; font-weight: 500; font-family: Inter, sans-serif; border-radius: 20px; background-color: rgb(59, 47, 10); color: rgb(251, 191, 36); white-space: nowrap; line-height: 1.5;"[39m
+            [36m>[39m
+              [0mPendiente de Revisión[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"pickup-card-body"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"pickup-info-column"[39m
+            [36m>[39m
+              [36m<p>[39m
+                [36m<strong>[39m
+                  [0mCliente:[0m
+                [36m</strong>[39m
+                [0m [0m
+                [0mJuan Pérez[0m
+              [36m</p>[39m
+              [36m<p>[39m
+                [36m<strong>[39m
+                  [0mTeléfono:[0m
+                [36m</strong>[39m
+                [0m [0m
+                [0m3001234567[0m
+              [36m</p>[39m
+              [36m<p>[39m
+                [36m<strong>[39m
+                  [0mFecha pedido:[0m...
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"page-container pickup-dashboard"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.75rem;"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mstyle[39m=[32m"background: rgba(240, 180, 41, 0.1); color: rgb(240, 180, 41); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; box-shadow: 0 0 12px rgba(240, 180, 41, 0.08);"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"1em"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"1em"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<polyline[39m
+                    [33mpoints[39m=[32m"20 12 20 22 4 22 4 12"[39m
+                  [36m/>[39m
+                  [36m<rect[39m
+                    [33mheight[39m=[32m"5"[39m
+                    [33mwidth[39m=[32m"20"[39m
+                    [33mx[39m=[32m"2"[39m
+                    [33my[39m=[32m"7"[39m
+                  [36m/>[39m
+                  [36m<line[39m
+                    [33mx1[39m=[32m"12"[39m
+                    [33mx2[39m=[32m"12"[39m
+                    [33my1[39m=[32m"22"[39m
+                    [33my2[39m=[32m"7"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</div>[39m
+              [36m<h1[39m
+                [33mstyle[39m=[32m"margin: 0px; border: medium; padding: 0px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; color: rgb(241, 241, 243);"[39m
+              [36m>[39m
+                [0mTablero de Retiros en Tienda[0m
+              [36m</h1>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"pickup-filters"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mstyle[39m=[32m"display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 8px; font-family: \"Inter\", sans-serif; font-weight: 500; cursor: pointer; transition: all 0.15s ease; outline: none; white-space: nowrap; opacity: 1; padding: 0.5rem 1rem; font-size: 0.8125rem; min-height: 44px; background: rgb(240, 180, 41); color: rgb(10, 10, 15); border-width: 1px; border-style: solid; border-color: rgb(240, 180, 41);"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mstyle[39m=[32m"display: inline-flex; font-size: 1em;"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"1em"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"1em"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<polyline[39m
+                  [33mpoints[39m=[32m"1 4 1 10 7 10"[39m
+                [36m/>[39m
+                [36m<polyline[39m
+                  [33mpoints[39m=[32m"23 20 23 14 17 14"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [0mActualizar Listado[0m
+          [36m</button>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"pickup-legend"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"legend-item pending"[39m
+            [36m>[39m
+              [0mPendiente[0m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"legend-item ready"[39m
+            [36m>[39m
+              [0mListo[0m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"legend-item collected"[39m
+            [36m>[39m
+              [0mEntregado[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"pickup-board"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"pickup-card pickup-card-pending"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"pickup-card-header"[39m
+            [36m>[39m
+              [36m<h2>[39m
+                [0mReferencia: [0m
+                [0mORD-001[0m
+              [36m</h2>[39m
+              [36m<span[39m
+                [33mstyle[39m=[32m"display: inline-flex; align-items: center; padding: 0.2rem 0.6rem; font-size: 0.72rem; font-weight: 500; font-family: Inter, sans-serif; border-radius: 20px; background-color: rgb(59, 47, 10); color: rgb(251, 191, 36); white-space: nowrap; line-height: 1.5;"[39m
+              [36m>[39m
+                [0mPendiente de Revisión[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"pickup-card-body"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"pickup-info-column"[39m
+              [36m>[39m
+                [36m<p>[39m
+                  [36m<strong>[39m
+                    [0mCliente:[0m
+                  [36m</strong>[39m
+                  [0m [0m
+                  [0mJuan Pérez[0m
+                [36m</p>[39m...
+ ❯ Proxy.waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ src/pages/PickupDashboardPage.test.tsx:134:15
+    132|         );
+    133| 
+    134|         await waitFor(() => {
+       |               ^
+    135|             expect(screen.getByText('Pendiente de Preparación')).toBeI…
+    136|         });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/12]⎯
+
+ FAIL  src/pages/PickupDashboardPage.test.tsx > PickupDashboardPage > renders action buttons for pending orders
+TestingLibraryElementError: Unable to find an element with the text: /Marcar: Listo para Recoger/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-container pickup-dashboard"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.75rem;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"background: rgba(240, 180, 41, 0.1); color: rgb(240, 180, 41); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; box-shadow: 0 0 12px rgba(240, 180, 41, 0.08);"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"1em"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"1em"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<polyline[39m
+                  [33mpoints[39m=[32m"20 12 20 22 4 22 4 12"[39m
+                [36m/>[39m
+                [36m<rect[39m
+                  [33mheight[39m=[32m"5"[39m
+                  [33mwidth[39m=[32m"20"[39m
+                  [33mx[39m=[32m"2"[39m
+                  [33my[39m=[32m"7"[39m
+                [36m/>[39m
+                [36m<line[39m
+                  [33mx1[39m=[32m"12"[39m
+                  [33mx2[39m=[32m"12"[39m
+                  [33my1[39m=[32m"22"[39m
+                  [33my2[39m=[32m"7"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</div>[39m
+            [36m<h1[39m
+              [33mstyle[39m=[32m"margin: 0px; border: medium; padding: 0px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; color: rgb(241, 241, 243);"[39m
+            [36m>[39m
+              [0mTablero de Retiros en Tienda[0m
+            [36m</h1>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"pickup-filters"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mstyle[39m=[32m"display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 8px; font-family: \"Inter\", sans-serif; font-weight: 500; cursor: pointer; transition: all 0.15s ease; outline: none; white-space: nowrap; opacity: 1; padding: 0.5rem 1rem; font-size: 0.8125rem; min-height: 44px; background: rgb(240, 180, 41); color: rgb(10, 10, 15); border-width: 1px; border-style: solid; border-color: rgb(240, 180, 41);"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mstyle[39m=[32m"display: inline-flex; font-size: 1em;"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"1em"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"1em"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<polyline[39m
+                [33mpoints[39m=[32m"1 4 1 10 7 10"[39m
+              [36m/>[39m
+              [36m<polyline[39m
+                [33mpoints[39m=[32m"23 20 23 14 17 14"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</span>[39m
+          [0mActualizar Listado[0m
+        [36m</button>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"pickup-legend"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"legend-item pending"[39m
+          [36m>[39m
+            [0mPendiente[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"legend-item ready"[39m
+          [36m>[39m
+            [0mListo[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"legend-item collected"[39m
+          [36m>[39m
+            [0mEntregado[0m
+          [36m</span>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"pickup-board"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"pickup-card pickup-card-pending"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"pickup-card-header"[39m
+          [36m>[39m
+            [36m<h2>[39m
+              [0mReferencia: [0m
+              [0mORD-001[0m
+            [36m</h2>[39m
+            [36m<span[39m
+              [33mstyle[39m=[32m"display: inline-flex; align-items: center; padding: 0.2rem 0.6rem; font-size: 0.72rem; font-weight: 500; font-family: Inter, sans-serif; border-radius: 20px; background-color: rgb(59, 47, 10); color: rgb(251, 191, 36); white-space: nowrap; line-height: 1.5;"[39m
+            [36m>[39m
+              [0mPendiente de Revisión[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"pickup-card-body"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"pickup-info-column"[39m
+            [36m>[39m
+              [36m<p>[39m
+                [36m<strong>[39m
+                  [0mCliente:[0m
+                [36m</strong>[39m
+                [0m [0m
+                [0mJuan Pérez[0m
+              [36m</p>[39m
+              [36m<p>[39m
+                [36m<strong>[39m
+                  [0mTeléfono:[0m
+                [36m</strong>[39m
+                [0m [0m
+                [0m3001234567[0m
+              [36m</p>[39m
+              [36m<p>[39m
+                [36m<strong>[39m
+                  [0mFecha pedido:[0m...
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:109:15
+ ❯ src/pages/PickupDashboardPage.test.tsx:206:23
+    204|         });
+    205| 
+    206|         expect(screen.getAllByText(/Marcar: Listo para Recoger/).lengt…
+       |                       ^
+    207|         expect(screen.getAllByText(/Entregado a Cliente/).length).toBe…
+    208|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/12]⎯
+
+ FAIL  src/pages/SubscriberPage.test.tsx > SubscriberPage > renders page header with title
+TestingLibraryElementError: Unable to find an element with the text: Gestión de Suscriptores. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-container"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.75rem;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"background: rgba(240, 180, 41, 0.1); color: rgb(240, 180, 41); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; box-shadow: 0 0 12px rgba(240, 180, 41, 0.08);"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"1em"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"1em"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"[39m
+                [36m/>[39m
+                [36m<polyline[39m
+                  [33mpoints[39m=[32m"22,6 12,13 2,6"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</div>[39m
+            [36m<h1[39m
+              [33mstyle[39m=[32m"margin: 0px; border: medium; padding: 0px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; color: rgb(241, 241, 243);"[39m
+            [36m>[39m
+              [0mGestion de Suscriptores[0m
+            [36m</h1>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"position: relative; display: flex; align-items: center; flex: 1 1 0%; min-width: 0px;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: rgb(107, 107, 123); pointer-events: none; display: flex; align-items: center;"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"15"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"15"[39m
+            [36m>[39m
+              [36m<circle[39m
+                [33mcx[39m=[32m"11"[39m
+                [33mcy[39m=[32m"11"[39m
+                [33mr[39m=[32m"8"[39m
+              [36m/>[39m
+              [36m<line[39m
+                [33mx1[39m=[32m"21"[39m
+                [33mx2[39m=[32m"16.65"[39m
+                [33my1[39m=[32m"21"[39m
+                [33my2[39m=[32m"16.65"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</div>[39m
+          [36m<input[39m
+            [33mplaceholder[39m=[32m"Buscar por email..."[39m
+            [33mstyle[39m=[32m"width: 100%; padding: 0.55rem 2.25rem; background-color: rgb(26, 26, 36); border: 1px solid rgb(42, 42, 53); border-radius: 8px; color: rgb(241, 241, 243); font-family: Inter, sans-serif; font-size: 0.8125rem; transition: border-color 0.15s ease, box-shadow 0.15s ease; outline: none; box-shadow: none; height: 40px;"[39m
+            [33mtype[39m=[32m"text"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"width: 32px; height: 32px; border-width: 2.5px; border-style: solid; border-color: rgb(240, 180, 41) rgb(42, 42, 53) rgb(42, 42, 53); border-image: none; border-radius: 50%; animation: ts-spinner-rotate 0.7s linear infinite;"[39m
+        [36m/>[39m
+        [36m<span[39m
+          [33mstyle[39m=[32m"font-size: 0.8125rem; color: rgb(160, 160, 176); font-family: Inter, sans-serif;"[39m
+        [36m>[39m
+          [0mCargando suscriptores...[0m
+        [36m</span>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/pages/SubscriberPage.test.tsx:77:23
+     75|         );
+     76| 
+     77|         expect(screen.getByText('Gestión de Suscriptores')).toBeInTheD…
+       |                       ^
+     78|     });
+     79| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/12]⎯
+
+ FAIL  src/pages/SubscriberPage.test.tsx > SubscriberPage > renders the subscriber list component
+TestingLibraryElementError: Unable to find an element by: [data-testid="subscriber-list"]
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-container"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.75rem;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"background: rgba(240, 180, 41, 0.1); color: rgb(240, 180, 41); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; box-shadow: 0 0 12px rgba(240, 180, 41, 0.08);"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"1em"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"1em"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"[39m
+                [36m/>[39m
+                [36m<polyline[39m
+                  [33mpoints[39m=[32m"22,6 12,13 2,6"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</div>[39m
+            [36m<h1[39m
+              [33mstyle[39m=[32m"margin: 0px; border: medium; padding: 0px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; color: rgb(241, 241, 243);"[39m
+            [36m>[39m
+              [0mGestion de Suscriptores[0m
+            [36m</h1>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"position: relative; display: flex; align-items: center; flex: 1 1 0%; min-width: 0px;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: rgb(107, 107, 123); pointer-events: none; display: flex; align-items: center;"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"15"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"15"[39m
+            [36m>[39m
+              [36m<circle[39m
+                [33mcx[39m=[32m"11"[39m
+                [33mcy[39m=[32m"11"[39m
+                [33mr[39m=[32m"8"[39m
+              [36m/>[39m
+              [36m<line[39m
+                [33mx1[39m=[32m"21"[39m
+                [33mx2[39m=[32m"16.65"[39m
+                [33my1[39m=[32m"21"[39m
+                [33my2[39m=[32m"16.65"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</div>[39m
+          [36m<input[39m
+            [33mplaceholder[39m=[32m"Buscar por email..."[39m
+            [33mstyle[39m=[32m"width: 100%; padding: 0.55rem 2.25rem; background-color: rgb(26, 26, 36); border: 1px solid rgb(42, 42, 53); border-radius: 8px; color: rgb(241, 241, 243); font-family: Inter, sans-serif; font-size: 0.8125rem; transition: border-color 0.15s ease, box-shadow 0.15s ease; outline: none; box-shadow: none; height: 40px;"[39m
+            [33mtype[39m=[32m"text"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"overflow-x: auto; border-radius: 8px 8px 0 0; background-color: rgb(26, 26, 36); border-width: 1px; border-style: solid; border-color: rgb(42, 42, 53); border-image: none;"[39m
+        [36m>[39m
+          [36m<table[39m
+            [33mstyle[39m=[32m"width: 100%; border-collapse: collapse; min-width: 500px;"[39m
+          [36m>[39m
+            [36m<thead>[39m
+              [36m<tr>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); width: 60px; cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mID[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mCorreo Electronico[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mFecha Registro[0m
+               ...
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"page-container"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.75rem;"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mstyle[39m=[32m"background: rgba(240, 180, 41, 0.1); color: rgb(240, 180, 41); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; box-shadow: 0 0 12px rgba(240, 180, 41, 0.08);"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"1em"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"1em"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"[39m
+                  [36m/>[39m
+                  [36m<polyline[39m
+                    [33mpoints[39m=[32m"22,6 12,13 2,6"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</div>[39m
+              [36m<h1[39m
+                [33mstyle[39m=[32m"margin: 0px; border: medium; padding: 0px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; color: rgb(241, 241, 243);"[39m
+              [36m>[39m
+                [0mGestion de Suscriptores[0m
+              [36m</h1>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"position: relative; display: flex; align-items: center; flex: 1 1 0%; min-width: 0px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: rgb(107, 107, 123); pointer-events: none; display: flex; align-items: center;"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"15"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"15"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"11"[39m
+                  [33mcy[39m=[32m"11"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<line[39m
+                  [33mx1[39m=[32m"21"[39m
+                  [33mx2[39m=[32m"16.65"[39m
+                  [33my1[39m=[32m"21"[39m
+                  [33my2[39m=[32m"16.65"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</div>[39m
+            [36m<input[39m
+              [33mplaceholder[39m=[32m"Buscar por email..."[39m
+              [33mstyle[39m=[32m"width: 100%; padding: 0.55rem 2.25rem; background-color: rgb(26, 26, 36); border: 1px solid rgb(42, 42, 53); border-radius: 8px; color: rgb(241, 241, 243); font-family: Inter, sans-serif; font-size: 0.8125rem; transition: border-color 0.15s ease, box-shadow 0.15s ease; outline: none; box-shadow: none; height: 40px;"[39m
+              [33mtype[39m=[32m"text"[39m
+              [33mvalue[39m=[32m""[39m
+            [36m/>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"overflow-x: auto; border-radius: 8px 8px 0 0; background-color: rgb(26, 26, 36); border-width: 1px; border-style: solid; border-color: rgb(42, 42, 53); border-image: none;"[39m
+          [36m>[39m
+            [36m<table[39m
+              [33mstyle[39m=[32m"width: 100%; border-collapse: collapse; min-width: 500px;"[39m
+            [36m>[39m
+              [36m<thead>[39m
+                [36m<tr>[39m
+                  [36m<th[39m
+                    [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); width: 60px; cursor: pointer; user-select: none;"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                    [36m>[39m
+                      [0mID[0m
+                    [36m</div>[39m
+                  [36m</th>[39m
+                  [36m<th[39m
+                    [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                    [36m>[39m
+                      [0mCorreo Electronico[0m
+                    [36m</div>[39m
+                  [36m</th>[39m
+                  [36m<th[39m
+                    [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+           ...
+ ❯ Proxy.waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ src/pages/SubscriberPage.test.tsx:127:15
+    125|         );
+    126| 
+    127|         await waitFor(() => {
+       |               ^
+    128|             expect(screen.getByTestId('subscriber-list')).toBeInTheDoc…
+    129|         });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/12]⎯
+
+
+ Test Files  4 failed | 118 passed | 1 skipped (123)
+      Tests  12 failed | 417 passed | 2 skipped (431)
+   Start at  18:18:51
+   Duration  52.22s (transform 17.33s, setup 23.88s, import 62.94s, tests 31.53s, environment 202.56s)
+

@@ -892,6 +892,14 @@ export interface CashReceiptPayload {
     created_by?: number;
 }
 
+export const getCashReceipts = async () => {
+    const response = await fetch(`${API_URL}/accounting/cash-receipt`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getCashReceipts');
+};
+
 export const createCashReceipt = async (payload: CashReceiptPayload) => {
     const response = await fetch(`${API_URL}/accounting/cash-receipt`, {
         method: 'POST',

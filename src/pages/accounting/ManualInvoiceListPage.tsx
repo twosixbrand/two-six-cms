@@ -5,6 +5,8 @@ import PageHeader from '../../components/common/PageHeader';
 import Button from '../../components/ui/Button';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
+import { formatDate } from '../../utils/dateFormat';
+
 
 const API_URL = (import.meta as any).env?.VITE_API_BASE_URL || 'http://localhost:3050/api';
 const API_KEY = (import.meta as any).env?.VITE_DIAN_API_KEY || 'TwoSixAdminKey123!';
@@ -31,12 +33,6 @@ type ManualInvoiceRow = {
 
 const formatCurrency = (val: number | null) =>
     val == null ? '—' : new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(val);
-
-const formatDate = (val: string | null) => {
-    if (!val) return '—';
-    const d = new Date(val);
-    return isNaN(d.getTime()) ? '—' : d.toLocaleDateString('es-CO');
-};
 
 const NoteTooltip: React.FC<{ text: string }> = ({ text }) => {
     const [visible, setVisible] = useState(false);

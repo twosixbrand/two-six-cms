@@ -6,6 +6,8 @@ import FormField from '../../components/ui/FormField';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
+import { formatDate } from '../../utils/dateFormat';
+
 
 const darkInputStyle: React.CSSProperties = {
     width: '100%', padding: '0.55rem 0.75rem', borderRadius: 8,
@@ -178,7 +180,7 @@ const SubsidiaryLedgerPage = () => {
                                                 <tr><td colSpan={6} style={{ ...tdStyle, textAlign: 'center', color: '#6b6b7b' }}>Sin movimientos</td></tr>
                                             ) : (sub.entries || sub.movements || []).map((entry: any, i: number) => (
                                                 <tr key={i}>
-                                                    <td style={tdStyle}>{new Date(entry.date).toLocaleDateString('es-CO')}</td>
+                                                    <td style={tdStyle}>{formatDate()}</td>
                                                     <td style={tdStyle}>{entry.entry_number}</td>
                                                     <td style={tdStyle}>{entry.description}</td>
                                                     <td style={{ ...tdStyle, textAlign: 'right' }}>{entry.debit ? formatCurrency(entry.debit) : '-'}</td>
@@ -223,7 +225,7 @@ const SubsidiaryLedgerPage = () => {
                                         ) : (Array.isArray(flatEntries) ? flatEntries : []).map((entry: any, i: number) => (
                                             <tr key={i}>
                                                 <td style={tdStyle}><strong style={{ color: '#f0b429' }}>{entry.account_code}</strong></td>
-                                                <td style={tdStyle}>{new Date(entry.date).toLocaleDateString('es-CO')}</td>
+                                                <td style={tdStyle}>{formatDate()}</td>
                                                 <td style={tdStyle}>{entry.entry_number}</td>
                                                 <td style={tdStyle}>{entry.description}</td>
                                                 <td style={{ ...tdStyle, textAlign: 'right' }}>{entry.debit ? formatCurrency(entry.debit) : '-'}</td>

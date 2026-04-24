@@ -6,6 +6,8 @@ import { Button, LoadingSpinner, DataTable, Modal, FormField, StatusBadge } from
 import * as inventoryApi from '../../services/inventoryApi';
 import * as clothingSizeApi from '../../services/clothingSizeApi'; // Asumimos que existe para buscar productos
 import { logError } from '../../services/errorApi';
+import { formatDateTime } from '../../utils/dateFormat';
+
 
 const reasons = [
     { value: 'MERMA', label: 'Merma / Deterioro' },
@@ -78,7 +80,7 @@ const InventoryAdjustmentPage = () => {
     };
 
     const columns = [
-        { key: 'adjustment_date', header: 'Fecha', render: (val: any) => new Date(val).toLocaleString('es-CO') },
+        { key: 'adjustment_date', header: 'Fecha', render: (val: any) => formatDateTime() },
         { 
             key: 'reason', 
             header: 'Motivo', 

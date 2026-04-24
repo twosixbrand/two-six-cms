@@ -6,6 +6,7 @@ import { DataTable, Modal, Button, SearchInput, StatusBadge, LoadingSpinner } fr
 import * as orderApi from '../services/orderApi';
 import { logError } from '../services/errorApi';
 import TransportGuideModal from '../components/order/TransportGuideModal';
+import { formatDate } from '../utils/dateFormat';
 
 const FILTER_TABS = [
   { key: 'ALL', label: 'Todos' },
@@ -105,7 +106,7 @@ const OrderPage = () => {
     {
       key: 'order_date',
       header: 'Fecha',
-      render: (value: any) => new Date(value).toLocaleDateString(),
+      render: (value: any) => formatDate(value),
     },
     {
       key: 'status',

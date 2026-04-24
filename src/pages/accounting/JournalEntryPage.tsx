@@ -5,6 +5,8 @@ import PageHeader from '../../components/common/PageHeader';
 import { DataTable, Button, StatusBadge, LoadingSpinner, FormField } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
+import { formatDate } from '../../utils/dateFormat';
+
 
 const JournalEntryPage = () => {
     const navigate = useNavigate();
@@ -156,7 +158,7 @@ const JournalEntryPage = () => {
                                             <strong>{entry.entry_number}</strong>
                                         </td>
                                         <td style={{ padding: '0.65rem 1rem', borderBottom: '1px solid #1f1f2a', color: '#f1f1f3' }}>
-                                            {new Date(entry.entry_date).toLocaleDateString('es-CO')}
+                                            {formatDate()}
                                         </td>
                                         <td style={{ padding: '0.65rem 1rem', borderBottom: '1px solid #1f1f2a', color: '#f1f1f3' }}>
                                             {entry.description}
@@ -218,7 +220,7 @@ const JournalEntryPage = () => {
                                                             {meta.customer_nit && <div style={{ color: '#f1f1f3' }}><span style={{ color: '#a0a0b0' }}>NIT/CC:</span> {meta.customer_nit}</div>}
                                                             {meta.reference && <div style={{ color: '#f1f1f3' }}><span style={{ color: '#a0a0b0' }}>Referencia:</span> {meta.reference}</div>}
                                                             {meta.invoice_number && <div style={{ color: '#f1f1f3' }}><span style={{ color: '#a0a0b0' }}>Factura DIAN:</span> {meta.invoice_number}</div>}
-                                                            {meta.operation_date && <div style={{ color: '#f1f1f3' }}><span style={{ color: '#a0a0b0' }}>Fecha operación:</span> {new Date(meta.operation_date).toLocaleDateString('es-CO')}</div>}
+                                                            {meta.operation_date && <div style={{ color: '#f1f1f3' }}><span style={{ color: '#a0a0b0' }}>Fecha operación:</span> {formatDate()}</div>}
                                                             {meta.notes && <div style={{ color: '#f1f1f3', marginTop: 4 }}><span style={{ color: '#a0a0b0' }}>Notas:</span> {meta.notes}</div>}
                                                         </div>
                                                     );

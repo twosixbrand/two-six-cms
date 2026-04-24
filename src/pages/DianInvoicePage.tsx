@@ -5,6 +5,7 @@ import PageHeader from '../components/common/PageHeader';
 import { DataTable, Button, StatusBadge, LoadingSpinner, Modal } from '../components/ui';
 import * as dianApi from '../services/dianApi';
 import { logError } from '../services/errorApi';
+import { formatDate } from '../utils/dateFormat';
 
 const DianInvoicePage = () => {
     const [invoices, setInvoices] = useState([]);
@@ -86,7 +87,7 @@ const DianInvoicePage = () => {
         {
             key: 'issue_date',
             header: 'Fecha Emisión',
-            render: (val: any) => new Date(val).toLocaleDateString(),
+            render: (val: any) => formatDate(val),
         },
         {
             key: 'cufe_code',

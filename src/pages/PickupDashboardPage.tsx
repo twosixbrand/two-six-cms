@@ -6,6 +6,7 @@ import PageHeader from '../components/common/PageHeader';
 import { FaBoxOpen } from 'react-icons/fa';
 import { Button, StatusBadge, LoadingSpinner } from '../components/ui';
 import { FiRefreshCcw, FiGift } from 'react-icons/fi';
+import { formatDateTime } from '../utils/dateFormat';
 import '../styles/PickupDashboardPage.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -249,7 +250,7 @@ const PickupDashboardPage = () => {
                             <div className="pickup-info-column">
                                 <p><strong>Cliente:</strong> {order.customer?.name}</p>
                                 <p><strong>Teléfono:</strong> {order.customer?.current_phone_number}</p>
-                                <p><strong>Fecha pedido:</strong> {new Date(order.order_date).toLocaleString()}</p>
+                                <p><strong>Fecha pedido:</strong> {formatDateTime(order.order_date)}</p>
                                 {order.pickup_pin && (
                                     <div style={{ marginTop: '15px', display: 'inline-block', background: 'rgba(240, 180, 41, 0.1)', padding: '8px 15px', borderRadius: '6px', border: '2px dashed #f0b429', boxShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
                                         <p style={{ margin: '0 0 2px 0', fontSize: '11px', color: '#f0b429', fontWeight: 'bold', textTransform: 'uppercase' }}>PIN de Seguridad</p>

@@ -5,6 +5,8 @@ import PageHeader from '../../components/common/PageHeader';
 import { Button, StatusBadge, LoadingSpinner, DataTable } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
+import { formatDate } from '../../utils/dateFormat';
+
 
 const statusColors: Record<string, { label: string; variant: 'success' | 'warning' | 'info' | 'neutral' }> = {
     PENDING: { label: 'Pendiente', variant: 'warning' },
@@ -212,9 +214,6 @@ const BankReconciliationPage = () => {
 
     const formatCurrency = (val: number) =>
         new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(val);
-
-    const formatDate = (d: string) =>
-        new Date(d).toLocaleDateString('es-CO');
 
     // Columns definitions...
     const bankAccountColumns = [

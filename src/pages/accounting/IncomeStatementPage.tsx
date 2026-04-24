@@ -6,6 +6,8 @@ import FormField from '../../components/ui/FormField';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
+import { formatDate } from '../../utils/dateFormat';
+
 
 const IncomeStatementPage = () => {
     const [startDate, setStartDate] = useState(() => {
@@ -106,7 +108,7 @@ const IncomeStatementPage = () => {
                 }}>
                     <h2 style={{ textAlign: 'center', marginBottom: '4px', color: '#f1f1f3', fontFamily: 'Inter, sans-serif' }}>Estado de Resultados</h2>
                     <p style={{ textAlign: 'center', color: '#a0a0b0', marginBottom: '24px', fontFamily: 'Inter, sans-serif' }}>
-                        {new Date(startDate).toLocaleDateString('es-CO')} - {new Date(endDate).toLocaleDateString('es-CO')}
+                        {formatDate()} - {formatDate()}
                     </p>
 
                     {renderSection('INGRESOS (Clase 4)', data.income || data.ingresos || [], totalIncome, 'INGRESOS')}

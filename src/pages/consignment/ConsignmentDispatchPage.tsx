@@ -8,6 +8,7 @@ import * as warehouseApi from '../../services/consignmentWarehouseApi';
 import * as priceApi from '../../services/consignmentPriceApi';
 import { getProducts } from '../../services/productApi';
 import { logError } from '../../services/errorApi';
+import { formatDate, formatDateTime } from '../../utils/dateFormat';
 
 const getItemImage = (it: any): string | null =>
   it?.clothingSize?.clothingColor?.imageClothing?.[0]?.image_url ?? it?.image_url ?? it?.product?.image_url ?? null;
@@ -428,14 +429,14 @@ const ConsignmentDispatchPage = () => {
     {
       key: 'sent_at',
       header: 'Enviado',
-      render: (_: any, row: Dispatch) => (row.sent_at ? new Date(row.sent_at).toLocaleDateString() : '—'),
+      render: (_: any, row: Dispatch) => (row.sent_at ? formatDate(row.sent_at) : '—'),
     },
     {
       key: 'received_at',
       header: 'Recibido',
       render: (_: any, row: Dispatch) =>
         row.received_at
-          ? `${new Date(row.received_at).toLocaleDateString()}${row.received_by ? ' · ' + row.received_by : ''}`
+          ? `${formatDate(row.received_at)}${row.received_by ? ' · ' + row.received_by : ''}`
           : '—',
     },
   ];
@@ -630,7 +631,7 @@ const ConsignmentDispatchPage = () => {
               {viewingDispatch.received_at && (
                 <>
                   <br />
-                  <strong>Recibido:</strong> {new Date(viewingDispatch.received_at).toLocaleString()} por {viewingDispatch.received_by}
+                  <strong>Recibido:</strong> {formatDateTime(viewingDispatch.received_at)} por {viewingDispatch.received_by}
                 </>
               )}
               {viewingDispatch.notes && (

@@ -4,6 +4,7 @@ import PageHeader from '../components/common/PageHeader';
 import { DataTable, Modal, Button, LoadingSpinner } from '../components/ui';
 import * as couponApi from '../services/couponApi';
 import { logError } from '../services/errorApi';
+import { formatDateTime } from '../utils/dateFormat';
 
 const CouponPage = () => {
   const [coupons, setCoupons] = useState<any[]>([]);
@@ -130,8 +131,8 @@ const CouponPage = () => {
     { key: 'code', header: 'Código' },
     { key: 'percentage', header: 'Descuento', render: (val: any) => `${val}%` },
     { key: 'free_shipping', header: 'Envío Gratis', render: (val: any) => val ? 'SI' : 'NO' },
-    { key: 'valid_from', header: 'Inicio', render: (val: any) => new Date(val).toLocaleDateString() },
-    { key: 'valid_until', header: 'Fin', render: (val: any) => new Date(val).toLocaleDateString() },
+    { key: 'valid_from', header: 'Inicio', render: (val: any) => formatDateTime(val) },
+    { key: 'valid_until', header: 'Fin', render: (val: any) => formatDateTime(val) },
     { key: 'current_uses', header: 'Usos', render: (val: any, row: any) => `${val} ${row.max_uses ? `/ ${row.max_uses}` : ''}` },
     {
       key: 'is_active',

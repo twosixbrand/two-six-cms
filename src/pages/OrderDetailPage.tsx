@@ -7,6 +7,7 @@ import { logError } from '../services/errorApi';
 import { FaArrowLeft, FaSave, FaFilePdf, FaFileCode, FaUndo, FaMoneyBillWave } from 'react-icons/fa';
 import { FiFileText, FiRefreshCw } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
+import { formatDate, formatDateTime } from '../utils/dateFormat';
 import './OrderDetailPage.css';
 
 const OrderDetailPage = () => {
@@ -312,7 +313,7 @@ const OrderDetailPage = () => {
                 {/* Información General */}
                 <div className="detail-card">
                     <h3>Información General</h3>
-                    <p><strong>Fecha:</strong> {new Date(order.order_date).toLocaleString()}</p>
+                    <p><strong>Fecha:</strong> {formatDateTime(order.order_date)}</p>
                     <p><strong>Total:</strong> ${order.total_payment.toLocaleString()}</p>
                     <p><strong>Pagado:</strong> {order.is_paid ? 'Sí' : 'No'}</p>
                     {order.payment_method === 'WOMPI_COD' && (
@@ -330,7 +331,7 @@ const OrderDetailPage = () => {
                                     <p><strong>Método:</strong> {payment.paymentMethod?.name || 'N/A'}</p>
                                     <p><strong>Ref:</strong> {payment.transaction_reference || 'N/A'}</p>
                                     <p><strong>Estado:</strong> {payment.status}</p>
-                                    <p><strong>Fecha:</strong> {new Date(payment.transaction_date).toLocaleString()}</p>
+                                    <p><strong>Fecha:</strong> {formatDateTime(payment.transaction_date)}</p>
                                 </div>
                             ))}
                         </>
@@ -580,7 +581,7 @@ const OrderDetailPage = () => {
                                         <tbody>
                                             {order.dianEInvoicings.map((inv: any) => (
                                                 <tr key={inv.id} style={{ opacity: inv.id === order.dianEInvoicing?.id ? 1 : 0.7 }}>
-                                                    <td>{new Date(inv.createdAt).toLocaleString()}</td>
+                                                    <td>{formatDateTime(inv.createdAt)}</td>
                                                     <td>
                                                         <span style={{ 
                                                             padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold',
@@ -701,7 +702,7 @@ const OrderDetailPage = () => {
                                                     <td>{note.type === 'CREDIT' ? <span style={{color: '#d97706'}}>Nota Crédito</span> : <span style={{color: '#2563eb'}}>Nota Débito</span>}</td>
                                                     <td style={{ fontWeight: 'bold' }}>{note.note_number}</td>
                                                     <td>${note.amount?.toLocaleString()}</td>
-                                                    <td>{new Date(note.issue_date).toLocaleDateString()}</td>
+                                                    <td>{formatDate(note.issue_date)}</td>
                                                     <td>
                                                         {note.status === 'AUTHORIZED' && <span style={{color: '#16a34a', fontWeight: 'bold'}}>Autorizada</span>}
                                                         {note.status === 'REJECTED' && <span style={{color: '#dc2626', fontWeight: 'bold'}}>Rechazada</span>}

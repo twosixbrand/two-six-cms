@@ -7,6 +7,8 @@ import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import StatusBadge from '../../components/ui/StatusBadge';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
+import { formatDate } from '../../utils/dateFormat';
+
 
 const actionColors: Record<string, { bg: string; color: string }> = {
     CREATE: { bg: '#0d3b2e', color: '#34d399' },
@@ -70,13 +72,6 @@ const AuditLogPage = () => {
     };
 
     useEffect(() => { fetchLogs(); }, []);
-
-    const formatDate = (dateStr: string) => {
-        return new Date(dateStr).toLocaleString('es-CO', {
-            year: 'numeric', month: '2-digit', day: '2-digit',
-            hour: '2-digit', minute: '2-digit',
-        });
-    };
 
     const renderDetails = (details: string | null) => {
         if (!details) return <span style={{ color: '#6b6b7b', fontSize: '12px' }}>Sin detalles</span>;
