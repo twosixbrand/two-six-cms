@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
 import FormField from './FormField';
 
 describe('FormField', () => {
@@ -47,4 +47,80 @@ describe('FormField', () => {
 
         expect(screen.getByText('Invalid email address')).toBeInTheDocument();
     });
+
+    // === Date type tests (YYYY-MM-DD format enforcement) ===
+
+    it('renders type="date" as a text input (not native date picker)', () => {
+        render(
+            <FormField label="Fecha" name="test_date" type="date" value="" onChange={() => {}} />
+        );
+
+        const input = screen.getByRole('textbox', { name: /fecha/i }) as HTMLInputElement;
+        expect(input).toHaveAttribute('type', 'text');
+    });
+
+    it('shows YYYY-MM-DD placeholder for date fields', () => {
+        render(
+            <FormField label="Fecha" name="test_date" type="date" value="" onChange={() => {}} />
+        );
+
+        const input = screen.getByPlaceholderText('YYYY-MM-DD');
+        expect(input).toBeInTheDocument();
+    });
+
+    it('enforces maxLength=10 on date fields', () => {
+        render(
+            <FormField label="Fecha" name="test_date" type="date" value="" onChange={() => {}} />
+        );
+
+        const input = screen.getByRole('textbox', { name: /fecha/i }) as HTMLInputElement;
+        expect(input).toHaveAttribute('maxLength', '10');
+    });
+
+    it('shows a YYYY-MM-DD formatted value in date fields', () => {
+        render(
+            <FormField label="Fecha" name="test_date" type="date" value="2026-04-24" onChange={() => {}} />
+        );
+
+        const input = screen.getByRole('textbox', { name: /fecha/i }) as HTMLInputElement;
+        expect(input.value).toBe('2026-04-24');
+    });
+
+    it('allows custom placeholder to override YYYY-MM-DD for date fields', () => {
+        render(
+            <FormField label="Fecha" name="test_date" type="date" value="" onChange={() => {}} placeholder="Ingrese fecha" />
+        );
+
+        const input = screen.getByPlaceholderText('Ingrese fecha');
+        expect(input).toBeInTheDocument();
+    });
+
+    it('fires onChange when date field value changes', () => {
+        const handleChange = vi.fn();
+        render(
+            <FormField label="Fecha" name="test_date" type="date" value="" onChange={handleChange} />
+        );
+
+        const input = screen.getByRole('textbox', { name: /fecha/i });
+        fireEvent.change(input, { target: { value: '2026-01-15' } });
+        expect(handleChange).toHaveBeenCalledTimes(1);
+    });
+
+    it('shows required asterisk when required prop is set', () => {
+        render(
+            <FormField label="Fecha" name="test_date" type="date" value="" onChange={() => {}} required />
+        );
+
+        expect(screen.getByText('*')).toBeInTheDocument();
+    });
+
+    it('applies disabled state to date field', () => {
+        render(
+            <FormField label="Fecha" name="test_date" type="date" value="2026-04-24" onChange={() => {}} disabled />
+        );
+
+        const input = screen.getByRole('textbox', { name: /fecha/i }) as HTMLInputElement;
+        expect(input).toBeDisabled();
+    });
 });
+
