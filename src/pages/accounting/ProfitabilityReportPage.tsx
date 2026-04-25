@@ -104,11 +104,11 @@ const ProfitabilityReportPage = () => {
             <div style={{ marginBottom: '24px', display: 'flex', gap: '15px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
                 <div>
                     <label style={{ display: 'block', fontSize: '12px', color: '#a0a0b0', marginBottom: '4px' }}>Desde</label>
-                    <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="form-control" style={{ width: '160px' }} />
+                    <input type="text" value={startDate} onChange={e => setStartDate(e.target.value)} placeholder="YYYY-MM-DD" maxLength={10} className="form-control" style={{ width: '160px' }} />
                 </div>
                 <div>
                     <label style={{ display: 'block', fontSize: '12px', color: '#a0a0b0', marginBottom: '4px' }}>Hasta</label>
-                    <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="form-control" style={{ width: '160px' }} />
+                    <input type="text" value={endDate} onChange={e => setEndDate(e.target.value)} placeholder="YYYY-MM-DD" maxLength={10} className="form-control" style={{ width: '160px' }} />
                 </div>
                 <Button variant="primary" icon={<FiRefreshCcw />} onClick={fetchData}>Actualizar Análisis</Button>
                 <Button variant="secondary" icon={<FiDownload />} onClick={() => accountingApi.exportToExcel('profitability', { startDate, endDate, type: activeTab })}>Exportar</Button>

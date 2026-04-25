@@ -108,7 +108,7 @@ const IncomeStatementPage = () => {
                 }}>
                     <h2 style={{ textAlign: 'center', marginBottom: '4px', color: '#f1f1f3', fontFamily: 'Inter, sans-serif' }}>Estado de Resultados</h2>
                     <p style={{ textAlign: 'center', color: '#a0a0b0', marginBottom: '24px', fontFamily: 'Inter, sans-serif' }}>
-                        {formatDate()} - {formatDate()}
+                        {formatDate(startDate)} - {formatDate(endDate)}
                     </p>
 
                     {renderSection('INGRESOS (Clase 4)', data.income || data.ingresos || [], totalIncome, 'INGRESOS')}

@@ -180,7 +180,7 @@ const SubsidiaryLedgerPage = () => {
                                                 <tr><td colSpan={6} style={{ ...tdStyle, textAlign: 'center', color: '#6b6b7b' }}>Sin movimientos</td></tr>
                                             ) : (sub.entries || sub.movements || []).map((entry: any, i: number) => (
                                                 <tr key={i}>
-                                                    <td style={tdStyle}>{formatDate()}</td>
+                                                    <td style={tdStyle}>{formatDate(entry.entry_date)}</td>
                                                     <td style={tdStyle}>{entry.entry_number}</td>
                                                     <td style={tdStyle}>{entry.description}</td>
                                                     <td style={{ ...tdStyle, textAlign: 'right' }}>{entry.debit ? formatCurrency(entry.debit) : '-'}</td>
@@ -225,7 +225,7 @@ const SubsidiaryLedgerPage = () => {
                                         ) : (Array.isArray(flatEntries) ? flatEntries : []).map((entry: any, i: number) => (
                                             <tr key={i}>
                                                 <td style={tdStyle}><strong style={{ color: '#f0b429' }}>{entry.account_code}</strong></td>
-                                                <td style={tdStyle}>{formatDate()}</td>
+                                                <td style={tdStyle}>{formatDate(entry.entry_date)}</td>
                                                 <td style={tdStyle}>{entry.entry_number}</td>
                                                 <td style={tdStyle}>{entry.description}</td>
                                                 <td style={{ ...tdStyle, textAlign: 'right' }}>{entry.debit ? formatCurrency(entry.debit) : '-'}</td>

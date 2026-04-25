@@ -103,7 +103,7 @@ const IvaDeclarationPage = () => {
                         <tbody>
                             {entries.map((e: any, i: number) => (
                                 <tr key={i}>
-                                    <td style={tdStyle}>{formatDate()}</td>
+                                    <td style={tdStyle}>{formatDate(e.entry_date)}</td>
                                     <td style={tdStyle}>{e.entry_number}</td>
                                     <td style={tdStyle}>{e.description}</td>
                                     <td style={{ ...tdStyle, textAlign: 'right' }}>{formatCurrency(e.debit)}</td>

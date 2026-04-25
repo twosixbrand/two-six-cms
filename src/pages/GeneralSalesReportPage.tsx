@@ -190,12 +190,12 @@ const GeneralSalesReportPage = () => {
             <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-end', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
                 <div style={{ minWidth: '180px' }}>
                     <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: '#a0a0b0', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Fecha Inicio</label>
-                    <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required
+                    <input type="text" value={startDate} onChange={(e) => setStartDate(e.target.value)} required placeholder="YYYY-MM-DD" maxLength={10}
                         style={{ padding: '8px 12px', borderRadius: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', fontSize: '0.875rem', height: 40 }} />
                 </div>
                 <div style={{ minWidth: '180px' }}>
                     <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: '#a0a0b0', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Fecha Fin</label>
-                    <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required max={new Date().toISOString().split('T')[0]}
+                    <input type="text" value={endDate} onChange={(e) => setEndDate(e.target.value)} required placeholder="YYYY-MM-DD" maxLength={10}
                         style={{ padding: '8px 12px', borderRadius: 8, border: '1px solid #2a2a35', backgroundColor: '#1a1a24', color: '#f1f1f3', fontSize: '0.875rem', height: 40 }} />
                 </div>
                 <Button onClick={(e) => { e.preventDefault(); handleSearch(e); }} variant="primary" loading={loading}>

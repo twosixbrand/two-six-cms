@@ -116,7 +116,7 @@ const CxCTab = ({ data }: { data: any }) => {
                                 <tr key={i}>
                                     <td style={{ ...tdStyle, fontWeight: 600 }}>{o.orderReference || `#${o.orderId}`}</td>
                                     <td style={tdStyle}>{o.customerName}</td>
-                                    <td style={tdStyle}>{formatDate()}</td>
+                                    <td style={tdStyle}>{formatDate(o.orderDate)}</td>
                                     <td style={tdStyle}>
                                         <StatusBadge status={o.status} size="sm" />
                                     </td>
@@ -217,8 +217,8 @@ const CxPTab = ({ data }: { data: any }) => {
                                             {item.category}
                                         </span>
                                     </td>
-                                    <td style={tdStyle}>{formatDate()}</td>
-                                    <td style={tdStyle}>{item.dueDate ? formatDate() : 'Sin fecha'}</td>
+                                    <td style={tdStyle}>{formatDate(item.date)}</td>
+                                    <td style={tdStyle}>{item.dueDate ? formatDate(item.dueDate) : 'Sin fecha'}</td>
                                     <td style={{ ...tdStyle, textAlign: 'center', fontWeight: 600, color: item.daysOutstanding > 60 ? '#f87171' : '#f1f1f3' }}>
                                         {item.daysOutstanding}
                                     </td>

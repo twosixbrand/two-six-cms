@@ -321,7 +321,7 @@ const ExogenaPage = () => {
                                                 <tr><td colSpan={8} style={{ ...tdStyleBase, textAlign: 'center', padding: '40px', color: '#6b6b7b' }}>No se encontraron movimientos para este NIT en el año seleccionado.</td></tr>
                                             ) : thirdPartyData.movements.map((m: any, i: number) => (
                                                 <tr key={i}>
-                                                    <td style={tdStyleBase}>{formatDate()}</td>
+                                                    <td style={tdStyleBase}>{formatDate(m.date)}</td>
                                                     <td style={tdStyleBase}><strong style={{ color: '#f0b429' }}>{m.entry_number}</strong></td>
                                                     <td style={tdStyleBase}>{m.source_type}</td>
                                                     <td style={{ ...tdStyleBase, whiteSpace: 'normal', minWidth: '200px' }}>{m.description}</td>

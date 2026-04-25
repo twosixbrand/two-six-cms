@@ -172,7 +172,7 @@ const GeneralLedgerPage = () => {
                                     <tr><td colSpan={6} style={{ ...tdStyle, textAlign: 'center', color: '#6b6b7b' }}>No hay movimientos para este periodo</td></tr>
                                 ) : (Array.isArray(entries) ? entries : []).map((entry: any, i: number) => (
                                     <tr key={i}>
-                                        <td style={tdStyle}>{formatDate()}</td>
+                                        <td style={tdStyle}>{formatDate(entry.entry_date)}</td>
                                         <td style={tdStyle}>{entry.entry_number}</td>
                                         <td style={tdStyle}>{entry.description}</td>
                                         <td style={{ ...tdStyle, textAlign: 'right' }}>{entry.debit ? formatCurrency(entry.debit) : '-'}</td>

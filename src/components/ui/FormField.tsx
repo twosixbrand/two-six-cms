@@ -114,6 +114,22 @@ const FormField: React.FC<FormFieldProps> = ({
         {...focusProps}
       />
     );
+  } else if (type === 'date') {
+    input = (
+      <input
+        id={name}
+        type="text"
+        name={name}
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+        placeholder={placeholder || 'YYYY-MM-DD'}
+        pattern="\d{4}-\d{2}-\d{2}"
+        maxLength={10}
+        style={inputBase}
+        {...focusProps}
+      />
+    );
   } else {
     input = (
       <input

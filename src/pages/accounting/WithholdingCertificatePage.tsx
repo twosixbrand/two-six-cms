@@ -183,7 +183,7 @@ const WithholdingCertificatePage = () => {
         {
             key: 'issue_date',
             header: 'Fecha Expedici\u00f3n',
-            render: (val: any) => formatDate(),
+            render: (val: any) => formatDate(val),
         },
     ];
 

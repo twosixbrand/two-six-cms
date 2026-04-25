@@ -178,7 +178,7 @@ const EmployeeFormModal = ({
                     </div>
                     <div>
                         <label style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Fecha de Ingreso *</label>
-                        <input style={inputStyle} type="date" required value={form.hire_date}
+                        <input style={inputStyle} type="text" required value={form.hire_date} placeholder="YYYY-MM-DD" maxLength={10}
                             onChange={(e) => setForm({ ...form, hire_date: e.target.value })} />
                     </div>
                     <div>
@@ -334,12 +334,12 @@ const PeriodFormModal = ({
                     </div>
                     <div>
                         <label style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Fecha Inicio</label>
-                        <input style={inputStyle} type="date" value={form.start_date}
+                        <input style={inputStyle} type="text" value={form.start_date} placeholder="YYYY-MM-DD" maxLength={10}
                             onChange={(e) => setForm({ ...form, start_date: e.target.value })} />
                     </div>
                     <div>
                         <label style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Fecha Fin</label>
-                        <input style={inputStyle} type="date" value={form.end_date}
+                        <input style={inputStyle} type="text" value={form.end_date} placeholder="YYYY-MM-DD" maxLength={10}
                             onChange={(e) => setForm({ ...form, end_date: e.target.value })} />
                     </div>
                 </div>
@@ -543,8 +543,8 @@ const PayrollPage = () => {
         { key: 'year', header: 'Año' },
         { key: 'month', header: 'Mes' },
         { key: 'period_type', header: 'Tipo', render: (val: any) => periodTypeLabels[val] || val },
-        { key: 'start_date', header: 'Inicio', render: (val: any) => formatDate() },
-        { key: 'end_date', header: 'Fin', render: (val: any) => formatDate() },
+        { key: 'start_date', header: 'Inicio', render: (val: any) => formatDate(val) },
+        { key: 'end_date', header: 'Fin', render: (val: any) => formatDate(val) },
         { key: '_count', header: 'Empleados', render: (_val: any, row: any) => row._count?.entries || 0 },
         {
             key: 'status',

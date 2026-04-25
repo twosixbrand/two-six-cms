@@ -129,7 +129,7 @@ const ExpensePage = () => {
         {
             key: 'expense_date',
             header: 'Fecha',
-            render: (_val: any, row: any) => formatDate(),
+            render: (_val: any, row: any) => formatDate(row.expense_date),
         },
         { key: 'category', header: 'Categoría' },
         {
@@ -167,12 +167,12 @@ const ExpensePage = () => {
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
                 <div>
                     <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Desde</label>
-                    <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)}
+                    <input type="text" value={startDate} onChange={e => setStartDate(e.target.value)} placeholder="YYYY-MM-DD" maxLength={10}
                         style={{ padding: '8px', borderRadius: '6px', border: '1px solid #2a2a35' }} />
                 </div>
                 <div>
                     <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Hasta</label>
-                    <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)}
+                    <input type="text" value={endDate} onChange={e => setEndDate(e.target.value)} placeholder="YYYY-MM-DD" maxLength={10}
                         style={{ padding: '8px', borderRadius: '6px', border: '1px solid #2a2a35' }} />
                 </div>
                 <div>

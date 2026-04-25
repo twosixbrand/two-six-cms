@@ -142,12 +142,12 @@ const ManualInvoiceListPage: React.FC = () => {
             <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap', alignItems: 'flex-end' }}>
                 <div>
                     <label style={{ display: 'block', color: '#a0a0b0', fontSize: 12, marginBottom: 4 }}>Desde</label>
-                    <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}
+                    <input type="text" value={startDate} onChange={(e) => setStartDate(e.target.value)} placeholder="YYYY-MM-DD" maxLength={10}
                         style={{ padding: 8, background: '#1a1a24', border: '1px solid #2a2a35', borderRadius: 6, color: '#f1f1f3' }} />
                 </div>
                 <div>
                     <label style={{ display: 'block', color: '#a0a0b0', fontSize: 12, marginBottom: 4 }}>Hasta</label>
-                    <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)}
+                    <input type="text" value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder="YYYY-MM-DD" maxLength={10}
                         style={{ padding: 8, background: '#1a1a24', border: '1px solid #2a2a35', borderRadius: 6, color: '#f1f1f3' }} />
                 </div>
                 <div>

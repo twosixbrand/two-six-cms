@@ -123,7 +123,7 @@ const AccountingAlertsPage = () => {
               {data.fiscal_deadlines.map((d: any, i: number) => (
                 <tr key={i}>
                   <td style={tdStyle}>{d.name}</td>
-                  <td style={tdStyle}>{formatDate()}</td>
+                  <td style={tdStyle}>{formatDate(d.date)}</td>
                   <td style={{ ...tdStyle, color: d.days_left <= 3 ? '#dc2626' : '#f0b429', fontWeight: 600 }}>
                     {d.days_left}
                   </td>
@@ -155,7 +155,7 @@ const AccountingAlertsPage = () => {
                   <td style={tdStyle}>{e.description}</td>
                   <td style={tdStyle}>{e.source_type}</td>
                   <td style={tdStyle}>{e.total_debit?.toLocaleString('es-CO')}</td>
-                  <td style={tdStyle}>{formatDate()}</td>
+                  <td style={tdStyle}>{formatDate(e.entry_date)}</td>
                 </tr>
               ))}
             </tbody>
@@ -232,7 +232,7 @@ const AccountingAlertsPage = () => {
                   <td style={tdStyle}>{o.order_reference || `#${o.id}`}</td>
                   <td style={tdStyle}>{o.status}</td>
                   <td style={tdStyle}>{o.total_payment?.toLocaleString('es-CO')}</td>
-                  <td style={tdStyle}>{formatDate()}</td>
+                  <td style={tdStyle}>{formatDate(o.created_at)}</td>
                 </tr>
               ))}
             </tbody>

@@ -215,18 +215,22 @@ const ConsignmentReportsPage = () => {
             <div>
               <label style={{ display: 'block', fontSize: '0.8rem', color: '#a0aec0' }}>Desde</label>
               <input
-                type="date"
+                type="text"
                 value={lossFrom}
                 onChange={(e) => setLossFrom(e.target.value)}
+                placeholder="YYYY-MM-DD"
+                maxLength={10}
                 style={{ padding: '0.4rem', borderRadius: '4px', border: '1px solid #2a2a35', background: '#1a1a1f', color: '#f1f1f3' }}
               />
             </div>
             <div>
               <label style={{ display: 'block', fontSize: '0.8rem', color: '#a0aec0' }}>Hasta</label>
               <input
-                type="date"
+                type="text"
                 value={lossTo}
                 onChange={(e) => setLossTo(e.target.value)}
+                placeholder="YYYY-MM-DD"
+                maxLength={10}
                 style={{ padding: '0.4rem', borderRadius: '4px', border: '1px solid #2a2a35', background: '#1a1a1f', color: '#f1f1f3' }}
               />
             </div>
