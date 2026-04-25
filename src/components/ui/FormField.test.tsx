@@ -122,5 +122,59 @@ describe('FormField', () => {
         const input = screen.getByRole('textbox', { name: /fecha/i }) as HTMLInputElement;
         expect(input).toBeDisabled();
     });
+
+    // === Auto-dash insertion tests ===
+
+    it('auto-inserts dash after 4-digit year input', () => {
+        const handleChange = vi.fn();
+        render(
+            <FormField label="Fecha" name="test_date" type="date" value="" onChange={handleChange} />
+        );
+
+        const input = screen.getByRole('textbox', { name: /fecha/i });
+        fireEvent.change(input, { target: { value: '20260' } });
+        expect(handleChange).toHaveBeenCalledWith(
+            expect.objectContaining({ target: { name: 'test_date', value: '2026-0' } })
+        );
+    });
+
+    it('auto-inserts dash after month digits', () => {
+        const handleChange = vi.fn();
+        render(
+            <FormField label="Fecha" name="test_date" type="date" value="" onChange={handleChange} />
+        );
+
+        const input = screen.getByRole('textbox', { name: /fecha/i });
+        fireEvent.change(input, { target: { value: '2026041' } });
+        expect(handleChange).toHaveBeenCalledWith(
+            expect.objectContaining({ target: { name: 'test_date', value: '2026-04-1' } })
+        );
+    });
+
+    it('formats 8 raw digits into YYYY-MM-DD', () => {
+        const handleChange = vi.fn();
+        render(
+            <FormField label="Fecha" name="test_date" type="date" value="" onChange={handleChange} />
+        );
+
+        const input = screen.getByRole('textbox', { name: /fecha/i });
+        fireEvent.change(input, { target: { value: '20260424' } });
+        expect(handleChange).toHaveBeenCalledWith(
+            expect.objectContaining({ target: { name: 'test_date', value: '2026-04-24' } })
+        );
+    });
+
+    it('strips non-digit characters from date input', () => {
+        const handleChange = vi.fn();
+        render(
+            <FormField label="Fecha" name="test_date" type="date" value="" onChange={handleChange} />
+        );
+
+        const input = screen.getByRole('textbox', { name: /fecha/i });
+        fireEvent.change(input, { target: { value: '2026/04/24' } });
+        expect(handleChange).toHaveBeenCalledWith(
+            expect.objectContaining({ target: { name: 'test_date', value: '2026-04-24' } })
+        );
+    });
 });
 

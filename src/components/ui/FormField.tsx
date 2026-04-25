@@ -115,17 +115,34 @@ const FormField: React.FC<FormFieldProps> = ({
       />
     );
   } else if (type === 'date') {
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const raw = e.target.value;
+      // Strip everything except digits and dashes
+      const digits = raw.replace(/[^0-9]/g, '');
+
+      // Build formatted value: YYYY-MM-DD from raw digits
+      let formatted = '';
+      for (let i = 0; i < digits.length && i < 8; i++) {
+        if (i === 4 || i === 6) formatted += '-';
+        formatted += digits[i];
+      }
+
+      // Emit a synthetic event-like object so callers work the same way
+      onChange({ target: { name, value: formatted } } as any);
+    };
+
     input = (
       <input
         id={name}
         type="text"
         name={name}
         value={value}
-        onChange={onChange}
+        onChange={handleDateChange}
         disabled={disabled}
         placeholder={placeholder || 'YYYY-MM-DD'}
         pattern="\d{4}-\d{2}-\d{2}"
         maxLength={10}
+        inputMode="numeric"
         style={inputBase}
         {...focusProps}
       />
