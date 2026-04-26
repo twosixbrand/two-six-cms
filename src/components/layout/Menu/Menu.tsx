@@ -123,6 +123,7 @@ const menuData = [
       { title: 'Cartera y Valoracion', path: '/accounting/reports/aging', permission: 'accounting.reports.view' },
       { title: 'Rentabilidad por Diseño', path: '/accounting/reports/profitability', permission: 'accounting.reports.view' },
       { title: 'Ajustes Inventario', path: '/accounting/inventory-adjustments', permission: 'accounting.journal.view' },
+      { title: 'Kardex Inventario', path: '/accounting/inventory-kardex', permission: 'accounting.journal.view' },
       { title: 'Presupuesto', path: '/accounting/budget', permission: 'accounting.budget.view' },
       { title: 'Activos Fijos', path: '/accounting/assets', permission: 'accounting.assets.view' },
       { title: 'Indicadores Financieros', path: '/accounting/reports/indicators', permission: 'accounting.indicators.view' },
