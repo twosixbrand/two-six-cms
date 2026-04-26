@@ -62,6 +62,8 @@ type InvoiceData = {
     doc_number: string;
     customer_name: string;
     customer_email: string;
+    customer_phone: string;
+    customer_address: string;
     items: ItemRow[];
     notes: string;
 };
@@ -96,6 +98,8 @@ const ManualSaleRegularizationPage: React.FC = () => {
         doc_number: '',
         customer_name: '',
         customer_email: '',
+        customer_phone: '',
+        customer_address: '',
         items: [emptyItem()],
         notes: '',
     });
@@ -176,6 +180,8 @@ const ManualSaleRegularizationPage: React.FC = () => {
                         doc_type: customer.identificationType?.code || prev.doc_type,
                         customer_name: customer.name || prev.customer_name,
                         customer_email: customer.email || prev.customer_email,
+                        customer_phone: customer.current_phone_number || prev.customer_phone,
+                        customer_address: customer.shipping_address || prev.customer_address,
                     }));
                 })
                 .catch((err) => {
@@ -198,6 +204,8 @@ const ManualSaleRegularizationPage: React.FC = () => {
             doc_number: '',
             customer_name: '',
             customer_email: '',
+            customer_phone: '',
+            customer_address: '',
             items: [emptyItem()],
             notes: '',
         });
@@ -252,6 +260,8 @@ const ManualSaleRegularizationPage: React.FC = () => {
             doc_number: docNumber,
             customer_name: customerName,
             customer_email: customerEmail,
+            customer_phone: (customer as any)?.current_phone_number || '',
+            customer_address: (customer as any)?.shipping_address || '',
         }));
         setStep(2);
     };
@@ -345,6 +355,8 @@ const ManualSaleRegularizationPage: React.FC = () => {
                     doc_number: invoice.doc_number,
                     name: invoice.customer_name,
                     email: invoice.customer_email || undefined,
+                    phone: invoice.customer_phone || undefined,
+                    address: invoice.customer_address || undefined,
                 },
                 items: invoice.items.map((it) => {
                     const rate = Number(it.iva_rate) || 0;
@@ -506,6 +518,8 @@ const ManualSaleRegularizationPage: React.FC = () => {
                         <FormField label="NIT/CC cliente" name="doc_number" type="text" value={invoice.doc_number} onChange={(e) => setInvoice({ ...invoice, doc_number: e.target.value })} required />
                         <FormField label="Nombre cliente" name="customer_name" type="text" value={invoice.customer_name} onChange={(e) => setInvoice({ ...invoice, customer_name: e.target.value })} required />
                         <FormField label="Email cliente" name="customer_email" type="email" value={invoice.customer_email} onChange={(e) => setInvoice({ ...invoice, customer_email: e.target.value })} />
+                        <FormField label="Celular cliente" name="customer_phone" type="text" value={invoice.customer_phone} onChange={(e) => setInvoice({ ...invoice, customer_phone: e.target.value })} placeholder="Ej: 3101234567" />
+                        <FormField label="Dirección cliente" name="customer_address" type="text" value={invoice.customer_address} onChange={(e) => setInvoice({ ...invoice, customer_address: e.target.value })} placeholder="Ej: Calle 36D Sur # 27D-39" />
                         <FormField label="Cuenta ingresos (PUC)" name="revenue_puc_code" type="text" value={invoice.revenue_puc_code} onChange={(e) => setInvoice({ ...invoice, revenue_puc_code: e.target.value })} required />
                         <FormField label="Cuenta IVA (PUC)" name="iva_puc_code" type="text" value={invoice.iva_puc_code} onChange={(e) => setInvoice({ ...invoice, iva_puc_code: e.target.value })} required />
                     </div>
