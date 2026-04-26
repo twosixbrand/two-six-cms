@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FiDatabase, FiBox, FiTag, FiBarChart2 } from 'react-icons/fi';
+import { FiDatabase, FiBox, FiTag, FiBarChart2, FiSearch } from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
 import { LoadingSpinner, DataTable, Button } from '../components/ui';
 import * as clothingSizeApi from '../services/clothingSizeApi';
@@ -10,6 +10,7 @@ const ReportStockPage = () => {
     const [inventoryItems, setInventoryItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
 
     const fetchData = async () => {
         try {
@@ -101,6 +102,25 @@ const ReportStockPage = () => {
         },
     ];
 
+    const term = searchTerm.toLowerCase().trim();
+    const filteredDesigns = useMemo(() => {
+        if (!term) return totals.byDesign;
+        return totals.byDesign.filter(d =>
+            d.reference.toLowerCase().includes(term) ||
+            d.productName.toLowerCase().includes(term)
+        );
+    }, [totals.byDesign, term]);
+
+    const filteredVariants = useMemo(() => {
+        if (!term) return totals.byVariant;
+        return totals.byVariant.filter(v =>
+            v.reference.toLowerCase().includes(term) ||
+            v.product.toLowerCase().includes(term) ||
+            v.color.toLowerCase().includes(term) ||
+            v.size.toLowerCase().includes(term)
+        );
+    }, [totals.byVariant, term]);
+
     if (loading) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', padding: '5rem' }}>
@@ -140,6 +160,31 @@ const ReportStockPage = () => {
                 </div>
             </div>
 
+            {/* Filtro Global */}
+            <div style={{ marginBottom: 20 }}>
+                <div style={{ position: 'relative', maxWidth: 400 }}>
+                    <FiSearch size={16} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#6b6b7b' }} />
+                    <input
+                        id="stock-search"
+                        type="text"
+                        placeholder="Buscar por referencia, producto, color, talla…"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{
+                            width: '100%',
+                            padding: '10px 12px 10px 38px',
+                            background: '#13131a',
+                            border: '1px solid #2a2a40',
+                            borderRadius: 10,
+                            color: '#f1f1f3',
+                            fontSize: '0.88rem',
+                            outline: 'none',
+                            fontFamily: 'Inter, sans-serif',
+                        }}
+                    />
+                </div>
+            </div>
+
             {/* Totales por Diseño */}
             <div className="report-section">
                 <div className="section-header">
@@ -148,7 +193,7 @@ const ReportStockPage = () => {
                 <div className="glass-panel">
                     <DataTable 
                         columns={designColumns} 
-                        data={totals.byDesign} 
+                        data={filteredDesigns} 
                         pageSize={10}
                     />
                 </div>
@@ -162,7 +207,7 @@ const ReportStockPage = () => {
                 <div className="glass-panel">
                     <DataTable 
                         columns={variantColumns} 
-                        data={totals.byVariant} 
+                        data={filteredVariants} 
                         pageSize={15}
                     />
                 </div>
