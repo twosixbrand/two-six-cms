@@ -333,26 +333,58 @@ const InventoryKardexPage = () => {
                         }}
                     />
                 </div>
-                <input
-                    id="kardex-start-date"
-                    type="date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    style={{
-                        padding: '10px 12px', background: '#13131a', border: '1px solid #2a2a40',
-                        borderRadius: 10, color: '#f1f1f3', fontSize: '0.88rem',
-                    }}
-                />
-                <input
-                    id="kardex-end-date"
-                    type="date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    style={{
-                        padding: '10px 12px', background: '#13131a', border: '1px solid #2a2a40',
-                        borderRadius: 10, color: '#f1f1f3', fontSize: '0.88rem',
-                    }}
-                />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <label style={{ fontSize: '0.8rem', color: '#8888a0', whiteSpace: 'nowrap' }}>Desde</label>
+                    <input
+                        id="kardex-start-date"
+                        type="text"
+                        placeholder="YYYY-MM-DD"
+                        inputMode="numeric"
+                        maxLength={10}
+                        pattern="\d{4}-\d{2}-\d{2}"
+                        value={startDate}
+                        onChange={(e) => {
+                            const digits = e.target.value.replace(/[^0-9]/g, '');
+                            let formatted = '';
+                            for (let i = 0; i < digits.length && i < 8; i++) {
+                                if (i === 4 || i === 6) formatted += '-';
+                                formatted += digits[i];
+                            }
+                            setStartDate(formatted);
+                        }}
+                        style={{
+                            width: 140,
+                            padding: '10px 12px', background: '#13131a', border: '1px solid #2a2a40',
+                            borderRadius: 10, color: '#f1f1f3', fontSize: '0.88rem', outline: 'none',
+                        }}
+                    />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <label style={{ fontSize: '0.8rem', color: '#8888a0', whiteSpace: 'nowrap' }}>Hasta</label>
+                    <input
+                        id="kardex-end-date"
+                        type="text"
+                        placeholder="YYYY-MM-DD"
+                        inputMode="numeric"
+                        maxLength={10}
+                        pattern="\d{4}-\d{2}-\d{2}"
+                        value={endDate}
+                        onChange={(e) => {
+                            const digits = e.target.value.replace(/[^0-9]/g, '');
+                            let formatted = '';
+                            for (let i = 0; i < digits.length && i < 8; i++) {
+                                if (i === 4 || i === 6) formatted += '-';
+                                formatted += digits[i];
+                            }
+                            setEndDate(formatted);
+                        }}
+                        style={{
+                            width: 140,
+                            padding: '10px 12px', background: '#13131a', border: '1px solid #2a2a40',
+                            borderRadius: 10, color: '#f1f1f3', fontSize: '0.88rem', outline: 'none',
+                        }}
+                    />
+                </div>
             </div>
 
             {/* ── Chips de tipo ── */}
