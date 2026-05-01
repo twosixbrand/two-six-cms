@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { FiEye, FiChevronDown, FiChevronUp } from 'react-icons/fi';
-import PageHeader from '../../components/common/PageHeader';
-import Button from '../../components/ui/Button';
-import FormField from '../../components/ui/FormField';
-import LoadingSpinner from '../../components/ui/LoadingSpinner';
-import StatusBadge from '../../components/ui/StatusBadge';
-import * as accountingApi from '../../services/accountingApi';
-import { logError } from '../../services/errorApi';
-import { formatDate } from '../../utils/dateFormat';
+import PageHeader from '../components/common/PageHeader';
+import Button from '../components/ui/Button';
+import FormField from '../components/ui/FormField';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
+import StatusBadge from '../components/ui/StatusBadge';
+import * as accountingApi from '../services/accountingApi';
+import { logError } from '../services/errorApi';
+import { formatDate } from '../utils/dateFormat';
 
 
 const actionColors: Record<string, { bg: string; color: string }> = {
