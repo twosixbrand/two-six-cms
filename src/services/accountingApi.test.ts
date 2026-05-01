@@ -229,4 +229,21 @@ describe('accountingApi.ts', () => {
     });
     it('listManualDianInvoices', async () => { await api.listManualDianInvoices({ startDate: '2026-01-01', endDate: '2026-12-31', status: 'AUTHORIZED', search: 'x' }); expect(fetch).toHaveBeenCalled(); });
     it('listManualDianInvoices no params', async () => { await api.listManualDianInvoices(); expect(fetch).toHaveBeenCalled(); });
+
+    // ── System Audit Log ──
+    it('getSystemAuditLog', async () => { await api.getSystemAuditLog({}); expect(fetch).toHaveBeenCalled(); });
+    it('getSystemAuditLog with filters', async () => {
+        await api.getSystemAuditLog({ tableName: 'Product', action: 'UPDATE', startDate: '2026-01-01', endDate: '2026-12-31', limit: 50 });
+        const url = (fetch as any).mock.calls[0][0];
+        expect(url).toContain('tableName=Product');
+        expect(url).toContain('action=UPDATE');
+        expect(url).toContain('limit=50');
+    });
+    it('getSystemAuditLog empty params', async () => {
+        await api.getSystemAuditLog({ tableName: '', action: '' });
+        const url = (fetch as any).mock.calls[0][0];
+        expect(url).not.toContain('tableName=');
+        expect(url).not.toContain('action=');
+    });
 });
+
