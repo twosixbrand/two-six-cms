@@ -369,7 +369,7 @@ const ManualSaleRegularizationPage: React.FC = () => {
                     return {
                         description: it.description,
                         quantity: Number(it.quantity),
-                        unit_price: Number(netPrice.toFixed(2)),
+                        unit_price: netPrice,
                         iva_rate: rate,
                     };
                 }),
