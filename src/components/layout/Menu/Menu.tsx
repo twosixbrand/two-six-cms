@@ -159,7 +159,8 @@ const menuData = [
     path: '#',
     permission: 'admin.logs.view',
     subNav: [
-      { title: 'Logs', path: '/logs', permission: 'admin.logs.view' },
+      { title: 'Auditoría Global', path: '/system-audit-log', permission: 'admin.logs.view' },
+      { title: 'Logs App', path: '/logs', permission: 'admin.logs.view' },
     ],
   },
 ];

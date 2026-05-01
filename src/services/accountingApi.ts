@@ -446,6 +446,27 @@ export const getAuditLog = async (params?: {
     return await handleResponse(response, 'getAuditLog');
 };
 
+export const getSystemAuditLog = async (params?: {
+    tableName?: string;
+    action?: string;
+    startDate?: string;
+    endDate?: string;
+    limit?: number;
+}) => {
+    const query = new URLSearchParams();
+    if (params?.tableName) query.append('tableName', params.tableName);
+    if (params?.action) query.append('action', params.action);
+    if (params?.startDate) query.append('startDate', params.startDate);
+    if (params?.endDate) query.append('endDate', params.endDate);
+    if (params?.limit) query.append('limit', String(params.limit));
+    const qs = query.toString() ? `?${query.toString()}` : '';
+    const response = await fetch(`${API_URL}/system-audit${qs}`, {
+        method: 'GET',
+        headers: authHeaders(),
+    });
+    return await handleResponse(response, 'getSystemAuditLog');
+};
+
 // ── Period Closing (Cierre Contable) ────────────────────────
 
 export const getClosings = async () => {

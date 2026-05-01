@@ -98,6 +98,7 @@ import ProfitabilityReportPage from './pages/accounting/ProfitabilityReportPage.
 import AccountingAlertsPage from './pages/accounting/AccountingAlertsPage.tsx';
 import AccountingSettingsPage from './pages/accounting/AccountingSettingsPage.tsx';
 import InventoryKardexPage from './pages/accounting/InventoryKardexPage.tsx';
+import SystemAuditLogPage from './pages/SystemAuditLogPage.tsx';
 
 /**
  * Componente que hace scroll al inicio de la página
@@ -221,6 +222,7 @@ const MainLayout = () => {
               <Route path="/accounting/alerts" element={<AccountingAlertsPage />} />
               <Route path="/accounting/settings" element={<AccountingSettingsPage />} />
               <Route path="/accounting/exogena" element={<ExogenaPage />} />
+              <Route path="/system-audit-log" element={<SystemAuditLogPage />} />
               <Route path="/manual-contabilidad" element={<ManualContablePage />} />
               <Route path="/manual-consignacion" element={<ManualConsignacionPage />} />
               <Route path="/user-manual" element={<UserManualPage />} />
