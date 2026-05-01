@@ -239,6 +239,8 @@ const ManualSaleRegularizationPage: React.FC = () => {
         let customerName = pending.customer_name || '';
         let customerEmail = '';
         let docNumber = pending.customer_nit || '';
+        let customerPhone = '';
+        let customerAddress = '';
         if (pending.customer_nit) {
             try {
                 const customer: any = await customerApi.getCustomerByDocument(pending.customer_nit);
@@ -247,6 +249,8 @@ const ManualSaleRegularizationPage: React.FC = () => {
                     customerEmail = customer.email || '';
                     docType = customer.identificationType?.code || '13';
                     docNumber = customer.document_number || docNumber;
+                    customerPhone = customer.current_phone_number || '';
+                    customerAddress = customer.shipping_address || '';
                 }
             } catch {
                 // silencioso: seguimos con los valores del metadata
@@ -260,8 +264,8 @@ const ManualSaleRegularizationPage: React.FC = () => {
             doc_number: docNumber,
             customer_name: customerName,
             customer_email: customerEmail,
-            customer_phone: (customer as any)?.current_phone_number || '',
-            customer_address: (customer as any)?.shipping_address || '',
+            customer_phone: customerPhone,
+            customer_address: customerAddress,
         }));
         setStep(2);
     };
