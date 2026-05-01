@@ -68,6 +68,7 @@ const OrderList = ({ orders }) => {
                             <th>Cliente</th>
                             <th>Fecha</th>
                             <th>Estado</th>
+                            <th>Método de Pago</th>
                             <th>Factura</th>
                             <th>Pagado</th>
                             <th>Guía</th>
@@ -118,6 +119,17 @@ const OrderList = ({ orders }) => {
                                         {order.status}
                                     </span>
                                 </td>
+                                <td>
+                                    {order.payment_method === 'BELVO_A2A' ? (
+                                        <span style={{ fontSize: '0.85rem', fontWeight: '600', color: '#1d4ed8' }}>Belvo (Open Banking)</span>
+                                    ) : order.payment_method === 'WOMPI_COD' ? (
+                                        <span style={{ fontSize: '0.85rem', fontWeight: '600', color: '#b45309' }}>Wompi (PCE)</span>
+                                    ) : order.payment_method === 'WOMPI_FULL' ? (
+                                        <span style={{ fontSize: '0.85rem', fontWeight: '600', color: '#4b5563' }}>Wompi (Online)</span>
+                                    ) : (
+                                        <span style={{ fontSize: '0.85rem', fontWeight: '600', color: '#4b5563' }}>{order.payment_method || 'N/A'}</span>
+                                    )}
+                                </td>
                                 <td>${order.total_payment.toLocaleString()}</td>
                                 <td>
                                     {order.payment_method === 'WOMPI_COD' && order.status !== 'Pagado' ? (
@@ -160,7 +172,7 @@ const OrderList = ({ orders }) => {
                         ))}
                         {filteredOrders.length === 0 && (
                             <tr>
-                                <td colSpan={8} className="text-center" style={{ padding: '2rem' }}>No hay pedidos registrados para el filtro seleccionado.</td>
+                                <td colSpan={9} className="text-center" style={{ padding: '2rem' }}>No hay pedidos registrados para el filtro seleccionado.</td>
                             </tr>
                         )}
                     </tbody>

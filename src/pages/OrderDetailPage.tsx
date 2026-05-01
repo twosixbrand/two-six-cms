@@ -325,6 +325,12 @@ const OrderDetailPage = () => {
                     <h3>Información General</h3>
                     <p><strong>Fecha:</strong> {formatDateTime(order.order_date)}</p>
                     <p><strong>Total:</strong> ${order.total_payment.toLocaleString()}</p>
+                    <p><strong>Método de Pago:</strong> {
+                        order.payment_method === 'BELVO_A2A' ? 'Belvo (Open Banking)' :
+                        order.payment_method === 'WOMPI_COD' ? 'Wompi (PCE)' :
+                        order.payment_method === 'WOMPI_FULL' ? 'Wompi (Online)' :
+                        (order.payment_method || 'N/A')
+                    }</p>
                     <p><strong>Pagado:</strong> {order.is_paid ? 'Sí' : 'No'}</p>
                     {order.payment_method === 'WOMPI_COD' && (
                         <div style={{ marginTop: '10px', background: 'rgba(245, 158, 11, 0.1)', padding: '10px', borderRadius: '4px', borderLeft: '4px solid #f0b429' }}>
