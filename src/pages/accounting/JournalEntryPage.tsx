@@ -3,6 +3,7 @@ import { FiClipboard, FiPlus, FiChevronDown, FiChevronUp, FiChevronRight, FiDown
 import { useNavigate } from 'react-router-dom';
 import PageHeader from '../../components/common/PageHeader';
 import { DataTable, Button, StatusBadge, LoadingSpinner, FormField } from '../../components/ui';
+import Swal from 'sweetalert2';
 import * as accountingApi from '../../services/accountingApi';
 import { logError } from '../../services/errorApi';
 import { formatDate } from '../../utils/dateFormat';
@@ -37,6 +38,41 @@ const JournalEntryPage = () => {
 
     const toggleExpand = (id: number) => {
         setExpandedEntry(prev => (prev === id ? null : id));
+    };
+
+    const handleReverseEntry = async (entry: any) => {
+        const result = await Swal.fire({
+            title: '¿Reversar asiento?',
+            text: `¿Estás seguro de que deseas anular el asiento ${entry.entry_number}? Esta acción creará un contra-asiento para anular los saldos y no se puede deshacer.`,
+            input: 'text',
+            inputPlaceholder: 'Motivo de la anulación (requerido)',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f87171',
+            cancelButtonColor: '#3a3a48',
+            confirmButtonText: 'Sí, reversar',
+            cancelButtonText: 'Cancelar',
+            preConfirm: (reason) => {
+                if (!reason) {
+                    Swal.showValidationMessage('Debes ingresar un motivo');
+                }
+                return reason;
+            }
+        });
+
+        if (result.isConfirmed && result.value) {
+            try {
+                setLoading(true);
+                await accountingApi.reverseJournalEntry(entry.id, result.value);
+                await Swal.fire('Reversado', 'El asiento ha sido anulado exitosamente.', 'success');
+                fetchEntries();
+            } catch (err: any) {
+                logError(err, '/accounting/journal/reverse');
+                Swal.fire('Error', err.message || 'No se pudo reversar el asiento', 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
     };
 
     const formatCurrency = (val: number) =>
@@ -225,6 +261,14 @@ const JournalEntryPage = () => {
                                                         </div>
                                                     );
                                                 })()}
+                                                
+                                                {entry.status === 'POSTED' && (
+                                                    <div style={{ marginTop: 12, display: 'flex', justifyContent: 'flex-end' }}>
+                                                        <Button variant="ghost" onClick={() => handleReverseEntry(entry)} style={{ color: '#f87171' }}>
+                                                            Anular Asiento (Reversar)
+                                                        </Button>
+                                                    </div>
+                                                )}
                                             </td>
                                         </tr>
                                     )}
