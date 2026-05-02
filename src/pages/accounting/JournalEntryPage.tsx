@@ -262,7 +262,7 @@ const JournalEntryPage = () => {
                                                     );
                                                 })()}
                                                 
-                                                {entry.status === 'POSTED' && (
+                                                {entry.status === 'POSTED' && entry.source_type !== 'REVERSAL' && !entries.some((e: any) => e.source_type === 'REVERSAL' && e.source_id === entry.id) && (
                                                     <div style={{ marginTop: 12, display: 'flex', justifyContent: 'flex-end' }}>
                                                         <Button variant="ghost" onClick={() => handleReverseEntry(entry)} style={{ color: '#f87171' }}>
                                                             Anular Asiento (Reversar)
