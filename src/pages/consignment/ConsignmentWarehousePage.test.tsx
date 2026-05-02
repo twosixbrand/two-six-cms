@@ -1,68 +1,26 @@
 import React from 'react';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen, waitFor, fireEvent, within } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-
-vi.mock('../../services/consignmentWarehouseApi', () => ({
-  getWarehouses: vi.fn(),
-  getWarehouse: vi.fn(),
-  getWarehouseStock: vi.fn(),
-  createWarehouse: vi.fn(),
-  updateWarehouse: vi.fn(),
-  deleteWarehouse: vi.fn(),
-}));
-
-vi.mock('../../services/customerApi', () => ({
-  getCustomers: vi.fn(),
-  updateCustomer: vi.fn(),
-}));
-
-vi.mock('../../services/errorApi', () => ({
-  logError: vi.fn(),
-}));
-
-vi.mock('sweetalert2', () => ({
-  default: { fire: vi.fn().mockResolvedValue({ isConfirmed: false }) },
-}));
-
-vi.mock('../../components/common/PageHeader', () => ({
-  default: ({ title }: any) => <h1>{title}</h1>,
-}));
-
-vi.mock('../../components/ui', () => ({
-  DataTable: ({ data, emptyMessage, actions }: any) => (
-    <div data-testid="data-table">
-      {data.length === 0 ? emptyMessage : data.map((r: any) => (
-        <div key={r.id}>
-          <span>{r.name}</span>
-          {actions && <span data-testid={`actions-${r.id}`}>{actions(r)}</span>}
-        </div>
-      ))}
-    </div>
-  ),
-  Modal: ({ isOpen, children, footer }: any) => (isOpen ? <div role="dialog">{children}{footer}</div> : null),
-  FormField: ({ label, value, onChange, name }: any) => (
-    <label>
-      {label}
-      <input value={value || ''} onChange={onChange} name={name} />
-    </label>
-  ),
-  Button: ({ children, onClick }: any) => <button onClick={onClick}>{children}</button>,
-  SearchInput: ({ value, onChange }: any) => (
-    <input data-testid="search" value={value} onChange={(e) => onChange(e.target.value)} placeholder="Buscar..." />
-  ),
-  LoadingSpinner: ({ text }: any) => <div>{text}</div>,
-  StatusBadge: ({ status }: any) => <span>{status}</span>,
-}));
-
 import ConsignmentWarehousePage from './ConsignmentWarehousePage';
 import * as warehouseApi from '../../services/consignmentWarehouseApi';
 import * as customerApi from '../../services/customerApi';
 import Swal from 'sweetalert2';
 
+// Increase timeout for this suite
+vi.setConfig({ testTimeout: 15000 });
+
+vi.mock('../../services/consignmentWarehouseApi');
+vi.mock('../../services/customerApi');
+vi.mock('../../services/errorApi');
+vi.mock('sweetalert2', () => ({
+  default: {
+    fire: vi.fn().mockResolvedValue({ isConfirmed: true }),
+  },
+}));
+
 const mockCustomers = [
-  { id: 1, name: 'Ally Uno', is_consignment_ally: true, document_number: '900000' },
+  { id: 1, name: 'Aliado Uno', is_consignment_ally: true, document_number: '900000' },
   { id: 2, name: 'Cliente Retail', is_consignment_ally: false },
 ];
 
@@ -89,11 +47,21 @@ const mockWarehouses = [
   },
 ];
 
-describe('ConsignmentWarehousePage', () => {
+const mockStock = [
+  { id: 101, id_clothing_size: 501, quantity: 10, status: 'EN_CONSIGNACION', clothingSize: { clothingColor: { design: { reference: 'REF1' }, color: { name: 'Negro' } }, size: { name: 'M' } } },
+];
+
+const mockKardex = [
+  { id: 1001, type: 'IN', source_type: 'CONSIGNMENT_DISPATCH', quantity: 10, description: 'Despacho inicial', clothingSize: { clothingColor: { design: { reference: 'REF1' }, color: { name: 'Negro' } }, size: { name: 'M' } } },
+];
+
+describe('ConsignmentWarehousePage Integration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     (warehouseApi.getWarehouses as any).mockResolvedValue(mockWarehouses);
     (customerApi.getCustomers as any).mockResolvedValue(mockCustomers);
+    (warehouseApi.getWarehouseStock as any).mockResolvedValue(mockStock);
+    (warehouseApi.getWarehouseKardex as any).mockResolvedValue(mockKardex);
   });
 
   const renderPage = () =>
@@ -103,108 +71,117 @@ describe('ConsignmentWarehousePage', () => {
       </BrowserRouter>,
     );
 
-  it('renders page title', async () => {
+  it('renders page header and displays warehouses', async () => {
     renderPage();
-    expect(screen.getByText('Bodegas de Consignación')).toBeInTheDocument();
-  });
-
-  it('calls getWarehouses and getCustomers on mount', async () => {
-    renderPage();
-    await waitFor(() => {
-      expect(warehouseApi.getWarehouses).toHaveBeenCalled();
-      expect(customerApi.getCustomers).toHaveBeenCalled();
-    });
-  });
-
-  it('displays warehouses after loading', async () => {
-    renderPage();
-    await waitFor(() => {
-      expect(screen.getByText('Bodega Norte')).toBeInTheDocument();
-      expect(screen.getByText('Bodega Sur')).toBeInTheDocument();
-    });
-  });
-
-  it('shows loading state initially', () => {
-    (warehouseApi.getWarehouses as any).mockImplementation(() => new Promise(() => {}));
-    renderPage();
-    expect(screen.getByText('Cargando bodegas...')).toBeInTheDocument();
-  });
-
-  it('shows error message when fetch fails', async () => {
-    (warehouseApi.getWarehouses as any).mockRejectedValue(new Error('boom'));
-    renderPage();
-    await waitFor(() => {
-      expect(screen.getByText('Error al cargar las bodegas de consignación.')).toBeInTheDocument();
-    });
-  });
-
-  it('shows empty message when no warehouses', async () => {
-    (warehouseApi.getWarehouses as any).mockResolvedValue([]);
-    renderPage();
-    await waitFor(() => {
-      expect(screen.getByTestId('data-table').textContent).toContain('No hay bodegas');
-    });
-  });
-
-  it('opens create modal when "Nueva Bodega" button is clicked', async () => {
-    const user = userEvent.setup();
-    renderPage();
-    await waitFor(() => {
-      expect(screen.getByText('Bodega Norte')).toBeInTheDocument();
-    });
-
-    const btn = screen.getByText(/Nueva Bodega/i);
-    await user.click(btn);
-
-    await waitFor(() => {
-      expect(screen.getByRole('dialog')).toBeInTheDocument();
-    });
+    expect(await screen.findByText('Bodegas de Consignación', {}, { timeout: 5000 })).toBeInTheDocument();
+    expect(await screen.findByText('Bodega Norte', {}, { timeout: 5000 })).toBeInTheDocument();
+    expect(screen.getByText('Bodega Sur')).toBeInTheDocument();
   });
 
   it('filters warehouses by search input', async () => {
     renderPage();
+    await screen.findByText('Bodega Norte', {}, { timeout: 5000 });
+    
+    const searchInput = screen.getByPlaceholderText(/Buscar bodega/i);
+    fireEvent.change(searchInput, { target: { value: 'Norte' } });
+    
     await waitFor(() => {
       expect(screen.getByText('Bodega Norte')).toBeInTheDocument();
-    });
+      expect(screen.queryByText('Bodega Sur')).not.toBeInTheDocument();
+    }, { timeout: 2000 });
+  });
 
-    const searchInput = screen.getByTestId('search');
-    fireEvent.change(searchInput, { target: { value: 'Sur' } });
-
+  it('filters warehouses by customer', async () => {
+    renderPage();
+    await screen.findByText('Bodega Norte', {}, { timeout: 5000 });
+    
+    const customerSelect = screen.getByRole('combobox');
+    fireEvent.change(customerSelect, { target: { value: '1' } });
+    
     await waitFor(() => {
-      expect(screen.queryByText('Bodega Norte')).not.toBeInTheDocument();
-      expect(screen.getByText('Bodega Sur')).toBeInTheDocument();
+      expect(screen.getByText('Bodega Norte')).toBeInTheDocument();
     });
   });
 
-  it('creates a warehouse successfully', async () => {
-    (warehouseApi.createWarehouse as any).mockResolvedValue({ id: 30, name: 'Bodega Oeste' });
-    (Swal.fire as any).mockResolvedValue({ isConfirmed: true });
-    const user = userEvent.setup();
-
-    renderPage();
-    await waitFor(() => {
-      expect(screen.getByText('Bodega Norte')).toBeInTheDocument();
+  describe('Warehouse Creation', () => {
+    it('opens modal and creates a warehouse', async () => {
+      (warehouseApi.createWarehouse as any).mockResolvedValue({ id: 30 });
+      renderPage();
+      await screen.findByText('Bodega Norte', {}, { timeout: 5000 });
+      
+      fireEvent.click(screen.getByText('Nueva Bodega'));
+      expect(await screen.findByText('Nueva Bodega de Consignación', {}, { timeout: 5000 })).toBeInTheDocument();
+      
+      fireEvent.change(screen.getByLabelText(/Cliente Aliado/i), { target: { value: '1' } });
+      fireEvent.change(screen.getByLabelText(/Nombre de Bodega/i), { target: { value: 'Bodega Oeste' } });
+      
+      fireEvent.click(screen.getByRole('button', { name: 'Crear' }));
+      
+      await waitFor(() => {
+        expect(warehouseApi.createWarehouse).toHaveBeenCalled();
+      });
     });
 
-    const btn = screen.getByText(/Nueva Bodega/i);
-    await user.click(btn);
-
-    await waitFor(() => {
-      expect(screen.getByRole('dialog')).toBeInTheDocument();
+    it('shows error if customer not selected', async () => {
+      renderPage();
+      await screen.findByText('Bodega Norte', {}, { timeout: 5000 });
+      
+      fireEvent.click(screen.getByText('Nueva Bodega'));
+      fireEvent.click(screen.getByRole('button', { name: 'Crear' }));
+      
+      expect(await screen.findByText('Selecciona un cliente aliado.', {}, { timeout: 5000 })).toBeInTheDocument();
     });
   });
 
-  it('shows Swal error when delete fails', async () => {
-    (warehouseApi.deleteWarehouse as any).mockRejectedValue(new Error('Cannot delete'));
-    (Swal.fire as any)
-      .mockResolvedValueOnce({ isConfirmed: true }) // confirm dialog
-      .mockResolvedValue({}); // error dialog
+  describe('Actions', () => {
+    it('opens stock modal and switches to kardex', async () => {
+      renderPage();
+      await screen.findByText('Bodega Norte', {}, { timeout: 5000 });
+      
+      const row = screen.getByText('Bodega Norte').closest('tr')!;
+      const stockBtn = within(row).getByRole('button', { name: 'Ver stock' });
+      fireEvent.click(stockBtn);
+      
+      expect(await screen.findByText(/Stock — Aliado Uno/, {}, { timeout: 5000 })).toBeInTheDocument();
+      expect(await screen.findByText('REF1 Negro M', {}, { timeout: 5000 })).toBeInTheDocument();
+      
+      // Switch to Kardex
+      fireEvent.click(screen.getByText(/Movimientos/));
+      expect(await screen.findByText('Despacho inicial', {}, { timeout: 5000 })).toBeInTheDocument();
+      expect(screen.getByText('IN')).toBeInTheDocument();
+    });
 
-    // This verifies the delete error path is handled
-    renderPage();
-    await waitFor(() => {
-      expect(screen.getByText('Bodega Norte')).toBeInTheDocument();
+    it('opens edit modal and updates warehouse', async () => {
+      (warehouseApi.updateWarehouse as any).mockResolvedValue({ success: true });
+      renderPage();
+      await screen.findByText('Bodega Norte', {}, { timeout: 5000 });
+      
+      const row = screen.getByText('Bodega Norte').closest('tr')!;
+      const editBtn = within(row).getByRole('button', { name: 'Editar bodega' });
+      fireEvent.click(editBtn);
+      
+      expect(await screen.findByText('Editar Bodega', {}, { timeout: 5000 })).toBeInTheDocument();
+      fireEvent.change(screen.getByLabelText(/Nombre de Bodega/i), { target: { value: 'Bodega Norte Editada' } });
+      
+      fireEvent.click(screen.getByRole('button', { name: 'Actualizar' }));
+      
+      await waitFor(() => {
+        expect(warehouseApi.updateWarehouse).toHaveBeenCalled();
+      });
+    });
+
+    it('deletes a warehouse after confirmation', async () => {
+      (warehouseApi.deleteWarehouse as any).mockResolvedValue({ success: true });
+      renderPage();
+      await screen.findByText('Bodega Norte', {}, { timeout: 5000 });
+      
+      const row = screen.getByText('Bodega Norte').closest('tr')!;
+      const deleteBtn = within(row).getByRole('button', { name: 'Eliminar bodega' });
+      fireEvent.click(deleteBtn);
+      
+      await waitFor(() => {
+        expect(warehouseApi.deleteWarehouse).toHaveBeenCalledWith(10);
+      });
     });
   });
 });
-

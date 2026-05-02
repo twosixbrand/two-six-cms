@@ -308,7 +308,7 @@ const ClothingColorPage = () => {
       {error && <p className="error-message">{error}</p>}
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-        <SearchInput value={search} onChange={setSearch} placeholder="Buscar por referencia, prenda o color..." />
+        <SearchInput id="clothing-color-search" value={search} onChange={setSearch} placeholder="Buscar por referencia, prenda o color..." />
         <Button variant="primary" icon={<FiPlus />} onClick={openCreateModal}>Crear Versiones</Button>
       </div>
 
@@ -321,8 +321,8 @@ const ClothingColorPage = () => {
           emptyMessage="No hay colores de prendas registrados"
           actions={(row) => (
             <>
-              <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} />
-              <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} />
+              <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} aria-label={`Editar version ${row.id}`} />
+              <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} aria-label={`Eliminar version ${row.id}`} />
             </>
           )}
         />
@@ -499,8 +499,8 @@ const ClothingColorPage = () => {
                         transition: 'all 0.2s ease',
                       }}
                     >
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 600 }}>
-                        <input type="checkbox" checked={isSelected} onChange={() => handleSizeToggle(size.id)} />
+                      <label htmlFor={`size-${size.id}`} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 600 }}>
+                        <input id={`size-${size.id}`} type="checkbox" checked={isSelected} onChange={() => handleSizeToggle(size.id)} />
                         {size.name}
                       </label>
                       {isSelected && (

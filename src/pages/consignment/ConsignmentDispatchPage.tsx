@@ -479,12 +479,12 @@ const ConsignmentDispatchPage = () => {
           emptyMessage="No hay despachos registrados"
           actions={(row: Dispatch) => (
             <>
-              <Button variant="ghost" size="sm" icon={<FiEye />} onClick={() => openDetail(row)} />
+              <Button variant="ghost" size="sm" icon={<FiEye />} onClick={() => openDetail(row)} aria-label="Ver detalle" />
               {row.status === 'PENDIENTE' && (
                 <>
-                  <Button variant="primary" size="sm" icon={<FiSend />} onClick={() => handleSend(row)} />
-                  <Button variant="ghost" size="sm" icon={<FiX />} onClick={() => handleCancel(row)} />
-                  <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} />
+                  <Button variant="primary" size="sm" icon={<FiSend />} onClick={() => handleSend(row)} aria-label="Enviar despacho" />
+                  <Button variant="ghost" size="sm" icon={<FiX />} onClick={() => handleCancel(row)} aria-label="Cancelar despacho" />
+                  <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} aria-label="Eliminar despacho" />
                 </>
               )}
             </>
@@ -497,10 +497,11 @@ const ConsignmentDispatchPage = () => {
         <form onSubmit={handleCreateSubmit}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.25rem', fontWeight: 600, color: '#f1f1f3' }}>
+              <label htmlFor="id_warehouse" style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.25rem', fontWeight: 600, color: '#f1f1f3' }}>
                 Bodega destino *
               </label>
               <select
+                id="id_warehouse"
                 value={createForm.id_warehouse}
                 onChange={(e) => setCreateForm((p) => ({ ...p, id_warehouse: e.target.value, items: [] }))}
                 required
@@ -583,7 +584,7 @@ const ConsignmentDispatchPage = () => {
                     placeholder="Cant."
                     style={{ padding: '0.45rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: overMax ? '#f87171' : '#2a2a35', background: '#12121a', color: '#f1f1f3', textAlign: 'right', fontSize: '0.85rem' }}
                   />
-                  <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => removeItemRow(idx)} />
+                  <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => removeItemRow(idx)} aria-label="Quitar ítem" />
                 </div>
                 );
               })}

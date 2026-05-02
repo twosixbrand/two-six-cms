@@ -166,10 +166,10 @@ const OrderPage = () => {
       {error && <p className="error-message">{error}</p>}
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-        <SearchInput value={search} onChange={setSearch} placeholder="Buscar por referencia, cliente o estado..." />
+        <SearchInput id="order-search" value={search} onChange={setSearch} placeholder="Buscar por referencia, cliente o estado..." />
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           {FILTER_TABS.map((tab) => (
-            <button key={tab.key} type="button" style={tabStyle(filterTab === tab.key)} onClick={() => setFilterTab(tab.key)}>
+            <button key={tab.key} type="button" style={tabStyle(filterTab === tab.key)} onClick={() => setFilterTab(tab.key)} aria-label={`Filtrar por ${tab.label}`}>
               {tab.label}
             </button>
           ))}
@@ -191,10 +191,11 @@ const OrderPage = () => {
                 icon={<FiTruck />}
                 onClick={() => handleOpenGuide(row.id)}
                 disabled={!canGenerateGuide(row.status) || row.delivery_method === 'PICKUP'}
+                aria-label={`Gestionar guia pedido ${row.order_reference || row.id}`}
               >
                 Guia
               </Button>
-              <Button variant="info" size="sm" icon={<FiEye />} onClick={() => navigate(`/order/${row.id}`)}>
+              <Button variant="info" size="sm" icon={<FiEye />} onClick={() => navigate(`/order/${row.id}`)} aria-label={`Ver detalle pedido ${row.order_reference || row.id}`}>
                 Ver
               </Button>
             </>

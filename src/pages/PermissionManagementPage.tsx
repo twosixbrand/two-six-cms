@@ -240,6 +240,7 @@ const PermissionManagementPage = () => {
                 <button
                   key={role.id}
                   onClick={() => handleRoleSelect(role.id)}
+                  aria-label={`Seleccionar rol ${role.name}`}
                   style={{
                     ...styles.roleItem,
                     ...(selectedRoleId === role.id ? styles.roleItemActive : {}),
@@ -287,6 +288,9 @@ const PermissionManagementPage = () => {
                       <div
                         style={{ ...styles.groupHeader, borderLeftColor: color }}
                         onClick={() => toggleGroup(group.group)}
+                        aria-label={`Grupo ${group.group}`}
+                        role="button"
+                        tabIndex={0}
                       >
                         <div style={styles.groupHeaderLeft}>
                           {isExpanded ? (
@@ -311,6 +315,7 @@ const PermissionManagementPage = () => {
                             }}
                             onChange={() => toggleGroupAll(group)}
                             style={styles.checkbox}
+                            aria-label={`Seleccionar todos en ${group.group}`}
                           />
                           <span style={styles.checkboxText}>Seleccionar todos</span>
                         </label>
@@ -328,6 +333,7 @@ const PermissionManagementPage = () => {
                                 checked={selectedPermissionIds.has(permission.id)}
                                 onChange={() => togglePermission(permission.id)}
                                 style={styles.checkbox}
+                                aria-label={`Permiso ${permission.name}`}
                               />
                               <div style={styles.permissionInfo}>
                                 <span style={styles.permissionName}>{permission.name}</span>

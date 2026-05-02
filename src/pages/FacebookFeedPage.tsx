@@ -225,7 +225,7 @@ const FacebookFeedPage: React.FC = () => {
     <div className="page-container">
       <PageHeader title="Meta Commerce Manager Feed" icon={<FiFacebook color="#1877F2" />}>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <button onClick={fetchFeedData} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.45rem 0.85rem', borderRadius: 8, border: '1px solid #2a2a35', backgroundColor: '#1f1f2a', color: '#a0a0b0', fontSize: '0.78rem', cursor: 'pointer', fontFamily: 'Inter, sans-serif', transition: 'all 0.15s' }}>
+          <button onClick={fetchFeedData} aria-label="Refrescar Catálogo" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.45rem 0.85rem', borderRadius: 8, border: '1px solid #2a2a35', backgroundColor: '#1f1f2a', color: '#a0a0b0', fontSize: '0.78rem', cursor: 'pointer', fontFamily: 'Inter, sans-serif', transition: 'all 0.15s' }}>
             <FiRefreshCcw size={13} /> Refrescar
           </button>
           <a href={FACEBOOK_FEED_PRODUCTION_URL} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.45rem 0.85rem', borderRadius: 8, border: '1px solid rgba(24, 119, 242, 0.3)', backgroundColor: 'rgba(24, 119, 242, 0.08)', color: '#1877F2', fontSize: '0.78rem', cursor: 'pointer', fontFamily: 'Inter, sans-serif', textDecoration: 'none', transition: 'all 0.15s' }}>
@@ -244,7 +244,7 @@ const FacebookFeedPage: React.FC = () => {
             {FACEBOOK_FEED_PRODUCTION_URL}
           </code>
         </div>
-        <button onClick={handleCopyFeedUrl} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', padding: '0.35rem 0.65rem', borderRadius: 6, border: '1px solid #2a2a35', backgroundColor: '#1f1f2a', color: copySuccess ? '#34d399' : '#a0a0b0', fontSize: '0.72rem', cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>
+        <button onClick={handleCopyFeedUrl} aria-label="Copiar Feed URL" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', padding: '0.35rem 0.65rem', borderRadius: 6, border: '1px solid #2a2a35', backgroundColor: '#1f1f2a', color: copySuccess ? '#34d399' : '#a0a0b0', fontSize: '0.72rem', cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>
           <FiCopy size={12} /> {copySuccess ? 'Copiado!' : 'Copiar'}
         </button>
       </div>
@@ -252,12 +252,12 @@ const FacebookFeedPage: React.FC = () => {
       {loading ? <LoadingSpinner text="Cargando catálogo..." /> : (
         <>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.75rem', marginBottom: '1.5rem' }}>
-            <div style={cardStyle}><span style={{ ...statValueStyle, color: '#f1f1f3' }}>{stats.total}</span><span style={statLabelStyle}>Total Productos</span></div>
-            <div style={cardStyle}><span style={{ ...statValueStyle, color: '#34d399' }}>{stats.readyForFacebook}</span><span style={statLabelStyle}>Listos para Meta</span></div>
-            <div style={cardStyle}><span style={{ ...statValueStyle, color: '#34d399' }}>{stats.inStock}</span><span style={statLabelStyle}>En Stock</span></div>
-            <div style={cardStyle}><span style={{ ...statValueStyle, color: '#f87171' }}>{stats.outOfStock}</span><span style={statLabelStyle}>Sin Stock</span></div>
-            <div style={cardStyle}><span style={{ ...statValueStyle, color: stats.withoutImages > 0 ? '#fbbf24' : '#34d399' }}>{stats.withImages}</span><span style={statLabelStyle}>Con Imagen</span></div>
-            <div style={cardStyle}><span style={{ ...statValueStyle, color: stats.errors > 0 ? '#f87171' : '#34d399' }}>{stats.errors}</span><span style={statLabelStyle}>Errores</span></div>
+            <div style={cardStyle}><span data-testid="stat-total" style={{ ...statValueStyle, color: '#f1f1f3' }}>{stats.total}</span><span style={statLabelStyle}>Total Productos</span></div>
+            <div style={cardStyle}><span data-testid="stat-ready" style={{ ...statValueStyle, color: '#34d399' }}>{stats.readyForFacebook}</span><span style={statLabelStyle}>Listos para Meta</span></div>
+            <div style={cardStyle}><span data-testid="stat-instock" style={{ ...statValueStyle, color: '#34d399' }}>{stats.inStock}</span><span style={statLabelStyle}>En Stock</span></div>
+            <div style={cardStyle}><span data-testid="stat-outofstock" style={{ ...statValueStyle, color: '#f87171' }}>{stats.outOfStock}</span><span style={statLabelStyle}>Sin Stock</span></div>
+            <div style={cardStyle}><span data-testid="stat-images" style={{ ...statValueStyle, color: stats.withoutImages > 0 ? '#fbbf24' : '#34d399' }}>{stats.withImages}</span><span style={statLabelStyle}>Con Imagen</span></div>
+            <div style={cardStyle}><span data-testid="stat-errors" style={{ ...statValueStyle, color: stats.errors > 0 ? '#f87171' : '#34d399' }}>{stats.errors}</span><span style={statLabelStyle}>Errores</span></div>
           </div>
 
           {(stats.errors > 0 || stats.warnings > 0) && (
@@ -270,7 +270,7 @@ const FacebookFeedPage: React.FC = () => {
           )}
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-            <SearchInput value={search} onChange={setSearch} placeholder="Buscar..." />
+            <SearchInput id="feed-search" value={search} onChange={setSearch} placeholder="Buscar..." />
             <span style={{ fontSize: '0.75rem', color: '#6b6b7b' }}>{filteredProducts.length} de {products.length}</span>
           </div>
 

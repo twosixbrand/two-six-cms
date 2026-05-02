@@ -140,7 +140,7 @@ const SystemAuditLogPage = () => {
                 <div style={{ minWidth: '160px' }}>
                     <FormField label="Hasta" name="endDate" type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
                 </div>
-                <Button variant="secondary" onClick={fetchLogs}>Filtrar</Button>
+                <Button variant="secondary" onClick={fetchLogs} aria-label="Filtrar Auditoría">Filtrar</Button>
             </div>
 
             {error && <p style={{ color: '#f87171', fontSize: '13px', fontWeight: 600 }}>{error}</p>}
@@ -187,6 +187,7 @@ const SystemAuditLogPage = () => {
                                             <td style={tdStyle}>
                                                 <button
                                                     onClick={() => setExpandedRow(expandedRow === log.id ? null : log.id)}
+                                                    aria-label={expandedRow === log.id ? `Ocultar detalles log ${log.id}` : `Ver detalles log ${log.id}`}
                                                     style={{
                                                         padding: '3px 8px', fontSize: '11px', cursor: 'pointer',
                                                         background: 'transparent', border: '1px solid #2a2a35', borderRadius: '4px',

@@ -4,12 +4,14 @@ interface SearchInputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  id?: string;
 }
 
 const SearchInput: React.FC<SearchInputProps> = ({
   value,
   onChange,
   placeholder = 'Buscar...',
+  id,
 }) => {
   const [internal, setInternal] = useState(value);
   const [focused, setFocused] = useState(false);
@@ -109,6 +111,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
         </svg>
       </div>
       <input
+        id={id}
         type="text"
         value={internal}
         onChange={handleChange}

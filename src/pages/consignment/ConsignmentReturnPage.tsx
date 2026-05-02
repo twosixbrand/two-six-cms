@@ -458,9 +458,9 @@ const ConsignmentReturnPage = () => {
               <Button variant="ghost" size="sm" icon={<FiEye />} onClick={() => openDetail(row)} />
               {row.status === 'DRAFT' && (
                 <>
-                  <Button variant="primary" size="sm" icon={<FiZap />} onClick={() => handleProcess(row)} />
-                  <Button variant="ghost" size="sm" icon={<FiX />} onClick={() => handleCancel(row)} />
-                  <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} />
+                  <Button variant="primary" size="sm" icon={<FiZap />} onClick={() => handleProcess(row)} aria-label="Procesar" />
+                  <Button variant="ghost" size="sm" icon={<FiX />} onClick={() => handleCancel(row)} aria-label="Cancelar" />
+                  <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} aria-label="Eliminar" />
                 </>
               )}
               {row.credit_note_id && (
@@ -476,8 +476,9 @@ const ConsignmentReturnPage = () => {
         <form onSubmit={handleSubmit}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.25rem' }}>Tipo *</label>
+              <label htmlFor="return_type" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.25rem' }}>Tipo *</label>
               <select
+                id="return_type"
                 value={form.return_type}
                 onChange={(e) => setForm((p) => ({ ...p, return_type: e.target.value as any, items: [] }))}
                 style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
@@ -490,8 +491,9 @@ const ConsignmentReturnPage = () => {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.25rem' }}>Cliente *</label>
+                <label htmlFor="id_customer" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.25rem' }}>Cliente *</label>
                 <select
+                  id="id_customer"
                   value={form.id_customer}
                   onChange={(e) => setForm((p) => ({ ...p, id_customer: e.target.value, id_warehouse: '', id_order: '' }))}
                   required
@@ -504,8 +506,9 @@ const ConsignmentReturnPage = () => {
                 </select>
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.25rem' }}>Bodega *</label>
+                <label htmlFor="id_warehouse" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.25rem' }}>Bodega *</label>
                 <select
+                  id="id_warehouse"
                   value={form.id_warehouse}
                   onChange={(e) => setForm((p) => ({ ...p, id_warehouse: e.target.value }))}
                   required

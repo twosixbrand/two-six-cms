@@ -295,6 +295,18 @@ const OrderDetailPage = () => {
     };
 
     if (loading) return <div className="page-container"><p>Cargando pedido...</p></div>;
+    
+    if (error) return (
+        <div className="page-container">
+            <PageHeader title="Error" icon={<FiFileText />}>
+                <button className="back-btn" onClick={() => navigate('/order')}>
+                    <FaArrowLeft /> Volver
+                </button>
+            </PageHeader>
+            <p className="error-message">{error}</p>
+        </div>
+    );
+
     if (!order) return <div className="page-container"><p>Pedido no encontrado.</p></div>;
 
     return (
@@ -306,8 +318,6 @@ const OrderDetailPage = () => {
                     </button>
                 </div>
             </PageHeader>
-
-            {error && <p className="error-message">{error}</p>}
 
             <div className="details-grid">
                 {/* Información General */}
@@ -377,6 +387,7 @@ const OrderDetailPage = () => {
                                 className="action-btn"
                                 style={{ background: '#f59e0b', color: 'white', flex: '1 1 auto', padding: '10px', fontWeight: 'bold' }}
                                 onClick={handleMarkAsPreparing}
+                                aria-label="Preparar pedido"
                                 disabled={isPickupActionLoading || order.pickup_status === 'PREPARING' || order.pickup_status === 'READY' || order.pickup_status === 'COLLECTED' || order.pickup_status === 'UNCLAIMED'}
                             >
                                 {isPickupActionLoading ? '...' : 'Alistar (Preparando)'}
@@ -385,6 +396,7 @@ const OrderDetailPage = () => {
                                 className="action-btn"
                                 style={{ background: '#3b82f6', color: 'white', flex: '1 1 auto', padding: '10px', fontWeight: 'bold' }}
                                 onClick={handleMarkAsReadyForPickup}
+                                aria-label="Notificar listo para recoger"
                                 disabled={isPickupActionLoading || order.pickup_status === 'READY' || order.pickup_status === 'COLLECTED' || order.pickup_status === 'UNCLAIMED'}
                             >
                                 {isPickupActionLoading ? '...' : 'Notificar: Listo para Recoger'}
@@ -393,6 +405,7 @@ const OrderDetailPage = () => {
                                 className="action-btn save-btn"
                                 style={{ flex: '1 1 auto', padding: '10px', fontWeight: 'bold' }}
                                 onClick={handleMarkAsCollected}
+                                aria-label="Marcar como entregado"
                                 disabled={isPickupActionLoading || order.pickup_status === 'COLLECTED' || order.pickup_status === 'UNCLAIMED'}
                             >
                                 {isPickupActionLoading ? '...' : 'Marcar Entregado (Recogido)'}
@@ -401,6 +414,7 @@ const OrderDetailPage = () => {
                                 className="action-btn"
                                 style={{ background: '#ef4444', color: 'white', flex: '1 1 auto', padding: '10px', fontWeight: 'bold' }}
                                 onClick={handleMarkAsUnclaimed}
+                                aria-label="Marcar como no reclamado"
                                 disabled={isPickupActionLoading || order.pickup_status === 'COLLECTED' || order.pickup_status === 'UNCLAIMED'}
                             >
                                 {isPickupActionLoading ? '...' : 'Marcar No Reclamado'}
@@ -413,8 +427,9 @@ const OrderDetailPage = () => {
                 <div className="detail-card full-width">
                     <h3>Gestión de Estado</h3>
                     <div className="status-control">
-                        <label>Estado del Pedido:</label>
+                        <label htmlFor="order-status-select">Estado del Pedido:</label>
                         <select
+                            id="order-status-select"
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}
                             className="form-input"
@@ -464,6 +479,7 @@ const OrderDetailPage = () => {
                             <button
                                 className="action-btn"
                                 style={{ background: '#10b981', color: 'white', fontWeight: 'bold', width: '100%', padding: '10px' }}
+                                aria-label="Confirmar recaudo"
                                 onClick={() => {
                                     setStatus('Pagado');
                                     handleStatusChange('Pagado');
@@ -642,8 +658,8 @@ const OrderDetailPage = () => {
                                     <form onSubmit={handleCreateNote}>
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '10px', marginBottom: '15px' }}>
                                             <div>
-                                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '12px', fontWeight: 'bold', color: '#a0a0b0' }}>Motivo DIAN:</label>
-                                                <select className="form-input" value={noteReasonCode} onChange={(e) => setNoteReasonCode(e.target.value)} required>
+                                                <label htmlFor="note-reason-code" style={{ display: 'block', marginBottom: '5px', fontSize: '12px', fontWeight: 'bold', color: '#a0a0b0' }}>Motivo DIAN:</label>
+                                                <select id="note-reason-code" className="form-input" value={noteReasonCode} onChange={(e) => setNoteReasonCode(e.target.value)} required>
                                                     {noteType === 'CREDIT' ? (
                                                         <>
                                                             <option value="1">1 - Devolución de parte o totalidad (Devolución Real)</option>
@@ -661,8 +677,9 @@ const OrderDetailPage = () => {
                                                 </select>
                                             </div>
                                             <div>
-                                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '12px', fontWeight: 'bold', color: '#a0a0b0' }}>Descripción Justificativa:</label>
+                                                <label htmlFor="note-reason-desc" style={{ display: 'block', marginBottom: '5px', fontSize: '12px', fontWeight: 'bold', color: '#a0a0b0' }}>Descripción Justificativa:</label>
                                                 <textarea 
+                                                    id="note-reason-desc"
                                                     className="form-input" 
                                                     rows={2} 
                                                     value={noteReasonDesc} 
