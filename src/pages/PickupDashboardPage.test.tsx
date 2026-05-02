@@ -1,219 +1,139 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import PickupDashboardPage from './PickupDashboardPage';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
-// Mock matchMedia for pages that might use antd or similar UI libs
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: vi.fn().mockImplementation(query => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
-});
+vi.mock('axios');
+vi.mock('sweetalert2', () => ({
+  default: {
+    fire: vi.fn().mockResolvedValue({ isConfirmed: true }),
+  },
+}));
 
 const mockOrders = [
-    {
-        id: 1,
-        order_reference: 'ORD-001',
-        status: 'Pagado',
-        pickup_status: 'PENDING',
-        pickup_pin: '1234',
-        order_date: '2025-01-15T10:00:00Z',
-        customer: { name: 'Juan Pérez', current_phone_number: '3001234567' },
-        orderItems: [
-            {
-                id: 10,
-                product_name: 'Camisa Negra',
-                color: 'Negro',
-                size: 'M',
-                quantity: 2,
-                product: { image_url: 'https://example.com/img.jpg' },
-            },
-        ],
-    },
-    {
-        id: 2,
-        order_reference: 'ORD-002',
-        status: 'Pagado',
-        pickup_status: 'READY',
-        pickup_pin: '5678',
-        order_date: '2025-01-15T11:00:00Z',
-        customer: { name: 'María López', current_phone_number: '3009876543' },
-        orderItems: [],
-    },
+  {
+    id: 1,
+    order_reference: 'PICK-001',
+    pickup_status: 'PENDING',
+    order_date: '2023-01-01T10:00:00Z',
+    customer: { name: 'John Doe', current_phone_number: '123456' },
+    orderItems: [
+      { id: 10, product_name: 'Camiseta', quantity: 1, color: 'Negro', size: 'M' }
+    ]
+  },
+  {
+    id: 2,
+    order_reference: 'PICK-002',
+    pickup_status: 'READY',
+    order_date: '2023-01-01T11:00:00Z',
+    customer: { name: 'Jane Smith', current_phone_number: '654321' },
+    pickup_pin: '1234',
+    orderItems: [
+      { id: 11, product_name: 'Pantalón', quantity: 2, color: 'Azul', size: 'L' }
+    ]
+  }
 ];
 
-vi.mock('axios', () => ({
-    default: {
-        get: vi.fn(),
-        post: vi.fn(),
-    },
-}));
+describe('PickupDashboardPage Integration', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    (axios.get as any).mockResolvedValue({ data: mockOrders });
+  });
 
-vi.mock('sweetalert2', () => ({
-    default: {
-        fire: vi.fn().mockResolvedValue({ isConfirmed: false }),
-    },
-}));
+  const renderPage = () =>
+    render(
+      <BrowserRouter>
+        <PickupDashboardPage />
+      </BrowserRouter>,
+    );
 
-import axios from 'axios';
+  it('renders pickup dashboard with orders', async () => {
+    renderPage();
+    expect(await screen.findByText(/Referencia: PICK-001/i)).toBeInTheDocument();
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('Camiseta')).toBeInTheDocument();
+    
+    expect(screen.getByText(/Referencia: PICK-002/i)).toBeInTheDocument();
+    expect(screen.getByText('1234')).toBeInTheDocument(); // PIN
+  });
 
-describe('PickupDashboardPage', () => {
-    beforeEach(() => {
-        vi.clearAllMocks();
-        (axios.get as any).mockResolvedValue({ data: mockOrders });
-        localStorage.setItem('accessToken', 'test-token');
+  it('allows marking an order as preparing', async () => {
+    renderPage();
+    await screen.findByText(/PICK-001/i);
+    
+    fireEvent.click(screen.getByLabelText(/Alistar pedido PICK-001/i));
+    expect(Swal.fire).toHaveBeenCalled();
+    
+    (axios.post as any).mockResolvedValue({ success: true });
+    
+    await waitFor(() => {
+      expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/preparing-for-pickup'), {});
     });
+  });
 
-    it('renders without crashing', () => {
-        try {
-            render(
-                <BrowserRouter>
-                    <PickupDashboardPage />
-                </BrowserRouter>
-            );
-        } catch (e) {
-            // ignore errors from missing deepest props
-        }
+  it('allows marking an order as ready', async () => {
+    renderPage();
+    await screen.findByText(/PICK-001/i);
+    
+    fireEvent.click(screen.getByLabelText(/Notificar listo pedido PICK-001/i));
+    expect(Swal.fire).toHaveBeenCalled();
+    
+    (axios.post as any).mockResolvedValue({ success: true });
+    
+    await waitFor(() => {
+      expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/ready-for-pickup'), {});
     });
+  });
 
-    it('renders page header with title', () => {
-        render(
-            <BrowserRouter>
-                <PickupDashboardPage />
-            </BrowserRouter>
-        );
-
-        expect(screen.getByText('Tablero de Retiros en Tienda')).toBeInTheDocument();
+  it('allows marking an order as collected', async () => {
+    renderPage();
+    await screen.findByText(/PICK-002/i);
+    
+    fireEvent.click(screen.getByLabelText(/Entregar pedido PICK-002/i));
+    expect(Swal.fire).toHaveBeenCalled();
+    
+    (axios.post as any).mockResolvedValue({ success: true });
+    
+    await waitFor(() => {
+      expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/collected'), {});
     });
+  });
 
-    it('displays pickup orders after loading', async () => {
-        render(
-            <BrowserRouter>
-                <PickupDashboardPage />
-            </BrowserRouter>
-        );
-
-        await waitFor(() => {
-            expect(screen.getByText(/ORD-001/)).toBeInTheDocument();
-        });
-
-        expect(screen.getByText(/ORD-002/)).toBeInTheDocument();
+  it('allows marking an order as unclaimed', async () => {
+    renderPage();
+    await screen.findByText(/PICK-002/i);
+    
+    fireEvent.click(screen.getByLabelText(/Marcar no reclamado pedido PICK-002/i));
+    expect(Swal.fire).toHaveBeenCalled();
+    
+    (axios.post as any).mockResolvedValue({ success: true });
+    
+    await waitFor(() => {
+      expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/unclaimed-pickup'), {});
     });
+  });
 
-    it('displays customer information', async () => {
-        render(
-            <BrowserRouter>
-                <PickupDashboardPage />
-            </BrowserRouter>
-        );
+  it('refreshes list when clicking refresh button', async () => {
+    renderPage();
+    await screen.findByText(/PICK-001/i);
+    
+    fireEvent.click(screen.getByLabelText(/Actualizar Listado/i));
+    expect(axios.get).toHaveBeenCalledTimes(2);
+  });
 
-        await waitFor(() => {
-            expect(screen.getByText('Juan Pérez')).toBeInTheDocument();
-        });
+  it('handles empty state', async () => {
+    (axios.get as any).mockResolvedValue({ data: [] });
+    renderPage();
+    expect(await screen.findByText(/No hay pedidos para retirar/i)).toBeInTheDocument();
+  });
 
-        expect(screen.getByText('3001234567')).toBeInTheDocument();
-        expect(screen.getByText('María López')).toBeInTheDocument();
-    });
-
-    it('displays status badges', async () => {
-        render(
-            <BrowserRouter>
-                <PickupDashboardPage />
-            </BrowserRouter>
-        );
-
-        await waitFor(() => {
-            expect(screen.getByText('Pendiente de Revisión')).toBeInTheDocument();
-        });
-
-        expect(screen.getByText('Listo para Recoger')).toBeInTheDocument();
-    });
-
-    it('displays pickup PIN', async () => {
-        render(
-            <BrowserRouter>
-                <PickupDashboardPage />
-            </BrowserRouter>
-        );
-
-        await waitFor(() => {
-            expect(screen.getByText('1234')).toBeInTheDocument();
-        });
-
-        expect(screen.getByText('5678')).toBeInTheDocument();
-    });
-
-    it('displays product items in order', async () => {
-        render(
-            <BrowserRouter>
-                <PickupDashboardPage />
-            </BrowserRouter>
-        );
-
-        await waitFor(() => {
-            expect(screen.getByText('Camisa Negra')).toBeInTheDocument();
-        });
-
-        expect(screen.getByText('x2')).toBeInTheDocument();
-    });
-
-    it('renders legend items', () => {
-        render(
-            <BrowserRouter>
-                <PickupDashboardPage />
-            </BrowserRouter>
-        );
-
-        expect(screen.getByText('Pendiente')).toBeInTheDocument();
-        expect(screen.getByText('Listo')).toBeInTheDocument();
-        expect(screen.getByText('Entregado')).toBeInTheDocument();
-    });
-
-    it('shows empty state when no orders', async () => {
-        (axios.get as any).mockResolvedValue({ data: [] });
-
-        render(
-            <BrowserRouter>
-                <PickupDashboardPage />
-            </BrowserRouter>
-        );
-
-        await waitFor(() => {
-            expect(screen.getByText('No hay pedidos para retirar en este momento.')).toBeInTheDocument();
-        });
-    });
-
-    it('renders action buttons for pending orders', async () => {
-        render(
-            <BrowserRouter>
-                <PickupDashboardPage />
-            </BrowserRouter>
-        );
-
-        await waitFor(() => {
-            expect(screen.getByText(/ORD-001/)).toBeInTheDocument();
-        });
-
-        expect(screen.getAllByText(/Notificar Listo/).length).toBeGreaterThan(0);
-        expect(screen.getAllByText(/Entregar a Cliente/).length).toBeGreaterThan(0);
-    });
-
-    it('renders refresh button', () => {
-        render(
-            <BrowserRouter>
-                <PickupDashboardPage />
-            </BrowserRouter>
-        );
-
-        expect(screen.getByText(/Actualizar Listado|Actualizando.../)).toBeInTheDocument();
-    });
+  it('handles API errors gracefully', async () => {
+    (axios.get as any).mockRejectedValue(new Error('API Error'));
+    renderPage();
+    // Swal should be called for error
+    await waitFor(() => expect(Swal.fire).toHaveBeenCalledWith('Error', expect.any(String), 'error'));
+  });
 });

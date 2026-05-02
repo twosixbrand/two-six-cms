@@ -1,74 +1,77 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent, within } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: vi.fn().mockImplementation((query) => ({
-    matches: false, media: query, onchange: null,
-    addListener: vi.fn(), removeListener: vi.fn(),
-    addEventListener: vi.fn(), removeEventListener: vi.fn(), dispatchEvent: vi.fn(),
-  })),
-});
-
-vi.mock('../../services/consignmentDispatchApi', () => ({
-  getDispatches: vi.fn(),
-  getDispatch: vi.fn(),
-  createDispatch: vi.fn(),
-  sendDispatch: vi.fn(),
-  cancelDispatch: vi.fn(),
-  deleteDispatch: vi.fn(),
-}));
-vi.mock('../../services/consignmentWarehouseApi', () => ({
-  getWarehouses: vi.fn(),
-}));
-vi.mock('../../services/productApi', () => ({
-  getProducts: vi.fn(),
-}));
-vi.mock('../../services/errorApi', () => ({ logError: vi.fn() }));
-vi.mock('sweetalert2', () => ({
-  default: { fire: vi.fn().mockResolvedValue({ isConfirmed: false }) },
-}));
-vi.mock('../../components/common/PageHeader', () => ({
-  default: ({ title }: any) => <h1>{title}</h1>,
-}));
-vi.mock('../../components/ui', () => ({
-  DataTable: ({ data, emptyMessage }: any) => (
-    <div data-testid="data-table">
-      {data.length === 0 ? emptyMessage : data.map((r: any) => <div key={r.id}>{r.dispatch_number}</div>)}
-    </div>
-  ),
-  Modal: ({ isOpen, children }: any) => (isOpen ? <div role="dialog">{children}</div> : null),
-  FormField: ({ label }: any) => <label>{label}</label>,
-  Button: ({ children, onClick }: any) => <button onClick={onClick}>{children}</button>,
-  SearchInput: () => <input />,
-  LoadingSpinner: ({ text }: any) => <div>{text}</div>,
-}));
-
 import ConsignmentDispatchPage from './ConsignmentDispatchPage';
 import * as dispatchApi from '../../services/consignmentDispatchApi';
-import * as whApi from '../../services/consignmentWarehouseApi';
+import * as warehouseApi from '../../services/consignmentWarehouseApi';
+import * as priceApi from '../../services/consignmentPriceApi';
 import * as productApi from '../../services/productApi';
+import Swal from 'sweetalert2';
 
-describe('ConsignmentDispatchPage', () => {
+// Use real UI components for integration testing
+vi.mock('../../services/consignmentDispatchApi');
+vi.mock('../../services/consignmentWarehouseApi');
+vi.mock('../../services/consignmentPriceApi');
+vi.mock('../../services/productApi');
+vi.mock('../../services/errorApi');
+vi.mock('sweetalert2', () => ({
+  default: {
+    fire: vi.fn().mockResolvedValue({ isConfirmed: true }),
+  },
+}));
+
+const mockDispatches = [
+  {
+    id: 1,
+    dispatch_number: 'DSP-000001',
+    status: 'PENDIENTE',
+    id_warehouse: 10,
+    qr_token: 'tok-1',
+    warehouse: { id: 10, name: 'Bodega Norte', customer: { id: 1, name: 'Cliente A' } },
+    items: [{ id: 101, id_clothing_size: 501, quantity: 5 }],
+  },
+  {
+    id: 2,
+    dispatch_number: 'DSP-000002',
+    status: 'EN_TRANSITO',
+    id_warehouse: 11,
+    qr_token: 'tok-2',
+    warehouse: { id: 11, name: 'Bodega Sur', customer: { id: 2, name: 'Cliente B' } },
+    items: [{ id: 102, id_clothing_size: 502, quantity: 10 }],
+  },
+];
+
+const mockWarehouses = [
+  { id: 10, name: 'Bodega Norte', id_customer: 1, is_active: true, customer: { id: 1, name: 'Cliente A' } },
+];
+
+const mockProducts = [
+  {
+    id: 501,
+    id_clothing_size: 501,
+    reference: 'REF-001',
+    color_name: 'Negro',
+    size_name: 'M',
+    quantity_available: 100,
+    clothingSize: { id: 501, quantity_available: 100, clothingColor: { design: { reference: 'REF-001' }, color: { name: 'Negro' } }, size: { name: 'M' } },
+  },
+];
+
+const mockPrices = [
+  { id: 1, id_customer: 1, id_product: 501, price: 85000 },
+];
+
+describe('ConsignmentDispatchPage Integration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (dispatchApi.getDispatches as any).mockResolvedValue([
-      {
-        id: 1,
-        dispatch_number: 'DSP-000001',
-        status: 'PENDIENTE',
-        id_warehouse: 10,
-        qr_token: 'tok-1',
-        warehouse: { id: 10, name: 'Bodega Norte', customer: { id: 1, name: 'Ally' } },
-        items: [{ id: 1, quantity: 2 }],
-      },
-    ]);
-    (whApi.getWarehouses as any).mockResolvedValue([
-      { id: 10, name: 'Bodega Norte', id_customer: 1, is_active: true, customer: { id: 1, name: 'Ally' } },
-    ]);
-    (productApi.getProducts as any).mockResolvedValue([]);
+    (dispatchApi.getDispatches as any).mockResolvedValue(mockDispatches);
+    (warehouseApi.getWarehouses as any).mockResolvedValue(mockWarehouses);
+    (productApi.getProducts as any).mockResolvedValue(mockProducts);
+    (priceApi.getConsignmentPrices as any).mockResolvedValue(mockPrices);
+    (dispatchApi.getDispatch as any).mockImplementation((id: number) => 
+      Promise.resolve(mockDispatches.find(d => d.id === id))
+    );
   });
 
   const renderPage = () =>
@@ -78,38 +81,75 @@ describe('ConsignmentDispatchPage', () => {
       </BrowserRouter>,
     );
 
-  it('renders title', () => {
+  it('renders page header', async () => {
     renderPage();
-    expect(screen.getByText('Despachos de Consignación')).toBeInTheDocument();
+    expect(await screen.findByText('Despachos de Consignación')).toBeInTheDocument();
   });
 
-  it('loads dispatches, warehouses and products on mount', async () => {
+  it('filters dispatches', async () => {
     renderPage();
-    await waitFor(() => {
-      expect(dispatchApi.getDispatches).toHaveBeenCalled();
-      expect(whApi.getWarehouses).toHaveBeenCalled();
-      expect(productApi.getProducts).toHaveBeenCalled();
+    await waitFor(() => expect(screen.getByText('DSP-000001')).toBeInTheDocument());
+    fireEvent.change(screen.getByPlaceholderText(/Buscar por número/i), { target: { value: 'DSP-000002' } });
+    await waitFor(() => expect(screen.queryByText('DSP-000001')).not.toBeInTheDocument());
+    expect(screen.getByText('DSP-000002')).toBeInTheDocument();
+  });
+
+  describe('Creation Flow', () => {
+    it('opens create modal', async () => {
+      renderPage();
+      await waitFor(() => expect(screen.queryByText('Cargando despachos...')).not.toBeInTheDocument());
+      fireEvent.click(screen.getByText('Nuevo Despacho'));
+      expect(await screen.findByText('Nuevo Despacho de Consignación')).toBeInTheDocument();
+    });
+
+    it('creates a dispatch', async () => {
+      (dispatchApi.createDispatch as any).mockResolvedValue({ id: 99 });
+      renderPage();
+      await waitFor(() => expect(screen.queryByText('Cargando despachos...')).not.toBeInTheDocument());
+      fireEvent.click(screen.getByText('Nuevo Despacho'));
+      
+      fireEvent.change(screen.getByLabelText(/Bodega destino/i), { target: { value: '10' } });
+      fireEvent.click(screen.getByText('Agregar ítem'));
+      
+      const productSelect = await screen.findByDisplayValue('Selecciona producto...');
+      fireEvent.change(productSelect, { target: { value: '501' } });
+      
+      fireEvent.change(screen.getByPlaceholderText('Cant.'), { target: { value: '5' } });
+      fireEvent.click(screen.getByText('Crear borrador'));
+      
+      await waitFor(() => {
+        expect(dispatchApi.createDispatch).toHaveBeenCalled();
+      });
     });
   });
 
-  it('displays dispatch rows after loading', async () => {
-    renderPage();
-    await waitFor(() => {
-      expect(screen.getByText('DSP-000001')).toBeInTheDocument();
+  describe('Actions', () => {
+    it('opens detail modal', async () => {
+      renderPage();
+      await waitFor(() => expect(screen.getByText('DSP-000001')).toBeInTheDocument());
+      
+      const row = screen.getByText('DSP-000001').closest('tr')!;
+      const viewBtn = within(row).getAllByRole('button')[0];
+      fireEvent.click(viewBtn);
+      
+      await waitFor(() => {
+        expect(dispatchApi.getDispatch).toHaveBeenCalledWith(1);
+        expect(screen.getByText('Despacho DSP-000001')).toBeInTheDocument();
+      });
     });
-  });
 
-  it('shows loading state initially', () => {
-    (dispatchApi.getDispatches as any).mockImplementation(() => new Promise(() => {}));
-    renderPage();
-    expect(screen.getByText('Cargando despachos...')).toBeInTheDocument();
-  });
-
-  it('shows error message on fetch failure', async () => {
-    (dispatchApi.getDispatches as any).mockRejectedValue(new Error('boom'));
-    renderPage();
-    await waitFor(() => {
-      expect(screen.getByText('Error al cargar los despachos.')).toBeInTheDocument();
+    it('calls sendDispatch', async () => {
+      (dispatchApi.preSendDispatch as any).mockResolvedValue({ has_changes: false });
+      renderPage();
+      await waitFor(() => expect(screen.getByText('DSP-000001')).toBeInTheDocument());
+      
+      const row = screen.getByText('DSP-000001').closest('tr')!;
+      const sendBtn = within(row).getAllByRole('button')[1];
+      fireEvent.click(sendBtn);
+      
+      await waitFor(() => {
+        expect(dispatchApi.sendDispatch).toHaveBeenCalledWith(1);
+      });
     });
   });
 });

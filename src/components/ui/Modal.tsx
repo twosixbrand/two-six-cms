@@ -90,6 +90,9 @@ const Modal: React.FC<ModalProps> = ({
       >
         <div
           ref={contentRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="ts-modal-title"
           style={{
             width: isMobile ? '95%' : '100%',
             maxWidth: maxW,
@@ -116,6 +119,7 @@ const Modal: React.FC<ModalProps> = ({
             }}
           >
             <h2
+              id="ts-modal-title"
               style={{
                 margin: 0,
                 fontSize: '1.05rem',

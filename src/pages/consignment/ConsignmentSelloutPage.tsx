@@ -199,10 +199,11 @@ const ConsignmentSelloutPage = () => {
         <h3 style={{ marginTop: 0 }}>1. Cliente y bodega</h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.25rem' }}>
+            <label htmlFor="id_customer" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.25rem' }}>
               Cliente aliado *
             </label>
             <select
+              id="id_customer"
               value={idCustomer}
               onChange={(e) => {
                 setIdCustomer(e.target.value);
@@ -219,10 +220,11 @@ const ConsignmentSelloutPage = () => {
             </select>
           </div>
           <div>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.25rem' }}>
+            <label htmlFor="id_warehouse" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.25rem' }}>
               Bodega *
             </label>
             <select
+              id="id_warehouse"
               value={idWarehouse}
               onChange={(e) => {
                 setIdWarehouse(e.target.value);

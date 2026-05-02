@@ -189,12 +189,12 @@ const WithholdingCertificatePage = () => {
 
     return (
         <div className="page-container">
-            <PageHeader title="Certificados de Retenci\u00f3n" icon={<FiAward />} />
+            <PageHeader title="Certificados de Retención" icon={<FiAward />} />
 
             <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
                 <div>
-                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>A\u00f1o</label>
-                    <select value={year} onChange={e => setYear(e.target.value)}
+                    <label htmlFor="year-select" style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Año</label>
+                    <select id="year-select" value={year} onChange={e => setYear(e.target.value)}
                         style={{ padding: '8px', borderRadius: '6px', backgroundColor: '#1a1a24', color: '#f1f1f3', border: '1px solid #2a2a35', minWidth: '100px' }}>
                         {yearOptions.map(y => (
                             <option key={y} value={String(y)}>{y}</option>
@@ -202,8 +202,8 @@ const WithholdingCertificatePage = () => {
                     </select>
                 </div>
                 <div>
-                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Proveedor</label>
-                    <select value={provider} onChange={e => setProvider(e.target.value)}
+                    <label htmlFor="provider-select" style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Proveedor</label>
+                    <select id="provider-select" value={provider} onChange={e => setProvider(e.target.value)}
                         style={{ padding: '8px', borderRadius: '6px', backgroundColor: '#1a1a24', color: '#f1f1f3', border: '1px solid #2a2a35', minWidth: '180px' }}>
                         <option value="">Todos</option>
                         {providers.map((p: any) => (
@@ -212,8 +212,8 @@ const WithholdingCertificatePage = () => {
                     </select>
                 </div>
                 <div>
-                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Concepto</label>
-                    <select value={concept} onChange={e => setConcept(e.target.value)}
+                    <label htmlFor="concept-select" style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Concepto</label>
+                    <select id="concept-select" value={concept} onChange={e => setConcept(e.target.value)}
                         style={{ padding: '8px', borderRadius: '6px', backgroundColor: '#1a1a24', color: '#f1f1f3', border: '1px solid #2a2a35', minWidth: '140px' }}>
                         <option value="">Todos</option>
                         <option value="RETEFUENTE">Retefuente</option>
@@ -254,6 +254,7 @@ const WithholdingCertificatePage = () => {
                             size="sm"
                             icon={<FiDownload />}
                             onClick={() => handleDownloadPdf(cert.id, cert.certificate_number)}
+                            aria-label={`Descargar ${cert.certificate_number}`}
                         >
                             {''}
                         </Button>
@@ -262,6 +263,7 @@ const WithholdingCertificatePage = () => {
                             size="sm"
                             icon={<FiTrash2 />}
                             onClick={() => handleDelete(cert.id)}
+                            aria-label={`Eliminar ${cert.certificate_number}`}
                         >
                             {''}
                         </Button>

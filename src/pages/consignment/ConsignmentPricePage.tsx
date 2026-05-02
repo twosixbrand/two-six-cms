@@ -400,10 +400,11 @@ const ConsignmentPricePage = () => {
             {!editing && (
               <>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.25rem', fontWeight: 600 }}>
+                  <label htmlFor="id_customer" style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.25rem', fontWeight: 600 }}>
                     Cliente Aliado *
                   </label>
                   <select
+                    id="id_customer"
                     name="id_customer"
                     value={form.id_customer}
                     onChange={handleChange}

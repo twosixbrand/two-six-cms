@@ -1,82 +1,110 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent, within } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: vi.fn().mockImplementation((query) => ({
-    matches: false, media: query, onchange: null,
-    addListener: vi.fn(), removeListener: vi.fn(),
-    addEventListener: vi.fn(), removeEventListener: vi.fn(), dispatchEvent: vi.fn(),
-  })),
-});
-
-vi.mock('../../services/consignmentSellReportApi', () => ({
-  getSellReports: vi.fn(),
-  getSellReport: vi.fn(),
-  approveSellReport: vi.fn(),
-  rejectSellReport: vi.fn(),
-}));
-vi.mock('../../services/consignmentSelloutApi', () => ({
-  generateDianForOrder: vi.fn(),
-}));
-vi.mock('../../services/errorApi', () => ({ logError: vi.fn() }));
-vi.mock('sweetalert2', () => ({
-  default: { fire: vi.fn().mockResolvedValue({ isConfirmed: false }) },
-}));
-vi.mock('../../components/common/PageHeader', () => ({
-  default: ({ title }: any) => <h1>{title}</h1>,
-}));
-vi.mock('../../components/ui', () => ({
-  DataTable: ({ data, emptyMessage }: any) => (
-    <div data-testid="data-table">
-      {data.length === 0 ? emptyMessage : data.map((r: any) => <div key={r.id}>{r.customer?.name || 'rpt-' + r.id}</div>)}
-    </div>
-  ),
-  Modal: ({ isOpen, children }: any) => (isOpen ? <div role="dialog">{children}</div> : null),
-  Button: ({ children, onClick }: any) => <button onClick={onClick}>{children}</button>,
-  SearchInput: () => <input />,
-  LoadingSpinner: ({ text }: any) => <div>{text}</div>,
-}));
-
 import ConsignmentSellReportsPage from './ConsignmentSellReportsPage';
 import * as reportApi from '../../services/consignmentSellReportApi';
+import * as selloutApi from '../../services/consignmentSelloutApi';
+import Swal from 'sweetalert2';
 
-describe('ConsignmentSellReportsPage', () => {
+vi.mock('../../services/consignmentSellReportApi');
+vi.mock('../../services/consignmentSelloutApi');
+vi.mock('../../services/errorApi');
+vi.mock('sweetalert2', () => ({
+  default: {
+    fire: vi.fn().mockResolvedValue({ isConfirmed: true }),
+  },
+}));
+
+const mockReports = [
+  {
+    id: 1,
+    id_customer: 1,
+    id_warehouse: 10,
+    status: 'PENDING',
+    customer: { id: 1, name: 'Cliente A' },
+    warehouse: { id: 10, name: 'Bodega Norte' },
+    items: [
+      { id: 101, id_clothing_size: 501, quantity: 2, clothingSize: { clothingColor: { design: { reference: 'REF1' }, color: { name: 'Negro' } }, size: { name: 'M' }, product: { price: 50000 } } },
+    ],
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+];
+
+describe('ConsignmentSellReportsPage Integration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (reportApi.getSellReports as any).mockResolvedValue([
-      { id: 1, status: 'PENDING', customer: { id: 1, name: 'Aliado Sur' }, warehouse: { name: 'B1' }, createdAt: '2026-04-01', items: [] },
-    ]);
+    (reportApi.getSellReports as any).mockResolvedValue(mockReports);
+    (reportApi.getSellReport as any).mockImplementation((id: number) => 
+      Promise.resolve(mockReports.find(r => r.id === id))
+    );
   });
 
-  const renderPage = () => render(<BrowserRouter><ConsignmentSellReportsPage /></BrowserRouter>);
+  const renderPage = () =>
+    render(
+      <BrowserRouter>
+        <ConsignmentSellReportsPage />
+      </BrowserRouter>,
+    );
 
-  it('renders page title', () => {
+  it('renders page header and subheader', async () => {
     renderPage();
-    expect(screen.getByText('Reportes de Venta del Cliente')).toBeInTheDocument();
+    expect(await screen.findByText('Reportes de Venta del Cliente')).toBeInTheDocument();
   });
 
-  it('calls getSellReports on mount', async () => {
+  it('renders reports in the DataTable', async () => {
     renderPage();
-    await waitFor(() => { expect(reportApi.getSellReports).toHaveBeenCalled(); });
+    await waitFor(() => {
+      expect(screen.getByText('Cliente A')).toBeInTheDocument();
+      expect(screen.getByText('Bodega Norte')).toBeInTheDocument();
+    });
   });
 
-  it('displays report rows after loading', async () => {
+  it('opens detail modal when clicking Eye icon', async () => {
     renderPage();
-    await waitFor(() => { expect(screen.getByText('Aliado Sur')).toBeInTheDocument(); });
+    await waitFor(() => expect(screen.getByText('Cliente A')).toBeInTheDocument());
+    
+    const row = screen.getByText('Cliente A').closest('tr')!;
+    const viewBtn = within(row).getAllByRole('button')[0]; // FiEye
+    fireEvent.click(viewBtn);
+    
+    await waitFor(() => {
+      expect(reportApi.getSellReport).toHaveBeenCalledWith(1);
+      expect(screen.getByText('Reporte #1')).toBeInTheDocument();
+    });
   });
 
-  it('shows loading state initially', () => {
-    (reportApi.getSellReports as any).mockImplementation(() => new Promise(() => {}));
+  it('handles approve flow', async () => {
+    (selloutApi.processSellout as any).mockResolvedValue({ id: 55, order_reference: 'SO-55' });
+    (selloutApi.generateDianForOrder as any).mockResolvedValue({ invoiceId: 1001, cufe: 'ABC123DEF456' });
+    
     renderPage();
-    expect(screen.getByText('Cargando reportes...')).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText('Cliente A')).toBeInTheDocument());
+    
+    const row = screen.getByText('Cliente A').closest('tr')!;
+    const approveBtn = within(row).getAllByRole('button')[1]; // FiCheck
+    fireEvent.click(approveBtn);
+    
+    await waitFor(() => {
+      expect(reportApi.approveSellReport).toHaveBeenCalledWith(1);
+      expect(selloutApi.processSellout).toHaveBeenCalled();
+      expect(Swal.fire).toHaveBeenCalledWith(expect.objectContaining({ title: 'Aprobado y facturado' }));
+    });
   });
 
-  it('shows error on fetch failure', async () => {
-    (reportApi.getSellReports as any).mockRejectedValue(new Error('boom'));
+  it('handles reject flow', async () => {
+    (Swal.fire as any).mockResolvedValue({ value: 'Motivo de rechazo' });
+    
     renderPage();
-    await waitFor(() => { expect(screen.getByText('Error al cargar los reportes.')).toBeInTheDocument(); });
+    await waitFor(() => expect(screen.getByText('Cliente A')).toBeInTheDocument());
+    
+    const row = screen.getByText('Cliente A').closest('tr')!;
+    const rejectBtn = within(row).getAllByRole('button')[2]; // FiX
+    fireEvent.click(rejectBtn);
+    
+    await waitFor(() => {
+      expect(Swal.fire).toHaveBeenCalledWith(expect.objectContaining({ title: 'Rechazar reporte' }));
+      expect(reportApi.rejectSellReport).toHaveBeenCalledWith(1, 'Motivo de rechazo');
+    });
   });
 });

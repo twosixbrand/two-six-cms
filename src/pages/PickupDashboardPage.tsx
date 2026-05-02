@@ -215,6 +215,7 @@ const PickupDashboardPage = () => {
                     icon={<FiRefreshCcw />}
                     onClick={() => fetchOrders(false)}
                     loading={loading}
+                    aria-label="Actualizar Listado"
                 >
                     {loading ? 'Actualizando...' : 'Actualizar Listado'}
                 </Button>
@@ -302,6 +303,7 @@ const PickupDashboardPage = () => {
                                     variant="primary"
                                     size="sm"
                                     onClick={() => handleMarkPreparing(order.id)}
+                                    aria-label={`Alistar pedido ${order.order_reference}`}
                                 >
                                     Alistar
                                 </Button>
@@ -312,6 +314,7 @@ const PickupDashboardPage = () => {
                                     variant="primary"
                                     size="sm"
                                     onClick={() => handleMarkReady(order.id)}
+                                    aria-label={`Notificar listo pedido ${order.order_reference}`}
                                 >
                                     Notificar Listo
                                 </Button>
@@ -323,6 +326,7 @@ const PickupDashboardPage = () => {
                                         variant="info"
                                         size="md"
                                         onClick={() => handleMarkCollected(order.id)}
+                                        aria-label={`Entregar pedido ${order.order_reference}`}
                                     >
                                         Entregar a Cliente
                                     </Button>
@@ -330,6 +334,7 @@ const PickupDashboardPage = () => {
                                         variant="destructive"
                                         size="sm"
                                         onClick={() => handleMarkUnclaimed(order.id)}
+                                        aria-label={`Marcar no reclamado pedido ${order.order_reference}`}
                                     >
                                         No Reclamado
                                     </Button>

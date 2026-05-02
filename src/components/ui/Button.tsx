@@ -1,14 +1,11 @@
 import React from 'react';
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'destructive' | 'ghost' | 'outline' | 'edit' | 'info';
   size?: 'sm' | 'md' | 'lg';
   icon?: React.ReactNode;
   loading?: boolean;
-  children: React.ReactNode;
-  onClick?: () => void;
-  disabled?: boolean;
-  type?: 'button' | 'submit';
+  children?: React.ReactNode;
 }
 
 const isTouchDevice = typeof window !== 'undefined' && window.innerWidth < 640;
@@ -90,6 +87,8 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   disabled = false,
   type = 'button',
+  style,
+  ...props
 }) => {
   const [hovered, setHovered] = React.useState(false);
 
@@ -108,6 +107,7 @@ const Button: React.FC<ButtonProps> = ({
     opacity: disabled ? 0.5 : 1,
     ...sizeStyles[size],
     ...variantBaseStyles[variant],
+    ...style,
   };
 
   if (hovered && !disabled && !loading) {
@@ -149,6 +149,7 @@ const Button: React.FC<ButtonProps> = ({
         disabled={disabled || loading}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        {...props}
       >
         {loading ? (
           <div

@@ -250,7 +250,7 @@ const ProductPage = () => {
       {error && <p className="error-message">{error}</p>}
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-        <SearchInput value={search} onChange={setSearch} placeholder="Buscar productos..." />
+        <SearchInput id="product-search" value={search} onChange={setSearch} placeholder="Buscar productos..." />
         <Button variant="primary" icon={<FiPlus />} onClick={openCreateModal}>Crear Productos</Button>
       </div>
 
@@ -263,8 +263,8 @@ const ProductPage = () => {
           emptyMessage="No hay productos registrados"
           actions={(row) => (
             <>
-              <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} />
-              <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} />
+              <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} aria-label={`Editar producto ${row.sku}`} />
+              <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} aria-label={`Eliminar producto ${row.sku}`} />
             </>
           )}
         />
@@ -293,11 +293,11 @@ const ProductPage = () => {
               </div>
             </div>
             <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}>
-                <input type="checkbox" name="active" checked={editForm.active} onChange={handleEditChange} /> Activo
+              <label htmlFor="edit-active" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}>
+                <input id="edit-active" type="checkbox" name="active" checked={editForm.active} onChange={handleEditChange} /> Activo
               </label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}>
-                <input type="checkbox" name="is_outlet" checked={editForm.is_outlet} onChange={handleEditChange} /> Es Outlet
+              <label htmlFor="edit-outlet" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}>
+                <input id="edit-outlet" type="checkbox" name="is_outlet" checked={editForm.is_outlet} onChange={handleEditChange} /> Es Outlet
               </label>
             </div>
           </div>

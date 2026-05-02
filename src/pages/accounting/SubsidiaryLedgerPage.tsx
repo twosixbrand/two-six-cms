@@ -93,6 +93,7 @@ const SubsidiaryLedgerPage = () => {
                 <div style={{ position: 'relative', minWidth: '280px' }}>
                     <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, marginBottom: '0.3rem', color: '#a0a0b0', fontFamily: 'Inter, sans-serif' }}>Cuenta Padre</label>
                     <input
+                        id="account-search-input"
                         type="text"
                         value={selectedAccount || accountSearch}
                         onChange={e => {
@@ -136,7 +137,7 @@ const SubsidiaryLedgerPage = () => {
                 <div style={{ minWidth: '160px' }}>
                     <FormField label="Hasta" name="endDate" type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
                 </div>
-                <Button variant="primary" icon={<FiRefreshCcw />} onClick={fetchReport}>Consultar</Button>
+                <Button variant="primary" icon={<FiRefreshCcw />} onClick={fetchReport} aria-label="Consultar Libro">Consultar</Button>
             </div>
 
             {error && <p style={{ color: '#f87171', fontSize: '13px', fontWeight: 600 }}>{error}</p>}

@@ -356,6 +356,7 @@ const ConsignmentCycleCountPage = () => {
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <SearchInput value={search} onChange={setSearch} placeholder="Buscar..." />
           <select
+            id="status-filter"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             style={{ padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
@@ -366,7 +367,7 @@ const ConsignmentCycleCountPage = () => {
             <option value="CANCELLED">Cancelado</option>
           </select>
         </div>
-        <Button variant="primary" icon={<FiPlus />} onClick={openCreateModal}>
+        <Button variant="primary" icon={<FiPlus />} onClick={openCreateModal} id="new-count-btn">
           Nuevo Conteo
         </Button>
       </div>
@@ -380,12 +381,12 @@ const ConsignmentCycleCountPage = () => {
           emptyMessage="No hay conteos registrados"
           actions={(row: any) => (
             <>
-              <Button variant="ghost" size="sm" icon={<FiEye />} onClick={() => openEditor(row.id)} />
+              <Button variant="ghost" size="sm" icon={<FiEye />} onClick={() => openEditor(row.id)} aria-label="Ver detalle" />
               {row.status === 'DRAFT' && (
-                <Button variant="ghost" size="sm" icon={<FiX />} onClick={() => handleCancel(row)} />
+                <Button variant="ghost" size="sm" icon={<FiX />} onClick={() => handleCancel(row)} aria-label="Cancelar conteo" />
               )}
               {row.status === 'APPROVED' && !row.merma_order_id && (
-                <Button variant="primary" size="sm" icon={<FiDollarSign />} onClick={() => openMermaModal(row)}>
+                <Button variant="primary" size="sm" icon={<FiDollarSign />} onClick={() => openMermaModal(row)} aria-label="Facturar merma">
                 </Button>
               )}
             </>
@@ -398,8 +399,9 @@ const ConsignmentCycleCountPage = () => {
         <form onSubmit={handleCreate}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.25rem' }}>Bodega *</label>
+              <label htmlFor="id_warehouse" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.25rem' }}>Bodega *</label>
               <select
+                id="id_warehouse"
                 value={createForm.id_warehouse}
                 onChange={(e) => setCreateForm((p) => ({ ...p, id_warehouse: e.target.value }))}
                 required
@@ -540,6 +542,7 @@ const ConsignmentCycleCountPage = () => {
                 <input
                   type="radio"
                   name="price_mode"
+                  id="price_mode_consignment"
                   checked={mermaForm.price_mode === 'CONSIGNMENT'}
                   onChange={() => setMermaForm((p) => ({ ...p, price_mode: 'CONSIGNMENT' }))}
                 />
@@ -552,6 +555,7 @@ const ConsignmentCycleCountPage = () => {
                 <input
                   type="radio"
                   name="price_mode"
+                  id="price_mode_penalty"
                   checked={mermaForm.price_mode === 'PENALTY'}
                   onChange={() => setMermaForm((p) => ({ ...p, price_mode: 'PENALTY' }))}
                 />

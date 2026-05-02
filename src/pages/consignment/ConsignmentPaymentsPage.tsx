@@ -173,6 +173,7 @@ const ConsignmentPaymentsPage = () => {
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <SearchInput value={search} onChange={setSearch} placeholder="Buscar por cliente u orden..." />
           <select
+            id="status-filter"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             style={{ padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
@@ -194,11 +195,11 @@ const ConsignmentPaymentsPage = () => {
           emptyMessage="No hay pagos registrados"
           actions={(row: any) => (
             <>
-              <Button variant="ghost" size="sm" icon={<FiEye />} onClick={() => openDetail(row)} />
+              <Button variant="ghost" size="sm" icon={<FiEye />} onClick={() => openDetail(row)} aria-label="Ver detalle" />
               {row.status === 'PENDING' && (
                 <>
-                  <Button variant="primary" size="sm" icon={<FiCheck />} onClick={() => handleApprove(row)} />
-                  <Button variant="destructive" size="sm" icon={<FiX />} onClick={() => handleReject(row)} />
+                  <Button variant="primary" size="sm" icon={<FiCheck />} onClick={() => handleApprove(row)} aria-label="Aprobar" />
+                  <Button variant="destructive" size="sm" icon={<FiX />} onClick={() => handleReject(row)} aria-label="Rechazar" />
                 </>
               )}
             </>

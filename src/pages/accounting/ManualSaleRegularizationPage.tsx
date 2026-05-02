@@ -458,7 +458,7 @@ const ManualSaleRegularizationPage: React.FC = () => {
                                         {formatCurrency(p.available_balance)}
                                     </td>
                                     <td style={{ padding: 6, textAlign: 'right' }}>
-                                        <Button variant="secondary" onClick={() => resumeReceipt(p)}>Continuar aquí</Button>
+                                        <Button variant="secondary" onClick={() => resumeReceipt(p)} aria-label={`Continuar recibo ${p.entry_number}`}>Continuar aquí</Button>
                                     </td>
                                 </tr>
                             ))}
@@ -498,7 +498,7 @@ const ManualSaleRegularizationPage: React.FC = () => {
                         <FormField label="Notas" name="notes" type="text" value={receipt.notes} onChange={(e) => setReceipt({ ...receipt, notes: e.target.value })} />
                     </div>
                     <div style={{ marginTop: 16, display: 'flex', gap: 10 }}>
-                        <Button variant="primary" icon={<FiSave />} onClick={handleCreateReceipt} disabled={saving} loading={saving}>
+                        <Button variant="primary" icon={<FiSave />} onClick={handleCreateReceipt} disabled={saving} loading={saving} aria-label="Guardar recibo">
                             Guardar recibo y continuar
                         </Button>
                         <Button variant="ghost" onClick={clearForm}>Limpiar</Button>
@@ -650,7 +650,7 @@ const ManualSaleRegularizationPage: React.FC = () => {
                     <FormField label="Notas" name="inv_notes" type="text" value={invoice.notes} onChange={(e) => setInvoice({ ...invoice, notes: e.target.value })} />
 
                     <div style={{ marginTop: 16, display: 'flex', gap: 10 }}>
-                        <Button variant="primary" icon={<FiSave />} onClick={handleCreateInvoice} disabled={saving} loading={saving}>
+                        <Button variant="primary" icon={<FiSave />} onClick={handleCreateInvoice} disabled={saving} loading={saving} aria-label="Emitir factura">
                             Emitir factura DIAN
                         </Button>
                         <Button variant="ghost" onClick={() => setStep(1)}>Volver</Button>

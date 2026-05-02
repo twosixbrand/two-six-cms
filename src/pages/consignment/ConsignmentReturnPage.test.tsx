@@ -1,83 +1,66 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent, within } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: vi.fn().mockImplementation((query) => ({
-    matches: false, media: query, onchange: null,
-    addListener: vi.fn(), removeListener: vi.fn(),
-    addEventListener: vi.fn(), removeEventListener: vi.fn(), dispatchEvent: vi.fn(),
-  })),
-});
-
-vi.mock('../../services/consignmentReturnApi', () => ({
-  getReturns: vi.fn(),
-  getReturn: vi.fn(),
-  createReturn: vi.fn(),
-  processReturn: vi.fn(),
-  cancelReturn: vi.fn(),
-  deleteReturn: vi.fn(),
-  attachCreditNote: vi.fn(),
-  generateDianCreditNote: vi.fn(),
-}));
-vi.mock('../../services/consignmentWarehouseApi', () => ({
-  getWarehouses: vi.fn(),
-}));
-vi.mock('../../services/customerApi', () => ({
-  getCustomers: vi.fn(),
-}));
-vi.mock('../../services/productApi', () => ({
-  getProducts: vi.fn(),
-}));
-vi.mock('../../services/orderApi', () => ({
-  getOrders: vi.fn(),
-}));
-vi.mock('../../services/errorApi', () => ({ logError: vi.fn() }));
-vi.mock('sweetalert2', () => ({
-  default: { fire: vi.fn().mockResolvedValue({ isConfirmed: false }) },
-}));
-vi.mock('../../components/common/PageHeader', () => ({
-  default: ({ title }: any) => <h1>{title}</h1>,
-}));
-vi.mock('../../components/ui', () => ({
-  DataTable: ({ data, emptyMessage }: any) => (
-    <div data-testid="data-table">
-      {data.length === 0 ? emptyMessage : data.map((r: any) => <div key={r.id}>return-{r.id}</div>)}
-    </div>
-  ),
-  Modal: ({ isOpen, children }: any) => (isOpen ? <div role="dialog">{children}</div> : null),
-  FormField: ({ label }: any) => <label>{label}</label>,
-  Button: ({ children, onClick }: any) => <button onClick={onClick}>{children}</button>,
-  SearchInput: () => <input />,
-  LoadingSpinner: ({ text }: any) => <div>{text}</div>,
-}));
-
 import ConsignmentReturnPage from './ConsignmentReturnPage';
 import * as returnApi from '../../services/consignmentReturnApi';
-import * as whApi from '../../services/consignmentWarehouseApi';
+import * as warehouseApi from '../../services/consignmentWarehouseApi';
 import * as customerApi from '../../services/customerApi';
 import * as productApi from '../../services/productApi';
 import * as orderApi from '../../services/orderApi';
+import Swal from 'sweetalert2';
 
-describe('ConsignmentReturnPage', () => {
+vi.mock('../../services/consignmentReturnApi');
+vi.mock('../../services/consignmentWarehouseApi');
+vi.mock('../../services/customerApi');
+vi.mock('../../services/productApi');
+vi.mock('../../services/orderApi');
+vi.mock('../../services/errorApi');
+vi.mock('sweetalert2', () => ({
+  default: {
+    fire: vi.fn().mockResolvedValue({ isConfirmed: true }),
+  },
+}));
+
+const mockReturns = [
+  {
+    id: 1,
+    return_type: 'PORTFOLIO',
+    status: 'DRAFT',
+    id_warehouse: 10,
+    warehouse: { id: 10, name: 'Bodega Norte', customer: { id: 1, name: 'Cliente A' } },
+    items: [{ id: 101, id_clothing_size: 501, quantity: 2, reason: 'Obsolescencia' }],
+  },
+];
+
+const mockCustomers = [
+  { id: 1, name: 'Cliente A', is_consignment_ally: true },
+];
+
+const mockWarehouses = [
+  { id: 10, name: 'Bodega Norte', id_customer: 1, is_active: true, customer: { id: 1, name: 'Cliente A' } },
+];
+
+const mockProducts = [
+  {
+    id: 501,
+    id_clothing_size: 501,
+    sku: 'SKU501',
+    clothingSize: { id: 501, clothingColor: { design: { reference: 'REF1' }, color: { name: 'Negro' } }, size: { name: 'M' } },
+  },
+];
+
+describe('ConsignmentReturnPage Integration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (returnApi.getReturns as any).mockResolvedValue([
-      {
-        id: 1,
-        return_type: 'PORTFOLIO',
-        status: 'DRAFT',
-        id_warehouse: 10,
-        warehouse: { id: 10, name: 'B1', customer: { id: 1, name: 'Ally' } },
-        items: [{ id: 1, quantity: 2 }],
-      },
-    ]);
-    (whApi.getWarehouses as any).mockResolvedValue([]);
-    (customerApi.getCustomers as any).mockResolvedValue([]);
-    (productApi.getProducts as any).mockResolvedValue([]);
+    (returnApi.getReturns as any).mockResolvedValue(mockReturns);
+    (customerApi.getCustomers as any).mockResolvedValue(mockCustomers);
+    (warehouseApi.getWarehouses as any).mockResolvedValue(mockWarehouses);
+    (productApi.getProducts as any).mockResolvedValue(mockProducts);
     (orderApi.getOrders as any).mockResolvedValue([]);
+    (returnApi.getReturn as any).mockImplementation((id: number) => 
+      Promise.resolve(mockReturns.find(r => r.id === id))
+    );
   });
 
   const renderPage = () =>
@@ -87,40 +70,78 @@ describe('ConsignmentReturnPage', () => {
       </BrowserRouter>,
     );
 
-  it('renders title', () => {
+  it('renders page header', async () => {
     renderPage();
-    expect(screen.getByText('Devoluciones y Garantías')).toBeInTheDocument();
+    expect(await screen.findByText('Devoluciones y Garantías')).toBeInTheDocument();
   });
 
-  it('calls all dependent APIs on mount', async () => {
+  it('allows creating a return', async () => {
+    (returnApi.createReturn as any).mockResolvedValue({ id: 123 });
     renderPage();
+    await waitFor(() => expect(screen.queryByText('Cargando...')).not.toBeInTheDocument());
+    fireEvent.click(screen.getByText('Nueva Devolución'));
+    
+    fireEvent.change(screen.getByLabelText(/Cliente/i), { target: { value: '1' } });
+    await waitFor(() => expect(screen.getByLabelText(/Bodega/i)).not.toBeDisabled());
+    fireEvent.change(screen.getByLabelText(/Bodega/i), { target: { value: '10' } });
+    
+    fireEvent.click(screen.getByText('Agregar'));
+    fireEvent.change(screen.getByDisplayValue('Producto...'), { target: { value: '501' } });
+    fireEvent.change(screen.getByPlaceholderText('Cant.'), { target: { value: '3' } });
+    
+    fireEvent.click(screen.getByText('Crear borrador'));
+    
     await waitFor(() => {
-      expect(returnApi.getReturns).toHaveBeenCalled();
-      expect(whApi.getWarehouses).toHaveBeenCalled();
-      expect(customerApi.getCustomers).toHaveBeenCalled();
-      expect(productApi.getProducts).toHaveBeenCalled();
-      expect(orderApi.getOrders).toHaveBeenCalled();
+      expect(returnApi.createReturn).toHaveBeenCalled();
     });
   });
 
-  it('displays return rows after loading', async () => {
-    renderPage();
-    await waitFor(() => {
-      expect(screen.getByText('return-1')).toBeInTheDocument();
+  describe('Actions', () => {
+    it('opens detail modal', async () => {
+      renderPage();
+      await screen.findByText('1');
+      const row = screen.getByText('1').closest('tr')!;
+      const viewBtn = within(row).getAllByRole('button')[0];
+      fireEvent.click(viewBtn);
+      
+      expect(await screen.findByText('Devolución #1')).toBeInTheDocument();
     });
-  });
 
-  it('shows loading initially', () => {
-    (returnApi.getReturns as any).mockImplementation(() => new Promise(() => {}));
-    renderPage();
-    expect(screen.getByText('Cargando...')).toBeInTheDocument();
-  });
+    it('calls processReturn', async () => {
+      (returnApi.processReturn as any).mockResolvedValue({ id: 1 });
+      renderPage();
+      await screen.findByText('1');
+      const row = screen.getByText('1').closest('tr')!;
+      const processBtn = within(row).getAllByRole('button')[1];
+      fireEvent.click(processBtn);
+      
+      await waitFor(() => {
+        expect(returnApi.processReturn).toHaveBeenCalledWith(1);
+      });
+    });
 
-  it('shows error on fetch failure', async () => {
-    (returnApi.getReturns as any).mockRejectedValue(new Error('boom'));
-    renderPage();
-    await waitFor(() => {
-      expect(screen.getByText('Error al cargar devoluciones.')).toBeInTheDocument();
+    it('calls cancelReturn', async () => {
+      renderPage();
+      await screen.findByText('1');
+      const row = screen.getByText('1').closest('tr')!;
+      const cancelBtn = within(row).getAllByRole('button')[2];
+      fireEvent.click(cancelBtn);
+      
+      await waitFor(() => {
+        expect(returnApi.cancelReturn).toHaveBeenCalledWith(1);
+      });
+    });
+
+    it('calls deleteReturn', async () => {
+      renderPage();
+      await screen.findByText('1');
+      const row = screen.getByText('1').closest('tr')!;
+      const deleteBtn = within(row).getAllByRole('button')[3];
+      fireEvent.click(deleteBtn);
+      
+      await waitFor(() => {
+        expect(returnApi.deleteReturn).toHaveBeenCalledWith(1);
+      });
     });
   });
 });

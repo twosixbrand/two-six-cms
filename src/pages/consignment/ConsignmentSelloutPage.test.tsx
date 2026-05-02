@@ -1,57 +1,40 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: vi.fn().mockImplementation((query) => ({
-    matches: false, media: query, onchange: null,
-    addListener: vi.fn(), removeListener: vi.fn(),
-    addEventListener: vi.fn(), removeEventListener: vi.fn(), dispatchEvent: vi.fn(),
-  })),
-});
-
-vi.mock('../../services/consignmentSelloutApi', () => ({
-  previewSellout: vi.fn(),
-  processSellout: vi.fn(),
-  generateDianForOrder: vi.fn(),
-  parseSelloutCsv: vi.fn(() => [
-    { sku: '', reference: 'CAM-001', color: 'Azul', size: 'M', quantity: 3 },
-    { sku: '', reference: 'CAM-001', color: 'Negro', size: 'L', quantity: 2 },
-  ]),
-}));
-vi.mock('../../services/consignmentWarehouseApi', () => ({
-  getWarehouses: vi.fn(),
-}));
-vi.mock('../../services/customerApi', () => ({
-  getCustomers: vi.fn(),
-}));
-vi.mock('../../services/errorApi', () => ({ logError: vi.fn() }));
-vi.mock('sweetalert2', () => ({
-  default: { fire: vi.fn().mockResolvedValue({ isConfirmed: false }) },
-}));
-vi.mock('../../components/common/PageHeader', () => ({
-  default: ({ title }: any) => <h1>{title}</h1>,
-}));
-vi.mock('../../components/ui', () => ({
-  Button: ({ children, onClick }: any) => <button onClick={onClick}>{children}</button>,
-  LoadingSpinner: ({ text }: any) => <div>{text}</div>,
-}));
-
 import ConsignmentSelloutPage from './ConsignmentSelloutPage';
+import * as selloutApi from '../../services/consignmentSelloutApi';
+import * as warehouseApi from '../../services/consignmentWarehouseApi';
 import * as customerApi from '../../services/customerApi';
-import * as whApi from '../../services/consignmentWarehouseApi';
+import Swal from 'sweetalert2';
 
-describe('ConsignmentSelloutPage', () => {
+vi.mock('../../services/consignmentSelloutApi');
+vi.mock('../../services/consignmentWarehouseApi');
+vi.mock('../../services/customerApi');
+vi.mock('../../services/errorApi');
+vi.mock('sweetalert2', () => ({
+  default: {
+    fire: vi.fn().mockResolvedValue({ isConfirmed: true }),
+  },
+}));
+
+const mockCustomers = [
+  { id: 1, name: 'Cliente A', is_consignment_ally: true },
+];
+
+const mockWarehouses = [
+  { id: 10, name: 'Bodega Norte', id_customer: 1, is_active: true, customer: { id: 1, name: 'Cliente A' } },
+];
+
+describe('ConsignmentSelloutPage Integration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (customerApi.getCustomers as any).mockResolvedValue([
-      { id: 1, name: 'Ally Uno', is_consignment_ally: true },
-    ]);
-    (whApi.getWarehouses as any).mockResolvedValue([
-      { id: 10, name: 'Bodega Norte', id_customer: 1, is_active: true },
-    ]);
+    (customerApi.getCustomers as any).mockResolvedValue(mockCustomers);
+    (warehouseApi.getWarehouses as any).mockResolvedValue(mockWarehouses);
+    (selloutApi.parseSelloutCsv as any).mockImplementation((text: string) => {
+        if (!text) return [];
+        return [{ sku: 'SKU1', quantity: 2 }];
+    });
   });
 
   const renderPage = () =>
@@ -61,44 +44,82 @@ describe('ConsignmentSelloutPage', () => {
       </BrowserRouter>,
     );
 
-  it('shows loading initially', () => {
-    (customerApi.getCustomers as any).mockImplementation(() => new Promise(() => {}));
+  it('renders page header and subheader', async () => {
     renderPage();
-    expect(screen.getByText('Cargando...')).toBeInTheDocument();
+    expect(await screen.findByText('Procesar Sell-out')).toBeInTheDocument();
   });
 
-  it('renders title after load', async () => {
+  it('allows selecting customer and warehouse', async () => {
     renderPage();
+    await waitFor(() => expect(screen.getByText('1. Cliente y bodega')).toBeInTheDocument());
+    
+    const customerSelect = screen.getByLabelText(/Cliente aliado/i);
+    fireEvent.change(customerSelect, { target: { value: '1' } });
+    
     await waitFor(() => {
-      expect(screen.getByText('Procesar Sell-out')).toBeInTheDocument();
+        const warehouseSelect = screen.getByLabelText(/Bodega/i);
+        expect(warehouseSelect).not.toBeDisabled();
+        fireEvent.change(warehouseSelect, { target: { value: '10' } });
     });
   });
 
-  it('loads customers and warehouses on mount', async () => {
+  it('allows pasting CSV text and showing row count', async () => {
     renderPage();
+    await waitFor(() => expect(screen.queryByText('Cargando...')).not.toBeInTheDocument());
+    
+    const textarea = screen.getByPlaceholderText(/Pega aquí el CSV/i);
+    fireEvent.change(textarea, { target: { value: 'sku,quantity\nSKU1,2' } });
+    
+    expect(screen.getByText('1 filas detectadas.')).toBeInTheDocument();
+  });
+
+  it('handles preview flow', async () => {
+    (selloutApi.previewSellout as any).mockResolvedValue({
+        customer: { name: 'Cliente A' },
+        warehouse: { name: 'Bodega Norte' },
+        summary: { ok_count: 1, error_count: 0, subtotal: 100000, iva: 19000, total: 119000 },
+        resolved: [{ status: 'ok', row: { sku: 'SKU1', quantity: 2 }, product: { reference: 'REF1', color: 'N', size: 'M' }, effective_price: 50000, line_total: 100000 }],
+    });
+    
+    renderPage();
+    await waitFor(() => expect(screen.queryByText('Cargando...')).not.toBeInTheDocument());
+    
+    fireEvent.change(screen.getByLabelText(/Cliente aliado/i), { target: { value: '1' } });
+    fireEvent.change(screen.getByLabelText(/Bodega/i), { target: { value: '10' } });
+    fireEvent.change(screen.getByPlaceholderText(/Pega aquí el CSV/i), { target: { value: 'sku,quantity\nSKU1,2' } });
+    
+    fireEvent.click(screen.getByText('Previsualizar'));
+    
     await waitFor(() => {
-      expect(customerApi.getCustomers).toHaveBeenCalled();
-      expect(whApi.getWarehouses).toHaveBeenCalled();
+        expect(selloutApi.previewSellout).toHaveBeenCalled();
+        expect(screen.getByText('3. Previsualización')).toBeInTheDocument();
     });
   });
 
-  it('renders step sections (cliente/bodega, reporte)', async () => {
-    renderPage();
-    await waitFor(() => {
-      expect(screen.getByText(/Cliente y bodega/i)).toBeInTheDocument();
-      expect(screen.getByText(/Reporte de ventas/i)).toBeInTheDocument();
+  it('handles process flow', async () => {
+    (selloutApi.previewSellout as any).mockResolvedValue({
+        customer: { name: 'Cliente A' },
+        warehouse: { name: 'Bodega Norte' },
+        summary: { ok_count: 1, error_count: 0, subtotal: 100000, iiva: 19000, total: 119000 },
+        resolved: [{ status: 'ok', row: { sku: 'SKU1', quantity: 2 }, product: { reference: 'REF1', color: 'N', size: 'M' }, effective_price: 50000, line_total: 100000 }],
     });
-  });
-
-  it('renders ally customer in the dropdown but not retail ones', async () => {
-    (customerApi.getCustomers as any).mockResolvedValue([
-      { id: 1, name: 'Ally Uno', is_consignment_ally: true },
-      { id: 2, name: 'Retail X', is_consignment_ally: false },
-    ]);
+    (selloutApi.processSellout as any).mockResolvedValue({ id: 55, order_reference: 'SO-55', total_payment: 119000 });
+    (selloutApi.generateDianForOrder as any).mockResolvedValue({ invoiceId: 1001, cufe: 'ABC123DEF456' });
+    
     renderPage();
+    await waitFor(() => expect(screen.queryByText('Cargando...')).not.toBeInTheDocument());
+    
+    fireEvent.change(screen.getByLabelText(/Cliente aliado/i), { target: { value: '1' } });
+    fireEvent.change(screen.getByLabelText(/Bodega/i), { target: { value: '10' } });
+    fireEvent.change(screen.getByPlaceholderText(/Pega aquí el CSV/i), { target: { value: 'sku,quantity\nSKU1,2' } });
+    fireEvent.click(screen.getByText('Previsualizar'));
+    
+    const processBtn = await screen.findByRole('button', { name: /Procesar y facturar DIAN/i });
+    fireEvent.click(processBtn);
+    
     await waitFor(() => {
-      expect(screen.getByText('Ally Uno')).toBeInTheDocument();
+        expect(selloutApi.processSellout).toHaveBeenCalled();
+        expect(screen.getByText('¡Procesado!')).toBeInTheDocument();
     });
-    expect(screen.queryByText('Retail X')).not.toBeInTheDocument();
   });
 });

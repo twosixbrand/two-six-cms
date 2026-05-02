@@ -2,34 +2,13 @@ import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: vi.fn().mockImplementation((query) => ({
-    matches: false, media: query, onchange: null,
-    addListener: vi.fn(), removeListener: vi.fn(),
-    addEventListener: vi.fn(), removeEventListener: vi.fn(), dispatchEvent: vi.fn(),
-  })),
-});
-
-vi.mock('../../services/consignmentReportsApi', () => ({
-  getInventoryByCustomer: vi.fn(),
-  getLossReport: vi.fn(),
-  getPendingReconciliation: vi.fn(),
-}));
-vi.mock('../../services/errorApi', () => ({ logError: vi.fn() }));
-vi.mock('../../components/common/PageHeader', () => ({
-  default: ({ title }: any) => <h1>{title}</h1>,
-}));
-vi.mock('../../components/ui', () => ({
-  Button: ({ children, onClick }: any) => <button onClick={onClick}>{children}</button>,
-  LoadingSpinner: ({ text }: any) => <div>{text}</div>,
-}));
-
 import ConsignmentReportsPage from './ConsignmentReportsPage';
 import * as reportsApi from '../../services/consignmentReportsApi';
 
-describe('ConsignmentReportsPage', () => {
+vi.mock('../../services/consignmentReportsApi');
+vi.mock('../../services/errorApi');
+
+describe('ConsignmentReportsPage Integration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     (reportsApi.getInventoryByCustomer as any).mockResolvedValue([
@@ -56,17 +35,27 @@ describe('ConsignmentReportsPage', () => {
       warranty_returns: [],
       by_customer: [],
       summary: {
-        total_merma_orders: 0,
-        total_merma_units: 0,
-        total_merma_amount: 0,
-        total_warranty_returns: 0,
-        total_warranty_units: 0,
+        total_merma_orders: 5,
+        total_merma_units: 10,
+        total_merma_amount: 500000,
+        total_warranty_returns: 2,
+        total_warranty_units: 3,
       },
     });
     (reportsApi.getPendingReconciliation as any).mockResolvedValue({
       threshold_days: 30,
-      pending_count: 0,
-      warehouses: [],
+      pending_count: 1,
+      warehouses: [
+        {
+          warehouse_id: 10,
+          warehouse_name: 'Bodega Norte',
+          customer_name: 'Ally Uno',
+          last_count_date: '2026-01-01',
+          days_since_last_count: 90,
+          current_stock_units: 100,
+          never_counted: false,
+        }
+      ],
     });
   });
 
@@ -77,41 +66,34 @@ describe('ConsignmentReportsPage', () => {
       </BrowserRouter>,
     );
 
-  it('renders title', () => {
+  it('renders page header and data', async () => {
     renderPage();
-    expect(screen.getByText('Reportes de Consignación')).toBeInTheDocument();
+    expect(await screen.findByText('Reportes de Consignación')).toBeInTheDocument();
+    expect(await screen.findByText('Ally Uno')).toBeInTheDocument();
+    expect(screen.getByText('Bodega Norte')).toBeInTheDocument();
   });
 
-  it('loads inventory report on mount (default tab)', async () => {
+  it('switches to "Mermas y Garantías" tab', async () => {
     renderPage();
-    await waitFor(() => {
-      expect(reportsApi.getInventoryByCustomer).toHaveBeenCalled();
-    });
-  });
-
-  it('displays customer in inventory tab', async () => {
-    renderPage();
-    await waitFor(() => {
-      expect(screen.getByText('Ally Uno')).toBeInTheDocument();
-      expect(screen.getByText('Bodega Norte')).toBeInTheDocument();
-    });
-  });
-
-  it('switches to losses tab and loads loss report', async () => {
-    renderPage();
-    await waitFor(() => expect(reportsApi.getInventoryByCustomer).toHaveBeenCalled());
+    await screen.findByText('Ally Uno');
+    
     fireEvent.click(screen.getByText('Mermas y Garantías'));
     await waitFor(() => {
       expect(reportsApi.getLossReport).toHaveBeenCalled();
     });
+    expect(await screen.findByText('Mermas facturadas')).toBeInTheDocument();
+    expect(screen.getByText('5')).toBeInTheDocument(); // total_merma_orders
   });
 
-  it('switches to pending tab and loads pending reconciliation', async () => {
+  it('switches to "Conciliación Pendiente" tab', async () => {
     renderPage();
-    await waitFor(() => expect(reportsApi.getInventoryByCustomer).toHaveBeenCalled());
+    await screen.findByText('Ally Uno');
+    
     fireEvent.click(screen.getByText('Conciliación Pendiente'));
     await waitFor(() => {
       expect(reportsApi.getPendingReconciliation).toHaveBeenCalled();
     });
+    expect(await screen.findByText(/1 bodega\(s\) con conciliación pendiente/)).toBeInTheDocument();
+    expect(screen.getByText('90')).toBeInTheDocument();
   });
 });

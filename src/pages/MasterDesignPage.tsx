@@ -243,7 +243,7 @@ const MasterDesignPage = () => {
       {error && <p className="error-message">{error}</p>}
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-        <SearchInput value={search} onChange={setSearch} placeholder="Buscar por referencia, prenda o coleccion..." />
+        <SearchInput id="master-design-search" value={search} onChange={setSearch} placeholder="Buscar por referencia, prenda o coleccion..." />
         <Button variant="primary" icon={<FiPlus />} onClick={openCreateModal}>Crear Diseño</Button>
       </div>
 
@@ -256,9 +256,9 @@ const MasterDesignPage = () => {
           emptyMessage="No hay diseños maestros registrados"
           actions={(row) => (
             <>
-              <Button variant="info" size="sm" icon={<FiEye />} onClick={() => openProvidersModal(row)}>Proveedores</Button>
-              <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} />
-              <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} />
+              <Button variant="info" size="sm" icon={<FiEye />} onClick={() => openProvidersModal(row)} aria-label={`Ver proveedores diseño ${row.reference}`}>Proveedores</Button>
+              <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} aria-label={`Editar diseño ${row.reference}`} />
+              <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} aria-label={`Eliminar diseño ${row.reference}`} />
             </>
           )}
         />
@@ -304,10 +304,11 @@ const MasterDesignPage = () => {
                 required
               />
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#a0a0b0', fontFamily: 'Inter, sans-serif' }}>
+                <label htmlFor="id_tags" style={{ fontSize: '0.85rem', fontWeight: 600, color: '#a0a0b0', fontFamily: 'Inter, sans-serif' }}>
                   Etiquetas (Mayús+Click para múltiples)
                 </label>
                 <select
+                  id="id_tags"
                   multiple
                   name="id_tags"
                   value={form.id_tags || []}

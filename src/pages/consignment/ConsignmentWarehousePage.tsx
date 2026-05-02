@@ -248,7 +248,7 @@ const ConsignmentWarehousePage = () => {
             ))}
           </select>
         </div>
-        <Button variant="primary" icon={<FiPlus />} onClick={openCreateModal}>
+        <Button variant="primary" icon={<FiPlus />} onClick={openCreateModal} id="new-warehouse-btn">
           Nueva Bodega
         </Button>
       </div>
@@ -283,9 +283,9 @@ const ConsignmentWarehousePage = () => {
           emptyMessage="No hay bodegas registradas"
           actions={(row) => (
             <>
-              <Button variant="ghost" size="sm" icon={<FiPackage />} onClick={() => openStockModal(row)} />
-              <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} />
-              <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} />
+              <Button variant="ghost" size="sm" icon={<FiPackage />} onClick={() => openStockModal(row)} aria-label="Ver stock" />
+              <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} aria-label="Editar bodega" />
+              <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} aria-label="Eliminar bodega" />
             </>
           )}
         />
@@ -301,14 +301,14 @@ const ConsignmentWarehousePage = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {!editing && (
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.25rem', fontWeight: 600 }}>
+                <label htmlFor="id_customer" style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.25rem', fontWeight: 600 }}>
                   Cliente Aliado *
                 </label>
                 <select
                   name="id_customer"
+                  id="id_customer"
                   value={form.id_customer}
                   onChange={handleChange}
-                  required
                   style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', borderWidth: 1, borderStyle: 'solid', borderColor: '#2a2a35', background: '#1a1a24', color: '#f1f1f3' }}
                 >
                   <option value="">Selecciona un cliente...</option>
@@ -331,8 +331,8 @@ const ConsignmentWarehousePage = () => {
               <FormField label="Ciudad" name="city" value={form.city} onChange={handleChange} />
               <FormField label="Departamento" name="state" value={form.state} onChange={handleChange} />
             </div>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <input type="checkbox" name="is_active" checked={!!form.is_active} onChange={handleChange} />
+            <label htmlFor="is_active" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <input type="checkbox" name="is_active" id="is_active" checked={!!form.is_active} onChange={handleChange} />
               Bodega activa
             </label>
           </div>

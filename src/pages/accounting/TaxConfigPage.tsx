@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import PageHeader from '../../components/common/PageHeader';
 import { Button, LoadingSpinner, Modal, FormField } from '../../components/ui';
 import * as accountingApi from '../../services/accountingApi';
-import * as locationApi from '../../services/locationApi';
+import locationApi from '../../services/locationApi';
 import { logError } from '../../services/errorApi';
 
 interface TaxConfig {
@@ -124,7 +124,7 @@ const TaxConfigPage = () => {
             />
 
             <div style={{ marginBottom: '24px' }}>
-                <Button variant="primary" icon={<FiPlus />} onClick={() => setShowModal(true)}>
+                <Button variant="primary" icon={<FiPlus />} onClick={() => setShowModal(true)} aria-label="Nueva Configuración">
                     Nueva Configuración
                 </Button>
             </div>
@@ -154,6 +154,7 @@ const TaxConfigPage = () => {
                                 <button 
                                     onClick={() => handleDelete(config.id)}
                                     style={{ background: 'none', border: 'none', color: '#6b6b7b', cursor: 'pointer' }}
+                                    aria-label={`Eliminar ${config.name}`}
                                 >
                                     <FiTrash2 size={16} />
                                 </button>
@@ -189,84 +190,78 @@ const TaxConfigPage = () => {
             )}
 
             {/* Modal de Creación */}
-            <Modal show={showModal} onClose={() => setShowModal(false)} title="Nueva Configuración de Impuesto" size="md">
+            <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Nueva Configuración de Impuesto" size="md">
                 <form onSubmit={handleSave}>
-                    <FormField label="Nombre Descriptivo" required>
-                        <input 
-                            className="form-control"
-                            value={form.name}
-                            onChange={(e) => setForm({...form, name: e.target.value})}
-                            placeholder="Ej: ICA Bogotá - Comercial"
-                            required
-                        />
-                    </FormField>
+                    <FormField
+                        label="Nombre Descriptivo"
+                        name="name"
+                        value={form.name}
+                        onChange={(e) => setForm({...form, name: e.target.value})}
+                        placeholder="Ej: ICA Bogotá - Comercial"
+                        required
+                    />
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                        <FormField label="Tipo de Impuesto" required>
-                            <select 
-                                className="form-control"
-                                value={form.type}
-                                onChange={(e) => setForm({...form, type: e.target.value})}
-                            >
-                                <option value="ICA">ICA (Municipal)</option>
-                                <option value="AUTORETENCION_RENTA">Autorretención Especial</option>
-                            </select>
-                        </FormField>
+                        <FormField
+                            label="Tipo de Impuesto"
+                            name="type"
+                            type="select"
+                            value={form.type}
+                            onChange={(e) => setForm({...form, type: e.target.value})}
+                            options={[
+                                { value: 'ICA', label: 'ICA (Municipal)' },
+                                { value: 'AUTORETENCION_RENTA', label: 'Autorretención Especial' }
+                            ]}
+                            required
+                        />
 
-                        <FormField label="Ciudad (Solo para ICA)">
-                            <select 
-                                className="form-control"
-                                value={form.city_id}
-                                onChange={(e) => setForm({...form, city_id: e.target.value})}
-                                disabled={form.type !== 'ICA'}
-                                required={form.type === 'ICA'}
-                            >
-                                <option value="">Seleccione ciudad...</option>
-                                {cities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                            </select>
-                        </FormField>
+                        <FormField
+                            label="Ciudad (Solo para ICA)"
+                            name="city_id"
+                            type="select"
+                            value={form.city_id}
+                            onChange={(e) => setForm({...form, city_id: e.target.value})}
+                            disabled={form.type !== 'ICA'}
+                            required={form.type === 'ICA'}
+                            placeholder="Seleccione ciudad..."
+                            options={cities.map(c => ({ value: c.id, label: c.name }))}
+                        />
                     </div>
 
-                    <FormField label="Tarifa Decimal (ej: 11.04 x 1000 = 0.01104)" required>
-                        <div style={{ position: 'relative' }}>
-                            <input 
-                                type="number"
-                                step="0.00001"
-                                className="form-control"
-                                value={form.rate}
-                                onChange={(e) => setForm({...form, rate: e.target.value})}
-                                placeholder="0.01104"
-                                required
-                            />
-                            <div style={{ position: 'absolute', right: '10px', top: '10px', color: '#6b6b7b', fontSize: '0.8rem' }}>
-                                = {(parseFloat(form.rate) * 100 || 0).toFixed(3)}%
-                            </div>
-                        </div>
-                    </FormField>
+                    <FormField
+                        label="Tarifa Decimal (ej: 11.04 x 1000 = 0.01104)"
+                        name="rate"
+                        type="number"
+                        value={form.rate}
+                        onChange={(e) => setForm({...form, rate: e.target.value})}
+                        placeholder="0.01104"
+                        required
+                    />
+                    <div style={{ fontSize: '0.8rem', color: '#6b6b7b', marginTop: '-0.5rem', marginBottom: '1rem', textAlign: 'right' }}>
+                        = {(parseFloat(form.rate) * 100 || 0).toFixed(3)}%
+                    </div>
 
-                    <FormField label="Cuenta Contable DÉBITO (Gasto/Activo)" required>
-                        <select 
-                            className="form-control"
-                            value={form.puc_account_debit}
-                            onChange={(e) => setForm({...form, puc_account_debit: e.target.value})}
-                            required
-                        >
-                            <option value="">Seleccione cuenta...</option>
-                            {accounts.map(a => <option key={a.id} value={a.id}>{a.code} - {a.name}</option>)}
-                        </select>
-                    </FormField>
+                    <FormField
+                        label="Cuenta Contable DÉBITO (Gasto/Activo)"
+                        name="puc_account_debit"
+                        type="select"
+                        value={form.puc_account_debit}
+                        onChange={(e) => setForm({...form, puc_account_debit: e.target.value})}
+                        required
+                        placeholder="Seleccione cuenta..."
+                        options={accounts.map(a => ({ value: a.id, label: `${a.code} - ${a.name}` }))}
+                    />
 
-                    <FormField label="Cuenta Contable CRÉDITO (Pasivo/Anticipo)" required>
-                        <select 
-                            className="form-control"
-                            value={form.puc_account_credit}
-                            onChange={(e) => setForm({...form, puc_account_credit: e.target.value})}
-                            required
-                        >
-                            <option value="">Seleccione cuenta...</option>
-                            {accounts.map(a => <option key={a.id} value={a.id}>{a.code} - {a.name}</option>)}
-                        </select>
-                    </FormField>
+                    <FormField
+                        label="Cuenta Contable CRÉDITO (Pasivo/Anticipo)"
+                        name="puc_account_credit"
+                        type="select"
+                        value={form.puc_account_credit}
+                        onChange={(e) => setForm({...form, puc_account_credit: e.target.value})}
+                        required
+                        placeholder="Seleccione cuenta..."
+                        options={accounts.map(a => ({ value: a.id, label: `${a.code} - ${a.name}` }))}
+                    />
 
                     <div style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
                         <Button variant="secondary" onClick={() => setShowModal(false)}>Cancelar</Button>

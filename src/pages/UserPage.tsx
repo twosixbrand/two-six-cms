@@ -140,7 +140,7 @@ const UserPage = () => {
       {error && <p className="error-message">{error}</p>}
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-        <SearchInput value={search} onChange={setSearch} placeholder="Buscar por nombre, email o login..." />
+        <SearchInput id="user-search" value={search} onChange={setSearch} placeholder="Buscar por nombre, email o login..." />
         <Button variant="primary" icon={<FiPlus />} onClick={openCreateModal}>Crear Usuario</Button>
       </div>
 
@@ -153,8 +153,8 @@ const UserPage = () => {
           emptyMessage="No hay usuarios registrados"
           actions={(row) => (
             <>
-              <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} />
-              <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} />
+              <Button variant="edit" size="sm" icon={<FiEdit2 />} onClick={() => openEditModal(row)} aria-label={`Editar usuario ${row.name}`} />
+              <Button variant="destructive" size="sm" icon={<FiTrash2 />} onClick={() => handleDelete(row)} aria-label={`Eliminar usuario ${row.name}`} />
             </>
           )}
         />

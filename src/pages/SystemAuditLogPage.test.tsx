@@ -1,177 +1,104 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import SystemAuditLogPage from './SystemAuditLogPage';
+import * as accountingApi from '../services/accountingApi';
 
-vi.mock('sweetalert2', () => ({ default: { fire: vi.fn().mockResolvedValue({ isConfirmed: false }) } }));
-vi.mock('../services/errorApi', () => ({ logError: vi.fn() }));
+vi.mock('../services/accountingApi');
+vi.mock('../services/errorApi');
 
 const mockLogs = [
-    {
-        id: '1',
-        tableName: 'Product',
-        recordId: '42',
-        action: 'UPDATE',
-        userId: 5,
-        ipAddress: null,
-        createdAt: '2026-05-01T00:00:00.000Z',
-        oldValues: { name: 'Old Name' },
-        newValues: { name: 'New Name' },
-    },
-    {
-        id: '2',
-        tableName: 'Order',
-        recordId: '100',
-        action: 'CREATE',
-        userId: null,
-        ipAddress: null,
-        createdAt: '2026-04-30T12:00:00.000Z',
-        oldValues: null,
-        newValues: { id: 100, status: 'PENDING' },
-    },
-    {
-        id: '3',
-        tableName: 'Customer',
-        recordId: '7',
-        action: 'DELETE',
-        userId: 3,
-        ipAddress: '192.168.1.1',
-        createdAt: '2026-04-29T08:00:00.000Z',
-        oldValues: { id: 7, name: 'Deleted Customer' },
-        newValues: null,
-    },
+  {
+    id: 1,
+    createdAt: '2023-01-01T10:00:00Z',
+    action: 'CREATE',
+    tableName: 'Product',
+    recordId: '101',
+    userId: 1,
+    ipAddress: '127.0.0.1',
+    oldValues: null,
+    newValues: { name: 'New Product' }
+  },
+  {
+    id: 2,
+    createdAt: '2023-01-01T11:00:00Z',
+    action: 'UPDATE',
+    tableName: 'Order',
+    recordId: '202',
+    userId: 2,
+    ipAddress: '127.0.0.1',
+    oldValues: { status: 'PENDING' },
+    newValues: { status: 'COMPLETED' }
+  }
 ];
 
-describe('SystemAuditLogPage', () => {
-    beforeEach(() => {
-        vi.restoreAllMocks();
-        global.fetch = vi.fn().mockResolvedValue({
-            ok: true,
-            status: 200,
-            json: async () => mockLogs,
-        }) as any;
-    });
+describe('SystemAuditLogPage Integration', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    (accountingApi.getSystemAuditLog as any).mockResolvedValue(mockLogs);
+  });
 
-    const renderPage = () => render(
-        <BrowserRouter>
-            <SystemAuditLogPage />
-        </BrowserRouter>
+  const renderPage = () =>
+    render(
+      <BrowserRouter>
+        <SystemAuditLogPage />
+      </BrowserRouter>,
     );
 
-    it('renders the page title', async () => {
-        renderPage();
-        await waitFor(() => {
-            expect(screen.getByText(/Auditoría Global/i)).toBeInTheDocument();
-        });
+  it('renders list of audit logs', async () => {
+    renderPage();
+    expect(await screen.findByText('Product')).toBeInTheDocument();
+    expect(screen.getByText('Order')).toBeInTheDocument();
+    // Be specific to avoid matching select options
+    expect(screen.getAllByText('CREATE')).not.toHaveLength(0);
+    expect(screen.getAllByText('UPDATE')).not.toHaveLength(0);
+  });
+
+  it('filters audit logs', async () => {
+    renderPage();
+    await screen.findByText('Product');
+    
+    // Change entity filter
+    const entitySelect = screen.getByLabelText(/Tabla \/ Entidad/i);
+    fireEvent.change(entitySelect, { target: { value: 'Product' } });
+    
+    const filterBtn = screen.getByLabelText(/Filtrar Auditoría/i);
+    fireEvent.click(filterBtn);
+    
+    await waitFor(() => {
+      expect(accountingApi.getSystemAuditLog).toHaveBeenCalledWith(expect.objectContaining({
+        tableName: 'Product'
+      }));
     });
+  });
 
-    it('renders filter controls', async () => {
-        renderPage();
-        await waitFor(() => {
-            expect(screen.getByText(/Tabla \/ Entidad/i)).toBeInTheDocument();
-            expect(screen.getByText(/Acción/i)).toBeInTheDocument();
-            expect(screen.getByText(/Desde/i)).toBeInTheDocument();
-            expect(screen.getByText(/Hasta/i)).toBeInTheDocument();
-        });
+  it('expands and hides row details', async () => {
+    renderPage();
+    await screen.findByText('Product');
+    
+    const viewBtn = screen.getByLabelText(/Ver detalles log 1/i);
+    fireEvent.click(viewBtn);
+    
+    expect(await screen.findByText(/"name": "New Product"/i)).toBeInTheDocument();
+    
+    const hideBtn = screen.getByLabelText(/Ocultar detalles log 1/i);
+    fireEvent.click(hideBtn);
+    
+    await waitFor(() => {
+      expect(screen.queryByText(/"name": "New Product"/i)).not.toBeInTheDocument();
     });
+  });
 
-    it('renders audit log entries after loading', async () => {
-        renderPage();
-        await waitFor(() => {
-            expect(screen.getByText('Product')).toBeInTheDocument();
-            expect(screen.getByText('Order')).toBeInTheDocument();
-            expect(screen.getByText('Customer')).toBeInTheDocument();
-        });
-    });
+  it('handles empty log state', async () => {
+    (accountingApi.getSystemAuditLog as any).mockResolvedValue([]);
+    renderPage();
+    expect(await screen.findByText(/No hay registros de auditoria/i)).toBeInTheDocument();
+  });
 
-    it('displays action badges with correct text', async () => {
-        renderPage();
-        await waitFor(() => {
-            expect(screen.getByText('UPDATE')).toBeInTheDocument();
-            expect(screen.getByText('CREATE')).toBeInTheDocument();
-            expect(screen.getByText('DELETE')).toBeInTheDocument();
-        });
-    });
-
-    it('displays record IDs', async () => {
-        renderPage();
-        await waitFor(() => {
-            expect(screen.getByText('42')).toBeInTheDocument();
-            expect(screen.getByText('100')).toBeInTheDocument();
-            expect(screen.getByText('7')).toBeInTheDocument();
-        });
-    });
-
-    it('shows "Sistema" when userId is null', async () => {
-        renderPage();
-        await waitFor(() => {
-            const cells = screen.getAllByText(/Sistema/);
-            expect(cells.length).toBeGreaterThanOrEqual(1);
-        });
-    });
-
-    it('shows user ID when userId is provided', async () => {
-        renderPage();
-        await waitFor(() => {
-            expect(screen.getByText(/ID: 5/)).toBeInTheDocument();
-        });
-    });
-
-    it('shows "No hay registros" when API returns empty array', async () => {
-        global.fetch = vi.fn().mockResolvedValue({
-            ok: true, status: 200,
-            json: async () => [],
-        }) as any;
-
-        renderPage();
-        await waitFor(() => {
-            expect(screen.getByText(/No hay registros/i)).toBeInTheDocument();
-        });
-    });
-
-    it('shows error message when API fails', async () => {
-        global.fetch = vi.fn().mockRejectedValue(new Error('Network error')) as any;
-
-        renderPage();
-        await waitFor(() => {
-            const errorEl = screen.queryByText(/Error/i) || screen.queryByText(/error/i);
-            // The page should show something other than loading
-            const loadingGone = screen.queryByText(/Cargando/i);
-            expect(loadingGone).toBeNull();
-        });
-    });
-
-    it('calls fetch with filter params when Buscar is clicked', async () => {
-        const user = userEvent.setup();
-        renderPage();
-
-        await waitFor(() => {
-            expect(screen.getByText('Product')).toBeInTheDocument();
-        });
-
-        const filtrarBtn = screen.getByText(/Filtrar/i);
-        await user.click(filtrarBtn);
-
-        expect(global.fetch).toHaveBeenCalled();
-    });
-
-    it('expands row details when detail button is clicked', async () => {
-        const user = userEvent.setup();
-        renderPage();
-
-        await waitFor(() => {
-            expect(screen.getByText('Product')).toBeInTheDocument();
-        });
-
-        // Find and click the first "Ver" expand button
-        const verButtons = screen.getAllByText(/^Ver$/);
-        expect(verButtons.length).toBeGreaterThan(0);
-        await user.click(verButtons[0]);
-
-        await waitFor(() => {
-            expect(screen.getByText(/Valor Anterior/i)).toBeInTheDocument();
-        });
-    });
+  it('handles API errors gracefully', async () => {
+    (accountingApi.getSystemAuditLog as any).mockRejectedValue(new Error('API_LOAD_ERROR'));
+    renderPage();
+    expect(await screen.findByText(/API_LOAD_ERROR/i)).toBeInTheDocument();
+  });
 });
