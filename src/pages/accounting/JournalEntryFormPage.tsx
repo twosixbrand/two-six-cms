@@ -161,6 +161,7 @@ const JournalEntryFormPage = () => {
                                             onFocus={() => setShowDropdown(index)}
                                             placeholder="Buscar cuenta..."
                                             style={inputStyle}
+                                            data-testid={`account-search-${index}`}
                                         />
                                         {showDropdown === index && (
                                             <div style={{
@@ -186,7 +187,12 @@ const JournalEntryFormPage = () => {
                                             </div>
                                         )}
                                     </td>
-                                    <td style={{ color: '#a0a0b0', fontSize: '13px', padding: '0.5rem 1rem', borderBottom: '1px solid #1f1f2a' }}>{line.account_name || '-'}</td>
+                                    <td 
+                                        style={{ color: '#a0a0b0', fontSize: '13px', padding: '0.5rem 1rem', borderBottom: '1px solid #1f1f2a' }}
+                                        data-testid={`account-name-${index}`}
+                                    >
+                                        {line.account_name || '-'}
+                                    </td>
                                     <td style={{ padding: '0.5rem 1rem', borderBottom: '1px solid #1f1f2a' }}>
                                         <input
                                             type="number"
@@ -195,6 +201,7 @@ const JournalEntryFormPage = () => {
                                             placeholder="0"
                                             min="0"
                                             style={{ ...inputStyle, textAlign: 'right' }}
+                                            data-testid={`debit-input-${index}`}
                                         />
                                     </td>
                                     <td style={{ padding: '0.5rem 1rem', borderBottom: '1px solid #1f1f2a' }}>
@@ -205,6 +212,7 @@ const JournalEntryFormPage = () => {
                                             placeholder="0"
                                             min="0"
                                             style={{ ...inputStyle, textAlign: 'right' }}
+                                            data-testid={`credit-input-${index}`}
                                         />
                                     </td>
                                     <td style={{ padding: '0.5rem 1rem', borderBottom: '1px solid #1f1f2a' }}>
@@ -246,7 +254,12 @@ const JournalEntryFormPage = () => {
             </div>
 
             <div style={{ marginTop: '16px', display: 'flex', gap: '10px' }}>
-                <Button variant="secondary" icon={<FiPlus />} onClick={() => setLines([...lines, emptyLine()])}>
+                <Button 
+                    variant="secondary" 
+                    icon={<FiPlus />} 
+                    onClick={() => setLines([...lines, emptyLine()])}
+                    data-testid="add-line-button"
+                >
                     Agregar Linea
                 </Button>
                 <Button
@@ -255,11 +268,12 @@ const JournalEntryFormPage = () => {
                     onClick={handleSave}
                     disabled={saving || !isBalanced || !description || !date}
                     loading={saving}
+                    data-testid="save-entry-button"
                 >
                     {saving ? 'Guardando...' : 'Guardar Asiento'}
                 </Button>
                 <div style={{ marginLeft: 'auto' }}>
-                    <Button variant="ghost" onClick={() => navigate('/accounting/journal')}>
+                    <Button variant="ghost" onClick={() => navigate('/accounting/journal')} data-testid="cancel-button">
                         Cancelar
                     </Button>
                 </div>

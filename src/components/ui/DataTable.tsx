@@ -19,6 +19,7 @@ interface DataTableProps {
   actions?: (row: any) => React.ReactNode;
   pageSize?: number;
   onPageSizeChange?: (newSize: number) => void;
+  rowTestId?: string;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -30,6 +31,7 @@ const DataTable: React.FC<DataTableProps> = ({
   actions,
   pageSize = 15,
   onPageSizeChange,
+  rowTestId,
 }) => {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -180,6 +182,7 @@ const DataTable: React.FC<DataTableProps> = ({
                 onClick={onRowClick ? () => onRowClick(row) : undefined}
                 onMouseEnter={() => setHoveredRow(rowIdx)}
                 onMouseLeave={() => setHoveredRow(null)}
+                data-testid={rowTestId}
                 style={{
                   cursor: onRowClick ? 'pointer' : 'default',
                 }}

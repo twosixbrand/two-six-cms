@@ -153,6 +153,7 @@ const ExpenseFormPage = () => {
                             onFocus={() => setShowAccountDropdown(true)}
                             placeholder="Buscar cuenta PUC..."
                             style={darkInputStyle}
+                            data-testid="account-search-input"
                         />
                         {showAccountDropdown && (
                             <div style={{
@@ -242,7 +243,7 @@ const ExpenseFormPage = () => {
                         <div style={{
                             ...darkInputStyle, background: '#12121a', fontWeight: 700, fontSize: '16px',
                             display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
-                        }}>
+                        }} data-testid="total-value">
                             {formatCurrency(form.total)}
                         </div>
                         <span style={{ fontSize: '11px', color: '#6b6b7b' }}>Subtotal + IVA - Retencion</span>
@@ -285,6 +286,7 @@ const ExpenseFormPage = () => {
                         onClick={handleSave}
                         disabled={saving || !form.description || !form.subtotal}
                         loading={saving}
+                        data-testid="save-expense-button"
                     >
                         {saving ? 'Guardando...' : isEdit ? 'Actualizar Gasto' : 'Registrar Gasto'}
                     </Button>

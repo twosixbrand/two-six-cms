@@ -111,8 +111,8 @@ const ExogenaPage = () => {
                         options={Array.from({ length: 6 }, (_, i) => ({ value: currentYear - i, label: String(currentYear - i) }))}
                     />
                 </div>
-                <Button variant="primary" icon={<FiSearch />} onClick={handlePreview} disabled={loading} loading={loading}>Previsualizar</Button>
-                <Button variant="secondary" icon={<FiDownload />} onClick={handleGenerate} disabled={loading}>Generar Excel</Button>
+                <Button variant="primary" icon={<FiSearch />} onClick={handlePreview} disabled={loading} loading={loading} data-testid="preview-button">Previsualizar</Button>
+                <Button variant="secondary" icon={<FiDownload />} onClick={handleGenerate} disabled={loading} data-testid="generate-button">Generar Excel</Button>
             </div>
 
             {error && <p style={{ color: '#f87171', fontSize: '13px', fontWeight: 600 }}>{error}</p>}
@@ -134,9 +134,9 @@ const ExogenaPage = () => {
                             <div key={i} style={{
                                 background: '#1a1a24', borderRadius: '12px', padding: '16px',
                                 border: '1px solid #2a2a35', borderLeft: `4px solid ${card.color}`,
-                            }}>
+                            }} data-testid={`summary-card-${i}`}>
                                 <div style={{ fontSize: '11px', color: '#6b6b7b', fontWeight: 600, marginBottom: '4px' }}>{card.label}</div>
-                                <div style={{ fontSize: '18px', fontWeight: 700, color: card.color }}>
+                                <div style={{ fontSize: '18px', fontWeight: 700, color: card.color }} data-testid={`summary-value-${i}`}>
                                     {card.isCurrency ? formatCurrency(card.value) : card.value}
                                 </div>
                             </div>
@@ -145,11 +145,11 @@ const ExogenaPage = () => {
 
                     {/* Tabs */}
                     <div style={{ borderBottom: '1px solid #2a2a35', marginBottom: '20px', display: 'flex', gap: '4px' }}>
-                        <button style={tabStyle(activeTab === '1001')} onClick={() => setActiveTab('1001')}>Formato 1001</button>
-                        <button style={tabStyle(activeTab === '1005')} onClick={() => setActiveTab('1005')}>Formato 1005</button>
-                        <button style={tabStyle(activeTab === '1006')} onClick={() => setActiveTab('1006')}>Formato 1006</button>
-                        <button style={tabStyle(activeTab === '1007')} onClick={() => setActiveTab('1007')}>Formato 1007</button>
-                        <button style={tabStyle(activeTab === 'DETALLE')} onClick={() => setActiveTab('DETALLE')}>Movimientos por Tercero</button>
+                        <button style={tabStyle(activeTab === '1001')} onClick={() => setActiveTab('1001')} data-testid="tab-1001">Formato 1001</button>
+                        <button style={tabStyle(activeTab === '1005')} onClick={() => setActiveTab('1005')} data-testid="tab-1005">Formato 1005</button>
+                        <button style={tabStyle(activeTab === '1006')} onClick={() => setActiveTab('1006')} data-testid="tab-1006">Formato 1006</button>
+                        <button style={tabStyle(activeTab === '1007')} onClick={() => setActiveTab('1007')} data-testid="tab-1007">Formato 1007</button>
+                        <button style={tabStyle(activeTab === 'DETALLE')} onClick={() => setActiveTab('DETALLE')} data-testid="tab-detalle">Movimientos por Tercero</button>
                     </div>
 
                     {/* Tab Content */}
@@ -294,7 +294,7 @@ const ExogenaPage = () => {
                                         onChange={e => setNit(e.target.value)}
                                     />
                                 </div>
-                                <Button variant="secondary" icon={<FiSearch />} onClick={handleSearchThirdParty} disabled={searching || !nit}>
+                                <Button variant="secondary" icon={<FiSearch />} onClick={handleSearchThirdParty} disabled={searching || !nit} data-testid="search-third-party-button">
                                     {searching ? 'Buscando...' : 'Buscar Movimientos'}
                                 </Button>
                             </div>

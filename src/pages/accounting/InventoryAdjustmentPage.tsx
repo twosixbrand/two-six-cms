@@ -120,27 +120,25 @@ const InventoryAdjustmentPage = () => {
                 />
             )}
 
-            <Modal show={showModal} onClose={() => setShowModal(false)} title="Crear Ajuste de Inventario" size="lg">
+            <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Crear Ajuste de Inventario" size="lg">
                 <form onSubmit={handleSave}>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                        <FormField label="Motivo del Ajuste" required>
-                            <select 
-                                className="form-control"
-                                value={form.reason}
-                                onChange={(e) => setForm({...form, reason: e.target.value})}
-                                required
-                            >
-                                {reasons.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
-                            </select>
-                        </FormField>
-                        <FormField label="Descripción / Observación">
-                            <input 
-                                className="form-control"
-                                value={form.description}
-                                onChange={(e) => setForm({...form, description: e.target.value})}
-                                placeholder="Ej: Influencer @pau_fitness, Merma por daño en costura"
-                            />
-                        </FormField>
+                        <FormField 
+                            label="Motivo del Ajuste" 
+                            name="reason"
+                            type="select"
+                            value={form.reason}
+                            onChange={(e) => setForm({...form, reason: e.target.value})}
+                            options={reasons}
+                            required 
+                        />
+                        <FormField 
+                            label="Descripción / Observación"
+                            name="description"
+                            value={form.description}
+                            onChange={(e) => setForm({...form, description: e.target.value})}
+                            placeholder="Ej: Influencer @pau_fitness, Merma por daño en costura"
+                        />
                     </div>
 
                     <div style={{ marginTop: '20px' }}>

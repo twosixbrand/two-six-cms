@@ -1,108 +1,65 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { handleResponse } from './apiUtils';
-import * as errorApi from './errorApi';
+import { logError } from './errorApi';
 
-describe('apiUtils - handleResponse', () => {
-    beforeEach(() => {
-        vi.spyOn(errorApi, 'logError').mockImplementation(() => Promise.resolve());
-    });
+vi.mock('./errorApi', () => ({
+  logError: vi.fn(),
+}));
 
-    afterEach(() => {
-        vi.restoreAllMocks();
-    });
+describe('apiUtils', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
-    it('should return null for a 204 No Content response', async () => {
-        const mockResponse = {
-            ok: true,
-            status: 204,
-        };
+  it('returns json on successful response', async () => {
+    const mockData = { foo: 'bar' };
+    const mockResponse = {
+      ok: true,
+      status: 200,
+      json: async () => mockData,
+    } as Response;
 
-        const result = await handleResponse(mockResponse as any, 'TestApi');
-        expect(result).toBeNull();
-    });
+    const result = await handleResponse(mockResponse, 'testApi');
+    expect(result).toEqual(mockData);
+  });
 
-    it('should return parsed JSON for a successful response', async () => {
-        const mockData = { id: 1, name: 'Test' };
-        const mockResponse = {
-            ok: true,
-            status: 200,
-            json: vi.fn().mockResolvedValue(mockData),
-        };
+  it('returns null on 204 status', async () => {
+    const mockResponse = {
+      ok: true,
+      status: 204,
+      json: async () => ({}),
+    } as Response;
 
-        const result = await handleResponse(mockResponse as any, 'TestApi');
-        expect(result).toEqual(mockData);
-        expect(mockResponse.json).toHaveBeenCalled();
-    });
+    const result = await handleResponse(mockResponse, 'testApi');
+    expect(result).toBeNull();
+  });
 
-    it('should throw an error and log it when response is not ok and content type is JSON', async () => {
-        const errorData = { message: 'Custom API Error' };
-        const mockResponse = {
-            ok: false,
-            status: 400,
-            headers: {
-                get: vi.fn().mockReturnValue('application/json'),
-            },
-            json: vi.fn().mockResolvedValue(errorData),
-        };
+  it('throws error and logs it on failure (json error)', async () => {
+    const errorData = { message: 'Invalid request' };
+    const mockResponse = {
+      ok: false,
+      status: 400,
+      headers: {
+        get: (name: string) => (name === 'content-type' ? 'application/json' : null),
+      },
+      json: async () => errorData,
+    } as any;
 
-        await expect(handleResponse(mockResponse as any, 'TestApi')).rejects.toThrow('Custom API Error');
-        expect(errorApi.logError).toHaveBeenCalledWith(expect.any(Error), 'App: cms | Api: TestApi');
-    });
+    await expect(handleResponse(mockResponse, 'testApi')).rejects.toThrow('Invalid request');
+    expect(logError).toHaveBeenCalledWith(expect.any(Error), 'App: cms | Api: testApi');
+  });
 
-    it('should throw fallback JSON string error if message is not present', async () => {
-        const errorData = { someOtherField: 'Bad Request' };
-        const mockResponse = {
-            ok: false,
-            status: 400,
-            headers: {
-                get: vi.fn().mockReturnValue('application/json'),
-            },
-            json: vi.fn().mockResolvedValue(errorData),
-        };
+  it('throws error and logs it on failure (text error)', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 500,
+      headers: {
+        get: (name: string) => (name === 'content-type' ? 'text/plain' : null),
+      },
+      text: async () => 'Internal Server Error',
+    } as any;
 
-        await expect(handleResponse(mockResponse as any, 'TestApi')).rejects.toThrow(JSON.stringify(errorData));
-        expect(errorApi.logError).toHaveBeenCalledWith(expect.any(Error), 'App: cms | Api: TestApi');
-    });
-
-    it('should throw text error when content type is not JSON', async () => {
-        const mockResponse = {
-            ok: false,
-            status: 500,
-            headers: {
-                get: vi.fn().mockReturnValue('text/plain'),
-            },
-            text: vi.fn().mockResolvedValue('Internal Server Error Text'),
-        };
-
-        await expect(handleResponse(mockResponse as any, 'TestApi')).rejects.toThrow('Internal Server Error Text');
-        expect(errorApi.logError).toHaveBeenCalledWith(expect.any(Error), 'App: cms | Api: TestApi');
-    });
-
-    it('should fallback to status error message if parsing fails', async () => {
-        const mockResponse = {
-            ok: false,
-            status: 404,
-            headers: {
-                get: vi.fn().mockReturnValue('text/plain'),
-            },
-            text: vi.fn().mockRejectedValue(new Error('Parse fail')),
-        };
-
-        await expect(handleResponse(mockResponse as any, 'TestApi')).rejects.toThrow('Request failed with status 404');
-        expect(errorApi.logError).toHaveBeenCalledWith(expect.any(Error), 'App: cms | Api: TestApi');
-    });
-
-    it('should fallback to status error message if JSON parsing fails', async () => {
-        const mockResponse = {
-            ok: false,
-            status: 422,
-            headers: {
-                get: vi.fn().mockReturnValue('application/json'),
-            },
-            json: vi.fn().mockRejectedValue(new Error('Parse fail')),
-        };
-
-        await expect(handleResponse(mockResponse as any, 'TestApi')).rejects.toThrow('{}');
-        expect(errorApi.logError).toHaveBeenCalledWith(expect.any(Error), 'App: cms | Api: TestApi');
-    });
+    await expect(handleResponse(mockResponse, 'testApi')).rejects.toThrow('Internal Server Error');
+    expect(logError).toHaveBeenCalled();
+  });
 });

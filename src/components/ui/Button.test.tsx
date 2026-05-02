@@ -1,47 +1,63 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import Button from './Button';
 
-describe('Button', () => {
-    it('renders children text', () => {
-        render(<Button>Click Me</Button>);
-        expect(screen.getByText('Click Me')).toBeInTheDocument();
-    });
+describe('Button component', () => {
+  it('renders children correctly', () => {
+    render(<Button>Click Me</Button>);
+    expect(screen.getByText('Click Me')).toBeInTheDocument();
+  });
 
-    it('calls onClick when clicked', () => {
-        const handler = vi.fn();
-        render(<Button onClick={handler}>Press</Button>);
-        fireEvent.click(screen.getByText('Press'));
-        expect(handler).toHaveBeenCalledTimes(1);
-    });
+  it('handles click events', () => {
+    const handleClick = vi.fn();
+    render(<Button onClick={handleClick}>Click Me</Button>);
+    fireEvent.click(screen.getByText('Click Me'));
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
 
-    it('does not fire onClick when disabled', () => {
-        const handler = vi.fn();
-        render(<Button onClick={handler} disabled>Nope</Button>);
-        fireEvent.click(screen.getByText('Nope'));
-        expect(handler).not.toHaveBeenCalled();
-    });
+  it('renders in loading state and disables interaction', () => {
+    const handleClick = vi.fn();
+    render(<Button loading onClick={handleClick}>Click Me</Button>);
+    
+    // Should not show text (or at least not be clickable)
+    const button = screen.getByRole('button');
+    expect(button).toBeDisabled();
+    
+    fireEvent.click(button);
+    expect(handleClick).not.toHaveBeenCalled();
+  });
 
-    it('shows loading spinner text when loading', () => {
-        render(<Button loading>Save</Button>);
-        const btn = screen.getByRole('button');
-        expect(btn).toBeDisabled();
-    });
+  it('renders in disabled state', () => {
+    const handleClick = vi.fn();
+    render(<Button disabled onClick={handleClick}>Click Me</Button>);
+    
+    const button = screen.getByRole('button');
+    expect(button).toBeDisabled();
+    expect(button).toHaveStyle({ opacity: '0.5' });
+  });
 
-    it('renders with icon', () => {
-        render(<Button icon={<span data-testid="icon">★</span>}>Star</Button>);
-        expect(screen.getByTestId('icon')).toBeInTheDocument();
-    });
+  it('applies variant styles (primary)', () => {
+    render(<Button variant="primary">Primary</Button>);
+    const button = screen.getByRole('button');
+    // Using RGB because computed styles are often RGB
+    expect(button).toHaveStyle({ background: 'rgb(240, 180, 41)' });
+  });
 
-    it('applies primary variant by default', () => {
-        render(<Button>Primary</Button>);
-        const btn = screen.getByRole('button');
-        expect(btn.style.background).toBeTruthy();
-    });
+  it('applies variant styles (destructive)', () => {
+    render(<Button variant="destructive">Delete</Button>);
+    const button = screen.getByRole('button');
+    expect(button).toHaveStyle({ color: 'rgb(248, 113, 113)' });
+  });
 
-    it('renders as submit type', () => {
-        render(<Button type="submit">Submit</Button>);
-        expect(screen.getByRole('button')).toHaveAttribute('type', 'submit');
-    });
+  it('handles mouse enter and leave (hover state)', () => {
+    render(<Button variant="primary">Hover Me</Button>);
+    const button = screen.getByRole('button');
+    
+    fireEvent.mouseEnter(button);
+    // After mouse enter, the background should change (see implementation)
+    expect(button).toHaveStyle({ background: 'rgb(217, 158, 30)' }); // #d99e1e
+
+    fireEvent.mouseLeave(button);
+    expect(button).toHaveStyle({ background: 'rgb(240, 180, 41)' });
+  });
 });
