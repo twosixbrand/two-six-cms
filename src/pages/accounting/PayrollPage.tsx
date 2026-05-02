@@ -137,11 +137,13 @@ const EmployeeFormModal = ({
                     <div>
                         <label style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Número de Documento *</label>
                         <input style={inputStyle} required value={form.document_number}
+                            aria-label="Número de Documento"
                             onChange={(e) => setForm({ ...form, document_number: e.target.value })} />
                     </div>
                     <div>
                         <label style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Tipo de Identificación</label>
                         <select style={inputStyle} value={form.id_identification_type}
+                            aria-label="Tipo de Identificación"
                             onChange={(e) => setForm({ ...form, id_identification_type: Number(e.target.value) })}>
                             <option value={1}>Cédula de Ciudadanía</option>
                             <option value={2}>Cédula de Extranjería</option>
@@ -152,6 +154,7 @@ const EmployeeFormModal = ({
                     <div style={{ gridColumn: '1 / -1' }}>
                         <label style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Nombre Completo del Trabajador *</label>
                         <input style={inputStyle} required value={form.name}
+                            aria-label="Nombre Completo"
                             onChange={(e) => setForm({ ...form, name: e.target.value })} />
                     </div>
 
@@ -164,11 +167,13 @@ const EmployeeFormModal = ({
                     <div>
                         <label style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Cargo / Función *</label>
                         <input style={inputStyle} required value={form.position}
+                            aria-label="Cargo"
                             onChange={(e) => setForm({ ...form, position: e.target.value })} />
                     </div>
                     <div>
                         <label style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Tipo de Contrato</label>
                         <select style={inputStyle} value={form.contract_type}
+                            aria-label="Tipo de Contrato"
                             onChange={(e) => setForm({ ...form, contract_type: e.target.value })}>
                             <option value="INDEFINIDO">Término Indefinido</option>
                             <option value="FIJO">Término Fijo</option>
@@ -179,11 +184,13 @@ const EmployeeFormModal = ({
                     <div>
                         <label style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Fecha de Ingreso *</label>
                         <input style={inputStyle} type="text" required value={form.hire_date} placeholder="YYYY-MM-DD" maxLength={10}
+                            aria-label="Fecha de Ingreso"
                             onChange={(e) => setForm({ ...form, hire_date: e.target.value })} />
                     </div>
                     <div>
                         <label style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Salario Base Mensual *</label>
                         <input style={inputStyle} type="number" required value={form.base_salary}
+                            aria-label="Salario Base"
                             onChange={(e) => setForm({ ...form, base_salary: Number(e.target.value) })} />
                     </div>
                     <div>
@@ -194,6 +201,7 @@ const EmployeeFormModal = ({
                     <div>
                         <label style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Nivel de Riesgo ARL</label>
                         <select style={inputStyle} value={form.arl_risk_level}
+                            aria-label="Nivel de Riesgo ARL"
                             onChange={(e) => setForm({ ...form, arl_risk_level: Number(e.target.value) })}>
                             <option value={1}>Clase I (Oficina) - 0.522%</option>
                             <option value={2}>Clase II (Ventas) - 1.044%</option>
@@ -211,6 +219,7 @@ const EmployeeFormModal = ({
 
                     <div style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px', padding: '8px', background: '#13131a', borderRadius: '6px' }}>
                         <input type="checkbox" checked={form.is_exonerated}
+                            aria-label="Exonerado de Aportes"
                             onChange={(e) => setForm({ ...form, is_exonerated: e.target.checked })} />
                         <div>
                             <label style={{ fontSize: '13px', fontWeight: 600, color: '#f1f1f3', display: 'block' }}>Exonerado de Aportes (Ley 1607)</label>
@@ -316,16 +325,19 @@ const PeriodFormModal = ({
                     <div>
                         <label style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Año</label>
                         <input style={inputStyle} type="number" value={form.year}
+                            aria-label="Año"
                             onChange={(e) => setForm({ ...form, year: Number(e.target.value) })} />
                     </div>
                     <div>
                         <label style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Mes</label>
                         <input style={inputStyle} type="number" min={1} max={12} value={form.month}
+                            aria-label="Mes"
                             onChange={(e) => setForm({ ...form, month: Number(e.target.value) })} />
                     </div>
                     <div style={{ gridColumn: '1 / -1' }}>
                         <label style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Tipo de Liquidación</label>
                         <select style={inputStyle} value={form.period_type}
+                            aria-label="Tipo de Liquidación"
                             onChange={(e) => setForm({ ...form, period_type: e.target.value })}>
                             <option value="MENSUAL">Mensual (30 días)</option>
                             <option value="QUINCENAL_1">Quincenal 1ra (1-15)</option>
@@ -335,11 +347,13 @@ const PeriodFormModal = ({
                     <div>
                         <label style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Fecha Inicio</label>
                         <input style={inputStyle} type="text" value={form.start_date} placeholder="YYYY-MM-DD" maxLength={10}
+                            aria-label="Fecha Inicio"
                             onChange={(e) => setForm({ ...form, start_date: e.target.value })} />
                     </div>
                     <div>
                         <label style={{ fontSize: '12px', fontWeight: 600, color: '#a0a0b0' }}>Fecha Fin</label>
                         <input style={inputStyle} type="text" value={form.end_date} placeholder="YYYY-MM-DD" maxLength={10}
+                            aria-label="Fecha Fin"
                             onChange={(e) => setForm({ ...form, end_date: e.target.value })} />
                     </div>
                 </div>
@@ -627,13 +641,13 @@ const PayrollPage = () => {
 
             {/* Tabs */}
             <div style={{ borderBottom: '1px solid #2a2a35', marginBottom: '24px', display: 'flex', gap: '4px' }}>
-                <button style={tabStyle(activeTab === 'employees')} onClick={() => setActiveTab('employees')}>
+                <button style={tabStyle(activeTab === 'employees')} onClick={() => setActiveTab('employees')} aria-label="Tab Trabajadores">
                     <FiUsers style={{ marginRight: '8px', verticalAlign: 'middle' }} /> Trabajadores
                 </button>
-                <button style={tabStyle(activeTab === 'periods')} onClick={() => setActiveTab('periods')}>
+                <button style={tabStyle(activeTab === 'periods')} onClick={() => setActiveTab('periods')} aria-label="Tab Liquidaciones">
                     <FiCalendar style={{ marginRight: '8px', verticalAlign: 'middle' }} /> Liquidaciones
                 </button>
-                <button style={tabStyle(activeTab === 'detail')} onClick={() => setActiveTab('detail')}>
+                <button style={tabStyle(activeTab === 'detail')} onClick={() => setActiveTab('detail')} aria-label="Tab Resumen Detallado">
                     <FiFileText style={{ marginRight: '8px', verticalAlign: 'middle' }} /> Resumen Detallado
                 </button>
             </div>
@@ -644,10 +658,10 @@ const PayrollPage = () => {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                         <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#f1f1f3' }}>Maestro de Trabajadores</h3>
                         <div style={{ display: 'flex', gap: '10px' }}>
-                            <Button variant="ghost" size="sm" icon={<FiRefreshCcw />} onClick={fetchEmployees}>
+                            <Button variant="ghost" size="sm" icon={<FiRefreshCcw />} onClick={fetchEmployees} aria-label="Actualizar Trabajadores">
                                 Actualizar
                             </Button>
-                            <Button variant="primary" icon={<FiPlus />} onClick={() => { setEditingEmployee(null); setShowEmployeeModal(true); }}>
+                            <Button variant="primary" icon={<FiPlus />} onClick={() => { setEditingEmployee(null); setShowEmployeeModal(true); }} aria-label="Registrar Trabajador">
                                 Registrar Trabajador
                             </Button>
                         </div>
@@ -664,6 +678,7 @@ const PayrollPage = () => {
                                 size="sm"
                                 icon={<FiEdit2 />}
                                 onClick={() => { setEditingEmployee(emp); setShowEmployeeModal(true); }}
+                                aria-label={`Editar Empleado ${emp.name}`}
                             >
                                 {''}
                             </Button>
@@ -678,10 +693,10 @@ const PayrollPage = () => {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                         <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#f1f1f3' }}>Historial de Períodos</h3>
                         <div style={{ display: 'flex', gap: '10px' }}>
-                            <Button variant="ghost" size="sm" icon={<FiRefreshCcw />} onClick={fetchPeriods}>
+                            <Button variant="ghost" size="sm" icon={<FiRefreshCcw />} onClick={fetchPeriods} aria-label="Actualizar Periodos">
                                 Actualizar
                             </Button>
-                            <Button variant="primary" icon={<FiPlus />} onClick={() => setShowPeriodModal(true)}>
+                            <Button variant="primary" icon={<FiPlus />} onClick={() => setShowPeriodModal(true)} aria-label="Abrir Nuevo Periodo">
                                 Abrir Nuevo Período
                             </Button>
                         </div>
@@ -694,16 +709,16 @@ const PayrollPage = () => {
                         emptyMessage="No se han abierto períodos de nómina."
                         actions={(p: any) => (
                             <div style={{ display: 'flex', gap: '8px' }}>
-                                <Button variant="ghost" size="sm" icon={<FiFileText />} onClick={() => handleViewDetail(p.id)}>
+                                <Button variant="ghost" size="sm" icon={<FiFileText />} onClick={() => handleViewDetail(p.id)} aria-label={`Ver Detalle Periodo ${p.id}`}>
                                     Ver Detalle
                                 </Button>
                                 {(p.status === 'DRAFT' || p.status === 'CALCULATED') && (
-                                    <Button variant="primary" size="sm" icon={<FiPlay />} onClick={() => handleCalculate(p.id)} disabled={loading}>
+                                    <Button variant="primary" size="sm" icon={<FiPlay />} onClick={() => handleCalculate(p.id)} disabled={loading} aria-label={`Liquidar Periodo ${p.id}`}>
                                         Liquidar
                                     </Button>
                                 )}
                                 {p.status === 'CALCULATED' && (
-                                    <Button variant="success" size="sm" icon={<FiCheckCircle />} onClick={() => handleApprove(p.id)} disabled={loading}>
+                                    <Button variant="success" size="sm" icon={<FiCheckCircle />} onClick={() => handleApprove(p.id)} disabled={loading} aria-label={`Aprobar Periodo ${p.id}`}>
                                         Aprobar
                                     </Button>
                                 )}

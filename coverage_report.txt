@@ -1,0 +1,2074 @@
+
+ RUN  v4.0.18 /Users/jmanrique/Documents/apps/two-six-cms
+      Coverage enabled with v8
+
+stderr | src/pages/pqr/index.test.tsx > PqrManagementPage > renders page title
+An update to PqrManagementPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PqrManagementPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+Not implemented: navigation to another Document
+ ❯ src/pages/accounting/InventoryAdjustmentPage.test.tsx (5 tests | 1 failed) 1992ms
+     ✓ renders correctly and loads data 207ms
+     ✓ opens and closes the modal 187ms
+     ✓ allows adding and removing items in the form 244ms
+     × submits correctly 1257ms
+     ✓ handles errors on submit 95ms
+ ✓ src/pages/accounting/WithholdingCertificatePage.test.tsx (5 tests) 2026ms
+     ✓ renders page header and displays certificates  872ms
+     ✓ filters certificates by year and concept  438ms
+     ✓ deletes a certificate  346ms
+ ✓ src/pages/ClothingColorPage.test.tsx (6 tests) 2125ms
+     ✓ renders list of clothing colors  336ms
+     ✓ filters by search term  480ms
+     ✓ allows editing a version and its SEO fields  537ms
+     ✓ allows creating a new version with contextual size selection  660ms
+ ✓ src/pages/pqr/index.test.tsx (13 tests) 2761ms
+     ✓ opens detail modal when card is clicked  590ms
+     ✓ filters PQRs by search term  358ms
+     ✓ shows "no results" when search yields nothing  322ms
+     ✓ calls updatePqrStatus when "Guardar Gestión" is clicked  335ms
+     ✓ closes modal when "Cerrar" is clicked  461ms
+ ✓ src/pages/OrderDetailPage.test.tsx (9 tests) 3070ms
+     ✓ allows updating order status  819ms
+     ✓ allows creating credit/debit notes with reasons  780ms
+     ✓ allows verifying status of individual notes  668ms
+ ✓ src/pages/consignment/ConsignmentWarehousePage.test.tsx (8 tests) 4386ms
+     ✓ renders page header and displays warehouses  482ms
+     ✓ filters warehouses by search input  575ms
+       ✓ opens modal and creates a warehouse  614ms
+       ✓ shows error if customer not selected  614ms
+       ✓ opens stock modal and switches to kardex  621ms
+       ✓ opens edit modal and updates warehouse  842ms
+       ✓ deletes a warehouse after confirmation  396ms
+ ✓ src/pages/accounting/ManualSaleRegularizationPage.test.tsx (4 tests) 4489ms
+     ✓ renders and allows creating a new receipt  1143ms
+     ✓ allows resuming from a pending receipt and selects product from catalog  396ms
+     ✓ allows adding and removing items  1625ms
+     ✓ completes the full flow and shows Step 3  1323ms
+stderr | src/pages/consignment/ConsignmentCycleCountPage.test.tsx > ConsignmentCycleCountPage Integration > Editor Flow > opens editor, saves progress and approves
+An empty string ("") was passed to the src attribute. This may cause the browser to download the whole page again over the network. To fix this, either do not render the element at all or pass null to src instead of an empty string.
+
+stderr | src/pages/consignment/ConsignmentReturnPage.test.tsx > ConsignmentReturnPage Integration > Actions > opens detail modal
+An empty string ("") was passed to the src attribute. This may cause the browser to download the whole page again over the network. To fix this, either do not render the element at all or pass null to src instead of an empty string.
+
+ ✓ src/pages/consignment/ConsignmentCycleCountPage.test.tsx (6 tests) 2604ms
+       ✓ opens editor, saves progress and approves  1157ms
+       ✓ opens merma modal and invoices merma  537ms
+ ✓ src/pages/consignment/ConsignmentReturnPage.test.tsx (6 tests) 2977ms
+     ✓ renders page header  318ms
+       ✓ opens detail modal  1101ms
+       ✓ calls processReturn  428ms
+       ✓ calls cancelReturn  495ms
+       ✓ calls deleteReturn  389ms
+ ✓ src/pages/RolePage.test.tsx (6 tests) 2823ms
+     ✓ filters roles by search term  358ms
+     ✓ allows creating a new role  1333ms
+     ✓ allows editing an existing role  665ms
+stderr | src/pages/consignment/ConsignmentDispatchPage.test.tsx > ConsignmentDispatchPage Integration > Actions > opens detail modal
+An empty string ("") was passed to the src attribute. This may cause the browser to download the whole page again over the network. To fix this, either do not render the element at all or pass null to src instead of an empty string.
+
+stderr | src/pages/consignment/ConsignmentDispatchPage.test.tsx > ConsignmentDispatchPage Integration > Actions > calls sendDispatch
+An empty string ("") was passed to the src attribute. This may cause the browser to download the whole page again over the network. To fix this, either do not render the element at all or pass null to src instead of an empty string.
+
+ ✓ src/pages/consignment/ConsignmentDispatchPage.test.tsx (6 tests) 3585ms
+     ✓ renders page header  660ms
+     ✓ filters dispatches  480ms
+       ✓ opens create modal  447ms
+       ✓ creates a dispatch  346ms
+       ✓ opens detail modal  747ms
+       ✓ calls sendDispatch  904ms
+stderr | src/pages/DianInvoicePage.test.tsx > DianInvoicePage > renders without crashing
+An update to DianInvoicePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to DianInvoicePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DianInvoicePage.test.tsx > DianInvoicePage > calls downloadInvoicePdf when PDF button is clicked
+An update to DianInvoicePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/MasterDesignPage.test.tsx (6 tests) 6041ms
+     ✓ renders list of master designs  632ms
+     ✓ filters by search term  540ms
+     ✓ allows creating a new design  4324ms
+ ✓ src/pages/accounting/PayrollPage.test.tsx (11 tests) 4840ms
+     ✓ renders employees and periods tabs correctly  620ms
+     ✓ allows editing an existing employee  438ms
+     ✓ handles opening a new payroll period  417ms
+     ✓ handles payroll approval flow  350ms
+     ✓ handles excel export  784ms
+     ✓ handles errors when calculating payroll  473ms
+     ✓ handles errors when saving employee  328ms
+     ✓ shows detailed summary for an approved period  876ms
+ ✓ src/pages/ProductPage.test.tsx (6 tests) 4977ms
+     ✓ renders products table  461ms
+     ✓ filters products by search term  495ms
+     ✓ allows editing a product  2050ms
+     ✓ allows creating new products with variants  1685ms
+stderr | src/pages/FacebookFeedPage.test.tsx > FacebookFeedPage Integration > refreshes catalog
+An update to FacebookFeedPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to FacebookFeedPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/FacebookFeedPage.test.tsx (8 tests) 2843ms
+     ✓ renders stats and product list  883ms
+     ✓ filters products by search term  473ms
+     ✓ opens product detail sidebar on click  468ms
+     ✓ shows issues in detail sidebar  370ms
+ ✓ src/pages/consignment/ConsignmentSellReportsPage.test.tsx (5 tests) 3493ms
+     ✓ renders page header and subheader  916ms
+     ✓ opens detail modal when clicking Eye icon  825ms
+     ✓ handles approve flow  977ms
+     ✓ handles reject flow  550ms
+stderr | src/pages/DianInvoicePage.test.tsx > DianInvoicePage > renders page header with title
+An update to DianInvoicePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to DianInvoicePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DianInvoicePage.test.tsx > DianInvoicePage > renders action buttons (Actualizar)
+An update to DianInvoicePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to DianInvoicePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/DianInvoicePage.test.tsx (12 tests) 3165ms
+     ✓ renders without crashing  534ms
+     ✓ calls checkInvoiceStatus when status button is clicked  1569ms
+ ✓ src/pages/UserPage.test.tsx (6 tests) 3483ms
+     ✓ renders list of users  694ms
+     ✓ filters users by search term  517ms
+     ✓ allows creating a new user  1609ms
+     ✓ allows editing an existing user  397ms
+ ✓ src/pages/consignment/ConsignmentPaymentsPage.test.tsx (5 tests) 1991ms
+     ✓ renders page header and displays payments  560ms
+     ✓ filters payments by status  442ms
+       ✓ opens detail modal  401ms
+       ✓ approves a payment  306ms
+ ✓ src/pages/consignment/ConsignmentPricePage.test.tsx (2 tests) 1745ms
+     ✓ renders page header  437ms
+     ✓ allows creating a price  1305ms
+stderr | src/pages/GoogleMerchantFeedPage.test.tsx > GoogleMerchantFeedPage > handles refresh correctly
+An update to GoogleMerchantFeedPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to GoogleMerchantFeedPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/PermissionManagementPage.test.tsx (6 tests) 1266ms
+     ✓ allows saving permissions  643ms
+ ✓ src/pages/GoogleMerchantFeedPage.test.tsx (6 tests) 1628ms
+     ✓ renders and fetches feed data correctly  360ms
+     ✓ filters products by search term  442ms
+     ✓ opens product detail panel when a row is clicked  339ms
+ ✓ src/pages/accounting/InventoryKardexPage.test.tsx (6 tests) 2087ms
+     ✓ renders KPIs and movements table correctly  533ms
+     ✓ opens detail modal for a movement  816ms
+ ✓ src/pages/accounting/TaxConfigPage.test.tsx (3 tests) 1986ms
+     ✓ opens modal and creates a new tax config  1425ms
+stderr | src/pages/CustomerPage.test.tsx > CustomerPage > renders without crashing
+An update to CustomerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CustomerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/CustomerPage.test.tsx > CustomerPage > renders page header with title
+An update to CustomerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CustomerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/accounting/BalanceSheetPage.test.tsx > BalanceSheetPage > updates when clicking Generar button
+An update to BalanceSheetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BalanceSheetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BalanceSheetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BalanceSheetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/CustomerPage.test.tsx > CustomerPage > renders search input
+An update to CustomerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CustomerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/CustomerPage.test.tsx > CustomerPage > renders inline form fields when edit button is clicked
+An update to CustomerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CustomerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/accounting/BalanceSheetPage.test.tsx > BalanceSheetPage > calls exportToExcel on button click
+An update to BalanceSheetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BalanceSheetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/BalanceSheetPage.test.tsx (3 tests) 1570ms
+     ✓ renders and fetches data on load  372ms
+     ✓ updates when clicking Generar button  640ms
+     ✓ calls exportToExcel on button click  556ms
+stderr | src/pages/accounting/BudgetPage.test.tsx > BudgetPage > renders and allows year selection
+An update to BudgetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BudgetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BudgetPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/CustomerPage.test.tsx (10 tests) 1160ms
+stderr | src/pages/accounting/IncomeStatementPage.test.tsx > IncomeStatementPage > calls exportToExcel when export button clicked
+An update to IncomeStatementPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to IncomeStatementPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/IncomeStatementPage.test.tsx (3 tests) 1390ms
+     ✓ renders and fetches income statement data  387ms
+     ✓ calls exportToExcel when export button clicked  923ms
+ ✓ src/pages/OrderPage.test.tsx (6 tests) 1532ms
+     ✓ renders orders table  424ms
+     ✓ filters orders by search term  641ms
+ ✓ src/components/ui/Button.test.tsx (7 tests) 1215ms
+     ✓ renders in loading state and disables interaction  486ms
+ ✓ src/pages/consignment/ConsignmentSelloutPage.test.tsx (5 tests) 1876ms
+     ✓ handles process flow  1228ms
+ ✓ src/pages/accounting/BudgetPage.test.tsx (3 tests) 1682ms
+     ✓ renders and allows year selection  306ms
+     ✓ navigates to monthly comparison  731ms
+     ✓ navigates to annual comparison  642ms
+ ✓ src/pages/SystemAuditLogPage.test.tsx (5 tests) 645ms
+stderr | src/pages/accounting/JournalEntryFormPage.test.tsx > JournalEntryFormPage Integration > allows adding and removing lines
+An update to JournalEntryFormPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/accounting/ExpenseFormPage.test.tsx > ExpenseFormPage Integration > calculates total correctly
+An update to ExpenseFormPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ExpenseFormPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/PickupDashboardPage.test.tsx > PickupDashboardPage Integration > refreshes list when clicking refresh button
+An update to PickupDashboardPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PickupDashboardPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/accounting/JournalEntryFormPage.test.tsx > JournalEntryFormPage Integration > calculates totals and shows balance error
+An update to JournalEntryFormPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/PickupDashboardPage.test.tsx > PickupDashboardPage Integration > handles API errors gracefully
+Error fetching pickup orders: Error: API Error
+    at /Users/jmanrique/Documents/apps/two-six-cms/src/pages/PickupDashboardPage.test.tsx:134:42
+    at file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/@vitest/runner/dist/index.js:145:11
+    at file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/@vitest/runner/dist/index.js:915:26
+    at file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/@vitest/runner/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/@vitest/runner/dist/index.js:1209:10)
+    at file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/@vitest/runner/dist/index.js:1653:37
+    at Traces.$ (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/vitest/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/vitest/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/@vitest/runner/dist/index.js:1653:12)
+
+ ✓ src/pages/PickupDashboardPage.test.tsx (8 tests) 889ms
+ ✓ src/pages/accounting/ExogenaPage.test.tsx (6 tests) 755ms
+ ✓ src/pages/accounting/JournalEntryFormPage.test.tsx (6 tests) 755ms
+ ✓ src/pages/accounting/ExpenseFormPage.test.tsx (5 tests) 933ms
+     ✓ renders correctly and loads data  525ms
+ ✓ src/components/ui/DataTable.test.tsx (9 tests) 736ms
+     ✓ handles page size change  452ms
+ ✓ src/components/ui/Modal.test.tsx (8 tests) 567ms
+     ✓ renders correctly when open  358ms
+ ✓ src/context/AuthContext.test.tsx (11 tests) 516ms
+ ✓ src/components/customer/CustomerList.test.tsx (10 tests) 542ms
+ ✓ src/pages/DianDocumentationPage.test.tsx (10 tests) 459ms
+stderr | src/components/provider/ProviderDocuments.test.tsx > ProviderDocuments Component > Modal Rendering > renders modal header with provider name
+An update to ProviderDocuments inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ProviderDocuments inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/provider/ProviderDocuments.test.tsx > ProviderDocuments Component > Modal Rendering > shows loading state initially
+An update to ProviderDocuments inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ProviderDocuments inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/GeneralSalesReportPage.test.tsx > GeneralSalesReportPage > renders without crashing
+An update to GeneralSalesReportPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to GeneralSalesReportPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/GeneralSalesReportPage.test.tsx (1 test) 325ms
+     ✓ renders without crashing  323ms
+ ✓ src/components/subscriber/SubscriberList.test.tsx (10 tests) 887ms
+     ✓ calls onToggleUnsubscribed when unsubscribed button is clicked  684ms
+ ✓ src/pages/accounting/SubsidiaryLedgerPage.test.tsx (3 tests) 872ms
+     ✓ fetches and displays report data  514ms
+ ✓ src/components/provider/ProviderDocuments.test.tsx (12 tests) 357ms
+ ✓ src/components/order/TransportGuideModal.test.tsx (17 tests) 497ms
+stderr | src/pages/accounting/ManualInvoiceListPage.test.tsx > ManualInvoiceListPage > renders page title
+An update to ManualInvoiceListPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/accounting/ManualInvoiceListPage.test.tsx > ManualInvoiceListPage > renders page title
+An update to ManualInvoiceListPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/consignment/ConsignmentReportsPage.test.tsx (3 tests) 756ms
+     ✓ switches to "Conciliación Pendiente" tab  311ms
+ ✓ src/pages/accounting/ManualInvoiceListPage.test.tsx (3 tests) 652ms
+stderr | src/pages/accounting/PeriodClosingPage.test.tsx > PeriodClosingPage > renders page title
+An update to PeriodClosingPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PeriodClosingPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/SubscriberPage.test.tsx > SubscriberPage > renders without crashing
+An update to SubscriberPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to SubscriberPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/SubscriberPage.test.tsx > SubscriberPage > renders page header with title
+An update to SubscriberPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to SubscriberPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/LocationPage.test.tsx (1 test) 171ms
+ ✓ src/pages/accounting/PeriodClosingPage.test.tsx (3 tests) 303ms
+stderr | src/pages/accounting/ReteFuentePage.test.tsx > ReteFuentePage > renders without crashing
+An update to ReteFuentePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ReteFuentePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/ReteFuentePage.test.tsx (1 test) 251ms
+ ✓ src/pages/SubscriberPage.test.tsx (7 tests) 853ms
+     ✓ renders without crashing  395ms
+stderr | src/components/customer/CustomerForm.test.tsx > CustomerForm > shows placeholder message when no customer is selected
+An update to CustomerForm inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/customer/CustomerForm.test.tsx > CustomerForm > renders form with customer data when editing
+An update to CustomerForm inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/customer/CustomerForm.test.tsx > CustomerForm > shows document number badge when present
+An update to CustomerForm inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/customer/CustomerForm.test.tsx > CustomerForm > renders all form labels
+An update to CustomerForm inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/customer/CustomerForm.test.tsx > CustomerForm > calls onSave with updated data on submit
+An update to CustomerForm inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/customer/CustomerForm.test.tsx > CustomerForm > calls onCancel when cancel button is clicked
+An update to CustomerForm inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/customer/CustomerForm.test.tsx > CustomerForm > updates form fields when a different customer is selected
+An update to CustomerForm inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/components/customer/CustomerForm.test.tsx (8 tests) 372ms
+ ✓ src/components/ui/FormField.test.tsx (9 tests) 459ms
+     ✓ renders a text input correctly  314ms
+ ✓ src/components/ui/SearchInput.test.tsx (5 tests) 250ms
+ ✓ src/components/ui/ConfirmDialog.test.tsx (6 tests) 391ms
+stderr | src/pages/accounting/AuditLogPage.test.tsx > AuditLogPage > renders without crashing
+An update to AuditLogPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AuditLogPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/ReportStockPage.test.tsx (5 tests) 772ms
+     ✓ renders stock report with KPI cards  346ms
+ ✓ src/pages/accounting/AuditLogPage.test.tsx (1 test) 256ms
+stderr | src/pages/accounting/BankReconciliationPage.test.tsx > BankReconciliationPage > renders without crashing
+An update to BankReconciliationPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BankReconciliationPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BankReconciliationPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BankReconciliationPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/BankReconciliationPage.test.tsx (1 test) 176ms
+stderr | src/pages/accounting/IvaDeclarationPage.test.tsx > IvaDeclarationPage > renders without crashing
+An update to IvaDeclarationPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to IvaDeclarationPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/components/common/PageHeader.test.tsx (3 tests) 116ms
+ ✓ src/pages/accounting/IvaDeclarationPage.test.tsx (1 test) 198ms
+ ✓ src/pages/PlanEstrategicoPage.test.tsx (1 test) 72ms
+ ✓ src/components/color/ColorForm.test.tsx (2 tests) 138ms
+stderr | src/pages/ColorPage.test.tsx > ColorPage > renders without crashing
+An update to ColorPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ColorPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/ColorPage.test.tsx (1 test) 80ms
+stderr | src/pages/accounting/FinancialIndicatorsPage.test.tsx > FinancialIndicatorsPage > renders without crashing
+An update to FinancialIndicatorsPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to FinancialIndicatorsPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/FinancialIndicatorsPage.test.tsx (1 test) 157ms
+stderr | src/pages/accounting/ProfitabilityReportPage.test.tsx > ProfitabilityReportPage > renders without crashing
+An update to ProfitabilityReportPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ProfitabilityReportPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/ProfitabilityReportPage.test.tsx (1 test) 176ms
+stderr | src/pages/accounting/CashFlowPage.test.tsx > CashFlowPage > renders without crashing
+An update to CashFlowPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CashFlowPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/CashFlowPage.test.tsx (1 test) 248ms
+ ✓ src/pages/UserRolePage.test.tsx (1 test) 149ms
+stderr | src/pages/accounting/JournalEntryPage.test.tsx > JournalEntryPage > renders page title
+An update to JournalEntryPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to JournalEntryPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/JournalEntryPage.test.tsx (4 tests) 167ms
+stderr | src/pages/accounting/PucAccountPage.test.tsx > PucAccountPage > renders without crashing
+An update to PucAccountPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PucAccountPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/components/size-guide/SizeGuideList.test.tsx (8 tests) 320ms
+ ✓ src/pages/accounting/PucAccountPage.test.tsx (1 test) 267ms
+stderr | src/pages/accounting/DepreciationPage.test.tsx > DepreciationPage > renders without crashing
+An update to DepreciationPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to DepreciationPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to DepreciationPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/DepreciationPage.test.tsx (1 test) 201ms
+stderr | src/pages/TagPage.test.tsx > TagPage > renders without crashing
+An update to TagPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TagPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TagPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/TagPage.test.tsx (1 test) 207ms
+stderr | src/pages/YearProductionPage.test.tsx > YearProductionPage > renders without crashing
+An update to YearProductionPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to YearProductionPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to YearProductionPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/YearProductionPage.test.tsx (1 test) 300ms
+stderr | src/pages/SeasonPage.test.tsx > SeasonPage > renders without crashing
+An update to SeasonPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to SeasonPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to SeasonPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/SeasonPage.test.tsx (1 test) 117ms
+ ✓ src/components/ui/LoadingSpinner.test.tsx (4 tests) 427ms
+ ✓ src/components/ui/Toast.test.tsx (5 tests) 687ms
+     ✓ renders a success toast when calling toast.success  368ms
+stderr | src/pages/TypeClothingPage.test.tsx > TypeClothingPage > renders without crashing
+An update to TypeClothingPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TypeClothingPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TypeClothingPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/TypeClothingPage.test.tsx (1 test) 145ms
+ ✓ src/components/size-guide/SizeGuideForm.test.tsx (9 tests) 279ms
+stderr | src/pages/SizeGuidePage.test.tsx > SizeGuidePage > renders without crashing
+An update to SizeGuidePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to SizeGuidePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to SizeGuidePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/SizeGuidePage.test.tsx (1 test) 163ms
+stderr | src/pages/StockPage.test.tsx > StockPage > renders without crashing
+An update to StockPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StockPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/StockPage.test.tsx (1 test) 187ms
+ ✓ src/pages/consignment/ManualConsignacionPage.test.tsx (2 tests) 261ms
+stderr | src/pages/accounting/ExpensePage.test.tsx > ExpensePage > renders page title
+An update to ExpensePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ExpensePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ExpensePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/ManualContablePage.test.tsx (1 test) 158ms
+stderr | src/pages/accounting/ExpensePage.test.tsx > ExpensePage > calls getExpenses and getExpenseCategories on mount
+Each child in a list should have a unique "key" prop.
+
+Check the render method of `select`. It was passed a child from ExpensePage. See https://react.dev/link/warning-keys for more information.
+
+ ✓ src/components/production-type/ProductionTypeForm.test.tsx (2 tests) 165ms
+ ✓ src/components/protectedRoute/ProtectedRoute.test.tsx (2 tests) 40ms
+ ✓ src/pages/accounting/ExpensePage.test.tsx (3 tests) 179ms
+stderr | src/pages/CouponPage.test.tsx > CouponPage > renders without crashing
+An update to CouponPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CouponPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/CouponPage.test.tsx (1 test) 175ms
+ ✓ src/components/ui/StatusBadge.test.tsx (6 tests) 89ms
+ ✓ src/components/category/CategoryList.test.tsx (2 tests) 97ms
+stderr | src/pages/accounting/AgingReportPage.test.tsx > AgingReportPage > renders without crashing
+An update to AgingReportPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AgingReportPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/accounting/AccountingSettingsPage.test.tsx > AccountingSettingsPage > renders without crashing
+An update to AccountingSettingsPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AccountingSettingsPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AccountingSettingsPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/AccountingSettingsPage.test.tsx (1 test) 102ms
+ ✓ src/pages/accounting/AgingReportPage.test.tsx (1 test) 232ms
+stderr | src/pages/accounting/GeneralLedgerPage.test.tsx > GeneralLedgerPage > renders without crashing
+An update to GeneralLedgerPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/GeneralLedgerPage.test.tsx (1 test) 167ms
+ ✓ src/pages/DesignProviderPage.test.tsx (1 test) 85ms
+ ✓ src/components/color/ColorList.test.tsx (2 tests) 43ms
+ ✓ src/components/layout/Menu/Header.test.tsx (2 tests) 67ms
+ ✓ src/components/clothing/ClothingList.test.tsx (2 tests) 172ms
+ ✓ src/components/layout/Footer/Footer.test.tsx (2 tests) 34ms
+stderr | src/pages/ErrorLogPage.test.tsx > ErrorLogPage > renders without crashing
+An update to ErrorLogPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ErrorLogPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/ErrorLogPage.test.tsx (1 test) 169ms
+ ✓ src/components/user/UserList.test.tsx (2 tests) 73ms
+stderr | src/pages/ProviderPage.test.tsx > ProviderPage > renders without crashing
+An update to ProviderPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ProviderPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/ProviderPage.test.tsx (1 test) 181ms
+ ✓ src/components/year-production/YearProductionForm.test.tsx (2 tests) 142ms
+stderr | src/pages/ProductionTypePage.test.tsx > ProductionTypePage > renders without crashing
+An update to ProductionTypePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ProductionTypePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/ProductionTypePage.test.tsx (1 test) 165ms
+ ✓ src/components/season/SeasonForm.test.tsx (2 tests) 60ms
+ ✓ src/components/provider/ProviderForm.test.tsx (2 tests) 92ms
+ ✓ src/components/type-clothing/TypeClothingForm.test.tsx (2 tests) 57ms
+ ✓ src/pages/CollectionPage.test.tsx (1 test) 91ms
+ ✓ src/pages/ClothingPage.test.tsx (1 test) 99ms
+ ✓ src/pages/Login.test.tsx (1 test) 33ms
+ ✓ src/components/user-role/UserRoleList.test.tsx (2 tests) 51ms
+stderr | src/pages/accounting/AccountingAlertsPage.test.tsx > AccountingAlertsPage > renders without crashing
+An update to AccountingAlertsPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AccountingAlertsPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AccountingAlertsPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/AccountingAlertsPage.test.tsx (1 test) 129ms
+ ✓ src/components/clothing-color/ClothingColorForm.test.tsx (2 tests) 43ms
+ ✓ src/components/provider/ProviderList.test.tsx (2 tests) 70ms
+stderr | src/pages/accounting/AccountingDashboardWidget.test.tsx > AccountingDashboardWidget > renders without crashing
+An update to AccountingDashboardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/accounting/AccountingDashboardWidget.test.tsx (1 test) 44ms
+ ✓ src/App.test.tsx (1 test) 30ms
+ ✓ src/components/product/ProductList.test.tsx (2 tests) 96ms
+stderr | src/pages/CategoryPage.test.tsx > CategoryPage > renders without crashing
+An update to CategoryPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CategoryPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CategoryPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/CategoryPage.test.tsx (1 test) 68ms
+ ✓ src/components/clothing-color/ClothingColorList.test.tsx (2 tests) 39ms
+ ✓ src/components/stock/StockForm.test.tsx (2 tests) 120ms
+ ✓ src/components/type-clothing/TypeClothingList.test.tsx (2 tests) 65ms
+ ✓ src/components/design-provider/DesignProviderForm.test.tsx (2 tests) 26ms
+ ✓ src/components/layout/ErrorBoundary.test.tsx (2 tests) 40ms
+ ✓ src/components/common/ActionButton.test.tsx (2 tests) 35ms
+ ✓ src/components/master-design/MasterDesignList.test.tsx (2 tests) 83ms
+ ✓ src/components/category/CategoryForm.test.tsx (2 tests) 98ms
+ ✓ src/services/dianApi.test.ts (20 tests) 32ms
+ ✓ src/components/layout/ErrorModal.test.tsx (2 tests) 33ms
+ ✓ src/components/role/RoleForm.test.tsx (2 tests) 84ms
+ ✓ src/components/layout/Header/Header.test.tsx (2 tests) 75ms
+ ✓ src/components/ui/EmptyState.test.tsx (5 tests) 261ms
+stderr | src/pages/ImageClothingPage.test.tsx > ImageClothingPage > renders without crashing
+An update to ImageClothingPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ImageClothingPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/components/collection/CollectionList.test.tsx (2 tests) 48ms
+ ✓ src/pages/ImageClothingPage.test.tsx (1 test) 54ms
+ ✓ src/components/user/UserForm.test.tsx (2 tests) 25ms
+ ✓ src/components/order/OrderList.test.tsx (2 tests) 49ms
+stderr | src/pages/App.test.tsx > App > renders without crashing
+Error: You cannot render a <Router> inside another <Router>. You should never have more than one in your app.
+    at invariant (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-router/dist/development/chunk-4WY6JWTD.mjs:188:11)
+    at Router (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-router/dist/development/chunk-4WY6JWTD.mjs:6470:3)
+    at Object.react_stack_bottom_frame (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:25904:20)
+    at renderWithHooks (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:7662:22)
+    at updateFunctionComponent (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:10166:19)
+    at beginWork (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:11778:18)
+    at runWithFiberInDEV (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+    at performUnitOfWork (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:17641:22)
+    at workLoopSync (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:17469:41)
+    at renderRootSync (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:17450:11) {
+  [stack]: [Getter/Setter],
+  [message]: 'You cannot render a <Router> inside another <Router>. You should never have more than one in your app.'
+}
+
+The above error occurred in the <Router> component.
+
+React will try to recreate this component tree from scratch using the error boundary you provided, ErrorBoundary.
+
+Error capturado por ErrorBoundary: Error: You cannot render a <Router> inside another <Router>. You should never have more than one in your app.
+    at invariant (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-router/dist/development/chunk-4WY6JWTD.mjs:188:11)
+    at Router (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-router/dist/development/chunk-4WY6JWTD.mjs:6470:3)
+    at Object.react_stack_bottom_frame (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:25904:20)
+    at renderWithHooks (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:7662:22)
+    at updateFunctionComponent (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:10166:19)
+    at beginWork (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:11778:18)
+    at runWithFiberInDEV (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+    at performUnitOfWork (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:17641:22)
+    at workLoopSync (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:17469:41)
+    at renderRootSync (/Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-dom/cjs/react-dom-client.development.js:17450:11) {
+  componentStack: '\n' +
+    '    at Router (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-router/dist/development/chunk-4WY6JWTD.mjs:6463:13)\n' +
+    '    at BrowserRouter (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-router/dist/development/chunk-4WY6JWTD.mjs:9623:3)\n' +
+    '    at ErrorBoundary (/Users/jmanrique/Documents/apps/two-six-cms/src/components/layout/ErrorBoundary.tsx:12:5)\n' +
+    '    at App (<anonymous>)\n' +
+    '    at Router (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-router/dist/development/chunk-4WY6JWTD.mjs:6463:13)\n' +
+    '    at BrowserRouter (file:///Users/jmanrique/Documents/apps/two-six-cms/node_modules/react-router/dist/development/chunk-4WY6JWTD.mjs:9623:3)'
+}
+
+ ✓ src/pages/App.test.tsx (1 test) 25ms
+ ✓ src/components/season/SeasonList.test.tsx (2 tests) 110ms
+ ✓ src/components/role/RoleList.test.tsx (2 tests) 47ms
+ ✓ src/pages/Footer.test.tsx (1 test) 16ms
+ ✓ src/components/year-production/YearProductionList.test.tsx (2 tests) 46ms
+ ✓ src/components/design-provider/DesignProviderList.test.tsx (2 tests) 26ms
+ ✓ src/components/clothing/ClothingForm.test.tsx (2 tests) 26ms
+ ✓ src/components/production-type/ProductionTypeList.test.tsx (2 tests) 23ms
+ ✓ src/components/collection/CollectionForm.test.tsx (2 tests) 26ms
+ ✓ src/components/stock/StockList.test.tsx (2 tests) 25ms
+ ✓ src/pages/HomePage.test.tsx (1 test) 24ms
+ ✓ src/components/user-role/UserRoleForm.test.tsx (2 tests) 68ms
+ ✓ src/components/common/Icons.test.tsx (2 tests) 14ms
+ ✓ src/components/layout/Menu/SubMenu.test.tsx (2 tests) 21ms
+ ✓ src/components/product/ProductForm.test.tsx (2 tests) 24ms
+ ✓ src/components/layout/Menu/Menu.test.tsx (2 tests) 15ms
+ ✓ src/components/layout/Menu/AuthContext.test.tsx (2 tests) 14ms
+stderr | src/services/clothingApi.test.ts > clothingApi.ts > getClothing: should throw error on failure
+Request failed with status: 500 undefined
+
+stderr | src/services/clothingApi.test.ts > clothingApi.ts > getClothing: should throw error on failure
+Error data (JSON): { message: 'Server Error' }
+
+stderr | src/services/clothingApi.test.ts > clothingApi.ts > deleteClothing: should throw error on failure
+Request failed with status: 404 undefined
+
+stderr | src/services/clothingApi.test.ts > clothingApi.ts > deleteClothing: should throw error on failure
+Error data (text): Not Found
+
+ ✓ src/services/clothingApi.test.ts (7 tests) 11ms
+ ✓ src/components/master-design/Icons.test.tsx (2 tests) 33ms
+ ✓ src/services/imageClothingApi.test.ts (8 tests) 8ms
+ ✓ src/services/colorApi.test.ts (8 tests) 3ms
+ ✓ src/services/accountingApi.test.ts (12 tests) 9ms
+ ✓ src/components/year-production/Icons.test.tsx (2 tests) 22ms
+ ✓ src/services/locationApi.test.ts (2 tests) 14ms
+ ✓ src/services/productionTypeApi.test.ts (8 tests) 21ms
+ ✓ src/services/userApi.test.ts (10 tests) 3ms
+ ✓ src/services/clothingSizeApi.test.ts (4 tests) 10ms
+ ✓ src/services/apiUtils.test.ts (4 tests) 16ms
+ ✓ src/services/masterDesignApi.test.ts (10 tests) 4ms
+ ✓ src/services/stockApi.test.ts (4 tests) 8ms
+ ✓ src/services/orderApi.test.ts (10 tests) 11ms
+ ✓ src/services/consignmentDispatchApi.test.ts (8 tests) 6ms
+ ✓ src/services/pqr/pqr.service.test.ts (4 tests) 10ms
+ ✓ src/services/errorApi.test.ts (3 tests) 6ms
+ ✓ src/services/productApi.test.ts (6 tests) 6ms
+ ✓ src/services/providerApi.test.ts (8 tests) 8ms
+ ✓ src/services/yearProductionApi.test.ts (8 tests) 4ms
+ ✓ src/utils/dateFormat.test.ts (16 tests) 3ms
+ ✓ src/services/consignmentReturnApi.test.ts (8 tests) 3ms
+ ✓ src/services/consignmentSelloutApi.test.ts (12 tests) 12ms
+ ✓ src/services/permissionApi.test.ts (4 tests) 6ms
+ ✓ src/services/errorLogApi.test.ts (2 tests) 6ms
+ ✓ src/services/sizeApi.test.ts (2 tests) 5ms
+ ✓ src/services/customerApi.test.ts (3 tests) 2ms
+ ✓ src/services/consignmentPaymentApi.test.ts (8 tests) 18ms
+ ✓ src/services/roleApi.test.ts (8 tests) 3ms
+ ✓ src/services/consignmentPriceApi.test.ts (5 tests) 2ms
+ ✓ src/services/userRoleApi.test.ts (6 tests) 6ms
+ ✓ src/services/couponApi.test.ts (4 tests) 5ms
+ ✓ src/services/inventoryApi.test.ts (4 tests) 9ms
+ ✓ src/services/consignmentReportsApi.test.ts (3 tests) 4ms
+ ✓ src/services/collectionApi.test.ts (8 tests) 9ms
+ ✓ src/services/orderItemApi.test.ts (2 tests) 6ms
+ ✓ src/services/clothingColorApi.test.ts (12 tests) 4ms
+ ✓ src/services/sizeGuideApi.test.ts (5 tests) 2ms
+ ✓ src/services/returnItemApi.test.ts (2 tests) 3ms
+ ✓ src/services/designApi.test.ts (10 tests) 7ms
+ ✓ src/services/typeClothingApi.test.ts (8 tests) 4ms
+ ✓ src/services/categoryApi.test.ts (8 tests) 8ms
+ ✓ src/services/consignmentWarehouseApi.test.ts (7 tests) 2ms
+ ✓ src/services/seasonApi.test.ts (8 tests) 3ms
+ ✓ src/services/genderApi.test.ts (2 tests) 4ms
+ ✓ src/services/consignmentCycleCountApi.test.ts (7 tests) 4ms
+ ✓ src/services/designProviderApi.test.ts (6 tests) 10ms
+ ✓ src/services/consignmentSellReportApi.test.ts (4 tests) 3ms
+ ✓ src/services/reportApi.test.ts (2 tests) 2ms
+ ✓ src/services/tagApi.test.ts (4 tests) 2ms
+ ✓ src/services/subscriberApi.test.ts (2 tests) 2ms
+ ↓ src/components/master-design/MasterDesignForm.test.tsx (2 tests | 2 skipped)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/pages/accounting/InventoryAdjustmentPage.test.tsx > InventoryAdjustmentPage Integration > submits correctly
+TestingLibraryElementError: Unable to find an element with the placeholder text of: /Ej: Influencer/i
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m"overflow: hidden;"[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-container"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.75rem;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"background: rgba(240, 180, 41, 0.1); color: rgb(240, 180, 41); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; box-shadow: 0 0 12px rgba(240, 180, 41, 0.08);"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"1em"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"1em"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<line[39m
+                  [33mx1[39m=[32m"16.5"[39m
+                  [33mx2[39m=[32m"7.5"[39m
+                  [33my1[39m=[32m"9.4"[39m
+                  [33my2[39m=[32m"4.21"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"[39m
+                [36m/>[39m
+                [36m<polyline[39m
+                  [33mpoints[39m=[32m"3.27 6.96 12 12.01 20.73 6.96"[39m
+                [36m/>[39m
+                [36m<line[39m
+                  [33mx1[39m=[32m"12"[39m
+                  [33mx2[39m=[32m"12"[39m
+                  [33my1[39m=[32m"22.08"[39m
+                  [33my2[39m=[32m"12"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</div>[39m
+            [36m<h1[39m
+              [33mstyle[39m=[32m"margin: 0px; border: medium; padding: 0px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; color: rgb(241, 241, 243);"[39m
+            [36m>[39m
+              [0mAjustes de Inventario[0m
+            [36m</h1>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"margin-bottom: 24px; display: flex; gap: 12px;"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mstyle[39m=[32m"display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 8px; font-family: \"Inter\", sans-serif; font-weight: 500; cursor: pointer; transition: all 0.15s ease; outline: none; white-space: nowrap; opacity: 1; padding: 0.5rem 1rem; font-size: 0.8125rem; min-height: 44px; background: rgb(240, 180, 41); color: rgb(10, 10, 15); border-width: 1px; border-style: solid; border-color: rgb(240, 180, 41);"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mstyle[39m=[32m"display: inline-flex; font-size: 1em;"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"1em"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"1em"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<line[39m
+                [33mx1[39m=[32m"12"[39m
+                [33mx2[39m=[32m"12"[39m
+                [33my1[39m=[32m"5"[39m
+                [33my2[39m=[32m"19"[39m
+              [36m/>[39m
+              [36m<line[39m
+                [33mx1[39m=[32m"5"[39m
+                [33mx2[39m=[32m"19"[39m
+                [33my1[39m=[32m"12"[39m
+                [33my2[39m=[32m"12"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</span>[39m
+          [0mNuevo Ajuste[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"overflow-x: auto; border-radius: 8px 8px 0 0; background-color: rgb(26, 26, 36); border-width: 1px; border-style: solid; border-color: rgb(42, 42, 53); border-image: none;"[39m
+        [36m>[39m
+          [36m<table[39m
+            [33mstyle[39m=[32m"width: 100%; border-collapse: collapse; min-width: 500px;"[39m
+          [36m>[39m
+            [36m<thead>[39m
+              [36m<tr>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mFecha[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mMotivo[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter,...
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m"overflow: hidden;"[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-container"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.75rem;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mstyle[39m=[32m"background: rgba(240, 180, 41, 0.1); color: rgb(240, 180, 41); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; box-shadow: 0 0 12px rgba(240, 180, 41, 0.08);"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"1em"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"1em"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<line[39m
+                  [33mx1[39m=[32m"16.5"[39m
+                  [33mx2[39m=[32m"7.5"[39m
+                  [33my1[39m=[32m"9.4"[39m
+                  [33my2[39m=[32m"4.21"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"[39m
+                [36m/>[39m
+                [36m<polyline[39m
+                  [33mpoints[39m=[32m"3.27 6.96 12 12.01 20.73 6.96"[39m
+                [36m/>[39m
+                [36m<line[39m
+                  [33mx1[39m=[32m"12"[39m
+                  [33mx2[39m=[32m"12"[39m
+                  [33my1[39m=[32m"22.08"[39m
+                  [33my2[39m=[32m"12"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</div>[39m
+            [36m<h1[39m
+              [33mstyle[39m=[32m"margin: 0px; border: medium; padding: 0px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; color: rgb(241, 241, 243);"[39m
+            [36m>[39m
+              [0mAjustes de Inventario[0m
+            [36m</h1>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mstyle[39m=[32m"margin-bottom: 24px; display: flex; gap: 12px;"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mstyle[39m=[32m"display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 8px; font-family: \"Inter\", sans-serif; font-weight: 500; cursor: pointer; transition: all 0.15s ease; outline: none; white-space: nowrap; opacity: 1; padding: 0.5rem 1rem; font-size: 0.8125rem; min-height: 44px; background: rgb(240, 180, 41); color: rgb(10, 10, 15); border-width: 1px; border-style: solid; border-color: rgb(240, 180, 41);"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mstyle[39m=[32m"display: inline-flex; font-size: 1em;"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"1em"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"1em"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<line[39m
+                [33mx1[39m=[32m"12"[39m
+                [33mx2[39m=[32m"12"[39m
+                [33my1[39m=[32m"5"[39m
+                [33my2[39m=[32m"19"[39m
+              [36m/>[39m
+              [36m<line[39m
+                [33mx1[39m=[32m"5"[39m
+                [33mx2[39m=[32m"19"[39m
+                [33my1[39m=[32m"12"[39m
+                [33my2[39m=[32m"12"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</span>[39m
+          [0mNuevo Ajuste[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"overflow-x: auto; border-radius: 8px 8px 0 0; background-color: rgb(26, 26, 36); border-width: 1px; border-style: solid; border-color: rgb(42, 42, 53); border-image: none;"[39m
+        [36m>[39m
+          [36m<table[39m
+            [33mstyle[39m=[32m"width: 100%; border-collapse: collapse; min-width: 500px;"[39m
+          [36m>[39m
+            [36m<thead>[39m
+              [36m<tr>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mFecha[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter, sans-serif; white-space: nowrap; background-color: rgb(31, 31, 42); cursor: pointer; user-select: none;"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mstyle[39m=[32m"display: flex; align-items: center; gap: 0.5rem; justify-content: flex-start;"[39m
+                  [36m>[39m
+                    [0mMotivo[0m
+                  [36m</div>[39m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mstyle[39m=[32m"padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgb(107, 107, 123); border-bottom: 1px solid rgb(42, 42, 53); font-family: Inter,...
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/pages/accounting/InventoryAdjustmentPage.test.tsx:83:35
+     81|     fireEvent.change(await screen.findByPlaceholderText(/ID de Product…
+     82|     fireEvent.change(await screen.findByPlaceholderText(/Cantidad/i), …
+     83|     fireEvent.change(await screen.findByPlaceholderText(/Ej: Influence…
+       |                                   ^
+     84| 
+     85|     act(() => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 200 passed | 1 skipped (202)
+      Tests  1 failed | 870 passed | 2 skipped (873)
+   Start at  09:32:55
+   Duration  57.38s (transform 9.94s, setup 21.35s, import 51.88s, tests 108.85s, environment 152.14s)
+

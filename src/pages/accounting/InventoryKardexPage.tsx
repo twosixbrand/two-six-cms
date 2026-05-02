@@ -321,6 +321,7 @@ const InventoryKardexPage = () => {
                         placeholder="Buscar ref, producto, color, talla…"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
+                        aria-label="Buscar movimientos"
                         style={{
                             width: '100%',
                             padding: '10px 12px 10px 38px',
@@ -343,6 +344,7 @@ const InventoryKardexPage = () => {
                         maxLength={10}
                         pattern="\d{4}-\d{2}-\d{2}"
                         value={startDate}
+                        aria-label="Fecha Desde"
                         onChange={(e) => {
                             const digits = e.target.value.replace(/[^0-9]/g, '');
                             let formatted = '';
@@ -369,6 +371,7 @@ const InventoryKardexPage = () => {
                         maxLength={10}
                         pattern="\d{4}-\d{2}-\d{2}"
                         value={endDate}
+                        aria-label="Fecha Hasta"
                         onChange={(e) => {
                             const digits = e.target.value.replace(/[^0-9]/g, '');
                             let formatted = '';
@@ -415,6 +418,7 @@ const InventoryKardexPage = () => {
                     emptyMessage="No se encontraron movimientos de inventario."
                     pageSize={pageSize}
                     onPageSizeChange={setPageSize}
+                    rowTestId="kardex-row"
                     actions={(row: any) => (
                         <Button variant="ghost" size="sm" icon={<FiEye />} onClick={() => openDetail(row)} />
                     )}
