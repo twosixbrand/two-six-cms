@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { FiBook, FiShoppingCart, FiServer, FiActivity, FiLayers, FiPackage, FiBox, FiCheckCircle, FiAlertCircle, FiImage, FiTrendingUp, FiGift, FiDroplet, FiPenTool, FiUploadCloud, FiSearch, FiSave, FiCheck, FiGlobe, FiMessageSquare, FiUserCheck, FiClock, FiFileText, FiCalendar, FiArchive, FiAperture, FiGrid, FiMapPin, FiUsers, FiTruck, FiShield, FiLink, FiPaperclip, FiMail, FiRss, FiExternalLink, FiCopy } from 'react-icons/fi';
+import { 
+    FiBook, FiShoppingCart, FiServer, FiActivity, FiLayers, FiPackage, FiBox, 
+    FiCheckCircle, FiAlertCircle, FiImage, FiTrendingUp, FiGift, FiDroplet, 
+    FiPenTool, FiUploadCloud, FiSearch, FiSave, FiCheck, FiGlobe, FiMessageSquare, 
+    FiUserCheck, FiClock, FiFileText, FiCalendar, FiArchive, FiAperture, FiGrid, 
+    FiMapPin, FiUsers, FiTruck, FiShield, FiLink, FiPaperclip, FiMail, FiRss, 
+    FiExternalLink, FiCopy, FiDollarSign, FiBriefcase, FiBarChart2, FiShieldOff, FiSearch as FiZoomIn,
+    FiHome
+} from 'react-icons/fi';
 import PageHeader from '../components/common/PageHeader';
 import './UserManualPage.css';
 
@@ -8,13 +16,16 @@ const UserManualPage = () => {
 
     const sections = [
         { id: 'introduccion', title: 'Introducción', icon: <FiBook /> },
-        { id: 'gestion-ventas', title: 'Gestion Ventas', icon: <FiShoppingCart /> },
+        { id: 'gestion-ventas', title: 'Gestión Ventas', icon: <FiShoppingCart /> },
         { id: 'admin-prendas', title: 'Admin Prendas', icon: <FiServer /> },
-        { id: 'atencion-cliente', title: 'Atencion Cliente', icon: <FiUserCheck /> },
+        { id: 'contabilidad', title: 'Contabilidad', icon: <FiDollarSign /> },
+        { id: 'consignaciones', title: 'Consignaciones', icon: <FiTruck /> },
+        { id: 'atencion-cliente', title: 'Atención Cliente', icon: <FiUserCheck /> },
         { id: 'campanas-cupones', title: 'Campañas & Cupones', icon: <FiGift /> },
         { id: 'admin-maestros', title: 'Admin Maestros', icon: <FiGrid /> },
         { id: 'users-providers', title: 'Users / Providers', icon: <FiUsers /> },
         { id: 'integraciones-apis', title: 'Integraciones-APIs', icon: <FiRss /> },
+        { id: 'reportes-auditoria', title: 'Reportes & Auditoría', icon: <FiBarChart2 /> },
     ];
 
     return (
@@ -60,7 +71,7 @@ const UserManualPage = () => {
                             <p>Este capítulo detalla el ciclo de vida de los ingresos, desde la supervisión de pedidos hasta la legalización tributaria.</p>
 
                             <h3 className="subsection-title"><FiPackage /> 1.1 Pedidos</h3>
-                            <p>Ubicación: <code>Gestion Ventas &gt; Pedidos</code></p>
+                            <p>Ubicación: <code>Gestión Ventas &gt; Pedidos</code></p>
                             <div className="feature-card">
                                 <h4>Guía de Operación:</h4>
                                 <ol className="manual-steps">
@@ -70,13 +81,19 @@ const UserManualPage = () => {
                                 </ol>
                             </div>
 
-                            <h3 className="subsection-title"><FiActivity /> 1.2 Facturacion DIAN</h3>
-                            <p>Ubicación: <code>Gestion Ventas &gt; Facturacion DIAN</code></p>
+                            <h3 className="subsection-title"><FiActivity /> 1.2 Facturación DIAN</h3>
+                            <p>Ubicación: <code>Gestión Ventas &gt; Facturación DIAN</code></p>
                             <div className="feature-card">
                                 <ul>
                                     <li><strong>Monitoreo:</strong> Verifica que el estado sea <em>AUTHORIZED</em>. Si hay error, revisa las reglas DIAN para corregir datos.</li>
                                     <li><strong>Notas Crédito:</strong> Genera notas para devoluciones; es vital para anular el impacto contable del IVA.</li>
                                 </ul>
+                            </div>
+
+                            <h3 className="subsection-title"><FiTruck /> 1.3 Pickup Dashboard (Logística)</h3>
+                            <p>Ubicación: <code>Gestión Ventas &gt; Pickup Dashboard</code></p>
+                            <div className="feature-card">
+                                <p>Herramienta central para el control de entregas y recogidas de mercancía. Permite visualizar en tiempo real el estado de los despachos locales y nacionales, asegurando que cada cliente reciba su pedido a tiempo.</p>
                             </div>
                         </section>
                     )}
@@ -100,7 +117,13 @@ const UserManualPage = () => {
                                 <p className="importance-note"><strong>Importancia:</strong> Este es el nivel base. Errores aquí se propagan a todos los diseños y productos relacionados.</p>
                             </div>
 
-                            <h3 className="subsection-title"><FiPenTool /> 2.2 Design (Ingeniería y Costos)</h3>
+                            <h3 className="subsection-title"><FiLayers /> 2.2 Organización (Categorías, Tipos y Tags)</h3>
+                            <p>Ubicación: <code>Admin Prendas &gt; Categoría / Tipos / Tags</code></p>
+                            <div className="feature-card">
+                                <p>Define la estructura de navegación de la tienda. Los <strong>Tags</strong> son vitales para las agrupaciones especiales (ej: "New Arrival", "Summer Sale") que impulsan las ventas estacionales.</p>
+                            </div>
+
+                            <h3 className="subsection-title"><FiPenTool /> 2.3 Design (Ingeniería y Costos)</h3>
                             <p>Ubicación: <code>Admin Prendas &gt; Design</code></p>
                             <div className="feature-card">
                                 <h4>Configuración Maestra:</h4>
@@ -116,7 +139,7 @@ const UserManualPage = () => {
                                 </ol>
                             </div>
 
-                            <h3 className="subsection-title"><FiDroplet /> 2.3 Clothing Color (Identidad Digital y SEO)</h3>
+                            <h3 className="subsection-title"><FiDroplet /> 2.4 Clothing Color (Identidad Digital y SEO)</h3>
                             <p>Ubicación: <code>Admin Prendas &gt; Clothing Color</code></p>
                             <div className="feature-card">
                                 <h4>Optimización para el Mundo:</h4>
@@ -132,7 +155,13 @@ const UserManualPage = () => {
                                 </ol>
                             </div>
 
-                            <h3 className="subsection-title"><FiPackage /> 2.4 Product (La Oferta Comercial)</h3>
+                            <h3 className="subsection-title"><FiImage /> 2.5 Galería de Imágenes</h3>
+                            <p>Ubicación: <code>Admin Prendas &gt; Imágenes</code></p>
+                            <div className="feature-card">
+                                <p>Gestiona el carrusel de fotos para cada combinación de color. Recuerda que la primera imagen siempre será la portada en la tienda web. Una buena galería visual reduce la tasa de abandono del carrito.</p>
+                            </div>
+
+                            <h3 className="subsection-title"><FiPackage /> 2.6 Product (La Oferta Comercial)</h3>
                             <p>Ubicación: <code>Admin Prendas &gt; Product</code></p>
                             <div className="feature-card">
                                 <h4>Activación de Venta:</h4>
@@ -144,7 +173,7 @@ const UserManualPage = () => {
                                 <p className="importance-note"><strong>Importancia:</strong> Un producto sin marcar como "Activo" no será visible para los clientes.</p>
                             </div>
 
-                            <h3 className="subsection-title"><FiBox /> 2.5 Stock (Guardianía de Existencias)</h3>
+                            <h3 className="subsection-title"><FiBox /> 2.7 Stock (Guardianía de Existencias)</h3>
                             <p>Ubicación: <code>Admin Prendas &gt; Stock</code></p>
                             <div className="feature-card">
                                 <h4>Control de Inventario Real:</h4>
@@ -157,22 +186,84 @@ const UserManualPage = () => {
                         </section>
                     )}
 
+                    {activeSection === 'contabilidad' && (
+                        <section className="manual-section fade-in">
+                            <h2 className="section-title">Capítulo 3: Ecosistema Contable y Financiero</h2>
+                            <p className="intro-text">
+                                El módulo de contabilidad automatiza el registro de cada movimiento económico de <strong>Two Six</strong>, garantizando transparencia, control de gastos y cumplimiento legal.
+                            </p>
+
+                            <h3 className="subsection-title"><FiBriefcase /> 3.1 Gestión de Nómina</h3>
+                            <p>Ubicación: <code>Contabilidad &gt; Nómina</code></p>
+                            <div className="feature-card">
+                                <h4>Flujo de Liquidación:</h4>
+                                <ol className="manual-steps">
+                                    <li><strong>Ficha del Empleado:</strong> Es vital configurar correctamente el <em>Salario Base</em> y el <em>Nivel de Riesgo ARL</em>. Marcar <strong>Exonerado (Ley 1607)</strong> si aplica para el ahorro de aportes patronales.</li>
+                                    <li><strong>Apertura de Período:</strong> Crea el mes y la quincena (1ra o 2da) a liquidar.</li>
+                                    <li><strong>Liquidar:</strong> El sistema calcula automáticamente salud, pensión, provisiones de prestaciones sociales y parafiscales.</li>
+                                    <li><strong>Aprobar y Contabilizar:</strong> Al aprobar, el sistema genera los asientos contables de gasto en el Libro Diario automáticamente, manteniendo el balance siempre al día.</li>
+                                </ol>
+                            </div>
+
+                            <h3 className="subsection-title"><FiFileText /> 3.2 Libro Diario y Gastos</h3>
+                            <p>Ubicación: <code>Contabilidad &gt; Libro Diario / Gastos</code></p>
+                            <div className="feature-card">
+                                <p>Registro cronológico de todas las operaciones. Los <strong>Gastos</strong> deben clasificarse por centro de costo y tipo de gasto para un análisis de rentabilidad preciso y para la generación de la información exógena.</p>
+                            </div>
+
+                            <h3 className="subsection-title"><FiActivity /> 3.3 Estados Financieros</h3>
+                            <p>Ubicación: <code>Contabilidad &gt; Balance / Estado de Resultados</code></p>
+                            <div className="feature-card">
+                                <p>Genera en tiempo real los reportes de salud de la empresa. El <strong>Estado de Resultados</strong> te mostrará la utilidad neta restando costos de producción y gastos operativos de las ventas brutas, permitiendo tomar decisiones informadas.</p>
+                            </div>
+                        </section>
+                    )}
+
+                    {activeSection === 'consignaciones' && (
+                        <section className="manual-section fade-in">
+                            <h2 className="section-title">Capítulo 4: Gestión de Inventario en Consignación</h2>
+                            <p className="intro-text">
+                                Este módulo gestiona la mercancía entregada a aliados comerciales. El sistema mantiene el control de la propiedad de Two Six mientras el aliado realiza la venta en sus propios establecimientos.
+                            </p>
+
+                            <h3 className="subsection-title"><FiHome /> 4.1 Bodegas de Aliados</h3>
+                            <p>Ubicación: <code>Consignaciones &gt; Bodegas</code></p>
+                            <div className="feature-card">
+                                <h4>Configuración:</h4>
+                                <ol className="manual-steps">
+                                    <li>Vincula la bodega a un <strong>Cliente Aliado</strong> (previamente marcado como aliado en Gestión de Clientes).</li>
+                                    <li>Esta bodega actuará como un inventario externo pero controlado, permitiendo ver el stock disponible en cada punto de venta aliado.</li>
+                                </ol>
+                            </div>
+
+                            <h3 className="subsection-title"><FiTruck /> 4.2 Despachos y Sell-out</h3>
+                            <p>Ubicación: <code>Consignaciones &gt; Despachos / Reporte Ventas</code></p>
+                            <div className="feature-card">
+                                <h4>Ciclo de Mercancía:</h4>
+                                <ul>
+                                    <li><strong>Despacho:</strong> Envía mercancía a la bodega del aliado. Esto disminuye el stock central y aumenta el stock en consignación del punto de venta.</li>
+                                    <li><strong>Sell-out:</strong> Cuando el aliado vende, debes reportar la venta para legalizar el ingreso, generar la factura correspondiente y descargar el stock del aliado.</li>
+                                </ul>
+                            </div>
+                        </section>
+                    )}
+
                     {activeSection === 'atencion-cliente' && (
                         <section className="manual-section fade-in">
-                            <h2 className="section-title">Capítulo 3: Atención al Cliente y Resolución de Casos</h2>
+                            <h2 className="section-title">Capítulo 5: Atención al Cliente y Resolución de Casos</h2>
                             <p className="intro-text">
                                 En <strong>Two Six</strong>, la lealtad de nuestros clientes se construye resolviendo sus inquietudes con agilidad y empatía. Este módulo es tu herramienta para convertir una inconformidad en una experiencia positiva.
                             </p>
 
-                            <h3 className="subsection-title"><FiMessageSquare /> 3.1 Gestión de PQRs (Peticiones, Quejas y Reclamos)</h3>
-                            <p>Ubicación: <code>Atencion Cliente &gt; Gestion PQR</code></p>
+                            <h3 className="subsection-title"><FiMessageSquare /> 5.1 Gestión de PQRs</h3>
+                            <p>Ubicación: <code>Atencion Cliente &gt; Gestión PQR</code></p>
                             
                             <div className="feature-card">
                                 <h4>Protocolo de Gestión de Casos:</h4>
                                 <ol className="manual-steps">
                                     <li><strong>Monitoreo de Radicados:</strong> Los casos se visualizan en tarjetas codificadas por colores según su estado de cumplimiento (SLA).</li>
-                                    <li><strong>Análisis de Evidencia:</strong> Al abrir un caso, revisa las fotos cargadas por el cliente al Object Storage, vitales para validar reclamos de calidad.</li>
-                                    <li><strong>Actualización de Gestión:</strong> Usa el campo "Observaciones" para dejar trazabilidad de la solución.</li>
+                                    <li><strong>Análisis de Evidencia:</strong> Al abrir un caso, revisa las fotos cargadas por el cliente al Object Storage, vitales para validar reclamos de calidad o errores en el envío.</li>
+                                    <li><strong>Actualización de Gestión:</strong> Usa el campo "Observaciones" para dejar trazabilidad de la solución y los acuerdos llegados con el cliente.</li>
                                 </ol>
                             </div>
                         </section>
@@ -180,18 +271,18 @@ const UserManualPage = () => {
 
                     {activeSection === 'campanas-cupones' && (
                         <section className="manual-section fade-in">
-                            <h2 className="section-title">Capítulo 4: Campañas y Cupones de Fidelización</h2>
+                            <h2 className="section-title">Capítulo 6: Campañas y Cupones de Fidelización</h2>
                             <p className="intro-text">
                                 La estrategia de marketing digital de <strong>Two Six</strong> cobra vida en este módulo. Aquí podrás crear incentivos para atraer nuevos clientes y premiar a los más leales mediante cupones inteligentes.
                             </p>
 
-                            <h3 className="subsection-title"><FiGift /> 4.1 Gestión de Cupones</h3>
+                            <h3 className="subsection-title"><FiGift /> 6.1 Gestión de Cupones</h3>
                             <p>Ubicación: <code>Campañas &amp; Cupones &gt; Gestión de Cupones</code></p>
                             
                             <div className="feature-card">
                                 <h4>Pasos para Crear una Campaña de Descuento:</h4>
                                 <ol className="manual-steps">
-                                    <li><strong>Código Promocional:</strong> Define el código que el cliente ingresará (ej: <code>BIENVENIDO10</code>). El sistema lo convertirá automáticamente a mayúsculas para evitar errores.</li>
+                                    <li><strong>Código Promocional:</strong> Define el código que el cliente ingresará (ej: <code>BIENVENIDO10</code>). El sistema lo convertirá automáticamente a mayúsculas para evitar errores tipográficos.</li>
                                     <li><strong>Incentivo:</strong> Define el <strong>Porcentaje de Descuento</strong> y si la campaña incluye <strong>Envío Gratis</strong> forzado.</li>
                                     <li><strong>Vigencia:</strong> Selecciona las fechas y horas exactas de inicio y fin. El cupón dejará de funcionar automáticamente al segundo exacto de la fecha de fin.</li>
                                     <li><strong>Reglas de Aplicación:</strong>
@@ -202,65 +293,58 @@ const UserManualPage = () => {
                                         </ul>
                                     </li>
                                 </ol>
-                                <p className="importance-note"><strong>Integridad Contable:</strong> Una vez que un cupón ha sido utilizado al menos una vez, el código y el porcentaje se bloquean. Esto evita alteraciones en los históricos de ventas y reportes financieros.</p>
-                            </div>
-
-                            <div className="callout-info">
-                                <FiCheckCircle className="callout-icon" />
-                                <div>
-                                    <strong>Kill Switch:</strong> El botón de estado (Activo/Pausado) actúa como un interruptor de emergencia. Si detectas una anomalía en una campaña, puedes desactivarla instantáneamente sin borrarla del sistema.
-                                </div>
+                                <p className="importance-note"><strong>Integridad Contable:</strong> Una vez que un cupón ha sido utilizado al menos una vez, el código y el porcentaje se bloquean para evitar alteraciones en los históricos de ventas.</p>
                             </div>
                         </section>
                     )}
 
                     {activeSection === 'admin-maestros' && (
                         <section className="manual-section fade-in">
-                            <h2 className="section-title">Capítulo 5: Administración de Tablas Maestras (Estructura)</h2>
+                            <h2 className="section-title">Capítulo 7: Administración de Tablas Maestras (Estructura)</h2>
                             <p className="intro-text">
-                                Los "Maestros" son los cimientos sobre los cuales se construye toda la lógica del CMS. Tu precisión aquí garantiza que el catálogo sea coherente y navegable.
+                                Los "Maestros" son los cimientos sobre los cuales se construye toda la lógica del CMS. Tu precisión aquí garantiza que el catálogo sea coherente y navegable para el cliente final.
                             </p>
 
-                            <h3 className="subsection-title"><FiCalendar /> 5.1 Temporalidad (Year & Season)</h3>
+                            <h3 className="subsection-title"><FiCalendar /> 7.1 Temporalidad (Year & Season)</h3>
                             <p>Ubicación: <code>Admin Maestros &gt; Year Production / Season</code></p>
                             <div className="feature-card">
-                                <p>Define los ciclos de tiempo de la marca. Cada prenda debe pertenecer a un año y una temporada para facilitar reportes históricos.</p>
+                                <p>Define los ciclos de tiempo de la marca. Cada prenda debe pertenecer a un año y una temporada para facilitar reportes históricos de desempeño de colecciones.</p>
                             </div>
 
-                            <h3 className="subsection-title"><FiArchive /> 5.2 Colecciones (Collections)</h3>
+                            <h3 className="subsection-title"><FiArchive /> 7.2 Colecciones (Collections)</h3>
                             <p>Ubicación: <code>Admin Maestros &gt; Collection</code></p>
                             <div className="feature-card">
-                                <p>Agrupa diseños bajo un concepto creativo único.</p>
+                                <p>Agrupa diseños bajo un concepto creativo único. Las colecciones ayudan a contar la historia detrás de las prendas en la tienda web.</p>
                             </div>
 
-                            <h3 className="subsection-title"><FiAperture /> 5.3 Gestión Cromática (Colors)</h3>
+                            <h3 className="subsection-title"><FiAperture /> 7.3 Gestión Cromática (Colors)</h3>
                             <p>Ubicación: <code>Admin Maestros &gt; Color</code></p>
                             <div className="feature-card">
-                                <p>Control de la paleta de colores oficial. Usa el código Hexadecimal para asegurar la coincidencia visual con la tela física.</p>
+                                <p>Control de la paleta de colores oficial. Usa el código Hexadecimal para asegurar la coincidencia visual entre la pantalla y la tela física.</p>
                             </div>
 
-                            <h3 className="subsection-title"><FiGrid /> 5.4 Guía de Tallas (Size Guide)</h3>
-                            <p>Ubicación: <code>Admin Maestros &gt; Guia de Tallas</code></p>
+                            <h3 className="subsection-title"><FiGrid /> 7.4 Guía de Tallas (Size Guide)</h3>
+                            <p>Ubicación: <code>Admin Maestros &gt; Guía de Tallas</code></p>
                             <div className="feature-card">
-                                <p>La herramienta definitiva para reducir devoluciones por talla incorrecta.</p>
+                                <p>La herramienta definitiva para reducir devoluciones. Ingresa las medidas exactas por cada talla; esto aparecerá como un modal de ayuda para el cliente.</p>
                             </div>
 
-                            <h3 className="subsection-title"><FiMapPin /> 5.5 Ubicaciones (Locations)</h3>
+                            <h3 className="subsection-title"><FiMapPin /> 7.5 Ubicaciones (Locations)</h3>
                             <p>Ubicación: <code>Admin Maestros &gt; Ubicaciones</code></p>
                             <div className="feature-card">
-                                <p>Define los puntos físicos donde puede existir inventario (Bodega Central, Tienda Física, etc.).</p>
+                                <p>Define los puntos físicos donde puede existir inventario (Bodega Central, Tiendas Propias, etc.), vital para el control de stock multicanal.</p>
                             </div>
                         </section>
                     )}
 
                     {activeSection === 'users-providers' && (
                         <section className="manual-section fade-in">
-                            <h2 className="section-title">Capítulo 6: Aliados y Control de Acceso</h2>
+                            <h2 className="section-title">Capítulo 8: Aliados y Control de Acceso</h2>
                             <p className="intro-text">
-                                Este módulo gestiona el capital humano y los aliados estratégicos de <strong>Two Six</strong>. Aquí controlarás quién tiene acceso al sistema y con qué proveedores trabajamos.
+                                Este módulo gestiona el capital humano y los aliados estratégicos de <strong>Two Six</strong>. Aquí controlarás quién tiene acceso al sistema y la legalidad de nuestros proveedores.
                             </p>
 
-                            <h3 className="subsection-title"><FiTruck /> 6.1 Gestión de Proveedores (Providers)</h3>
+                            <h3 className="subsection-title"><FiTruck /> 8.1 Gestión de Proveedores</h3>
                             <p>Ubicación: <code>Users / providers &gt; Provider</code></p>
                             <div className="feature-card">
                                 <h4>Registro y Legalización de Aliados:</h4>
@@ -269,83 +353,74 @@ const UserManualPage = () => {
                                     <li><strong>Carga de Documentación Legal (DigitalOcean):</strong> Haz clic en el botón <strong>"Docs"</strong>.
                                         <ul>
                                             <li>Es <strong>obligatorio</strong> subir el RUT, Cámara de Comercio y Cédula del Representante Legal.</li>
-                                            <li>Los archivos se alojan en nuestro Object Storage de DigitalOcean, permitiendo auditorías rápidas y seguras.</li>
+                                            <li>Los archivos se alojan de forma segura en la nube para auditorías rápidas.</li>
                                         </ul>
                                     </li>
                                 </ol>
-                                <p className="importance-note"><strong>Importancia:</strong> Un proveedor con registro "Incompleto" no podrá recibir pagos del departamento de contabilidad.</p>
+                                <p className="importance-note"><strong>Importancia:</strong> Un proveedor con registro "Incompleto" no podrá recibir pagos del departamento de contabilidad por seguridad tributaria.</p>
                             </div>
 
-                            <h3 className="subsection-title"><FiUserCheck /> 6.2 CRM de Clientes (Customer)</h3>
+                            <h3 className="subsection-title"><FiUserCheck /> 8.2 CRM de Clientes</h3>
                             <p>Ubicación: <code>Users / providers &gt; Clientes</code></p>
                             <div className="feature-card">
-                                <p>Administra la base de datos de nuestros compradores. Aunque la mayoría se registra automáticamente en la tienda web, puedes actualizar datos de envío o contacto para corregir problemas de entrega.</p>
+                                <p>Administra la base de datos de nuestros compradores. Un campo crítico es marcar a los <strong>Aliados de Consignación</strong> para habilitar su gestión en el módulo especializado.</p>
                             </div>
 
-                            <h3 className="subsection-title"><FiMail /> 6.3 Suscriptores y Newsletter (Subscriber)</h3>
-                            <p>Ubicación: <code>Users / providers &gt; Suscriber</code></p>
-                            <div className="feature-card">
-                                <h4>Gestión de Audiencias:</h4>
-                                <ol className="manual-steps">
-                                    <li><strong>Monitoreo de Registro:</strong> Visualiza la lista de correos que se han suscrito para recibir novedades.</li>
-                                    <li><strong>Códigos de Descuento:</strong> Haz clic en <strong>"Ver Códigos"</strong> para verificar si el suscriptor ya utilizó su cupón de bienvenida (10%) o si aún está disponible.</li>
-                                    <li><strong>Estado de Suscripción:</strong> Gestiona la baja de usuarios si solicitan dejar de recibir correos comerciales.</li>
-                                </ol>
-                            </div>
-
-                            <h3 className="subsection-title"><FiShield /> 6.4 Seguridad y Roles (User & Role)</h3>
+                            <h3 className="subsection-title"><FiShield /> 8.3 Seguridad y Roles</h3>
                             <p>Ubicación: <code>Users / providers &gt; User / Role</code></p>
                             <div className="feature-card">
                                 <h4>Gestión de Identidades:</h4>
                                 <ul>
-                                    <li><strong>Usuarios:</strong> Crea las cuentas de acceso para nuevos empleados. Recuerda que el login es único.</li>
-                                    <li><strong>Roles:</strong> Define perfiles como "Vendedor", "Almacenista" o "Contador" con descripciones claras de sus responsabilidades.</li>
+                                    <li><strong>Usuarios:</strong> Crea las cuentas de acceso para nuevos empleados. Recuerda que el acceso es personal e intransferible.</li>
+                                    <li><strong>Roles:</strong> Define perfiles con permisos granulares (Lectura, Escritura, Edición) según el cargo del empleado.</li>
                                 </ul>
-                            </div>
-
-                            <h3 className="subsection-title"><FiLink /> 6.5 Asignación de Roles y Permisos</h3>
-                            <p>Ubicación: <code>Users / providers &gt; User Roles / Gestion de Permisos</code></p>
-                            <div className="feature-card">
-                                <h4>Control Maestro de Acceso:</h4>
-                                <ol className="manual-steps">
-                                    <li><strong>Asignación:</strong> Vincula a un usuario específico con uno o varios roles según su cargo.</li>
-                                    <li><strong>Matriz de Permisos:</strong> Selecciona el Rol y activa/desactiva las casillas de acceso. Esto define qué páginas y acciones (botones) puede ver el equipo en el menú lateral.</li>
-                                </ol>
-                                <p className="importance-note"><strong>Seguridad:</strong> El acceso a "Contabilidad" y "User Roles" debe estar restringido exclusivamente a cargos de alta confianza.</p>
                             </div>
                         </section>
                     )}
 
                     {activeSection === 'integraciones-apis' && (
                         <section className="manual-section fade-in">
-                            <h2 className="section-title">Capítulo 7: Integraciones y Canales Digitales</h2>
+                            <h2 className="section-title">Capítulo 9: Integraciones y Canales Digitales</h2>
                             <p className="intro-text">
-                                En este capítulo, aprenderás a gestionar las conexiones entre el CMS y plataformas externas como Google, permitiendo que nuestros productos lleguen a millones de personas.
+                                En este capítulo, aprenderás a gestionar las conexiones entre el CMS y plataformas externas permitiendo que nuestro catálogo se venda automáticamente en todo el mundo.
                             </p>
 
-                            <h3 className="subsection-title"><FiRss /> 7.1 Google Merchant Feed (Catálogo Dinámico)</h3>
+                            <h3 className="subsection-title"><FiGlobe /> 9.1 Google Merchant Feed</h3>
                             <p>Ubicación: <code>Integraciones-APIs &gt; Google Merchant Feed</code></p>
-                            
                             <div className="feature-card">
-                                <h4>Monitoreo y Sincronización:</h4>
-                                <ol className="manual-steps">
-                                    <li><strong>Feed URL:</strong> Copia la URL de producción mediante el botón <strong>"Copiar"</strong>. Esta es la dirección que se debe configurar en el Merchant Center de Google para que la publicidad se actualice automáticamente.</li>
-                                    <li><strong>Validación de Catálogo:</strong> El tablero muestra en tiempo real cuántos productos están "Listos para Google". 
-                                        <ul>
-                                            <li><span style={{color: '#f87171', fontWeight: 700}}>Errores:</span> Impiden que el producto se muestre. Generalmente por falta de SKU, Título o Imagen Principal.</li>
-                                            <li><span style={{color: '#fbbf24', fontWeight: 700}}>Advertencias:</span> Sugerencias de mejora para el posicionamiento, como descripciones más largas o mapeo de categorías.</li>
-                                        </ul>
-                                    </li>
-                                    <li><strong>Detalle de g:Tags:</strong> Haz clic en cualquier fila para inspeccionar exactamente qué datos está enviando el sistema a Google (SKU, Precio, Link de Imagen, Categoría de Producto Google, etc.).</li>
-                                </ol>
-                                <p className="importance-note"><strong>Importancia:</strong> Una gestión impecable del feed garantiza que nuestras campañas de Google Ads tengan el mejor rendimiento posible y que nunca anunciemos productos sin stock.</p>
+                                <p>Sincroniza el catálogo con Google Shopping. Es vital revisar las advertencias de <em>g:tags</em> para mejorar el posicionamiento SEO en búsquedas de Google.</p>
                             </div>
 
-                            <div className="callout-info">
-                                <FiGlobe className="callout-icon" />
-                                <div>
-                                    <strong>Expansión Global:</strong> El sistema mapea automáticamente nuestras categorías internas (ej: "Buso") a las categorías estandarizadas de Google (ej: "Sweaters / Hoodies - 5388"), asegurando que el producto aparezca en la sección correcta de Google Shopping.
-                                </div>
+                            <h3 className="subsection-title"><FiGlobe /> 9.2 Facebook / Meta Feed</h3>
+                            <p>Ubicación: <code>Integraciones-APIs &gt; Facebook Feed</code></p>
+                            <div className="feature-card">
+                                <h4>Gestión de Catálogo en Redes Sociales:</h4>
+                                <ol className="manual-steps">
+                                    <li><strong>Feed URL:</strong> Copia la URL de producción mediante el botón <strong>"Copiar"</strong> para pegarla en el Commerce Manager de Meta (Facebook/Instagram).</li>
+                                    <li><strong>Validación:</strong> El tablero muestra productos "Listos para Meta". Revisa errores de SKU, Precio o Imagen que impiden la publicación en Instagram Shop.</li>
+                                </ol>
+                                <p className="importance-note"><strong>Importancia:</strong> Un feed limpio garantiza que nuestros anuncios siempre muestren el precio correcto y solo productos con stock.</p>
+                            </div>
+                        </section>
+                    )}
+
+                    {activeSection === 'reportes-auditoria' && (
+                        <section className="manual-section fade-in">
+                            <h2 className="section-title">Capítulo 10: Inteligencia de Datos y Control Maestro</h2>
+                            <p className="intro-text">
+                                El conocimiento es poder. Este módulo centraliza los reportes estratégicos para la gerencia y la auditoría de seguridad para la integridad del sistema.
+                            </p>
+
+                            <h3 className="subsection-title"><FiTrendingUp /> 10.1 Reportes Estratégicos</h3>
+                            <p>Ubicación: <code>Reportes &gt; Ventas Generales / Reporte Stock</code></p>
+                            <div className="feature-card">
+                                <p>Visualiza el rendimiento financiero de la marca. El <strong>Reporte de Stock</strong> te permite prever agotados y gestionar reposiciones con tiempo, evitando pérdidas por falta de inventario.</p>
+                            </div>
+
+                            <h3 className="subsection-title"><FiShield /> 10.2 Auditoría del Sistema</h3>
+                            <p>Ubicación: <code>Reportes &gt; Log de Auditoría</code></p>
+                            <div className="feature-card">
+                                <p>Control total sobre las acciones realizadas en el CMS. El sistema registra qué usuario, en qué fecha y qué dato exacto se modificó. Esto es vital para resolver discrepancias en inventarios o contabilidad, garantizando que <strong>Two Six</strong> opere siempre bajo estándares de máxima seguridad.</p>
                             </div>
                         </section>
                     )}
