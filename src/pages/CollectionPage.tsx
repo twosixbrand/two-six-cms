@@ -20,7 +20,7 @@ const CollectionPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<any>(null);
   const [saving, setSaving] = useState(false);
-  const [form, setForm] = useState({ name: '', description: '', seasonId: '', yearProductionId: '' });
+  const [form, setForm] = useState({ name: '', description: '', id_season: '', id_year_production: '' });
 
   const fetchData = async () => {
     try {
@@ -59,7 +59,7 @@ const CollectionPage = () => {
 
   const openCreateModal = () => {
     setEditing(null);
-    setForm({ name: '', description: '', seasonId: '', yearProductionId: '' });
+    setForm({ name: '', description: '', id_season: '', id_year_production: '' });
     setShowModal(true);
   };
 
@@ -68,8 +68,8 @@ const CollectionPage = () => {
     setForm({
       name: row.name || '',
       description: row.description || '',
-      seasonId: row.seasonId || '',
-      yearProductionId: row.yearProductionId || '',
+      id_season: row.id_season || '',
+      id_year_production: row.id_year_production || '',
     });
     setShowModal(true);
   };
@@ -81,7 +81,11 @@ const CollectionPage = () => {
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    if (name === 'id_season') {
+      setForm((prev) => ({ ...prev, [name]: parseInt(value) || '' }));
+    } else {
+      setForm((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -92,8 +96,8 @@ const CollectionPage = () => {
         const dataToUpdate = {
           name: form.name,
           description: form.description,
-          seasonId: form.seasonId,
-          yearProductionId: form.yearProductionId,
+          id_season: form.id_season,
+          id_year_production: form.id_year_production,
         };
         await collectionApi.updateCollection(editing.id, dataToUpdate);
       } else {
@@ -179,9 +183,9 @@ const CollectionPage = () => {
             <FormField label="Descripción" name="description" type="textarea" value={form.description} onChange={handleChange} placeholder="Breve descripción..." />
             <FormField
               label="Temporada"
-              name="seasonId"
+              name="id_season"
               type="select"
-              value={form.seasonId}
+              value={form.id_season}
               onChange={handleChange}
               required
               placeholder="Seleccione Temporada"
@@ -189,9 +193,9 @@ const CollectionPage = () => {
             />
             <FormField
               label="Año de Producción"
-              name="yearProductionId"
+              name="id_year_production"
               type="select"
-              value={form.yearProductionId}
+              value={form.id_year_production}
               onChange={handleChange}
               required
               placeholder="Seleccione Año"
