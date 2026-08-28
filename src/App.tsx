@@ -45,6 +45,8 @@ import SubscriberPage from './pages/SubscriberPage.tsx';
 import PqrManagementPage from './pages/pqr/index.tsx';
 import SizeGuidePage from './pages/SizeGuidePage.tsx';
 import DianInvoicePage from './pages/DianInvoicePage';
+import POSPage from './pages/POSPage.tsx';
+import POSAdminPage from './pages/POSAdminPage.tsx';
 import DianDocumentationPage from './pages/DianDocumentationPage.tsx';
 import DatabaseDocumentationPage from './pages/DatabaseDocumentationPage';
 import ArchitectureDocumentationPage from './pages/ArchitectureDocumentationPage';
@@ -175,6 +177,8 @@ const MainLayout = () => {
               <Route path="/pqr" element={<PqrManagementPage />} />
               <Route path="/size-guide" element={<SizeGuidePage />} />
               <Route path="/dian-invoices" element={<DianInvoicePage />} />
+              <Route path="/pos" element={<POSPage />} />
+              <Route path="/pos-admin" element={<POSAdminPage />} />
               <Route path="/customer" element={<CustomerPage />} />
               <Route path="/permissions" element={<PermissionManagementPage />} />
               <Route path="/google-merchant-feed" element={<GoogleMerchantFeedPage />} />

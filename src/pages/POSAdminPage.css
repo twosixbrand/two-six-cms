@@ -1,0 +1,17 @@
+.pos-admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pos-admin-container th {
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 600;
+}
+
+.pos-admin-container td {
+  vertical-align: middle;
+}
+
+.pos-admin-container tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}

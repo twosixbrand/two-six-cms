@@ -11,10 +11,12 @@ const menuData = [
   {
     title: 'Gestion Ventas',
     path: '#',
-    permission: 'sales.reports.view',
+    permission: 'sales',
     subNav: [
       { title: 'Pedidos', path: '/order', permission: 'sales.orders.view' },
       { title: 'Facturacion DIAN', path: '/dian-invoices', permission: 'sales.dian.view' },
+      { title: '🏪 POS Stand', path: '/pos', permission: 'sales.pos.view' },
+      { title: 'Admin Ventas Stand', path: '/pos-admin', permission: 'sales.pos_admin.view' },
       { title: 'Reporte Stock', path: '/reports/stock', permission: 'sales.reports.view' },
       { title: 'General Sales', path: '/reports/sales/general', permission: 'sales.reports.view' },
       { title: 'Retiros en Tienda', path: '/reports/pickup-dashboard', permission: 'sales.orders.view' },
