@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getPosSales } from '../services/posApi';
 import Swal from 'sweetalert2';
 import dayjs from 'dayjs';
-import { FiFileText, FiCheckCircle } from 'react-icons/fi';
+import { FiFileText, FiCheckCircle, FiEye } from 'react-icons/fi';
 import './POSAdminPage.css'; // Opcional, pero usaremos estilos de tabla estándar si existen
 
 const POSAdminPage = () => {
@@ -28,6 +28,55 @@ const POSAdminPage = () => {
 
   const handleInvoice = async (id: number) => {
     Swal.fire('Atención', `La integración con la DIAN (facturación de la venta #${id}) será implementada en la Parte 2 de la Fase 3.`, 'info');
+  };
+
+  const handleViewDetails = (sale: any) => {
+    let lines = [];
+    try {
+      lines = typeof sale.lines === 'string' ? JSON.parse(sale.lines) : sale.lines;
+    } catch (e) {
+      console.error('Error parsing sale lines', e);
+    }
+    
+    if (!lines || lines.length === 0) {
+      Swal.fire('Sin detalle', 'Esta venta no tiene productos registrados.', 'info');
+      return;
+    }
+
+    const linesHtml = `
+      <table style="width: 100%; border-collapse: collapse; text-align: left; margin-top: 10px; font-size: 14px;">
+        <thead>
+          <tr style="border-bottom: 1px solid #555;">
+            <th style="padding: 8px;">Producto</th>
+            <th style="padding: 8px; text-align: center;">Cant.</th>
+            <th style="padding: 8px; text-align: right;">Precio U.</th>
+            <th style="padding: 8px; text-align: right;">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${lines.map((l: any) => `
+            <tr style="border-bottom: 1px solid #333;">
+              <td style="padding: 8px;">${l.product_name || l.productName || 'Producto'} ${l.size || ''}</td>
+              <td style="padding: 8px; text-align: center;">${l.quantity || 1}</td>
+              <td style="padding: 8px; text-align: right;">$${Number(l.unit_price || l.unitPrice || 0).toLocaleString('es-CO')}</td>
+              <td style="padding: 8px; text-align: right;">$${Number((l.quantity || 1) * (l.unit_price || l.unitPrice || 0)).toLocaleString('es-CO')}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+      <div style="text-align: right; margin-top: 15px; font-weight: bold; font-size: 16px;">
+        Total: $${Number(sale.total).toLocaleString('es-CO')}
+      </div>
+    `;
+
+    Swal.fire({
+      title: `Detalle Venta #${sale.id}`,
+      html: linesHtml,
+      width: '600px',
+      confirmButtonText: 'Cerrar',
+      background: '#1e1e1e',
+      color: '#fff',
+    });
   };
 
   return (
@@ -105,6 +154,25 @@ const POSAdminPage = () => {
                           Generar Factura
                         </button>
                       )}
+                      <button 
+                        onClick={() => handleViewDetails(sale)}
+                        title="Ver Detalle"
+                        style={{
+                          background: 'transparent',
+                          color: 'var(--primary-color, #eeb914)',
+                          border: '1px solid var(--primary-color, #eeb914)',
+                          padding: '6px 12px',
+                          borderRadius: 4,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 6,
+                          fontSize: 12,
+                          marginTop: sale.status === 'PENDING' ? 8 : 0
+                        }}
+                      >
+                        <FiEye size={16} /> Detalle
+                      </button>
                     </td>
                   </tr>
                 ))
