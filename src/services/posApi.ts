@@ -36,10 +36,11 @@ export const getPosSales = async () => {
     return await handleResponse(response, 'getPosSales');
 };
 
-export const invoicePosSale = async (id: number) => {
-    const response = await fetch(`${API_URL}/v1/pos-sales/${id}/invoice`, {
+export const queueBatchForDian = async (saleIds: number[]) => {
+    const response = await fetch(`${API_URL}/v1/pos-sales/batch-dian`, {
         method: 'POST',
         headers: authHeaders(),
+        body: JSON.stringify({ saleIds }),
     });
-    return await handleResponse(response, 'invoicePosSale');
+    return await handleResponse(response, 'queueBatchForDian');
 };
