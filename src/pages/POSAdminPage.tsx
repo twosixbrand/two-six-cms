@@ -1,14 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { getPosSales, queueBatchForDian } from '../services/posApi';
 import Swal from 'sweetalert2';
 import dayjs from 'dayjs';
 import { FiFileText, FiCheckCircle, FiClock, FiAlertTriangle, FiEye } from 'react-icons/fi';
 import './POSAdminPage.css'; // Opcional, pero usaremos estilos de tabla estándar si existen
 
+const getPaymentMethodName = (code: string) => {
+  if (code === '10') return 'Efectivo';
+  if (code === '48') return 'Tarjeta';
+  if (code === '49') return 'Transferencia';
+  if (code === '42') return 'Consignación / Transferencia';
+  if (code === '1') return 'Instrumento no definido';
+  return code || 'No registrado';
+};
+
+const parseGarment = (description: string) => {
+  const match = description.match(/(.*) - Talla (.*)/i);
+  if (match) {
+    return { name: match[1].trim(), size: match[2].trim().toUpperCase() };
+  }
+  return { name: description, size: 'U' }; // U = Única por defecto
+};
+
 const POSAdminPage = () => {
   const [sales, setSales] = useState<any[]>([]);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [filterDate, setFilterDate] = useState(dayjs().format('YYYY-MM-DD'));
 
   const loadSales = async () => {
     setIsLoading(true);
@@ -39,9 +57,44 @@ const POSAdminPage = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const filteredSales = useMemo(() => {
+    return sales.filter(s => dayjs(s.createdAt).format('YYYY-MM-DD') === filterDate);
+  }, [sales, filterDate]);
+
+  const aggregatedInventory = useMemo(() => {
+    const inventory: Record<string, any> = {};
+    
+    filteredSales.forEach(sale => {
+      if (sale.status === 'CANCELLED' || sale.status === 'VOIDED' || sale.status === 'ANULADA') return;
+
+      let lines = [];
+      try {
+         lines = typeof sale.lines === 'string' ? JSON.parse(sale.lines) : sale.lines;
+      } catch(e){}
+
+      if (Array.isArray(lines)) {
+        lines.forEach((l: any) => {
+           const { name, size } = parseGarment(l.description || l.product_name || l.productName || 'Producto Desconocido');
+           const qty = l.quantity || 1;
+           
+           if (!inventory[name]) {
+             inventory[name] = { total: 0, sizes: {} };
+           }
+           inventory[name].total += qty;
+           if (!inventory[name].sizes[size]) {
+             inventory[name].sizes[size] = 0;
+           }
+           inventory[name].sizes[size] += qty;
+        });
+      }
+    });
+
+    return inventory;
+  }, [filteredSales]);
+
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      const processableIds = sales.filter(s => s.status === 'PENDING' || s.status === 'ERROR').map(s => s.id);
+      const processableIds = filteredSales.filter(s => s.status === 'PENDING' || s.status === 'ERROR').map(s => s.id);
       setSelectedIds(processableIds);
     } else {
       setSelectedIds([]);
@@ -79,7 +132,6 @@ const POSAdminPage = () => {
     }
   };
 
-
   const handleViewDetails = (sale: any) => {
     let lines = [];
     try {
@@ -94,7 +146,14 @@ const POSAdminPage = () => {
     }
 
     const linesHtml = `
-      <table style="width: 100%; border-collapse: collapse; text-align: left; margin-top: 10px; font-size: 14px;">
+      <div style="background: #2a2a2a; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 14px; text-align: left;">
+        <div style="margin-bottom: 4px;"><strong>Cliente:</strong> ${sale.customerName}</div>
+        <div style="margin-bottom: 4px;"><strong>Documento:</strong> ${sale.customerDoc}</div>
+        <div style="margin-bottom: 4px;"><strong>Email:</strong> ${sale.customerEmail || 'N/A'}</div>
+        <div style="margin-bottom: 4px;"><strong>Teléfono:</strong> ${sale.customerPhone || 'N/A'}</div>
+        <div><strong>Medio de Pago:</strong> ${getPaymentMethodName(sale.paymentMethod)}</div>
+      </div>
+      <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
         <thead>
           <tr style="border-bottom: 1px solid #555;">
             <th style="padding: 8px;">Producto</th>
@@ -136,7 +195,24 @@ const POSAdminPage = () => {
     <div className="pos-admin-container" style={{ padding: '20px', color: '#fff' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <h2>Ventas Stand (Ferias)</h2>
-        <div style={{ display: 'flex', gap: 10 }}>
+        <div style={{ display: 'flex', gap: 15, alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <label htmlFor="filterDate" style={{ fontWeight: 'bold' }}>Fecha:</label>
+            <input 
+              type="date" 
+              id="filterDate"
+              value={filterDate}
+              onChange={(e) => setFilterDate(e.target.value)}
+              style={{
+                padding: '6px 12px',
+                borderRadius: 4,
+                border: '1px solid #555',
+                background: '#222',
+                color: '#fff',
+                colorScheme: 'dark'
+              }}
+            />
+          </div>
           {selectedIds.length > 0 && (
             <button 
               onClick={handleProcessBatch}
@@ -167,26 +243,25 @@ const POSAdminPage = () => {
                   <input 
                     type="checkbox" 
                     onChange={handleSelectAll} 
-                    checked={selectedIds.length > 0 && selectedIds.length === sales.filter(s => s.status === 'PENDING' || s.status === 'ERROR').length} 
+                    checked={selectedIds.length > 0 && selectedIds.length === filteredSales.filter(s => s.status === 'PENDING' || s.status === 'ERROR').length} 
                   />
                 </th>
                 <th style={{ padding: 12 }}>ID</th>
                 <th style={{ padding: 12 }}>Fecha</th>
                 <th style={{ padding: 12 }}>Cliente</th>
                 <th style={{ padding: 12 }}>Documento</th>
-                <th style={{ padding: 12 }}>Email</th>
                 <th style={{ padding: 12 }}>Total</th>
                 <th style={{ padding: 12 }}>Estado DIAN</th>
                 <th style={{ padding: 12 }}>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {sales.length === 0 ? (
+              {filteredSales.length === 0 ? (
                 <tr>
-                  <td colSpan={7} style={{ padding: 20, textAlign: 'center' }}>No hay ventas registradas.</td>
+                  <td colSpan={8} style={{ padding: 20, textAlign: 'center' }}>No hay ventas registradas en esta fecha.</td>
                 </tr>
               ) : (
-                sales.map(sale => (
+                filteredSales.map(sale => (
                   <tr key={sale.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                     <td style={{ padding: 12 }}>
                       {(sale.status === 'PENDING' || sale.status === 'ERROR') && (
@@ -198,10 +273,9 @@ const POSAdminPage = () => {
                       )}
                     </td>
                     <td style={{ padding: 12 }}>#{sale.id}</td>
-                    <td style={{ padding: 12 }}>{dayjs(sale.createdAt).format('YYYY-MM-DD HH:mm')}</td>
+                    <td style={{ padding: 12 }}>{dayjs(sale.createdAt).format('HH:mm')}</td>
                     <td style={{ padding: 12 }}>{sale.customerName}</td>
                     <td style={{ padding: 12 }}>{sale.customerDoc}</td>
-                    <td style={{ padding: 12 }}>{sale.customerEmail || <span style={{opacity: 0.5}}>-</span>}</td>
                     <td style={{ padding: 12 }}>${Number(sale.total).toLocaleString('es-CO')}</td>
                     <td style={{ padding: 12 }}>
                       {sale.status === 'PENDING' ? (
@@ -252,8 +326,53 @@ const POSAdminPage = () => {
           </table>
         )}
       </div>
+
+      <div style={{ marginTop: 30, background: 'var(--background-secondary)', borderRadius: 8, padding: 16 }}>
+        <h3 style={{ marginBottom: 15 }}>Resumen de Prendas Vendidas ({filterDate})</h3>
+        <table style={{ width: '100%', borderCollapse: 'collapse', color: '#fff', fontSize: 14 }}>
+          <thead>
+            <tr style={{ borderBottom: '2px solid var(--border-color)', textAlign: 'left' }}>
+              <th style={{ padding: '12px 8px' }}>Prenda / Color</th>
+              <th style={{ padding: '12px 8px', textAlign: 'center', width: '100px' }}>Talla</th>
+              <th style={{ padding: '12px 8px', textAlign: 'center', width: '140px' }}>Cant. Vendida</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.keys(aggregatedInventory).length === 0 ? (
+              <tr>
+                <td colSpan={3} style={{ padding: 20, textAlign: 'center' }}>No hay ventas agrupables en esta fecha.</td>
+              </tr>
+            ) : (
+              Object.keys(aggregatedInventory).map((name, i) => {
+                const product = aggregatedInventory[name];
+                const sizes = Object.keys(product.sizes);
+                return (
+                  <React.Fragment key={i}>
+                    {sizes.map((size, idx) => (
+                      <tr key={`${i}-${idx}`} style={{ borderBottom: idx === sizes.length - 1 ? '1px solid var(--border-color)' : 'none' }}>
+                        {idx === 0 && (
+                          <td rowSpan={sizes.length} style={{ padding: '8px', verticalAlign: 'middle', borderRight: '1px solid var(--border-color)' }}>
+                            <strong>{name}</strong>
+                          </td>
+                        )}
+                        <td style={{ padding: '8px', textAlign: 'center', borderRight: '1px solid var(--border-color)', borderBottom: '1px solid #333' }}>
+                          {size}
+                        </td>
+                        <td style={{ padding: '8px', textAlign: 'center', background: 'var(--success-color, #198754)', color: '#fff', fontWeight: 'bold', borderBottom: '1px solid #333' }}>
+                          {product.sizes[size]}
+                        </td>
+                      </tr>
+                    ))}
+                  </React.Fragment>
+                );
+              })
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
 
 export default POSAdminPage;
+
