@@ -54,14 +54,17 @@ const POSAdminPage = () => {
           </tr>
         </thead>
         <tbody>
-          ${lines.map((l: any) => `
+          ${lines.map((l: any) => {
+            const qty = l.quantity || 1;
+            const priceWithTax = Number(l.unit_price || l.unitPrice || 0) * (1 + (l.taxPercent || 19) / 100);
+            return `
             <tr style="border-bottom: 1px solid #333;">
-              <td style="padding: 8px;">${l.product_name || l.productName || 'Producto'} ${l.size || ''}</td>
-              <td style="padding: 8px; text-align: center;">${l.quantity || 1}</td>
-              <td style="padding: 8px; text-align: right;">$${Number(l.unit_price || l.unitPrice || 0).toLocaleString('es-CO')}</td>
-              <td style="padding: 8px; text-align: right;">$${Number((l.quantity || 1) * (l.unit_price || l.unitPrice || 0)).toLocaleString('es-CO')}</td>
+              <td style="padding: 8px;">${l.description || l.product_name || l.productName || 'Producto'}</td>
+              <td style="padding: 8px; text-align: center;">${qty}</td>
+              <td style="padding: 8px; text-align: right;">$${priceWithTax.toLocaleString('es-CO', { maximumFractionDigits: 0 })}</td>
+              <td style="padding: 8px; text-align: right;">$${(qty * priceWithTax).toLocaleString('es-CO', { maximumFractionDigits: 0 })}</td>
             </tr>
-          `).join('')}
+          `}).join('')}
         </tbody>
       </table>
       <div style="text-align: right; margin-top: 15px; font-weight: bold; font-size: 16px;">
