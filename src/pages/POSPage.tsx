@@ -32,6 +32,9 @@ const POSPage: React.FC = () => {
   // Seleccion modal/inline
   const [selectedDesign, setSelectedDesign] = useState<string | null>(null);
 
+  // Descuento Adicional Manual
+  const [additionalDiscount, setAdditionalDiscount] = useState<number>(0);
+
   // Formulario
   const [customerMode, setCustomerMode] = useState<'GENERIC' | 'IDENTIFIED'>('GENERIC');
   const [formData, setFormData] = useState({
@@ -133,8 +136,8 @@ const POSPage: React.FC = () => {
     discountPerItem = 21900; // 79900 -> 58000
   }
 
-  const totalDiscount = discountPerItem * totalQuantity;
-  const subtotalWithDiscount = subtotalOriginal - totalDiscount;
+  const totalDiscount = (discountPerItem * totalQuantity) + (additionalDiscount || 0);
+  const subtotalWithDiscount = Math.max(0, subtotalOriginal - totalDiscount);
 
   const subtotalNet = subtotalWithDiscount / 1.19;
   const taxTotal = subtotalWithDiscount - subtotalNet;
@@ -163,13 +166,17 @@ const POSPage: React.FC = () => {
         subtotal: subtotalNet,
         taxTotal: taxTotal,
         total: total,
-        lines: cart.map(item => ({
-          id_product: item.id,
-          description: `${item.name} - ${item.color_name} - Talla ${item.size_name}`,
-          quantity: item.cart_quantity,
-          unitPrice: (Number(item.price || 0) - discountPerItem) / 1.19,
-          taxPercent: 19
-        }))
+        lines: cart.map(item => {
+          // Distribuir el descuento adicional equitativamente entre los items (por cantidad)
+          const extraDiscountPerUnit = totalQuantity > 0 ? ((additionalDiscount || 0) / totalQuantity) : 0;
+          return {
+            id_product: item.id,
+            description: `${item.name} - ${item.color_name} - Talla ${item.size_name}`,
+            quantity: item.cart_quantity,
+            unitPrice: (Number(item.price || 0) - discountPerItem - extraDiscountPerUnit) / 1.19,
+            taxPercent: 19
+          };
+        })
       };
 
       await savePosSale(payload);
@@ -185,6 +192,7 @@ const POSPage: React.FC = () => {
       // Reiniciar
       setCart([]);
       setCustomerMode('GENERIC');
+      setAdditionalDiscount(0);
       setFormData({ docType: '13', docNumber: '', fullName: '', email: '', phone: '' });
       
     } catch (error: any) {
@@ -354,9 +362,19 @@ const POSPage: React.FC = () => {
           {totalDiscount > 0 && (
             <div className="summary-row" style={{ color: 'var(--success-color, #4caf50)', fontWeight: 600 }}>
               <span>Descuento Feria</span>
-              <span>-${totalDiscount.toLocaleString('es-CO')}</span>
+              <span>-${(discountPerItem * totalQuantity).toLocaleString('es-CO')}</span>
             </div>
           )}
+          <div className="summary-row">
+            <span>Descuento Extra ($)</span>
+            <input 
+              type="number" 
+              value={additionalDiscount || ''} 
+              onChange={e => setAdditionalDiscount(Number(e.target.value))} 
+              style={{ width: '100px', textAlign: 'right', background: 'var(--surface-color)', border: '1px solid var(--border-color)', color: 'var(--text-color)', borderRadius: '4px', padding: '4px' }}
+              placeholder="0"
+            />
+          </div>
           <div className="summary-row">
             <span>IVA (19%)</span>
             <span>${taxTotal.toLocaleString('es-CO', {maximumFractionDigits: 0})}</span>
