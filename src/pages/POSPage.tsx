@@ -164,6 +164,7 @@ const POSPage: React.FC = () => {
         taxTotal: taxTotal,
         total: total,
         lines: cart.map(item => ({
+          id_product: item.id,
           description: `${item.name} - ${item.color_name} - Talla ${item.size_name}`,
           quantity: item.cart_quantity,
           unitPrice: (Number(item.price || 0) - discountPerItem) / 1.19,
