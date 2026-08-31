@@ -170,6 +170,55 @@ const DianInvoicePage = () => {
                         >
                             PDF
                         </Button>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            style={{ color: '#ef4444' }}
+                            onClick={async () => {
+                                const confirm = await Swal.fire({
+                                    title: '¿Anular esta factura?',
+                                    text: `Estás a punto de emitir una Nota Crédito para anular la factura ${inv.document_number}. Esta acción es irreversible ante la DIAN.`,
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Sí, anular',
+                                    cancelButtonText: 'Cancelar',
+                                    confirmButtonColor: '#ef4444'
+                                });
+                                if (confirm.isConfirmed) {
+                                    try {
+                                        setLoading(true);
+                                        // Extraer datos si la venta vino de POS (guardada en order null)
+                                        const posSale = inv.posSale || null;
+                                        let payload = { reasonCode: '2', reasonDesc: 'Anulación de factura electrónica' };
+                                        if (!inv.order) {
+                                            payload = {
+                                                ...payload,
+                                                customerName: 'Consumidor Final',
+                                                customerDoc: '222222222222',
+                                                customerDocType: '13',
+                                                lines: [
+                                                    {
+                                                        description: 'Anulación de Venta POS',
+                                                        quantity: 1,
+                                                        unitPrice: inv.total_amount ? Number((inv.total_amount / 1.19).toFixed(2)) : 100000,
+                                                        taxPercent: 19
+                                                    }
+                                                ]
+                                            };
+                                        }
+                                        await dianApi.createCreditNote(inv.id, payload);
+                                        Swal.fire('Éxito', 'Nota Crédito generada y enviada a la DIAN', 'success');
+                                        fetchInvoices();
+                                    } catch (err: any) {
+                                        Swal.fire('Error', err.message || 'Error al emitir la Nota Crédito', 'error');
+                                    } finally {
+                                        setLoading(false);
+                                    }
+                                }
+                            }}
+                        >
+                            NC
+                        </Button>
                     </>
                 )}
             />
